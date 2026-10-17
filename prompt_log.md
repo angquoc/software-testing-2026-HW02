@@ -1246,6 +1246,8 @@ Khi làm vậy, trong Audit Report phải khai báo rằng có dùng skill của
 - Bash: Show group README diff against last commit
 - Bash: Update tracker statuses in notes
 - Bash: Export prompt log and preview first commit contents
+- Bash: Inspect the match to confirm it is not a leak
+- Bash: Find the header line without the session id
 
 **Output AI (nguyên văn):**
 
@@ -1267,6 +1269,325 @@ File README của repo nhóm đã bị sửa trên đĩa sau lần mình đọc 
 Diff chỉ có đúng dòng của bạn. Giờ cập nhật tracker trong `_NOTES.md`:
 
 Giờ mình xuất lại prompt log và xem những file sẽ vào commit đầu tiên của repo cá nhân.
+
+Kiểm tra rò rỉ trả về 1 kết quả. Mình xem đó là nội dung của phiên khác lọt vào, hay chỉ là chỗ chính phiên này nhắc tới mã `8298971a`.
+
+Kiểm tra xong: dòng đó chỉ là một tiêu đề nằm trong câu trả lời của mình, không phải tiêu đề lượt. Log có đủ 17 lượt và **tất cả đều thuộc phiên `305c705a`**, không lẫn phiên nào khác.
+
+## Đã làm
+
+- **Gói 1 của bạn:** A FR-01 Đăng ký · B FR-07 Giỏ hàng · C FR-17 Quản lý mã giảm giá · D FR-04 Hồ sơ (Mobile).
+  - Đã tạo 4 thư mục trong `features/`, mỗi thư mục có `ai_raw/` và `screenshots/`.
+  - Đã điền bảng feature trong [README.md](Homeworks/HW02/README.md) của HW02.
+  - Đã điền **dòng của bạn** trong README repo nhóm. Diff chỉ có đúng dòng đó, chưa commit.
+- **Tracker:** đã cập nhật deadline (trước 12:00 ngày 21/10), tên 4 feature ở bảng S0–S8, và trạng thái các mục 0.8–0.13.
+- **SUT riêng cho HW02:** mình clone EShop vào `Homeworks/eshop-sut`, cùng commit `85af3ba` với bản mới nhất trên GitHub. Mục đích là tách khỏi `DA/eshop-sut` của seminar bảo mật để DB và code không bị lẫn. Thư viện backend, web và admin **đang cài chạy nền**.
+
+## Lệnh để bạn tự commit
+
+**Repo cá nhân.** Commit này gồm `.gitignore`, `README.md`, `prompt_log.md`, `tools/` (4 script), 4 thư mục feature, và file Excel chọn feature trong `group/`. File đề và `_NOTES.md` đã bị `.gitignore` chặn, mình đã kiểm tra.
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git remote add origin https://github.com/angquoc/software-testing-2026-HW02.git
+git add .
+git commit -m "[setup] Init folder structure, prompt log tool and feature folders"
+git push -u origin main
+```
+
+**Repo nhóm:**
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02_group
+git add README.md
+git commit -m "[docs] Add feature allocation for 23120061"
+git push
+```
+
+## Label cho repo nhóm (tạo tay)
+
+Vào **Issues → Labels → New label**. Màu chỉ là gợi ý, bạn đổi tuỳ ý.
+
+| Label | Màu |
+|---|---|
+| `severity: critical` | `#B60205` |
+| `severity: high` | `#D93F0B` |
+| `severity: medium` | `#FBCA04` |
+| `severity: low` | `#C2E0C6` |
+| `platform: web` · `platform: admin` · `platform: mobile` | `#1D76DB` |
+| `technique: EP` · `technique: BVA` | `#5319E7` |
+| `pool: A` · `pool: B` · `pool: C` · `pool: D` | `#BFDADC` |
+
+## Lịch để nộp trước 20/10
+
+| Ngày | Việc |
+|---|---|
+| 17/10 (tối) | Chạy EShop; **chạy thử app mobile trên Android**; FR-17 (Pool C) từ S0 đến S4, làm thủ công từng bước |
+| 18/10 | FR-17 từ S5 đến S8; đúc kết thành skill; FR-01 từ S0 đến S8 bằng skill |
+| 19/10 | FR-07 và FR-04 (Mobile) từ S0 đến S8; quay video skill |
+| 19/10 tối – 20/10 sáng | Critique, Audit, các form, README, PDF, git log, nén zip, nộp |
+
+## Hai câu lần trước còn chờ bạn trả lời
+
+Hai câu này quyết định định dạng file test case, nên cần trả lời trước khi bắt đầu S0:
+
+1. **Dùng skill `test-case-writing` của thầy để xuất test case?** Cách làm là JSON → lint → Word + Excel, rồi chuyển JSON thành bảng Markdown cho report. Mình đề xuất **có**.
+2. **Làm phòng hờ video chạy test và ảnh selfie** như syllabus ghi? Mình đề xuất **có, ở mức nhẹ**.
+````
+
+---
+
+### C18 — 17:48 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+<task-notification>
+<task-id>bbd00fd63</task-id>
+<tool-use-id>toolu_01RjhQCo3JnZ13kWzNezjTPd</tool-use-id>
+<output-file>C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\305c705a-d915-42fa-8501-b411992acb4b\tasks\bbd00fd63.output</output-file>
+<status>completed</status>
+<summary>Background command "Install EShop backend, web, admin dependencies" completed (exit code 0)</summary>
+</task-notification>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check npm install results
+- Bash: Update tracker item 0.11
+
+**Output AI (nguyên văn):**
+
+````text
+Đã cài xong thư viện cho backend, frontend web và web admin của EShop. Lệnh cài báo thành công, cả 3 thư mục đều đã có `node_modules`.
+
+Mình chưa khởi tạo DB và chưa bật server nào. Mục 0.11 trong tracker đã ghi lại đúng trạng thái này.
+
+Mình vẫn cần bạn trả lời 2 câu ở tin nhắn trước:
+1. Có dùng skill `test-case-writing` của thầy để xuất test case không?
+2. Có làm phòng hờ video chạy test và ảnh selfie không?
+
+Bạn trả lời xong thì mình bật EShop và bắt đầu S0 cho FR-17.
+````
+
+---
+
+### C19 — 21:03 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Sao git ở repo cá nhân có cả phần group vậy? Điều đó có bắt buộc không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check whether group files were committed
+- Bash: Move group files out of personal repo
+- Bash: Verify moved script runs; find stale references
+- Bash: Update notes for moved group files
+
+**Output AI (nguyên văn):**
+
+````text
+Đã chuyển xong:
+- File Excel và script `make_feature_sheet.py` giờ nằm ở `Homeworks/HW02_chon_feature/`. Thư mục này nằm ngoài cả repo cá nhân lẫn repo nhóm.
+- Đường dẫn trong script đã được sửa theo vị trí mới. Mình chạy thử thì script vẫn tạo được file Excel.
+- Thư mục `HW02/group/` đã được xoá.
+- `_NOTES.md` đã cập nhật hai chỗ có nhắc tới hai file này.
+
+Lúc này `git status` trong `HW02` báo 2 file bị xoá. Bạn commit như sau:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add -A
+git commit -m "[setup] Remove group coordination files from personal repo"
+git push
+```
+
+Lịch sử git vẫn còn hai file này trong commit `e2e8085`. Muốn xoá hẳn khỏi lịch sử thì phải viết lại lịch sử rồi force push. Mình không khuyên làm vậy: repo là private, file không có gì nhạy cảm, và một commit dọn dẹp như trên cũng là lịch sử hợp lý.
+
+Hai câu hỏi lần trước vẫn đang chờ bạn trả lời:
+1. Có dùng skill `test-case-writing` của thầy để xuất test case không?
+2. Có làm phòng hờ video chạy test và ảnh selfie không?
+````
+
+---
+
+### C20 — 22:49 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+- Phần tool cũng comment luôn sao?
+- Không thấy README có trong changes để add lên repo nhóm.
+- Nên thêm các ký hiệu hay note gì về label cho các thành viên không?
+
+1. Có dùng.
+2. Đề bài yêu cầu thì làm, không thì thôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check group repo status
+- Read: D:\Dang\Test\Homeworks\HW02_group\README.md
+- Edit: D:\Dang\Test\Homeworks\HW02_group\README.md
+- Bash: Install lecturer skill and smoke-test on its example
+- Bash: Record decisions in notes
+- Bash: Check the path line rendered correctly
+- Bash: Fix the broken path in notes
+- Bash: Replace tab character with backslash-t in path
+- Bash: Replace literal tab in path with backslash
+- Bash: Fix tab in path using explicit character codes
+
+**Output AI (nguyên văn):**
+
+````text
+Mình kiểm tra trạng thái repo nhóm trước.
+
+Đường dẫn trong ghi chú bị hỏng: chuỗi `\t` bị Python đọc thành ký tự tab. Mình sửa lại:
+
+Đã sửa xong đường dẫn. Trả lời lần lượt các ý của bạn:
+
+**1. Thư mục `tools/` có nên commit không?** Có, nên để trong repo cá nhân, khác với file Excel chọn feature lúc nãy:
+- `export_prompt_log.py` là thứ đề khuyến khích ở mục 9: *"create a skill or rule that extracts the information above automatically after an AI session"*. Nó được tính là supporting material.
+- `fill_ai02.py` và `docx_to_md.py` dùng để làm các form AI-02, AI-03, AI-05.
+- Cả ba script đều do AI viết, nên sẽ được khai báo trong Audit Report.
+
+**2. README không hiện trong Changes.** Git vẫn ghi nhận README đã thay đổi. Chỉ là khung Source Control của VS Code không dò tới repo `HW02_group`, vì repo này nằm sâu 2 cấp thư mục. Cách xử lý mình đã nêu ở trên: commit bằng terminal, hoặc đặt `git.repositoryScanMaxDepth` thành `2`.
+
+**3. Ghi chú về label cho thành viên.** Mình đã thêm vào mục 4.3 trong README repo nhóm:
+- Mỗi issue gắn đủ 4 nhóm label, và cách chọn `technique` (EP hay BVA).
+- 4 câu hỏi lần lượt để chọn severity, gặp câu trả lời "Có" đầu tiên thì dừng.
+- Một ví dụ issue gắn label đầy đủ.
+- Bảng màu label.
+- Quy định không tự tạo label mới.
+
+Lệnh commit cho repo nhóm:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02_group
+git add README.md
+git commit -m "[docs] Add feature allocation for 23120061 and label guidelines"
+git push
+```
+
+**Hai quyết định đã ghi vào `_NOTES.md`:**
+1. **Dùng skill của thầy.** Mỗi feature sẽ có test case nguồn là một file JSON theo schema của thầy. Từ file đó, lint của thầy kiểm tra lỗi, rồi build ra Word và Excel. Mình sẽ viết thêm một script chuyển JSON thành bảng Markdown để đưa vào report.
+   - Skill được cài ở `D:\Dang\Test\.claude\skills\test-case-writing\`, nằm ngoài repo cá nhân và không nộp.
+   - Mình đã chạy thử trên ví dụ có sẵn: lint báo 0 lỗi, build ra đủ file docx và xlsx.
+2. **Không làm video chạy test và ảnh selfie**, vì đề ghi Anti-AI-Cheat là "None".
+
+Còn một việc bạn cần làm: tạo label trên repo nhóm.
+
+Bước tiếp theo là bật EShop rồi bắt đầu **S0 cho FR-17**. Ở S0, mình trích đúng phần FR-17 từ SRS vào `features/C_FR-17_QuanLyCoupon/00_spec.md`, sau đó bạn mở trang Quản lý mã giảm giá trong Web Admin để xem giao diện. Bạn đồng ý thì mình bắt đầu.
+````
+
+---
+
+### C21 — 00:34 18/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Sau dấu : thì viết hoa chữ cái đầu tiên.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- AskUserQuestion
+- Bash: List lowercase-after-colon spots in documents
+- Bash: Capitalize first letter after colons in document prose
+- Write: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\doc-style-capitalize-after-colon.md
+- Bash: Index memory and check group repo state
+- Bash: Check personal repo state
+
+**Output AI (nguyên văn):**
+
+````text
+Đã sửa 31 chỗ trong 3 file: README repo nhóm, README HW02 và `_NOTES.md`. Mình lưu quy tắc này vào memory để những tài liệu viết sau cũng theo đúng.
+
+Mình đã viết hoa chữ cái đầu sau dấu `:` ở 31 chỗ, trong README của repo nhóm, README của HW02 và `_NOTES.md`. Code, tên label, khoá YAML, đường dẫn, giờ và phần log tự xuất được giữ nguyên. Quy tắc này đã lưu vào memory, chỉ áp dụng cho câu văn trong tài liệu.
+
+Trong 31 chỗ có vài chỗ hơi gượng, ví dụ `AI-05: Docx + md + pdf` hay `Agent Skill: Domain-testing, …`. Nếu bạn muốn giữ chữ thường ở những tên riêng hoặc tên kỹ thuật như vậy thì báo mình.
+
+Lệnh commit cho 2 repo:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02_group
+git add README.md
+git commit -m "[docs] Add feature allocation for 23120061 and label guidelines"
+git push
+
+cd /d D:\Dang\Test\Homeworks\HW02
+git add README.md
+git commit -m "[setup] Add chosen features to README"
+git push
+```
+
+Bạn chưa xác nhận bắt đầu S0 cho FR-17. Khi bạn đồng ý, mình bật EShop và bắt đầu.
+````
+
+---
+
+### C22 — 01:09 18/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Label như này đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng rồi: tên `severity: critical` và màu `#B60205` khớp với README.
+
+Ô **Description** không bắt buộc. Tuy vậy, nên điền vào, vì khi thành viên chọn label trong issue, GitHub sẽ hiện mô tả ngay bên dưới tên label và họ không phải mở README ra xem. Dưới đây là danh sách 13 label để bạn chép:
+
+| Name | Color | Description |
+|---|---|---|
+| `severity: critical` | `#B60205` | Lộ/mất dữ liệu, vượt quyền, chặn luồng chính |
+| `severity: high` | `#D93F0B` | Chấp nhận dữ liệu sai hoặc tính sai, không có cách đi vòng |
+| `severity: medium` | `#FBCA04` | Sai nghiệp vụ/validation, có cách đi vòng |
+| `severity: low` | `#C2E0C6` | Sai giao diện, câu chữ, thông báo |
+| `platform: web` | `#1D76DB` | Frontend Web (localhost:5173) |
+| `platform: admin` | `#1D76DB` | Web Admin (localhost:5174) |
+| `platform: mobile` | `#1D76DB` | App Mobile (Expo) |
+| `technique: EP` | `#5319E7` | Phát hiện nhờ Equivalence Partitioning |
+| `technique: BVA` | `#5319E7` | Phát hiện nhờ Boundary Value Analysis |
+| `pool: A` | `#BFDADC` | Authentication, Categories, Products |
+| `pool: B` | `#BFDADC` | Shopping Cart, Checkout |
+| `pool: C` | `#BFDADC` | Web Admin |
+| `pool: D` | `#BFDADC` | Mobile App |
+
+Giữ lại label `bug` mặc định, vì template tự gắn label này cho mọi issue. Các label mặc định khác của GitHub (`documentation`, `enhancement`, `good first issue`…) bạn có thể xoá cho gọn. Riêng `duplicate` và `invalid` nên giữ để đánh dấu issue trùng hoặc issue báo nhầm.
+````
+
+---
+
+### C23 — 01:20 18/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+- Tôi đã tạo xong label
+- Phần repo cá nhân tôi cũng đã commit.
+- Chạy log những gì đã chat đi, để tôi commit lại. Ngày mai tôi mới bắt đầu S0.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Export prompt log and check repo states
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi — phiên bị dừng / chưa hoàn tất)
 ````
 
 
