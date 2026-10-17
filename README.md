@@ -10,7 +10,7 @@ SUT: [EShop](https://github.com/ttbhanh/eshop-sut) (commit `85af3ba`)
 |---|---|
 | `report.md` / `report.pdf` | Báo cáo chính: Domain Testing + BVA cho 4 feature, AI gap analysis, AI Critique, Disclosure, Appendix B (AI Audit Report) |
 | `prompt_log.md` / `.pdf` | Appendix A — prompt log có timestamp |
-| `features/` | Mỗi feature một thư mục: đặc tả, output AI nguyên văn (`ai_raw/`), bản đã review từng bước, test case, ảnh chụp |
+| `features/` | Mỗi feature một thư mục: Đặc tả, output AI nguyên văn (`ai_raw/`), bản đã review từng bước, test case, ảnh chụp |
 | `bugs/` | Bug report, liên kết tới GitHub Issues của nhóm |
 | `skills/` | Agent Skills: Domain Testing, Boundary Value Analysis |
 | `forms/` | [AI-02] Audit Report, [AI-03] Disclosure, [AI-05] Privacy Checklist |
