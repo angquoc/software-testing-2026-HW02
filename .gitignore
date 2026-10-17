@@ -1,0 +1,18 @@
+# File đề bài — không đưa lên repo
+2026.HW02.*
+
+# File tạm của Word / Excel khi đang mở
+~$*
+
+# Video để trên YouTube (Unlisted), không commit
+*.mp4
+*.mov
+
+# File zip nộp Moodle
+*.zip
+
+# Ghi chú nháp cá nhân — không nộp
+_NOTES.md
+
+# Python cache của tools/
+__pycache__/
