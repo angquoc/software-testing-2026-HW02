@@ -20,7 +20,7 @@
 
 <!-- CLAUDE-LOG:START -->
 
-### C01 · 14:17 12/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C01 | 14:17 12/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -260,7 +260,7 @@ Khi bạn trả lời xong, mình sẽ dựng khung folder, `git init`, sửa sc
 
 ---
 
-### C02 · 15:39 12/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C02 | 15:39 12/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -401,7 +401,7 @@ Nếu cả 3 đều đồng ý, mình sẽ làm theo thứ tự: tạo khung `HW
 
 ---
 
-### C03 · 21:33 12/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C03 | 21:33 12/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -484,7 +484,7 @@ Mình đã điền dữ liệu giả vào một bản sao và mở bằng Excel:
 
 ---
 
-### C04 · 14:15 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C04 | 14:15 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -554,7 +554,7 @@ Khi bạn chọn xong gói, mình đề xuất bắt đầu ngay với **feature
 
 ---
 
-### C05 · 14:26 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C05 | 14:26 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -586,7 +586,7 @@ File sẵn sàng để bạn upload lên Google Drive cho nhóm chọn gói. Sau
 
 ---
 
-### C06 · 14:38 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C06 | 14:38 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -630,7 +630,7 @@ Mình đã sửa file Excel. Lý do lúc trước không thấy cột D: ở b�
 
 ---
 
-### C07 · 14:46 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C07 | 14:46 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -666,7 +666,7 @@ Khi nhóm chốt xong, bạn gửi mình kết quả. Mình sẽ soạn `README.
 
 ---
 
-### C08 · 14:55 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C08 | 14:55 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -717,7 +717,7 @@ Khi nhóm chốt feature xong, bạn gửi mình kết quả để mình điền
 
 ---
 
-### C09 · 15:16 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C09 | 15:16 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -772,7 +772,7 @@ Mình cũng đã lưu vào memory 2 quy tắc để các phiên sau làm theo:
 
 ---
 
-### C10 · 15:18 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C10 | 15:18 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -806,7 +806,7 @@ Lưu ý thêm:
 
 ---
 
-### C11 · 15:19 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C11 | 15:19 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -852,7 +852,7 @@ Nếu bạn muốn khác chỗ nào, ví dụ viết commit bằng tiếng Việ
 
 ---
 
-### C12 · 15:20 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C12 | 15:20 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -897,7 +897,7 @@ Mình đã ghi quy ước mới vào `_NOTES.md` và vào memory, nên những l
 
 ---
 
-### C13 · 15:25 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C13 | 15:25 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -936,7 +936,7 @@ git push -u origin main
 
 ---
 
-### C14 · 15:26 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C14 | 15:26 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -996,7 +996,7 @@ Chạy xong, bạn gửi mình output để mình kiểm tra hai commit đã lê
 
 ---
 
-### C15 · 15:38 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C15 | 15:38 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1112,7 +1112,7 @@ Tên file: **`23120061_HW02_AI_DomainTesting_XXX.zip`**. Moodle nhận tối đa
 
 ---
 
-### C16 · 16:38 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C16 | 16:38 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1221,7 +1221,7 @@ Khi làm vậy, trong Audit Report phải khai báo rằng có dùng skill của
 
 ---
 
-### C17 · 17:46 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C17 | 17:46 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1337,7 +1337,7 @@ Hai câu này quyết định định dạng file test case, nên cần trả l�
 
 ---
 
-### C18 · 17:48 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C18 | 17:48 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1372,7 +1372,7 @@ Bạn trả lời xong thì mình bật EShop và bắt đầu S0 cho FR-17.
 
 ---
 
-### C19 · 21:03 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C19 | 21:03 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1414,7 +1414,7 @@ Hai câu hỏi lần trước vẫn đang chờ bạn trả lời:
 
 ---
 
-### C20 · 22:49 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C20 | 22:49 17/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1485,7 +1485,7 @@ Bước tiếp theo là bật EShop rồi bắt đầu **S0 cho FR-17**. Ở S0,
 
 ---
 
-### C21 · 00:34 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C21 | 00:34 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1530,7 +1530,7 @@ Bạn chưa xác nhận bắt đầu S0 cho FR-17. Khi bạn đồng ý, mình b
 
 ---
 
-### C22 · 01:09 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C22 | 01:09 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1570,7 +1570,7 @@ Giữ lại label `bug` mặc định, vì template tự gắn label này cho m�
 
 ---
 
-### C23 · 01:20 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C23 | 01:20 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1610,7 +1610,7 @@ Ngày mai, mình bật EShop trước rồi mới làm S0 cho FR-17. Nếu tiệ
 
 ---
 
-### C24 · 10:17 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C24 | 10:17 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1668,7 +1668,7 @@ Bạn cho mình biết thêm:
 
 ---
 
-### C25 · 10:19 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C25 | 10:19 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1698,7 +1698,7 @@ Phía máy tính đã sẵn sàng cho mobile. Mình chờ bạn trả lời 3 c�
 
 ---
 
-### C26 · 10:48 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C26 | 10:48 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1737,7 +1737,7 @@ Mình cũng cần 3 thông tin:
 
 ---
 
-### C27 · 10:51 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C27 | 10:51 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1774,7 +1774,7 @@ Còn 2 câu chưa có trả lời: điện thoại chạy Android mấy (xem tro
 
 ---
 
-### C28 · 10:54 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C28 | 10:54 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1807,7 +1807,7 @@ Nếu USB vẫn không được, mình chuyển sang **cách B (phát hotspot t�
 
 ---
 
-### C29 · 10:56 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C29 | 10:56 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1861,7 +1861,7 @@ Mình bắt đầu bước 1 nhé?
 
 ---
 
-### C30 · 11:35 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C30 | 11:35 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1924,7 +1924,7 @@ Làm xong thì báo mình. Mình sẽ đối chiếu ảnh chụp với bảng, 
 
 ---
 
-### C31 · 14:48 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C31 | 14:48 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1972,7 +1972,7 @@ S0 vẫn đang chờ bạn khám phá giao diện Web Admin, chụp màn hình v
 
 ---
 
-### C32 · 14:54 18/10/2026 · Tool: Claude Code (n/a) · Session `305c705a`
+### C32 | 14:54 18/10/2026 | Tool: Claude Code (n/a) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -2001,7 +2001,7 @@ S0 vẫn đang chờ bạn khám phá giao diện Web Admin, chụp màn hình v
 
 ---
 
-### C33 · 15:02 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C33 | 15:02 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -2031,7 +2031,7 @@ Về các server: phiên vừa khởi động lại nhưng vẫn là phiên `305
 
 ---
 
-### C34 · 15:07 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C34 | 15:07 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -2088,7 +2088,7 @@ Những câu còn trống sẽ được xử lý ở các bước sau. Ở S2, c
 
 ---
 
-### C35 · 15:19 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C35 | 15:19 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -2142,7 +2142,7 @@ git push
 
 ---
 
-### C36 · 15:48 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+### C36 | 15:48 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -2175,6 +2175,260 @@ Q8. is_active là cột hết hạn hả?
 
 ````text
 Mình đọc bảng quan sát bạn đã điền và xem các ảnh chụp.
+
+Log đã xuất xong, tất cả các lượt vẫn thuộc phiên `305c705a`.
+
+## Commit 2: Bảng quan sát của bạn và ảnh chụp, giữ nguyên
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add -A features/C_FR-17_QuanLyCoupon prompt_log.md
+git commit -m "[C-FR17][S0] Record UI exploration and screenshots"
+git push
+```
+
+## Những chỗ trong bảng cần sửa (mình sẽ sửa ở commit 3)
+
+| Dòng | Bạn ghi | Ảnh chụp cho thấy |
+|---|---|---|
+| Đường dẫn | `http://localhost:5174/` | Vào bằng menu trái **"Mã Giảm Giá"**. URL **không đổi** khi chuyển trang |
+| Tiêu đề trang | EShop Admin | "EShop Admin" là tên app ở thanh bên. Tiêu đề trang là **"Quản lý Mã Giảm Giá"**, tiêu đề form là "Tạo mã giảm giá mới" |
+| Các cột của bảng | Dashboard, Danh mục, … | Đây là các mục menu. Bảng có các cột: **Mã, Loại, Giá trị, Đơn tối thiểu, Hết hạn, Giới hạn/người, Hành động** |
+| Tên các trường | Mã coupon (VD: SAVE10), … | Đúng nội dung, nhưng đây là **placeholder** (chữ mờ trong ô), không phải nhãn. Form **không có nhãn nào**, khi gõ vào là chữ gợi ý biến mất |
+
+Ngoài ra, ảnh còn cho thấy vài chi tiết nên ghi lại:
+- Mã `EXPIRED` hiện chữ **"Hết hạn"** màu đỏ thay vì ngày, còn các mã khác hiện ngày dạng `yyyy-mm-dd`.
+- Tiền trong bảng viết dạng `300,000 ₫`, tức là phân cách hàng nghìn bằng **dấu phẩy**.
+- Ô chọn ngày nhập theo `mm/dd/yyyy`, nhưng bảng lại hiển thị `yyyy-mm-dd`.
+- Nút "Tạo mã" màu **cam**, trong khi FR-21 yêu cầu nút hành động tích cực màu **xanh dương**.
+- Form **không có dấu `*`** ở trường nào, trong khi FR-22 yêu cầu trường bắt buộc phải có `*`.
+
+Mình chỉ ghi hai điểm cuối là **quan sát, chưa kết luận là bug**. Kết luận để dành cho S6.
+
+## Trả lời câu hỏi của bạn
+
+**Q3, "giới hạn trên" là gì?** Là **giá trị lớn nhất mà hệ thống còn nhận**, ví dụ `min_order_amount = 999999999999` hay `max_uses_per_user = 1000000` có được lưu không. Số âm là giới hạn dưới, và SRS đã quy định rồi (`>= 0` và `>= 1`).
+
+**Q8, `is_active` có phải là cột "Hết hạn" không?** Không phải. Theo FR-09 (điều kiện C1), `is_active` là cờ **bật/tắt mã** (mã "đang hoạt động" hay không), tách biệt với hạn dùng `expired_at`. Cột "Hết hạn" trong bảng chính là `expired_at`. Như vậy câu trả lời cho Q8 là: **form và bảng không có trường `is_active`**, admin không bật/tắt mã được.
+
+## Cần lưu ý: Bạn đã đi quá phạm vi S0
+
+Các câu trả lời Q1, Q2, Q3, Q4, Q5 và Q7 là **kết quả thử thật**: Bạn đã nhập 1000%, nhập số thập phân, tạo mã rồi xóa. Những thông tin này rất có giá trị, nhưng sẽ gây 2 vấn đề nếu xử lý không khéo:
+
+1. **Phần AI gap analysis có thể mất trung thực.** Nếu mình đưa "1000% vẫn được nhận" vào prompt ở S1–S4 thì AI sẽ "phát hiện" lỗi đó, và không còn đo được AI tự bỏ sót gì. Cách mình đề xuất:
+   - Ở commit 3, mình tách phần này thành mục riêng **"Kết quả thử khám phá (exploratory)"**.
+   - Ở S1–S4, mình **chỉ đưa đặc tả và thông tin giao diện** (loại ô nhập, nhãn, không có nút sửa…) vào prompt, không đưa kết quả thử.
+   - Đến S6, các trường hợp này được chạy lại chính thức theo test case, có ảnh chụp làm bằng chứng.
+2. **DB đã bị thay đổi.** Trước khi chạy test ở S6, mình sẽ reset DB về dữ liệu mẫu.
+
+## Cần bạn làm rõ trước khi mình viết lại (commit 3)
+
+1. **Q1:** Mã 1000% có thực sự **lưu được và hiện trong bảng** không, hay chỉ là ô nhập cho gõ số 1000?
+2. **Q2:** "Có nhận số phần trăm" nghĩa là ô Giá trị nhận được **số thập phân** như `10.5` phải không?
+3. **Q3:** `max_uses_per_user` "không nhận" số thập phân theo cách nào: ô **không cho gõ** dấu chấm, hay gõ được nhưng **bấm Tạo mã thì bị báo lỗi**? Nếu có thông báo lỗi thì nội dung là gì?
+4. **Q4:** Chữ được viết hoa **ngay lúc gõ**, hay chỉ sau khi lưu mới thành chữ hoa trong bảng?
+5. **Giá trị mặc định:** Trong ảnh S0_03, ô "Đơn tối thiểu" là `0` và ô "Số lần dùng" là `1`. Nhưng trong ảnh S0_04 hai ô này đều trống. Có phải bạn đã xoá tay hai số đó, hay form tự để trống sau khi bạn tạo mã?
+````
+
+---
+
+### C37 | 15:57 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Xin lỗi bạn, tôi tưởng khám phá giao diện là mình được nhấn, nhập. Nếu là chỉ quan sát thôi mà không thử gì, lần sau tôi sẽ rút kinh nghiệm.
+
+Mà nếu như phần đó là vượt quá giới hạn sao bạn vẫn hỏi xác nhận để viết commit 3 vậy?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn không có lỗi gì, phần lớn là do hướng dẫn của mình chưa rõ. Mình ghi "chỉ quan sát", nhưng bảng Q1–Q8 lại hỏi kiểu "có nhận số thập phân không", "có giới hạn trên không". Mấy câu đó gần như phải nhập thử mới trả lời được. Hơn nữa, bấm và nhập thử khi khám phá vẫn là việc hợp lệ trong kiểm thử. Vấn đề chỉ là kết quả thử được ghi vào đâu và có được đưa cho AI xem hay không.
+
+Mình vẫn hỏi lại để viết commit 3 vì **"vượt phạm vi S0" không có nghĩa là bỏ đi**. Những gì bạn thấy là sự thật về hệ thống, và chúng có ích theo 2 cách:
+
+1. **Đây là bằng chứng cho phần AI gap analysis.** Bạn phát hiện "1000% vẫn được nhận" trước khi AI thiết kế test case. Đến S2 và S4, nếu AI không tạo lớp tương đương hay giá trị biên nào cho trường hợp phần trăm lớn hơn 100, thì đó là một chỗ AI bỏ sót có bằng chứng rõ ràng: con người tìm ra trước, AI không thấy. Muốn so sánh như vậy, kết quả của bạn phải được ghi lại **chính xác ngay từ bây giờ**, kèm thời điểm, trước khi AI làm.
+2. **Đây là ứng viên bug cho S6.** Ở S6 mỗi trường hợp sẽ được chạy lại chính thức theo test case, nên cần biết rõ bạn đã thấy gì. Ví dụ, "ô không cho gõ dấu chấm" và "gõ được nhưng bị báo lỗi khi bấm Tạo mã" là hai hành vi khác nhau, và kết quả mong đợi viết ra cũng khác nhau.
+
+Vì vậy mình cần bạn làm rõ 5 câu hỏi ở tin trước. Ở commit 3, các kết quả này nằm trong một mục riêng, **"Kết quả thử khám phá"**, ghi rõ là bạn tự tìm ra ở S0, và **không đưa vào prompt cho AI** ở S1–S4.
+
+Nếu bạn muốn làm đơn giản hơn, mình chỉ ghi các kết quả đúng như bạn đã nói trong chat, không cần làm rõ thêm. Đến S6 bạn chụp ảnh và mô tả chi tiết sau. Cách này nhanh hơn, nhưng phần gap analysis sẽ yếu hơn một chút, vì lúc đó bằng chứng "con người tìm ra trước" chỉ là vài câu ngắn trong chat.
+````
+
+---
+
+### C38 | 16:07 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Có được lưu và hiện trong bảng.
+2. Số thập phân, tôi gõ lộn.
+3. Nhập xong không cho tạo (tôi chỉ mới thử dấu chấm, chưa thử dấu phẩy)
+4. Ngay lúc gõ.
+5. Tôi đã xóa tay để nhìn thứ gì trong đó.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\00_spec.md
+- Bash: Rewrite sections 3-5 of FR-17 spec
+- Bash: Check capitalize-after-colon in rewritten spec
+- Bash: Update notes, export log, show pending changes
+
+**Output AI (nguyên văn):**
+
+````text
+Đủ thông tin rồi. Mình viết lại mục 3 và mục 4 của `00_spec.md`, rồi thêm mục 5 "Kết quả thử khám phá". Trước tiên mình đọc lại file hiện tại:
+
+Mình cập nhật tracker và các mục ghi chú cho Audit và Critique:
+
+Commit 2 đã lên. Mình đã viết lại `00_spec.md` cho **commit 3**, bạn đọc kiểm tra rồi mới commit.
+
+**Mục 3: Bảng Q1–Q8 có thêm 2 cột**
+- **"Trả lời sau S0"**: Ghi rõ từng câu trả lời lấy từ giao diện hay từ việc bạn nhập thử.
+- **"Đưa vào prompt S1–S4"**: Chỉ những gì **nhìn thấy trên giao diện** mới được đưa cho AI. Ví dụ: Không có nút sửa, mã tự chuyển chữ hoa khi gõ, ngày nhập theo `mm/dd/yyyy`, không có `is_active`. Kết quả nhập thử thì không đưa vào.
+
+**Mục 4: Bảng khám phá, đã đối chiếu với ảnh và ghi rõ ảnh nguồn của từng dòng**
+- Đã sửa 4 chỗ ghi nhầm:
+  - Đường dẫn: Thực ra là menu "Mã Giảm Giá", URL không đổi.
+  - Tiêu đề trang: "Quản lý Mã Giảm Giá".
+  - Các cột của bảng: Ghi đúng 7 cột thay cho các mục menu.
+  - Tên các trường: Ghi rõ form **không có nhãn**, chỉ có placeholder.
+- Ghi chú rằng ảnh `S0_04` được chụp sau khi bạn tự xóa giá trị mặc định ở 2 ô.
+- Cuối mục 4 có 4 điểm **cần đối chiếu với đặc tả ở S6**, chưa kết luận là lỗi:
+  - Không trường nào có dấu `*`.
+  - Nút "Tạo mã" màu cam.
+  - Placeholder "Giá trị %" có thể không đổi khi chọn loại "Số tiền cố định".
+  - Ngày nhập và ngày hiển thị khác định dạng.
+
+**Mục 5 (mới): "Kết quả thử khám phá", E01–E06**
+- Mỗi dòng ghi bạn đã thử gì, thấy gì, và **còn thiếu gì** (ảnh chụp, nội dung thông báo lỗi…) để bổ sung ở S6.
+- Ghi rõ 3 điều: Không đưa vào prompt cho AI, chạy lại chính thức ở S6, và **phải reset DB trước S6**.
+
+Trong `_NOTES.md`, mình đã ghi thêm vào phần Critique: Lỗi hướng dẫn mâu thuẫn của mình ("chỉ quan sát" nhưng câu hỏi lại buộc phải nhập thử). Phần Audit cũng đã ghi những gì mình viết lại ở commit 3.
+
+Log đã xuất xong. Bạn kiểm tra xong, nếu không cần sửa gì thì commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/00_spec.md prompt_log.md
+git commit -m "[C-FR17][S0] Review spec and answer open questions"
+git push
+```
+
+Sau commit này là **S1: Xác định biến Input/Output**. Đây là bước đầu tiên mình hướng dẫn AI theo đúng slide S04. Để có cái so sánh ở S8, output của AI sẽ được lưu nguyên văn vào `ai_raw/` trước khi bạn review.
+````
+
+---
+
+### C39 | 20:11 18/10/2026 | Tool: Claude Code (n/a) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+<task-notification>
+<task-id>bqdn2rsqt</task-id>
+<task-id>bumvamzp1</task-id>
+<task-id>bsujmhe9v</task-id>
+<task-id>__orphan_summary__:shell</task-id>
+<status>stopped</status>
+<summary>3 background shell command tasks didn't finish before the previous session ended. Task ids: bqdn2rsqt, bumvamzp1, bsujmhe9v.</summary>
+<note>No completion record was found for them in the previous session. They may have been stopped (via the UI, Monitor timeout, or agent teardown — these leave no transcript marker), or they may have been running when the previous Claude Code process exited. They have been marked stopped. Task ids in this notification beginning with "__orphan_summary" are internal scan markers, not tasks.</note>
+</task-notification>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C40 | 22:35 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Giao diện: Chữ tự chuyển thành chữ hoa ngay lúc gõ. -> Tôi tưởng cái này cũng phải thử gõ mới thấy. Chứ ban đầu chỉ thấy ví dụ, chứ cũng đâu rõ là có viết hoa hết không.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check for new session transcripts
+- Bash: Move auto-uppercase to exploratory results, cite picker evidence
+- Bash: Record the misclassification in notes and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn nói đúng. Phải gõ chữ thường vào ô thì mới biết nó tự chuyển thành chữ hoa, nên đây là **kết quả nhập thử**, không phải điều nhìn thấy sẵn trên giao diện. Chỗ này mình xếp sai.
+
+Mình rà lại cả câu Q5 theo cùng tiêu chí. Ý "lịch cho chọn ngày quá khứ" vẫn là quan sát hợp lệ, vì ngay trong ảnh `S0_06`, khi chỉ mở lịch ra, các ngày trước 18/10 không bị làm mờ. Tuy vậy mình sẽ ghi rõ căn cứ này vào file.
+
+Phiên vừa khởi động lại một lần nữa, nên mình kiểm tra whitelist rồi mới sửa file:
+
+Đã sửa xong. Mình cập nhật thêm `_NOTES.md`: Lần này bạn bắt được một lỗi phân loại của AI, nên đây là chất liệu tốt cho phần Critique.
+
+Mình đã sửa lại `00_spec.md` theo đúng góp ý của bạn:
+
+- **Mục 3, Q4:** Ý "tự chuyển chữ hoa" được chuyển sang phần kết quả nhập thử. Phần giao diện của Q4 giờ chỉ còn những gì thấy được mà không cần gõ: Placeholder "Mã coupon (VD: SAVE10)" và việc giao diện không ghi giới hạn độ dài.
+- **Mục 3, Q5:** Ghi rõ căn cứ. Khi mở lịch, các ngày trước hôm nay không bị làm mờ (ảnh `S0_06`). Ý "có lưu được ngày quá khứ hay không" vẫn để là chưa ghi nhận.
+- **Mục 4:** Bỏ dòng "Mã: Chữ hoa". Thêm dòng "Ô chọn ngày" có dẫn ảnh `S0_06`.
+- **Mục 5:** Thêm **E07**: Gõ chữ thường thì tự chuyển thành chữ hoa ngay lúc gõ. Cột "chưa ghi nhận" ghi cần ảnh chụp, và cần xem mã lưu vào bảng có giữ chữ hoa không.
+
+Trong `_NOTES.md`, mình ghi lỗi này vào phần Audit (bạn phát hiện mình phân loại sai). Mình cũng ghi vào phần Critique: Mình tự đặt ra tiêu chí "quan sát giao diện / nhập thử" nhưng chính mình lại áp sai tiêu chí đó.
+
+Log đã xuất xong. Nếu bạn không còn thấy chỗ nào cần sửa thì commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/00_spec.md prompt_log.md
+git commit -m "[C-FR17][S0] Review spec and answer open questions"
+git push
+```
+
+Phiên Claude lại vừa khởi động lại. Đây vẫn là phiên `305c705a` nên whitelist không cần thêm gì, nhưng 3 server EShop đã dừng. S1 chưa cần dùng tới server. Khi nào cần, bạn báo mình bật lại.
+````
+
+---
+
+### C41 | 22:42 18/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+SAVE10 Phần trăm 10%, 300,000 ₫, 2099-12-31, 1 lần · BIGBUY Cố định 50,000 ₫, 500,000 ₫, 2099-12-31, 1 lần · VIP100 Cố định 100,000 ₫, 300,000 ₫, 2099-12-31, 2 lần · EXPIRED Phần trăm 20%, 100,000 ₫, cột Hết hạn hiện chữ "Hết hạn" màu đỏ thay vì ngày, 1 lần. Khớp với bảng mã mẫu ở FR-09
+
+-> Sao lại có các dấu · giữa mọi thứ vậy?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find rows using the middle-dot separator
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\00_spec.md
+- Bash: Split middle-dot cells into separate tables
+- Bash: Find remaining middle-dot separators
+- AskUserQuestion
+- Bash: Replace all middle-dot separators and re-export log
+
+**Output AI (nguyên văn):**
+
+````text
+Dấu `·` là mình dùng để ngăn cách nhiều mục trong **cùng một ô bảng**, vì ô bảng Markdown không xuống dòng được. Cách này đọc rất rối. Mình tách các nội dung dạng danh sách đó ra thành bảng riêng. Có 3 dòng đang dùng dấu `·`: Dữ liệu mẫu, Các trường của form, và Nút.
+
+Bảng đã tách xong. Dấu `·` vẫn còn ở vài chỗ khác mình đã viết, nên mình tìm hết trước khi hỏi bạn:
 ````
 
 
@@ -2186,6 +2440,6 @@ Mình đọc bảng quan sát bạn đã điền và xem các ảnh chụp.
 
 > Dán nguyên văn prompt và output. Mẫu:
 >
-> `### G01 · HH:MM dd/mm/yyyy · Tool: ChatGPT (<model>)` → **Phần liên quan:** … → **Prompt (nguyên văn):** … → **Output AI (nguyên văn):** …
+> `### G01 | HH:MM dd/mm/yyyy | Tool: ChatGPT (<model>)` → **Phần liên quan:** … → **Prompt (nguyên văn):** … → **Output AI (nguyên văn):** …
 
 _(Chưa có)_

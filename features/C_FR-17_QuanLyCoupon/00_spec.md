@@ -122,39 +122,99 @@ Mỗi yêu cầu được tách từ đoạn trích ở mục 1 thành một câ
 
 ## 3. Những điểm SRS chưa nói rõ
 
-Các điểm dưới đây sẽ ảnh hưởng tới kết quả mong đợi ở S1–S4. Cần quan sát giao diện (mục 4) trước, chỗ nào vẫn chưa rõ thì ghi thành **giả định** trong test case.
+Cột "Trả lời sau S0" tổng hợp từ giao diện (mục 4) và từ các lần SV thử khám phá (mục 5). Cột cuối cho biết thông tin nào được đưa vào prompt cho AI ở S1–S4:
 
-| # | Câu hỏi | Liên quan |
-|---|---|---|
-| Q1 | `discount_value` loại `percent` có giới hạn trên không (ví dụ tối đa 100)? SRS chỉ yêu cầu "dương" | FR17-R07 |
-| Q2 | `discount_value` có nhận số thập phân không (ví dụ 10.5% hoặc 0.01 ₫)? | FR17-R07 |
-| Q3 | `min_order_amount`, `max_uses_per_user` có nhận số thập phân không? Có giới hạn trên không? | FR17-R09, R10 |
-| Q4 | `code` có giới hạn độ dài, ký tự cho phép (chữ, số, ký tự đặc biệt, khoảng trắng) không? Có phân biệt hoa/thường khi kiểm tra trùng không? | FR17-R04, R05 |
-| Q5 | `expired_at` có được là ngày trong quá khứ, hoặc là hôm nay không? Định dạng ngày là gì? | FR17-R08 |
-| Q6 | Admin có sửa được mã không? FR-17 chỉ ghi Thêm / Xem / Xóa | FR17-R01–R03 |
-| Q7 | Xóa mã có hộp thoại xác nhận không? (FR-24 chỉ yêu cầu cho xóa sản phẩm trong giỏ) | FR17-R03 |
-| Q8 | Trường `is_active` (FR-09, C1) có nhập được trên form không, và giá trị mặc định khi tạo mới là gì? | FR-09 |
+- **Có**: Thông tin nhìn thấy trên giao diện (loại ô nhập, nhãn, nút). Đây là thông tin bất kỳ tester nào cũng có khi bắt đầu thiết kế.
+- **Không**: Kết quả SV đã nhập thử. Không đưa cho AI để phần AI gap analysis (S8) còn trung thực. Điểm nào vẫn chưa rõ thì ghi thành **giả định** ở S2.
+
+| # | Câu hỏi | Liên quan | Trả lời sau S0 | Đưa vào prompt S1–S4 |
+|---|---|---|---|---|
+| Q1 | `discount_value` loại `percent` có giới hạn trên không (ví dụ tối đa 100)? SRS chỉ yêu cầu "dương" | FR17-R07 | Giao diện không ghi giới hạn (placeholder "Giá trị % (VD: 10)"). Thử: 1000% lưu được (E01) | Chỉ phần giao diện |
+| Q2 | `discount_value` có nhận số thập phân không (ví dụ 10.5% hoặc 0.01 ₫)? | FR17-R07 | Giao diện không ghi. Thử: Nhận số thập phân (E02) | Không |
+| Q3 | `min_order_amount`, `max_uses_per_user` có nhận số thập phân không? Có giới hạn trên không? | FR17-R09, R10 | Thử: `min_order_amount` nhận số thập phân (E03); `max_uses_per_user` không tạo được mã khi nhập số thập phân (E04). Giới hạn trên: Chưa thử | Không |
+| Q4 | `code` có giới hạn độ dài, ký tự cho phép (chữ, số, ký tự đặc biệt, khoảng trắng) không? Có phân biệt hoa/thường khi kiểm tra trùng không? | FR17-R04, R05 | Giao diện không ghi giới hạn (placeholder "Mã coupon (VD: SAVE10)"). Thử: Chữ có dấu tiếng Việt, số, `@`, `!` không bị chặn (E05); chữ thường tự chuyển thành chữ hoa ngay lúc gõ (E07). Độ dài, khoảng trắng, trùng hoa/thường: Chưa thử | Chỉ phần giao diện |
+| Q5 | `expired_at` có được là ngày trong quá khứ, hoặc là hôm nay không? Định dạng ngày là gì? | FR17-R08 | Giao diện: Ô chọn ngày, nhập theo `mm/dd/yyyy`, bảng hiển thị `yyyy-mm-dd`; khi mở lịch, các ngày trước hôm nay không bị làm mờ (ảnh `S0_06`). Có lưu được ngày quá khứ, hôm nay hay không: Chưa ghi nhận | Có |
+| Q6 | Admin có sửa được mã không? FR-17 chỉ ghi Thêm / Xem / Xóa | FR17-R01–R03 | Không có nút sửa | Có |
+| Q7 | Xóa mã có hộp thoại xác nhận không? (FR-24 chỉ yêu cầu cho xóa sản phẩm trong giỏ) | FR17-R03 | Thử: Xóa ngay, không có hộp thoại (E06) | Không |
+| Q8 | Trường `is_active` (FR-09, C1) có nhập được trên form không, và giá trị mặc định khi tạo mới là gì? | FR-09 | Form và bảng **không có** trường `is_active` (cột "Hết hạn" là `expired_at`, không phải `is_active`). Admin không bật/tắt mã được trên giao diện | Có |
 
 ---
 
-## 4. Khám phá giao diện (SV điền)
+## 4. Khám phá giao diện
 
-Đăng nhập `http://localhost:5174` bằng `admin@eshop.com` / `Admin123!`, mở trang quản lý mã giảm giá. Lưu ảnh vào `screenshots/` (`S0_01_danh_sach_coupon.png`, `S0_02_form_them_coupon.png`, ...).
+Bản SV điền ban đầu nằm ở commit `[C-FR17][S0] Record UI exploration and screenshots`. Bảng dưới đây được viết lại sau khi đối chiếu với ảnh chụp trong `screenshots/`.
 
-**Chỉ quan sát, chưa nhập dữ liệu sai để thử.** Việc thử là của bước S6.
+### 4.1 Trang quản lý mã giảm giá
 
-| Cần ghi lại | Quan sát |
-|---|---|
-| Đường dẫn tới trang (menu nào, URL) | http://localhost:5174/ |
-| Tiêu đề trang | EShop Admin |
-| Các cột của bảng danh sách | Dashboard, Danh mục, Sản phẩm, Mã Giảm Giá, Đơn hàng, Người dùng, Đăng xuất |
-| Các mã đang có sẵn | SAVE10, BIGBUY, VIP100, EXPIRED |
-| Tên **chính xác** từng trường trên form thêm mã (nhãn hiển thị) | Mã coupon (VD: SAVE10), Phần trăm (%), Giá trị % (VD: 10), Đơn tối thiểu (đ), mm/dd/yyyy, Số lần dùng tối đa/người |
-| Loại ô nhập của từng trường (ô chữ, ô số, chọn ngày, dropdown) | Ô chữ, dropdown, ô số, ô số, chọn ngày, ô số |
-| Trường nào có dấu `*` | Không có |
-| Giá trị mặc định của từng trường | Không có, Phần trăm (%), Không có, 0, mm/dd/yyyy, 1 |
-| Tên nút thêm, nút xóa (chữ hiển thị, màu) | Tạo mã (màu cam), Xóa (màu đỏ) |
-| Có nút sửa không (Q6) | Không |
-| Q7 (hộp thoại xác nhận khi xóa): **Không bấm Xóa ở S0.** Nếu không có hộp thoại, mã mẫu sẽ bị xóa thật. Để dành cho S6 | Không áp dụng ở S0 |
-| Có trường `is_active` / trạng thái hoạt động không (Q8) | Có cột Hết hạn hiển thị thời gian |
-| Ghi chú khác | |
+| Mục | Quan sát | Ảnh |
+|---|---|---|
+| Đăng nhập | Trang đăng nhập Web Admin `http://localhost:5174` | `S0_01` |
+| Đường dẫn tới trang | Menu bên trái gồm: Dashboard, Danh mục, Sản phẩm, **Mã Giảm Giá**, Đơn hàng, Người dùng, Đăng xuất. URL giữ nguyên `http://localhost:5174/` khi chuyển trang | `S0_02`, `S0_03` |
+| Tiêu đề | Tiêu đề trang: "Quản lý Mã Giảm Giá". Tiêu đề khung form: "Tạo mã giảm giá mới". Tên app ở thanh bên: "EShop Admin" | `S0_03` |
+| Bảng danh sách | Các cột: Mã, Loại, Giá trị, Đơn tối thiểu, Hết hạn, Giới hạn/người, Hành động | `S0_03` |
+| Cách hiển thị | Tiền: `300,000 ₫` (phân cách hàng nghìn bằng dấu phẩy). Ngày: `yyyy-mm-dd`. Mã: Chữ hoa, màu cam | `S0_03` |
+| Ô chọn ngày | Mở lịch: Các ngày trước hôm nay (18/10/2026) không bị làm mờ, có nút "Clear" và "Today" | `S0_06` |
+
+### 4.2 Dữ liệu mẫu đang có (ảnh `S0_03`)
+
+| Mã | Loại | Giá trị | Đơn tối thiểu | Hết hạn | Giới hạn/người |
+|---|---|---|---|---|---|
+| `SAVE10` | Phần trăm | 10% | 300,000 ₫ | 2099-12-31 | 1 lần |
+| `BIGBUY` | Cố định | 50,000 ₫ | 500,000 ₫ | 2099-12-31 | 1 lần |
+| `VIP100` | Cố định | 100,000 ₫ | 300,000 ₫ | 2099-12-31 | 2 lần |
+| `EXPIRED` | Phần trăm | 20% | 100,000 ₫ | "Hết hạn" (chữ đỏ, không hiện ngày) | 1 lần |
+
+Khớp với bảng mã mẫu ở FR-09. Riêng `EXPIRED` không hiện ngày hết hạn (FR-09 ghi 2020-01-01) mà hiện chữ "Hết hạn".
+
+### 4.3 Form "Tạo mã giảm giá mới" (ảnh `S0_03`, `S0_04`, `S0_05`, `S0_06`)
+
+Form **không có nhãn**, chỉ có placeholder (chữ mờ trong ô, biến mất khi gõ). Không trường nào có dấu `*`.
+
+| # | Placeholder / nội dung hiển thị | Loại ô | Giá trị mặc định |
+|---|---|---|---|
+| (1) | "Mã coupon (VD: SAVE10)" | Ô chữ | Trống |
+| (2) | Dropdown, 2 lựa chọn: "Phần trăm (%)", "Số tiền cố định (₫)" | Dropdown | "Phần trăm (%)" |
+| (3) | "Giá trị % (VD: 10)" | Ô số | Trống |
+| (4) | "Đơn tối thiểu (₫)" | Ô số | `0` |
+| (5) | `mm/dd/yyyy` | Ô chọn ngày | Trống |
+| (6) | "Số lần dùng tối đa/người" | Ô số | `1` |
+
+Ảnh `S0_04` chụp sau khi SV tự xóa giá trị mặc định ở (4) và (6) để xem placeholder.
+
+### 4.4 Nút (ảnh `S0_07_nut_thao_tac_tao_ma`, `S0_07_nut_thao_tac_xoa`)
+
+| Nút | Vị trí | Màu |
+|---|---|---|
+| "Tạo mã" | Dưới form | Cam |
+| "Xóa" | Cột Hành động, mỗi dòng một nút | Đỏ |
+
+Không có nút sửa.
+
+**Điểm cần đối chiếu với đặc tả ở S6** (mới là quan sát, chưa kết luận là lỗi):
+
+- Không trường bắt buộc nào có dấu `*` (FR-22, FR17-R12).
+- Nút "Tạo mã" màu cam, trong khi FR-21 yêu cầu nút hành động tích cực màu xanh dương (FR17-R14).
+- Ô (3) luôn ghi "Giá trị %" dù loại có thể là số tiền cố định: Chưa ghi nhận placeholder có đổi khi chọn "Số tiền cố định (₫)" không.
+- Ngày nhập theo `mm/dd/yyyy` nhưng hiển thị `yyyy-mm-dd`.
+
+---
+
+## 5. Kết quả thử khám phá (SV tự thử ở S0, 18/10/2026)
+
+SV nhập thử trên giao diện trong lúc khám phá, **trước khi có test case**. Các kết quả này:
+
+- **Không** đưa vào prompt cho AI ở S1–S4.
+- Sẽ được chạy lại chính thức ở S6 theo test case (sau khi reset DB), có ảnh chụp làm bằng chứng.
+- Dùng ở S8 để đối chiếu: AI có thiết kế được test case chạm tới các trường hợp này không.
+
+| Mã | SV đã thử | Kết quả SV thấy | Liên quan | Chưa ghi nhận |
+|---|---|---|---|---|
+| E01 | Tạo mã loại Phần trăm với giá trị `1000` | Tạo được, mã hiện trong bảng | Q1, FR17-R07 | Ảnh chụp |
+| E02 | Nhập số thập phân vào ô giá trị | Nhận số thập phân | Q2, FR17-R07 | Loại (phần trăm hay cố định), có lưu vào bảng không |
+| E03 | Nhập số thập phân vào ô "Đơn tối thiểu" | Nhận số thập phân | Q3, FR17-R09 | Có lưu vào bảng không, bảng hiển thị thế nào |
+| E04 | Nhập số thập phân (dấu chấm) vào ô "Số lần dùng tối đa/người" | Không tạo được mã | Q3, FR17-R10 | Nội dung thông báo (nếu có); chưa thử dấu phẩy |
+| E05 | Nhập mã có chữ tiếng Việt có dấu, số, `@`, `!` | Không bị chặn | Q4, FR17-R04 | Có tạo được mã không |
+| E06 | Xóa một mã SV vừa tạo | Mã bị xóa ngay, không có hộp thoại xác nhận | Q7, FR17-R03 | Ảnh chụp |
+| E07 | Gõ chữ thường vào ô "Mã coupon" (bàn phím chữ thường lẫn chữ hoa) | Chữ tự chuyển thành chữ hoa ngay lúc gõ | Q4, FR17-R04, R05 | Ảnh chụp; mã lưu vào bảng có giữ chữ hoa không |
+
+Sau các lần thử này DB đã thay đổi so với dữ liệu mẫu. **Phải reset DB trước khi chạy test ở S6.**
