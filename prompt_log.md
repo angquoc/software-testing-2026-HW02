@@ -2118,6 +2118,63 @@ Mình đề xuất **tách thành 3 commit**. Đề chỉ bắt buộc mỗi bư
 Mình áp dụng cách tách này cho mọi bước có AI tham gia (S1–S4): **AI soạn → commit, bạn review → commit**.
 
 Commit 1 làm ngay được. Mình xuất lại prompt log trước:
+
+Log đã xuất xong: 35 lượt, tất cả thuộc phiên `305c705a`. `git status` cho thấy đang có **3 nhóm thay đổi** chưa commit, nên mình tách lệnh theo từng nhóm:
+
+- `README.md` và 3 file trong `tools/`: Đây là phần bỏ dấu `—` lúc nãy, không thuộc S0. Nên commit riêng với tag `[setup]`.
+- `00_spec.md` và `prompt_log.md`: Đây là commit 1 của S0.
+- 2 ảnh `S0_01`, `S0_02` bạn vừa chụp, cùng việc xoá file `.gitkeep` trong `screenshots/`: Để dành cho commit 2, khi bạn chụp xong và điền bảng quan sát.
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+
+git add README.md tools/
+git commit -m "[setup] Replace em dashes in README and tools output"
+
+git add features/C_FR-17_QuanLyCoupon/00_spec.md prompt_log.md
+git commit -m "[C-FR17][S0] Add spec extract and requirement list (AI draft)"
+
+git push
+```
+
+Ảnh chụp chưa được `add` nên không lẫn vào hai commit này. Khi bạn chụp xong và điền bảng ở mục 4 thì báo mình, mình sẽ đưa lệnh cho commit 2.
+````
+
+---
+
+### C36 · 15:48 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã điền những gì quan sát được và hình ảnh. Bạn hãy kiểm tra.
+
+Q1. Giá trị % điền 1000 vẫn nhận.
+Q2. Có nhận số phần trăm.
+Q3. min_order_amount có nhận số thập phân, còn max_uses_per_user không nhận. Có giới hạn trên là hạn trên cái gì? Là không chạm số âm hay là số quá lớn?
+Q4. Hiện tại thử có dấu tiếng Việt, số, dấu @ ! các thứ thì không thấy bị chặn. Mã tự động viết hoa dù để bàn phím hoa hay thường.
+Q5. Được chọn ngày quá khứ, hôm nay. Định dạng mm/dd/yyyy
+Q6. Không thấy nút sửa.
+Q7. Tôi xóa chính mã tôi tạo ra thì không có hộp thoại xác nhận.
+Q8. is_active là cột hết hạn hả?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read filled observation table and list screenshots
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_03_giao_dien_quan_ly_ma_giam_gia.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_04_form_them_coupon_khong_noi_dung.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_05_dropdown_type.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_06_chon_ngay_expired.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_07_nut_thao_tac_tao_ma.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_07_nut_thao_tac_xoa.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_02_menu_admin.png
+- Bash: Export prompt log before commit 2
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đọc bảng quan sát bạn đã điền và xem các ảnh chụp.
 ````
 
 

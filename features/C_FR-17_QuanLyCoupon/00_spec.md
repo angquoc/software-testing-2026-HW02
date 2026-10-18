@@ -145,16 +145,16 @@ Các điểm dưới đây sẽ ảnh hưởng tới kết quả mong đợi ở
 
 | Cần ghi lại | Quan sát |
 |---|---|
-| Đường dẫn tới trang (menu nào, URL) | |
-| Tiêu đề trang | |
-| Các cột của bảng danh sách | |
-| Các mã đang có sẵn | |
-| Tên **chính xác** từng trường trên form thêm mã (nhãn hiển thị) | |
-| Loại ô nhập của từng trường (ô chữ, ô số, chọn ngày, dropdown) | |
-| Trường nào có dấu `*` | |
-| Giá trị mặc định của từng trường | |
-| Tên nút thêm, nút xóa (chữ hiển thị, màu) | |
-| Có nút sửa không (Q6) | |
+| Đường dẫn tới trang (menu nào, URL) | http://localhost:5174/ |
+| Tiêu đề trang | EShop Admin |
+| Các cột của bảng danh sách | Dashboard, Danh mục, Sản phẩm, Mã Giảm Giá, Đơn hàng, Người dùng, Đăng xuất |
+| Các mã đang có sẵn | SAVE10, BIGBUY, VIP100, EXPIRED |
+| Tên **chính xác** từng trường trên form thêm mã (nhãn hiển thị) | Mã coupon (VD: SAVE10), Phần trăm (%), Giá trị % (VD: 10), Đơn tối thiểu (đ), mm/dd/yyyy, Số lần dùng tối đa/người |
+| Loại ô nhập của từng trường (ô chữ, ô số, chọn ngày, dropdown) | Ô chữ, dropdown, ô số, ô số, chọn ngày, ô số |
+| Trường nào có dấu `*` | Không có |
+| Giá trị mặc định của từng trường | Không có, Phần trăm (%), Không có, 0, mm/dd/yyyy, 1 |
+| Tên nút thêm, nút xóa (chữ hiển thị, màu) | Tạo mã (màu cam), Xóa (màu đỏ) |
+| Có nút sửa không (Q6) | Không |
 | Q7 (hộp thoại xác nhận khi xóa): **Không bấm Xóa ở S0.** Nếu không có hộp thoại, mã mẫu sẽ bị xóa thật. Để dành cho S6 | Không áp dụng ở S0 |
-| Có trường `is_active` / trạng thái hoạt động không (Q8) | |
+| Có trường `is_active` / trạng thái hoạt động không (Q8) | Có cột Hết hạn hiển thị thời gian |
 | Ghi chú khác | |
