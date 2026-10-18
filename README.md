@@ -1,6 +1,7 @@
 # HW02-AI: Domain Testing on EShop (Software Testing 2026)
 
-MSSV 23120061 · Nguyễn Thị Ánh Ngọc · CS423 / CSC15003, FIT@HCMUS
+Sinh viên: Nguyễn Thị Ánh Ngọc 
+MSSV: 23120061 
 
 SUT: [EShop](https://github.com/ttbhanh/eshop-sut) (commit `85af3ba`)
 
