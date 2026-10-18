@@ -24,10 +24,10 @@ TOOLS = "Claude Code (Anthropic, claude-opus-5-5); ChatGPT (GPT-6 Astra); Gemini
 
 rep = open(os.path.join(HW, "report.md"), encoding="utf-8").read()
 app = rep[rep.find("## Appendix B"):]
-rows = [l for l in app.split("\n") if re.match(r"^\| A\d\d — ", l)]
+rows = [l for l in app.split("\n") if re.match(r"^\| A\d\d: ", l)]
 arts = [[c.strip() for c in re.split(r"(?<!\\)\|", l.strip())[1:-1]] for l in rows]
 summ = {m.group(1): (m.group(2), m.group(3)) for m in re.finditer(r"^\| (Tổng artifact AI sinh đã audit|VALID[^|]*|INVALID[^|]*|INCOMPLETE[^|]*) \| (\d+) \| ([\d.,]+%) \|$", app, re.M)}
-concl = app.split("### Kết luận — Khi nào nên / không nên dùng AI?", 1)[1].strip()
+concl = app.split("### Kết luận: Khi nào nên / không nên dùng AI?", 1)[1].strip()
 
 def put(cell, text):
     """Ghi text vào ô, chuyển **đậm** và `code` thành run tương ứng."""

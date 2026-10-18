@@ -1,4 +1,4 @@
-# Software Testing 2026 — HW02-AI: Domain Testing on EShop
+# HW02-AI: Domain Testing on EShop (Software Testing 2026)
 
 MSSV 23120061 · Nguyễn Thị Ánh Ngọc · CS423 / CSC15003, FIT@HCMUS
 
@@ -9,7 +9,7 @@ SUT: [EShop](https://github.com/ttbhanh/eshop-sut) (commit `85af3ba`)
 | Đường dẫn | Nội dung |
 |---|---|
 | `report.md` / `report.pdf` | Báo cáo chính: Domain Testing + BVA cho 4 feature, AI gap analysis, AI Critique, Disclosure, Appendix B (AI Audit Report) |
-| `prompt_log.md` / `.pdf` | Appendix A — prompt log có timestamp |
+| `prompt_log.md` / `.pdf` | Appendix A: Prompt log có timestamp |
 | `features/` | Mỗi feature một thư mục: Đặc tả, output AI nguyên văn (`ai_raw/`), bản đã review từng bước, test case, ảnh chụp |
 | `bugs/` | Bug report, liên kết tới GitHub Issues của nhóm |
 | `skills/` | Agent Skills: Domain Testing, Boundary Value Analysis |
@@ -32,25 +32,25 @@ _(Điền khi thực thi xong)_
 
 | Feature | TC thiết kế | Đã chạy | Pass | Fail | Chưa chạy | Bug |
 |---|---|---|---|---|---|---|
-| A — FR-01 | | | | | | |
-| B — FR-07 | | | | | | |
-| C — FR-17 | | | | | | |
-| D — FR-04 (Mobile) | | | | | | |
+| A: FR-01 | | | | | | |
+| B: FR-07 | | | | | | |
+| C: FR-17 | | | | | | |
+| D: FR-04 (Mobile) | | | | | | |
 | **Tổng** | | | | | | |
 
 ## Video demo
 
 | Nội dung | Link |
 |---|---|
-| Agent Skill — chạy trọn một feature | |
+| Agent Skill: Chạy trọn một feature | |
 
 ## Self-Assessment
 
 | No. | Criteria | Grade | Self-Assessed Grade |
 |---|---|---|---|
-| 1 | Feature A — FR-01 (Domain + Boundary) | 25 | |
-| 2 | Feature B — FR-07 (Domain + Boundary) | 25 | |
-| 3 | Feature C — FR-17 (Domain + Boundary) | 25 | |
-| 4 | Feature D — FR-04 Mobile (Domain + Boundary) | 15 | |
+| 1 | Feature A: FR-01 (Domain + Boundary) | 25 | |
+| 2 | Feature B: FR-07 (Domain + Boundary) | 25 | |
+| 3 | Feature C: FR-17 (Domain + Boundary) | 25 | |
+| 4 | Feature D: FR-04 Mobile (Domain + Boundary) | 15 | |
 | 5 | Agent Skills | 10 | |
 | | **Total** | **100** | |

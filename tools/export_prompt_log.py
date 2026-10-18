@@ -107,11 +107,11 @@ def render():
     parts = []
     for i, t in enumerate(turns, 1):
         tools = "\n".join(f"- {x}" for x in t["tools"]) or "- (không)"
-        out = "\n\n".join(t["out"]) or "(Không có phản hồi — phiên bị dừng / chưa hoàn tất)"
+        out = "\n\n".join(t["out"]) or "(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)"
         note = SESSION_NOTES.get(t["session"])
         note = f"> **Ghi chú của sinh viên:** {note}\n\n" if note else ""
         parts.append(
-            f"### C{i:02d} — {fmt_time(t['time'])} — Tool: Claude Code ({t['model'] or 'n/a'}) — session `{t['session']}`\n\n"
+            f"### C{i:02d} · {fmt_time(t['time'])} · Tool: Claude Code ({t['model'] or 'n/a'}) · Session `{t['session']}`\n\n"
             f"{note}"
             f"**Prompt (nguyên văn):**\n\n{fence(t['prompt'])}\n\n"
             f"**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**\n\n{tools}\n\n"
