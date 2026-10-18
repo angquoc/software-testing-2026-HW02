@@ -1,10 +1,10 @@
-# Appendix A — Prompt Log (HW02-AI)
+# Appendix A: Prompt Log (HW02-AI)
 
 | Mục | Giá trị |
 |---|---|
 | MSSV | 23120061 |
 | Họ tên sinh viên | Nguyễn Thị Ánh Ngọc |
-| Bài tập | HW02-AI — Domain Testing on EShop |
+| Bài tập | HW02-AI: Domain Testing on EShop |
 | Chính sách AI | Open (khai báo + AI Audit Report bắt buộc) |
 | Bloom-AI | G9.2 (Apply), G9.3 (Analyse) |
 | Công cụ AI | Claude Code (Anthropic); ChatGPT, Gemini _(nếu dùng)_ |
@@ -20,7 +20,7 @@
 
 <!-- CLAUDE-LOG:START -->
 
-### C01 — 14:17 12/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C01 · 14:17 12/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -260,7 +260,7 @@ Khi bạn trả lời xong, mình sẽ dựng khung folder, `git init`, sửa sc
 
 ---
 
-### C02 — 15:39 12/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C02 · 15:39 12/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -401,7 +401,7 @@ Nếu cả 3 đều đồng ý, mình sẽ làm theo thứ tự: tạo khung `HW
 
 ---
 
-### C03 — 21:33 12/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C03 · 21:33 12/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -484,7 +484,7 @@ Mình đã điền dữ liệu giả vào một bản sao và mở bằng Excel:
 
 ---
 
-### C04 — 14:15 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C04 · 14:15 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -554,7 +554,7 @@ Khi bạn chọn xong gói, mình đề xuất bắt đầu ngay với **feature
 
 ---
 
-### C05 — 14:26 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C05 · 14:26 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -586,7 +586,7 @@ File sẵn sàng để bạn upload lên Google Drive cho nhóm chọn gói. Sau
 
 ---
 
-### C06 — 14:38 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C06 · 14:38 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -630,7 +630,7 @@ Mình đã sửa file Excel. Lý do lúc trước không thấy cột D: ở b�
 
 ---
 
-### C07 — 14:46 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C07 · 14:46 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -666,7 +666,7 @@ Khi nhóm chốt xong, bạn gửi mình kết quả. Mình sẽ soạn `README.
 
 ---
 
-### C08 — 14:55 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C08 · 14:55 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -717,7 +717,7 @@ Khi nhóm chốt feature xong, bạn gửi mình kết quả để mình điền
 
 ---
 
-### C09 — 15:16 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C09 · 15:16 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -772,7 +772,7 @@ Mình cũng đã lưu vào memory 2 quy tắc để các phiên sau làm theo:
 
 ---
 
-### C10 — 15:18 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C10 · 15:18 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -806,7 +806,7 @@ Lưu ý thêm:
 
 ---
 
-### C11 — 15:19 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C11 · 15:19 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -852,7 +852,7 @@ Nếu bạn muốn khác chỗ nào, ví dụ viết commit bằng tiếng Việ
 
 ---
 
-### C12 — 15:20 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C12 · 15:20 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -897,7 +897,7 @@ Mình đã ghi quy ước mới vào `_NOTES.md` và vào memory, nên những l
 
 ---
 
-### C13 — 15:25 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C13 · 15:25 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -936,7 +936,7 @@ git push -u origin main
 
 ---
 
-### C14 — 15:26 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C14 · 15:26 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -996,7 +996,7 @@ Chạy xong, bạn gửi mình output để mình kiểm tra hai commit đã lê
 
 ---
 
-### C15 — 15:38 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C15 · 15:38 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1112,7 +1112,7 @@ Tên file: **`23120061_HW02_AI_DomainTesting_XXX.zip`**. Moodle nhận tối đa
 
 ---
 
-### C16 — 16:38 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C16 · 16:38 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1221,7 +1221,7 @@ Khi làm vậy, trong Audit Report phải khai báo rằng có dùng skill của
 
 ---
 
-### C17 — 17:46 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C17 · 17:46 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1337,7 +1337,7 @@ Hai câu này quyết định định dạng file test case, nên cần trả l�
 
 ---
 
-### C18 — 17:48 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C18 · 17:48 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1372,7 +1372,7 @@ Bạn trả lời xong thì mình bật EShop và bắt đầu S0 cho FR-17.
 
 ---
 
-### C19 — 21:03 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C19 · 21:03 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1414,7 +1414,7 @@ Hai câu hỏi lần trước vẫn đang chờ bạn trả lời:
 
 ---
 
-### C20 — 22:49 17/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C20 · 22:49 17/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1485,7 +1485,7 @@ Bước tiếp theo là bật EShop rồi bắt đầu **S0 cho FR-17**. Ở S0,
 
 ---
 
-### C21 — 00:34 18/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C21 · 00:34 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1530,7 +1530,7 @@ Bạn chưa xác nhận bắt đầu S0 cho FR-17. Khi bạn đồng ý, mình b
 
 ---
 
-### C22 — 01:09 18/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C22 · 01:09 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1570,7 +1570,7 @@ Giữ lại label `bug` mặc định, vì template tự gắn label này cho m�
 
 ---
 
-### C23 — 01:20 18/10/2026 — Tool: Claude Code (claude-opus-5-5) — session `305c705a`
+### C23 · 01:20 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
 
 **Prompt (nguyên văn):**
 
@@ -1583,11 +1583,541 @@ Giữ lại label `bug` mặc định, vì template tự gắn label này cho m�
 **Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
 
 - Bash: Export prompt log and check repo states
+- Bash: Inspect the last exported turn
+- Bash: Tick completed preparation items in tracker
 
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi — phiên bị dừng / chưa hoàn tất)
+Lệnh commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add prompt_log.md
+git commit -m "[setup] Update prompt log for preparation phase"
+git push
+```
+
+Lượt C23 ghi output là "(Không có phản hồi …)", vì log được xuất khi câu trả lời này còn đang viết. Đây không phải lỗi. Câu trả lời đầy đủ sẽ được ghi vào log ở lần xuất tiếp theo, trước commit S0 ngày mai.
+
+Tracker đã đánh dấu xong mục 0.8 (label) và 0.10 (repo cá nhân). Còn 3 mục mở:
+- **0.9:** Đang chờ An và Hương chốt feature.
+- **0.11:** Chưa khởi tạo DB và chưa bật server.
+- **0.12:** Chưa chạy thử app mobile trên Android.
+
+Ngày mai, mình bật EShop trước rồi mới làm S0 cho FR-17. Nếu tiện, bạn chạy thử mobile sớm, vì Pool D là phần duy nhất còn rủi ro về môi trường.
+````
+
+---
+
+### C24 · 10:17 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bây giờ sẽ chạy EShop đi. Chạy xong rồi mình sẽ chạy mobile.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check for new Claude session transcripts
+- Bash: Initialize EShop database with seed data
+- Bash: Start EShop backend server on port 3000
+- Bash: Start EShop customer web on port 5173
+- Bash: Start EShop admin web on port 5174
+- Bash: Wait for servers to respond and show ready lines
+- Bash: Install mobile app dependencies
+- PowerShell: Get LAN IPv4 addresses and network profile
+
+**Output AI (nguyên văn):**
+
+````text
+Hệ thống báo phiên vừa được khởi động lại. Trước khi bật EShop, mình kiểm tra xem đây có phải một phiên Claude mới không, vì nếu đúng thì phải thêm phiên đó vào whitelist của prompt log.
+
+Đây vẫn là phiên cũ `305c705a` được mở lại, không có phiên mới, nên whitelist không cần thêm gì. Giờ mình khởi tạo DB và bật backend.
+
+Cả 3 phần của EShop đang chạy (DB đã khởi tạo lúc 10:18), nhưng **mình dừng lại trước bước mobile vì mạng hiện tại không phù hợp**.
+
+| Phần | URL | Trạng thái |
+|---|---|---|
+| Backend API | http://localhost:3000 | ✅ HTTP 200 |
+| Web khách hàng | http://localhost:5173 | ✅ HTTP 200 |
+| Web Admin | http://localhost:5174 | ✅ HTTP 200 |
+
+Thư viện của app mobile đang được cài chạy nền.
+
+**Vấn đề với mạng:** máy đang dùng Wi-Fi quán cà phê "Kochi Coffee T1", Windows xếp mạng này vào loại **Public**. Có 2 rủi ro:
+1. **Có thể không kết nối được.** Wi-Fi công cộng thường chặn các thiết bị nhìn thấy nhau (client isolation), nên điện thoại có thể không gọi được tới máy tính ở `192.168.1.53`.
+2. **Có rủi ro bảo mật.** EShop được cài lỗi bảo mật có chủ đích (SQL injection, lộ mật khẩu…). Muốn điện thoại gọi được backend thì phải mở firewall cổng 3000 trên mạng Public, tức là ai ngồi chung quán cũng truy cập được app đầy lỗ hổng này trên máy bạn.
+
+**Ba cách an toàn hơn, bạn chọn một:**
+
+| Cách | Làm gì | Ưu / nhược |
+|---|---|---|
+| **A. USB + `adb reverse`** (mình đề xuất) | Cắm cáp, bật USB debugging, chạy `adb reverse tcp:3000 tcp:3000` và `adb reverse tcp:8081 tcp:8081`. Sau đó `API_URL` để là `http://localhost:3000/api` | Không lộ gì ra mạng, không phải mở firewall. Cần cài Android platform-tools (adb) |
+| **B. Phát hotspot từ điện thoại** | Cho laptop bắt hotspot của điện thoại, rồi dùng IP mới của laptop trên mạng đó | Mạng riêng giữa 2 thiết bị. Tốn dung lượng 4G của điện thoại |
+| C. Về nhà dùng Wi-Fi riêng | Đặt mạng nhà là Private, mở firewall cổng 3000 và 8081 | Đơn giản nhưng phải chờ về nhà |
+
+Với cả 3 cách, mình sẽ sửa `API_URL` trong bản clone HW02 (`Homeworks/eshop-sut`), không sửa bản trong `DA`. Thay đổi này sẽ được ghi vào phần môi trường test.
+
+Bạn cho mình biết thêm:
+1. Bạn chọn cách nào?
+2. Điện thoại Android của bạn chạy phiên bản Android mấy?
+3. Đã cài **Expo Go** chưa, và nếu rồi thì là phiên bản nào (xem trong app: Settings, hoặc trang thông tin ứng dụng)? Mình cần biết để kiểm tra Expo Go đó có mở được app viết bằng SDK 54 không.
+````
+
+---
+
+### C25 · 10:19 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+<task-notification>
+<task-id>bjri25kh8</task-id>
+<tool-use-id>toolu_01CW2GQUKSZphYxAKoqVTusW</tool-use-id>
+<output-file>C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\305c705a-d915-42fa-8501-b411992acb4b\tasks\bjri25kh8.output</output-file>
+<status>completed</status>
+<summary>Background command "Install mobile app dependencies" completed (exit code 0)</summary>
+</task-notification>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Confirm mobile install and update tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Đã cài xong thư viện cho app mobile (696 package, không có lỗi). Trong tracker, mục 0.11 đã đánh dấu ✅. Mình cũng ghi vào `_NOTES.md` hai điều:
+- Backend có thể tự reset DB mỗi lần khởi động.
+- Không mở firewall cho EShop khi đang dùng Wi-Fi công cộng.
+
+Phía máy tính đã sẵn sàng cho mobile. Mình chờ bạn trả lời 3 câu ở tin trước: chọn cách kết nối A, B hay C, phiên bản Android, và phiên bản Expo Go.
+````
+
+---
+
+### C26 · 10:48 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã xem qua web. Bây giờ sẽ chạy mobile, tôi chọn cách A. Tôi đã cắm cáp, bật USB debugging, có cài android platform-tools ở laptop.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Locate adb executable
+- Bash: List connected Android devices
+- PowerShell: Check whether Windows sees the phone over USB
+
+**Output AI (nguyên văn):**
+
+````text
+Mình tìm `adb` và kiểm tra máy tính đã nhận điện thoại chưa.
+
+Windows đã thấy một thiết bị USB, nhưng chỉ nhận là "WinUsb Device" chung chung, còn `adb devices` thì **chưa liệt kê điện thoại nào**. Nếu điện thoại chỉ đang chờ bạn cho phép thì adb vẫn phải hiện dòng `unauthorized`. Danh sách trống nghĩa là adb chưa thấy cổng debug của điện thoại. Nguyên nhân thường gặp nhất là chế độ USB hoặc quyền debug.
+
+Bạn thử lần lượt các bước sau trên điện thoại:
+
+1. **Mở khoá màn hình**, kéo thanh thông báo xuống, chạm vào thông báo USB ("Đang sạc qua USB" hoặc tương tự) rồi chọn **Truyền tệp / File transfer (MTP)**.
+2. Nếu vẫn chưa được: vào **Tuỳ chọn nhà phát triển**, chọn **Thu hồi quyền gỡ lỗi USB** (Revoke USB debugging authorizations), tắt rồi bật lại **Gỡ lỗi USB**.
+3. **Rút cáp ra cắm lại.** Khi điện thoại hiện hộp thoại *"Cho phép gỡ lỗi USB?"*, tick **"Luôn cho phép từ máy tính này"** rồi bấm **Cho phép**.
+
+Làm xong bạn báo mình để mình chạy lại `adb devices`.
+
+Thêm một lưu ý: máy có cài **LDPlayer**, và LDPlayer có adb riêng (phiên bản khác). Nếu LDPlayer đang mở, hai bản adb sẽ tranh nhau cổng 5037 và làm mất kết nối. Bạn tắt LDPlayer trong lúc làm bước này.
+
+Mình cũng cần 3 thông tin:
+- Hãng và dòng điện thoại (một số hãng như Xiaomi hay Oppo cần bật thêm tuỳ chọn riêng).
+- Phiên bản Android.
+- Đã cài Expo Go chưa, và nếu rồi thì phiên bản nào.
+````
+
+---
+
+### C27 · 10:51 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Samsung Galaxy S21 Ultra.
+- Tôi đã rút cáp ra cắm lại, bật cho phép gỡ lỗi, nhưng không thấy hỏi cho phép từ máy tính nào. Có vẻ phải chạy mới có hỏi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Restart adb server and list devices
+- PowerShell: List Samsung/ADB USB devices including driver errors
+
+**Output AI (nguyên văn):**
+
+````text
+Có thể bạn nói đúng: hộp thoại cho phép thường chỉ hiện khi adb thật sự kết nối tới điện thoại. Mình khởi động lại adb server và xem lại toàn bộ thiết bị USB, kể cả những thiết bị Windows đang báo lỗi driver.
+
+Mình đã tìm ra nguyên nhân: **lúc này Windows không thấy điện thoại S21 Ultra qua USB.**
+
+- Driver Samsung đã có sẵn trên máy, và trước đây chiếc S21 Ultra từng kết nối được (Windows còn lưu các mục "SAMSUNG Android ADB Interface" và "S21 Ultra", serial `R5CR707GW3X`). Nhưng hiện tại tất cả các mục đó đều ở trạng thái **Present = False**, tức là điện thoại không đang được cắm.
+- Thiết bị "WinUsb Device" thấy lúc trước có mã hãng `VID_30C9`, không phải Samsung (`VID_04E8`), nên đó là một thiết bị khác, có thể là webcam của laptop.
+
+Vì Windows còn chưa thấy điện thoại nên adb không thấy, và hộp thoại cho phép gỡ lỗi cũng chưa thể hiện ra. Nguyên nhân gần như chắc chắn nằm ở **cáp hoặc cổng USB**:
+
+1. **Kiểm tra cáp.** Nhiều cáp chỉ có dây sạc, không truyền dữ liệu. Dấu hiệu là điện thoại báo đang sạc nhưng không hiện thông báo "USB" hay "Truyền tệp". Bạn đổi sang cáp Samsung zin hoặc một cáp chắc chắn truyền được dữ liệu.
+2. **Cắm thẳng vào cổng USB của laptop,** không qua hub hay dock. Nếu được thì thử thêm một cổng khác.
+3. **Khi cắm đúng cáp,** điện thoại sẽ hiện thông báo USB. Bạn chọn **Truyền tệp**, ngay sau đó hộp thoại *"Cho phép gỡ lỗi USB?"* sẽ hiện ra. Tick "Luôn cho phép" rồi bấm **Cho phép**.
+
+Cắm lại xong thì bạn báo mình để mình kiểm tra.
+
+Còn 2 câu chưa có trả lời: điện thoại chạy Android mấy (xem trong Cài đặt → Thông tin điện thoại → Thông tin phần mềm), và đã cài Expo Go chưa.
+````
+
+---
+
+### C28 · 10:54 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+- Bạn kiểm tra xem có được không. Tôi mới đổi dây cáp khác.
+- Android 15.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check adb connection, Android version, Expo Go
+- PowerShell: Check whether the Samsung phone is present on USB now
+
+**Output AI (nguyên văn):**
+
+````text
+Lần này vẫn chưa được. `adb` không thấy thiết bị nào, và Windows cũng **không thấy thiết bị Samsung nào đang cắm**. Điện thoại vẫn chưa kết nối dữ liệu với laptop.
+
+Android 15 trên S21 Ultra chạy One UI 7. Bản này có tính năng **Auto Blocker** (Trình chặn tự động). Khi bật, nó chặn các lệnh gửi qua cáp USB, và có thể chặn luôn việc gỡ lỗi USB. Bạn kiểm tra theo thứ tự:
+
+1. **Auto Blocker:** Vào **Cài đặt → Bảo mật và quyền riêng tư → Trình chặn tự động**. Tắt hẳn, hoặc ít nhất tắt mục **"Chặn lệnh qua cáp USB"**.
+2. **Cấu hình USB mặc định:** Vào **Tuỳ chọn nhà phát triển → Cấu hình USB mặc định**, chọn **Truyền tệp / Android Auto**. Kiểm tra lại mục **Gỡ lỗi USB** vẫn đang bật.
+3. **Cắm lại cáp.** Nếu dữ liệu đã thông, điện thoại sẽ hiện thông báo "USB đang được dùng để…", sau đó là hộp thoại *"Cho phép gỡ lỗi USB?"*.
+4. Nếu vẫn **không có thông báo USB nào** (chỉ thấy đang sạc), thì lỗi nằm ở cáp hoặc cổng. Thử cổng USB khác trên laptop, ưu tiên cổng USB-C nếu có.
+
+Làm xong bạn báo mình để mình kiểm tra lại.
+
+Nếu USB vẫn không được, mình chuyển sang **cách B (phát hotspot từ điện thoại)**. Cách này không cần cáp, và mạng chỉ có điện thoại với laptop, vẫn an toàn.
+````
+
+---
+
+### C29 · 10:56 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Được rồi, lần này đã có thông báo và tôi đã cho phép.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Verify adb connection and Expo Go presence
+- Bash: Check Expo Go version on phone
+- Bash: Point API_URL to localhost and set up adb reverse
+- Bash: Start Expo and open the app on the Android phone
+- Bash: Wait for Expo startup output
+- Bash: Wait for Expo Go install and bundle
+- Bash: Capture phone screen via adb
+- Bash: Capture phone screen via adb
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\305c705a-d915-42fa-8501-b411992acb4b\scratchpad\phone1_small.png
+- Bash: Record mobile environment in notes and tick 0.12
+- Bash: Verify the adb path line has no stray control chars
+- Bash: Fix control character in adb path
+
+**Output AI (nguyên văn):**
+
+````text
+Expo CLI đang tự tải Expo Go bản hợp với SDK 54. Mình chờ cài xong và app được nạp lên điện thoại.
+
+Đường dẫn trong ghi chú lại bị hỏng như lần trước: chuỗi `\a` bị Python đọc thành một ký tự điều khiển. Mình sửa bằng mã ký tự:
+
+**Môi trường đã sẵn sàng.** Trong tracker, phần chuẩn bị chỉ còn mục 0.9: chờ An và Hương chốt feature.
+
+| Thành phần | Trạng thái |
+|---|---|
+| Backend `localhost:3000` · Web `5173` · Admin `5174` | ✅ Đang chạy (DB khởi tạo lúc 10:18) |
+| Mobile trên S21 Ultra (Android 15), Expo Go 54.0.8 | ✅ Đang chạy, đã lấy được danh sách sản phẩm từ backend |
+
+**Những điều mình đã ghi vào `_NOTES.md`** (để đưa vào phần môi trường test của report):
+- `API_URL` trong bản clone HW02 đổi từ `192.168.10.13` sang `localhost`. Bản trong `DA` không bị đụng tới.
+- Cách kết nối là `adb reverse` qua USB. **Mỗi lần rút cáp ra cắm lại phải chạy lại 2 lệnh reverse.** Bạn báo mình là được, mình chạy giúp.
+- Expo cảnh báo `expo@54.0.34` nên nâng lên `~54.0.37`. Mình **không nâng cấp**, để giữ nguyên SUT như giảng viên phát.
+- Vài lưu ý khác: tắt LDPlayer khi dùng adb; cáp đầu tiên của bạn chỉ sạc được, không truyền dữ liệu.
+
+**Lưu ý khi tắt máy:** cả 4 server (backend, web, admin, Expo) đang chạy nền trong phiên Claude này. Khi bạn tắt laptop hoặc đóng phiên, chúng sẽ dừng. Lần sau mình bật lại cho bạn.
+
+Bước tiếp theo là **S0 cho FR-17 (Quản lý mã giảm giá trên Web Admin)**:
+1. Mình trích nguyên văn FR-17 cùng các phần SRS liên quan (FR-09 về cách coupon được dùng, FR-12 về phân quyền admin) vào `features/C_FR-17_QuanLyCoupon/00_spec.md`.
+2. Bạn đăng nhập Web Admin tại `localhost:5174` bằng `admin@eshop.com` / `Admin123!`, mở trang quản lý mã giảm giá, chụp màn hình form thêm mã và danh sách mã.
+
+Mình bắt đầu bước 1 nhé?
+````
+
+---
+
+### C30 · 11:35 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Đồng ý.
+2. Chụp gửi bạn hay là chụp đưa vào folder nào?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Locate relevant SRS sections by line number
+- Bash: Print verbatim SRS sections for FR-17
+- Bash: Find coupon parts in API specification
+- Bash: Print coupon sections of API spec
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\00_spec.md
+- Bash: Check capitalize-after-colon in new spec file
+- Bash: Update tracker and audit notes for S0
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn **lưu thẳng vào thư mục** `features/C_FR-17_QuanLyCoupon/screenshots/`, không cần gửi qua chat. Mình đọc được file trong thư mục, và ảnh đặt ở đó cũng là bằng chứng nộp kèm bài. Đặt tên theo bước và thứ tự:
+
+- `S0_01_danh_sach_coupon.png`: Trang danh sách mã giảm giá
+- `S0_02_form_them_coupon.png`: Form thêm mã (chụp đủ các trường)
+- `S0_03_...png`: Bất kỳ màn hình nào khác bạn thấy đáng chú ý, ví dụ thông báo lỗi hay hộp xác nhận xoá
+
+Giờ mình làm bước 1, trích nguyên văn đặc tả từ SRS:
+
+Mình đã soạn xong phần đặc tả cho S0 ở file [00_spec.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/00_spec.md). Giờ đến lượt bạn khám phá giao diện và điền bảng ở mục 4.
+
+**Nội dung file:**
+
+1. **Trích nguyên văn đặc tả.** Mục này chép y từ tài liệu gốc, không có nội dung do AI tự viết:
+   - Từ `README.md`: FR-17; FR-12 (phân quyền admin); FR-09 (ý nghĩa của từng trường coupon khi người mua dùng mã, kèm 4 mã mẫu); FR-21 và FR-22 (yêu cầu giao diện và form); SEC-02, 03, 04.
+   - Từ `api_specification.md`: Các API thêm, xem, xóa mã.
+2. **15 yêu cầu có mã từ FR17-R01 đến R15.** Mình tách các đoạn trích ở mục 1 thành từng câu kiểm chứng được. Các mã này dùng để truy vết test case trong file JSON của skill thầy.
+3. **8 câu hỏi Q1–Q8 về những điểm SRS bỏ ngỏ**, mỗi câu kèm mã yêu cầu liên quan:
+   - `percent` có giới hạn trên 100 không.
+   - Các trường số có nhận số thập phân không.
+   - `code` dài tối đa bao nhiêu, có phân biệt hoa thường khi kiểm tra trùng không.
+   - `expired_at` có được là ngày trong quá khứ không.
+   - Admin có sửa được mã không.
+   - Xóa mã có hộp thoại xác nhận không.
+   - Trường `is_active` có trên form không.
+4. **Bảng khám phá UI**, để bạn điền tên chính xác của từng trường, loại ô nhập, dấu `*`, giá trị mặc định, các nút và màu sắc.
+
+Mục 2 và 3 là phần mình tự suy ra từ đặc tả, nên bạn cần đọc lại trước khi commit. Mình đã ghi điều này vào danh sách cần khai báo trong Audit.
+
+Mình đã sửa một hướng dẫn trong bảng khám phá. Bản đầu bảo bạn bấm **Xóa** để xem có hộp thoại xác nhận không. Nhưng nếu trang không có hộp thoại thì mã mẫu sẽ bị xóa thật. Bây giờ bảng ghi rõ **không bấm Xóa ở S0**, việc này để dành cho S6.
+
+**Việc của bạn:**
+1. Mở `http://localhost:5174`, đăng nhập bằng `admin@eshop.com` / `Admin123!`, vào trang quản lý mã giảm giá.
+2. Chụp màn hình và lưu vào `screenshots/` theo tên `S0_01_danh_sach_coupon.png`, `S0_02_form_them_coupon.png`, …
+3. Điền bảng ở mục 4. Bạn có thể ghi vắn tắt, mình sẽ viết lại cho gọn sau.
+
+Làm xong thì báo mình. Mình sẽ đối chiếu ảnh chụp với bảng, cập nhật câu trả lời cho Q1–Q8 nếu giao diện đã cho biết, rồi xuất log và đưa bạn lệnh commit `[C-FR17][S0] Extract spec and explore UI`.
+````
+
+---
+
+### C31 · 14:48 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Không xài dấu —
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List em-dash occurrences in documents and tools
+- Bash: Show context of em dash on notes line 163
+- Bash: Show context of em dash on notes line 163
+- Bash: Replace em dashes and verify none remain
+- Bash: Locate remaining em dashes
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai02.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai02.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\docx_to_md.py
+- Bash: Fix last note dash, re-export log, verify
+- Write: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\doc-style-no-em-dash.md
+- Bash: Index the new style memory
+- Bash: Remove em dashes from memory index
+
+**Output AI (nguyên văn):**
+
+````text
+Mình sẽ bỏ dấu `—` khỏi các tài liệu và lưu quy tắc này vào memory. Trước hết, mình liệt kê mọi chỗ đang dùng dấu này:
+
+Mình đã bỏ hết dấu `—` trong các tài liệu và các script trong `tools/`. Quy tắc này đã lưu vào memory, và mình sẽ không dùng dấu `—` cả khi trả lời trong chat.
+
+**Đã sửa (lệnh kiểm tra cho thấy còn 0 chỗ):**
+- `00_spec.md`: Tiêu đề đổi thành "S0. Đặc tả FR-17: …" và "1.2 FR-12: Kiểm soát truy cập". Dòng Pool ghi "C, Web Admin".
+- `README.md`: Dòng tiêu đề đổi thành "HW02-AI: Domain Testing on EShop (Software Testing 2026)". Các dòng feature ghi theo dạng "A: FR-01".
+- `_NOTES.md`: Thay 10 chỗ, dùng dấu `:`, dấu phẩy hoặc dấu ngoặc tuỳ ngữ cảnh. Các ô trống trong bảng ghi chữ "Không".
+- `export_prompt_log.py`: Tiêu đề mỗi lượt trong log đổi thành `### C01 · 14:17 12/10/2026 · Tool: … · Session …`. Mình đã xuất lại log theo định dạng mới. Log vẫn chỉ có phiên `305c705a`.
+- `fill_ai02.py` và `docx_to_md.py`: Sửa các mẫu chữ có dấu `—`. Từ giờ, bảng Audit trong report sẽ viết theo dạng `A01: …`.
+
+**Những chỗ vẫn còn dấu `—` vì là nguyên văn:**
+- Phần trích SRS trong `00_spec.md`. Mình kiểm tra lại thì phần này không có dấu `—`.
+- Vùng log tự xuất trong `prompt_log.md`. Vùng này chép nguyên văn những gì bạn và mình đã chat, mà các tin nhắn trước của mình có dùng dấu `—`. Nếu sửa vùng này thì log không còn là nguyên văn nữa.
+
+S0 vẫn đang chờ bạn khám phá giao diện Web Admin, chụp màn hình và điền bảng ở mục 4.
+````
+
+---
+
+### C32 · 14:54 18/10/2026 · Tool: Claude Code (n/a) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+<task-notification>
+<task-id>b1dr8c9xn</task-id>
+<task-id>bowzdpchf</task-id>
+<task-id>bpmpz6o2e</task-id>
+<task-id>bvpl43z73</task-id>
+<task-id>__orphan_summary__:shell</task-id>
+<status>stopped</status>
+<summary>4 background shell command tasks didn't finish before the previous session ended. Task ids: b1dr8c9xn, bowzdpchf, bpmpz6o2e, bvpl43z73.</summary>
+<note>No completion record was found for them in the previous session. They may have been stopped (via the UI, Monitor timeout, or agent teardown — these leave no transcript marker), or they may have been running when the previous Claude Code process exited. They have been marked stopped. Task ids in this notification beginning with "__orphan_summary" are internal scan markers, not tasks.</note>
+</task-notification>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C33 · 15:02 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Sao dấu ₫ của bạn bay cao thế
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check for new session and inspect currency character
+
+**Output AI (nguyên văn):**
+
+````text
+Hệ thống báo phiên vừa khởi động lại và 4 server chạy nền (backend, web, admin, Expo) đã dừng. Mình kiểm tra 2 việc: có phiên Claude mới cần thêm vào whitelist không, và ký tự `₫` trong file là ký tự gì.
+
+Ký tự đó không sai. Đây là **ký hiệu đồng `₫`** (Unicode U+20AB, "DONG SIGN"), đúng ký tự mà SRS dùng. Trông nó bay cao là do **font chữ**: nhiều font vẽ `₫` theo kiểu chữ "đ" nhỏ có gạch dưới, đặt cao như chỉ số trên, giống cách ghi tiền truyền thống ở Việt Nam. Trên điện thoại lúc nãy, giá hiển thị "30.000.000 đ" có gạch dưới cũng chính là ký tự này, chỉ khác font.
+
+Mình đề xuất **giữ nguyên `₫`**, vì:
+- 8 trong 9 chỗ nằm trong phần **trích nguyên văn SRS**, nên không được sửa.
+- **FR-21** yêu cầu "luôn dùng ký hiệu `₫`". Khi viết test case kiểm tra cách hiển thị tiền, kết quả mong đợi phải ghi đúng ký tự này. Nếu ghi `đ` thì sẽ lệch với đặc tả.
+
+Chỗ duy nhất là chữ của mình là "0.01 ₫" ở câu hỏi Q2, và mình cũng để `₫` cho thống nhất. Nếu bạn chỉ thấy khó đọc khi xem file, có thể đổi font trong phần Markdown preview của VS Code, nội dung file không cần đổi.
+
+Về các server: phiên vừa khởi động lại nhưng vẫn là phiên `305c705a`, nên whitelist không cần thêm gì. 4 server chạy nền (backend, web, admin, Expo) đã dừng. Khi bạn sẵn sàng khám phá Web Admin cho S0, bạn báo mình để mình bật lại. Nếu cần mobile thì mình chạy lại cả `adb reverse`.
+````
+
+---
+
+### C34 · 15:07 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+- Vì lúc nãy máy bị crash nên tôi cần bạn khởi động lại phần web.
+- Đồng thời với mỗi ảnh tôi chụp thì tôi nên đặt tên gì, bạn gợi ý trước cho tôi đi.
+- Cần tôi trả lời Q1-Q8 khi quan sát không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Start EShop backend on port 3000
+- Bash: Start EShop customer web on port 5173
+- Bash: Start EShop admin web on port 5174
+- Bash: Wait until all three servers respond
+
+**Output AI (nguyên văn):**
+
+````text
+Mình bật lại backend, web và admin. Lưu ý: như đã ghi lúc trước, mỗi lần khởi động backend có thể tự reset DB về dữ liệu mẫu. Ở S0 việc này không ảnh hưởng gì.
+
+Cả 3 server đã chạy lại: backend tại `localhost:3000`, web tại `5173`, Web Admin tại `5174`. Backend lại in ra dòng "Database initialized and seeded", tức là DB đã về dữ liệu mẫu.
+
+## Tên ảnh cho S0
+
+Lưu vào `features/C_FR-17_QuanLyCoupon/screenshots/`. Mỗi tên có dạng `S0_<số thứ tự>_<nội dung>.png`. Số thứ tự giữ cho ảnh xếp đúng trình tự, phần nội dung khớp với một dòng trong bảng ở mục 4.
+
+| Tên file | Chụp gì |
+|---|---|
+| `S0_01_dang_nhap_admin.png` | Trang đăng nhập Web Admin |
+| `S0_02_menu_admin.png` | Trang đầu sau khi đăng nhập, thấy menu dẫn tới mục mã giảm giá |
+| `S0_03_danh_sach_coupon.png` | Trang mã giảm giá: Tiêu đề, URL trên thanh địa chỉ, bảng danh sách đầy đủ các cột và mã mẫu |
+| `S0_04_form_them_coupon.png` | Form thêm mã khi **chưa nhập gì**, thấy đủ nhãn, dấu `*` và giá trị mặc định |
+| `S0_05_dropdown_type.png` | Dropdown `type` đang mở, nếu trường này là dropdown |
+| `S0_06_chon_ngay_expired.png` | Ô chọn ngày `expired_at` đang mở, nếu có |
+| `S0_07_nut_thao_tac.png` | Cận cảnh nút Thêm, Xóa, Sửa (nếu có) để thấy chữ và màu |
+
+Gặp màn hình nào khác đáng chú ý thì đánh số tiếp từ `S0_08_…`. Nếu một ảnh đã chụp đủ nội dung của ảnh khác, ví dụ ảnh danh sách đã thấy rõ nút Xóa, thì bỏ qua ảnh còn lại.
+
+## Có cần trả lời Q1–Q8 không?
+
+**Chỉ trả lời những câu nhìn thấy được, không cần thử.** Ở S0 bạn chỉ quan sát giao diện, không nhập dữ liệu sai.
+
+| Câu | Trả lời được ở S0 bằng cách |
+|---|---|
+| Q6 (có sửa được mã không) | Xem có nút Sửa không |
+| Q8 (có trường `is_active` không) | Xem form và bảng có trường trạng thái không |
+| Q5 (định dạng ngày) | Xem ô `expired_at` là ô chọn ngày hay ô gõ chữ |
+| Q1–Q4 (giới hạn, số thập phân, độ dài `code`) | Chỉ ghi nếu giao diện **tự nói ra**, ví dụ chữ gợi ý "0–100" hay "tối đa 20 ký tự". Nếu không thấy thì để trống |
+| Q7 (hộp thoại khi xóa) | Để trống, dời sang S6 |
+
+Những câu còn trống sẽ được xử lý ở các bước sau. Ở S2, câu nào ảnh hưởng tới cách chia lớp tương đương sẽ được ghi thành **giả định**. Đến S6, khi chạy test thật, mình sẽ biết hệ thống thực sự xử lý thế nào.
+````
+
+---
+
+### C35 · 15:19 18/10/2026 · Tool: Claude Code (claude-opus-5-5) · Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi nghĩ là cần commit file 00_spec lại, vì file đó là bạn viết. Sau đó tôi điền vào quan sát thì 1 commit nữa. Và bạn viết lại và mình kiểm tra thì thêm 1 commit. Hay là không cần mà chỉ 1 commit cho tất cả?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Export prompt log and show pending changes
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đề xuất **tách thành 3 commit**. Đề chỉ bắt buộc mỗi bước tối thiểu một commit, nhưng tách nhỏ có 3 lợi ích:
+
+1. **Lịch sử git cho thấy rõ AI viết gì và bạn sửa gì.** Diff giữa bản AI soạn và bản sau khi bạn review chính là bằng chứng "human review" mà đề yêu cầu. Bằng chứng này cũng dùng được cho Audit Report (mục "SV đã sửa gì") và khi bị gọi vấn đáp.
+2. Nếu bạn sửa sai ở bước review thì vẫn còn bản gốc để quay lại.
+3. Cả 3 commit vẫn cùng tag `[C-FR17][S0]`, nên khi đếm vẫn tính là một bước.
+
+| Commit | Nội dung | Message |
+|---|---|---|
+| 1 | `00_spec.md` bản AI soạn | `[C-FR17][S0] Add spec extract and requirement list (AI draft)` |
+| 2 | Ảnh chụp và bảng quan sát bạn điền | `[C-FR17][S0] Record UI exploration and screenshots` |
+| 3 | Mình viết lại cho gọn và cập nhật Q1–Q8; bạn kiểm tra xong thì commit | `[C-FR17][S0] Review spec and answer open questions` |
+
+Mình áp dụng cách tách này cho mọi bước có AI tham gia (S1–S4): **AI soạn → commit, bạn review → commit**.
+
+Commit 1 làm ngay được. Mình xuất lại prompt log trước:
 ````
 
 
@@ -1599,6 +2129,6 @@ Giữ lại label `bug` mặc định, vì template tự gắn label này cho m�
 
 > Dán nguyên văn prompt và output. Mẫu:
 >
-> `### G01 — HH:MM dd/mm/yyyy — Tool: ChatGPT (<model>)` → **Phần liên quan:** … → **Prompt (nguyên văn):** … → **Output AI (nguyên văn):** …
+> `### G01 · HH:MM dd/mm/yyyy · Tool: ChatGPT (<model>)` → **Phần liên quan:** … → **Prompt (nguyên văn):** … → **Output AI (nguyên văn):** …
 
 _(Chưa có)_
