@@ -122,20 +122,20 @@ Mỗi yêu cầu được tách từ đoạn trích ở mục 1 thành một câ
 
 ## 3. Những điểm SRS chưa nói rõ
 
-Cột "Trả lời sau S0" tổng hợp từ giao diện (mục 4) và từ các lần SV thử khám phá (mục 5). Cột cuối cho biết thông tin nào được đưa vào prompt cho AI ở S1–S4:
+Cột "Trả lời sau S0" tổng hợp từ giao diện (mục 4). Kết quả SV nhập thử ở S0 (E01–E07) được tách sang file riêng, không để trong file này. Cột cuối cho biết thông tin nào được đưa vào prompt cho AI ở S1–S4:
 
 - **Có**: Thông tin nhìn thấy trên giao diện (loại ô nhập, nhãn, nút). Đây là thông tin bất kỳ tester nào cũng có khi bắt đầu thiết kế.
 - **Không**: Kết quả SV đã nhập thử. Không đưa cho AI để phần AI gap analysis (S8) còn trung thực. Điểm nào vẫn chưa rõ thì ghi thành **giả định** ở S2.
 
 | # | Câu hỏi | Liên quan | Trả lời sau S0 | Đưa vào prompt S1–S4 |
 |---|---|---|---|---|
-| Q1 | `discount_value` loại `percent` có giới hạn trên không (ví dụ tối đa 100)? SRS chỉ yêu cầu "dương" | FR17-R07 | Giao diện không ghi giới hạn (placeholder "Giá trị % (VD: 10)"). Thử: 1000% lưu được (E01) | Chỉ phần giao diện |
-| Q2 | `discount_value` có nhận số thập phân không (ví dụ 10.5% hoặc 0.01 ₫)? | FR17-R07 | Giao diện không ghi. Thử: Nhận số thập phân (E02) | Không |
-| Q3 | `min_order_amount`, `max_uses_per_user` có nhận số thập phân không? Có giới hạn trên không? | FR17-R09, R10 | Thử: `min_order_amount` nhận số thập phân (E03); `max_uses_per_user` không tạo được mã khi nhập số thập phân (E04). Giới hạn trên: Chưa thử | Không |
-| Q4 | `code` có giới hạn độ dài, ký tự cho phép (chữ, số, ký tự đặc biệt, khoảng trắng) không? Có phân biệt hoa/thường khi kiểm tra trùng không? | FR17-R04, R05 | Giao diện không ghi giới hạn (placeholder "Mã coupon (VD: SAVE10)"). Thử: Chữ có dấu tiếng Việt, số, `@`, `!` không bị chặn (E05); chữ thường tự chuyển thành chữ hoa ngay lúc gõ (E07). Độ dài, khoảng trắng, trùng hoa/thường: Chưa thử | Chỉ phần giao diện |
+| Q1 | `discount_value` loại `percent` có giới hạn trên không (ví dụ tối đa 100)? SRS chỉ yêu cầu "dương" | FR17-R07 | Giao diện không ghi giới hạn (placeholder "Giá trị % (VD: 10)"). Đã thử ở S0 (E01) | Chỉ phần giao diện |
+| Q2 | `discount_value` có nhận số thập phân không (ví dụ 10.5% hoặc 0.01 ₫)? | FR17-R07 | Giao diện không ghi. Đã thử ở S0 (E02) | Không |
+| Q3 | `min_order_amount`, `max_uses_per_user` có nhận số thập phân không? Có giới hạn trên không? | FR17-R09, R10 | Đã thử ở S0 (E03, E04). Giới hạn trên: Chưa thử | Không |
+| Q4 | `code` có giới hạn độ dài, ký tự cho phép (chữ, số, ký tự đặc biệt, khoảng trắng) không? Có phân biệt hoa/thường khi kiểm tra trùng không? | FR17-R04, R05 | Giao diện không ghi giới hạn (placeholder "Mã coupon (VD: SAVE10)"). Đã thử ở S0 (E05, E07). Độ dài, khoảng trắng, trùng hoa/thường: Chưa thử | Chỉ phần giao diện |
 | Q5 | `expired_at` có được là ngày trong quá khứ, hoặc là hôm nay không? Định dạng ngày là gì? | FR17-R08 | Giao diện: Ô chọn ngày, nhập theo `mm/dd/yyyy`, bảng hiển thị `yyyy-mm-dd`; khi mở lịch, các ngày trước hôm nay không bị làm mờ (ảnh `S0_06`). Có lưu được ngày quá khứ, hôm nay hay không: Chưa ghi nhận | Có |
 | Q6 | Admin có sửa được mã không? FR-17 chỉ ghi Thêm / Xem / Xóa | FR17-R01–R03 | Không có nút sửa | Có |
-| Q7 | Xóa mã có hộp thoại xác nhận không? (FR-24 chỉ yêu cầu cho xóa sản phẩm trong giỏ) | FR17-R03 | Thử: Xóa ngay, không có hộp thoại (E06) | Không |
+| Q7 | Xóa mã có hộp thoại xác nhận không? (FR-24 chỉ yêu cầu cho xóa sản phẩm trong giỏ) | FR17-R03 | Đã thử ở S0 (E06) | Không |
 | Q8 | Trường `is_active` (FR-09, C1) có nhập được trên form không, và giá trị mặc định khi tạo mới là gì? | FR-09 | Form và bảng **không có** trường `is_active` (cột "Hết hạn" là `expired_at`, không phải `is_active`). Admin không bật/tắt mã được trên giao diện | Có |
 
 ---
@@ -196,25 +196,3 @@ Không có nút sửa.
 - Nút "Tạo mã" màu cam, trong khi FR-21 yêu cầu nút hành động tích cực màu xanh dương (FR17-R14).
 - Ô (3) luôn ghi "Giá trị %" dù loại có thể là số tiền cố định: Chưa ghi nhận placeholder có đổi khi chọn "Số tiền cố định (₫)" không.
 - Ngày nhập theo `mm/dd/yyyy` nhưng hiển thị `yyyy-mm-dd`.
-
----
-
-## 5. Kết quả thử khám phá (SV tự thử ở S0, 18/10/2026)
-
-SV nhập thử trên giao diện trong lúc khám phá, **trước khi có test case**. Các kết quả này:
-
-- **Không** đưa vào prompt cho AI ở S1–S4.
-- Sẽ được chạy lại chính thức ở S6 theo test case (sau khi reset DB), có ảnh chụp làm bằng chứng.
-- Dùng ở S8 để đối chiếu: AI có thiết kế được test case chạm tới các trường hợp này không.
-
-| Mã | SV đã thử | Kết quả SV thấy | Liên quan | Chưa ghi nhận |
-|---|---|---|---|---|
-| E01 | Tạo mã loại Phần trăm với giá trị `1000` | Tạo được, mã hiện trong bảng | Q1, FR17-R07 | Ảnh chụp |
-| E02 | Nhập số thập phân vào ô giá trị | Nhận số thập phân | Q2, FR17-R07 | Loại (phần trăm hay cố định), có lưu vào bảng không |
-| E03 | Nhập số thập phân vào ô "Đơn tối thiểu" | Nhận số thập phân | Q3, FR17-R09 | Có lưu vào bảng không, bảng hiển thị thế nào |
-| E04 | Nhập số thập phân (dấu chấm) vào ô "Số lần dùng tối đa/người" | Không tạo được mã | Q3, FR17-R10 | Nội dung thông báo (nếu có); chưa thử dấu phẩy |
-| E05 | Nhập mã có chữ tiếng Việt có dấu, số, `@`, `!` | Không bị chặn | Q4, FR17-R04 | Có tạo được mã không |
-| E06 | Xóa một mã SV vừa tạo | Mã bị xóa ngay, không có hộp thoại xác nhận | Q7, FR17-R03 | Ảnh chụp |
-| E07 | Gõ chữ thường vào ô "Mã coupon" (bàn phím chữ thường lẫn chữ hoa) | Chữ tự chuyển thành chữ hoa ngay lúc gõ | Q4, FR17-R04, R05 | Ảnh chụp; mã lưu vào bảng có giữ chữ hoa không |
-
-Sau các lần thử này DB đã thay đổi so với dữ liệu mẫu. **Phải reset DB trước khi chạy test ở S6.**
