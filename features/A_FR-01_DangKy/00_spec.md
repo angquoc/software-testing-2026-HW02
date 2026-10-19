@@ -320,3 +320,22 @@ Theo thứ tự từ trên xuống dưới trên form.
 ### 5.2 Ngoài phạm vi FR-01 (chỉ ghi lại để tham khảo)
 
 Trang Đăng nhập (`localhost:5173/login`, ảnh `S0_03_duong_vao_trang_2.png`) thuộc FR-02 và FR-21, không xử lý trong feature này. Những điểm nhìn thấy: Tiêu đề form là "Đăng Ký"; nhãn ô đầu tiên là "Username" (FR-02 nói người dùng nhập Email); nút submit là "Sign In" (tiếng Anh). Điểm này chỉ ảnh hưởng tới FR-01 qua câu hỏi Q27.
+
+---
+
+## 6. Thay đổi so với bản AI
+
+Bản AI của S0 là `ai_raw/S0_khao_sat.md` (lần đầu) và `ai_raw/S0_khao_sat_v2.md` (sửa lần 1). Phạm vi của bảng:
+
+- Việc sinh viên điền bảng quan sát (mục 4) là đầu vào theo quy trình S0, không phải sửa bản AI. Các chỗ AI sửa lại trên bản sinh viên điền đã ghi ở mục 4.6.
+- Mục 3.8, 4.6 và 5 do AI viết ở bước 3 của S0 (đối chiếu ảnh), không phải phần sinh viên sửa.
+
+| Vị trí | Thay đổi | Loại | Lý do hoặc căn cứ |
+|---|---|---|---|
+| Mục 3 (Q01, Q05, Q08, Q12, Q25); mục 4 (phần mở đầu, mục đếm `<h1>`, bảng ô nhập, danh sách ảnh) | Bỏ mọi chỗ yêu cầu xem thuộc tính HTML (`type`, `required`, `minlength`/`maxlength`, `pattern`), đếm thẻ `<h1>` bằng DevTools, và 5 ảnh chụp DevTools. Bản sửa lưu ở `ai_raw/S0_khao_sat_v2.md` | Thừa | Vi phạm WORKFLOW mục 1.1 và 3.1: Thuộc tính HTML là quy tắc do lập trình viên cài, không thuộc đặc tả; S0 chỉ quan sát bằng mắt. Sinh viên phát hiện khi review |
+| Mục 3.8, Q24 | Đóng câu hỏi: Trong khung form có đúng 1 nút "Đăng Ký" và 1 liên kết "Đăng nhập", không có nút hủy bỏ | Quyết định của SV | Sinh viên quan sát giao diện (O12 đến O14) |
+| Mục 3.8, 3.9, Q26 | Vẫn đưa trường Xác nhận mật khẩu vào thiết kế từ S1 đến S4 dù giao diện không có | Quyết định của SV | Test case thiết kế từ đặc tả (FR01-R11, FR01-R12) |
+| Mục 3.8, 3.9, Q27 | Dấu hiệu xác nhận đã chuyển tới trang Đăng nhập: Đường dẫn đổi thành `/login` và trang hiện form đăng nhập; không dựa vào chữ trên trang đó | Quyết định của SV | Chữ trên trang `/login` thuộc FR-02 và FR-21, không thuộc FR-01 |
+| Mục 3.9, O06 | Chấp nhận "EShop", "Email"; "SUT" chấp nhận, nếu khắt khe chỉ ghi chú | Quyết định của SV | Chốt cách hiểu "thuật ngữ kỹ thuật chuẩn" (FR-21) |
+| Mục 3.9, mục 5.1 (D04) | Tiêu đề tab "frontend-web" là ứng viên bug về ngôn ngữ | Quyết định của SV | Không phải tiếng Việt, không mô tả nội dung trang (FR01-R14) |
+| Mục 4.5 | Ảnh đường vào trang chụp thành 2 file `S0_02_duong_vao_trang_1.png` (navbar) và `S0_03_duong_vao_trang_2.png` (trang Đăng nhập), thay cho một file `S0_02_duong_vao_trang.png` như bản AI đề xuất | Quyết định của SV | Đường vào trang có 2 nơi khác nhau |
