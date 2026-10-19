@@ -11,6 +11,7 @@ Tài liệu này mô tả cách làm bài HW02 cho từng feature: Các bước,
 - Căn cứ duy nhất để thiết kế test case là đặc tả của EShop: `Homeworks/eshop-sut/README.md` (SRS) và `Homeworks/eshop-sut/api_specification.md`, cùng với những gì nhìn thấy trên giao diện (ảnh chụp trong thư mục feature).
 - **Không** đọc mã nguồn EShop (`backend/`, `frontend-web/`, `frontend-admin/`, `frontend-mobile/`).
 - **Không** tự mở trang, **không** tải HTML/JS của trang bằng curl hay cách khác. Thông tin giao diện chỉ lấy từ ảnh do sinh viên chụp.
+- **Không** dùng DevTools (thẻ Elements, Inspect) để xem HTML ở các bước thiết kế S0 đến S5. Thuộc tính HTML như `required`, `minlength`, `maxlength`, `pattern` là quy tắc do lập trình viên cài vào; biết trước sẽ khiến lớp tương đương được chia theo code thay vì theo đặc tả. DevTools chỉ dùng ở S6 (xem mục 3.3).
 - Chỗ nào đặc tả không nói rõ thì ghi thành **giả định**, không tự đặt ra quy tắc.
 
 ### 1.2 AI-First, có người kiểm soát
@@ -84,7 +85,7 @@ features/<Pool>_<FR>_<Tên>/        ví dụ: features/A_FR-01_DangKy/
 - Tách thành danh sách yêu cầu có mã để truy vết, dạng `<FR>-R01, <FR>-R02, ...` (ví dụ `FR01-R01`).
 - Liệt kê những điểm đặc tả chưa nói rõ (câu hỏi mở). **Không** trả lời bằng cách đoán.
 - Lập bảng quan sát giao diện cho sinh viên điền.
-- **S0 chỉ quan sát.** Bảng quan sát và các câu hỏi chỉ được hỏi những gì **nhìn thấy được** trên giao diện mà không cần nhập dữ liệu: Tiêu đề, nhãn, placeholder, loại ô nhập, dấu `*`, giá trị mặc định, nút, chữ và màu hiển thị sẵn. Không yêu cầu sinh viên nhập thử. Hành vi chỉ thấy được khi nhập dữ liệu (thông báo lỗi, giới hạn, tự định dạng...) là việc của S6.
+- **S0 chỉ quan sát.** Bảng quan sát và các câu hỏi chỉ được hỏi những gì **nhìn thấy được** trên giao diện mà không cần nhập dữ liệu và **không cần DevTools**: Tiêu đề, nhãn, placeholder, loại ô nhập nhìn thấy được (ô chữ, dropdown, ô chọn ngày...), dấu `*`, giá trị mặc định, nút, chữ và màu hiển thị sẵn. Không yêu cầu sinh viên nhập thử. Hành vi chỉ thấy được khi nhập dữ liệu (thông báo lỗi, giới hạn, tự định dạng...) là việc của S6.
 - Thứ tự và file:
   1. AI viết `ai_raw/S0_khao_sat.md` (trích đặc tả, danh sách yêu cầu, câu hỏi mở, bảng quan sát còn trống), đồng thời tạo `00_spec.md` có **nội dung giống hệt** để sinh viên điền.
   2. Sinh viên chụp ảnh vào `screenshots/` và điền bảng quan sát **ngay trong `00_spec.md`**.
@@ -100,6 +101,7 @@ features/<Pool>_<FR>_<Tên>/        ví dụ: features/A_FR-01_DangKy/
 
 ### 3.3 S6: Chạy test
 
+- DevTools được dùng ở S6 để kiểm tra những thuộc tính mà **đặc tả yêu cầu**, ví dụ `type="email"`, `type="password"` (FR-22), số thẻ `<h1>` (FR-21). Đây là bước chạy test, không dùng để tìm thêm quy tắc mới cho việc thiết kế.
 - Reset dữ liệu EShop về dữ liệu mẫu trước mỗi đợt test.
 - Kết quả thực tế chỉ lấy từ lần chạy thật.
 

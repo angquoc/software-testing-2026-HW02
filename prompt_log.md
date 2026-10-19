@@ -3399,6 +3399,160 @@ Cập nhật WORKFLOW.
 **Output AI (nguyên văn):**
 
 ````text
+Mình đã cập nhật `WORKFLOW.md`. Thay đổi nằm ở 3 chỗ:
+
+- **Mục 3.1 (S0)** ghi rõ thứ tự và file cho từng bước:
+  1. AI viết `ai_raw/S0_khao_sat.md` và tạo `00_spec.md` có **nội dung giống hệt**.
+  2. Bạn chụp ảnh và điền bảng quan sát **ngay trong `00_spec.md`**.
+  3. AI đọc ảnh và bảng rồi viết lại `00_spec.md`. File `ai_raw/S0_khao_sat.md` giữ nguyên làm bản gốc.
+- **Mục 4.2 (tách commit):** Ba commit của S0 ghi rõ commit nào đụng tới file nào.
+- **Mục 2 (cấu trúc thư mục):** Dòng `00_spec.md` đổi thành "bản SV điền quan sát rồi review".
+
+`WORKFLOW.md` chưa commit lần nào, nên lần commit đầu sẽ là bản đã sửa này. Log đã xuất lại. Lệnh commit vẫn như lần trước:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add tools/export_prompt_log.py
+git commit -m "[setup] Add design session to prompt log whitelist"
+git add WORKFLOW.md prompt_log.md
+git commit -m "[setup] Add workflow document for design sessions"
+git push
+```
+
+Sau đó bạn trả lời phiên mới, ví dụ: "Không làm theo đề xuất của bạn. WORKFLOW đã cập nhật mục 3.1: Bạn tạo `ai_raw/S0_khao_sat.md` và một bản giống hệt là `00_spec.md`, tôi điền bảng quan sát trong `00_spec.md`. Đọc lại mục 3.1 rồi bắt đầu S0." Phạm vi trích đặc tả mà phiên đó đề xuất thì bạn có thể đồng ý luôn.
+````
+
+---
+
+### C62 | 11:20 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Tôi đã cập nhật lại WORKFLOW. Không làm theo đề xuất của bạn, hãy làm theo bản WORKFLOW mà tôi đã ghi. Đó là bạn tạo ai_raw/S0_khao_sat.md và một bản giống hệt là 00_spec.md, tôi điền bảng quan sát trong 00_spec.md. Đọc lại mục 3.1 rồi bắt đầu S0.
+2. Phạm vi trích đặc tả, tôi đồng ý với cách bạn đề xuất.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: d:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Bash: Copy S0 output to 00_spec.md and verify identical
+
+**Output AI (nguyên văn):**
+
+````text
+Đã đọc lại mục 3.1. Tôi lấy thời gian hệ thống để ghi vào đầu file rồi viết S0.
+
+S0 phần 1 đã xong, tôi dừng ở đây để bạn review. Có hai file, nội dung giống hệt nhau (đã kiểm tra bằng `cmp`):
+
+- [ai_raw/S0_khao_sat.md](Homeworks/HW02/features/A_FR-01_DangKy/ai_raw/S0_khao_sat.md) là bản gốc, giữ nguyên không sửa.
+- [00_spec.md](Homeworks/HW02/features/A_FR-01_DangKy/00_spec.md) là bản để bạn điền bảng quan sát.
+
+**Nội dung file:**
+1. **Trích nguyên văn:** FR-01, tài khoản mặc định (vì `test@eshop.com` và `admin@eshop.com` đã tồn tại, liên quan tới yêu cầu email duy nhất), FR-21, FR-22, API `POST /api/register`, và SEC-01/04/05 ghi là tham khảo.
+2. **25 yêu cầu có mã**, chia nhóm như sau:
+
+   | Nhóm | Mã |
+   |---|---|
+   | FR-01 | `FR01-R01` đến `R13` |
+   | Giao diện | `R14` đến `R21` |
+   | API | `R22` |
+   | Bảo mật (tham khảo) | `R23` đến `R25` |
+
+   Tôi loại hai ý không áp dụng cho form này và có ghi lý do: Đơn vị tiền và Step Indicator.
+3. **25 câu hỏi mở** (`Q01` đến `Q25`), nhóm theo Họ Tên, Email, Mật khẩu, Xác nhận mật khẩu, Kết quả, API, Giao diện. Tôi chỉ ghi nguồn có thể làm rõ, không đưa câu trả lời.
+4. **Bảng quan sát** (`O01` đến `O15`) và danh sách 7 ảnh nên chụp. Bảng chỉ hỏi những gì nhìn thấy được mà không cần nhập dữ liệu. Thứ tự Tab và vị trí thông báo lỗi tôi để tới S6, vì phải thao tác mới thấy.
+
+**Ba điểm bạn nên để ý khi review:**
+- Ở mục 1.1 có một dấu "—". Dấu này nằm trong câu trích nguyên văn từ SRS nên tôi giữ nguyên, không phải tôi tự thêm.
+- Bảng quan sát có hỏi các thuộc tính HTML như `type`, `required` và `maxlength`. Muốn xem thì bạn phải mở DevTools (F12), nhưng không cần nhập dữ liệu. Nếu bạn cho rằng việc này vượt quá phạm vi "chỉ quan sát" thì cứ bỏ các cột đó.
+- `Q13`: Đặc tả FR-01 không nói trường Xác nhận mật khẩu có bắt buộc hay không. Vì vậy chưa rõ form có phải đặt dấu `*` cho trường này không.
+
+**Commit 1 của S0:** WORKFLOW nhắc nhờ phiên điều phối xuất prompt log trước khi commit.
+
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S0_khao_sat.md features/A_FR-01_DangKy/00_spec.md
+git commit -m "[A-FR01][S0] Add spec extract and requirement list (AI draft)"
+```
+
+Bạn chụp ảnh và điền bảng trong `00_spec.md` xong thì báo tôi. Khi đó tôi sẽ đọc ảnh, đối chiếu và viết lại `00_spec.md`.
+````
+
+---
+
+### C63 | 14:43 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Session mới đã viết xong, tôi thấy có chỗ trong file ghi: Thuộc tính HTML (type, required, maxlength...) xem bằng DevTools: Nhấn F12, chọn thẻ Elements, nhấp chuột phải vào ô nhập trên trang và chọn Inspect. Ghi đúng chữ như trên giao diện, kể cả hoa thường và dấu câu. Ô nào không có thì ghi "Không có". -> Nếu bật DevTools lên thì có vi phạm không? Với phần câu hỏi mở có vài câu phải thao tác mới biết được, tôi có thể chọn không trả lời, đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List FR-01 files and compare spec with raw copy
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Bash: List all tool calls of the design session
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đọc file S0 mà phiên mới vừa viết và kiểm tra các thao tác của phiên đó, rồi mới trả lời để góp ý cho sát.
+
+Mình kiểm tra thêm các thao tác phiên mới đã làm kể từ lần trước:
+
+Phiên mới **chưa vi phạm gì**. Lần này nó chỉ đọc `WORKFLOW.md` và `README.md`, ghi file `ai_raw/S0_khao_sat.md`, rồi chép sang `00_spec.md` (đã kiểm tra hai file giống hệt nhau). Trả lời 2 câu hỏi của bạn:
+
+## 1. Bật DevTools có vi phạm không?
+
+**Ở S0 thì không nên dùng.** Thẻ Elements của DevTools hiển thị HTML của trang, tức là **phần cài đặt của giao diện**, không phải những gì người dùng nhìn thấy. Về bản chất, việc này giống với tải HTML về đọc, điều mà `WORKFLOW.md` đã cấm. Có 2 loại thuộc tính cần tách ra:
+
+| Loại | Ví dụ | Vì sao không làm ở S0 |
+|---|---|---|
+| Thuộc tính **đặc tả có yêu cầu** | `type="email"`, `type="password"` (FR-22); số thẻ `<h1>` (FR-21) | Kiểm tra những thuộc tính này chính là **chạy test**, việc của S6. Đến S6 thì dùng DevTools để kiểm tra là hợp lệ, vì đặc tả đã ghi rõ |
+| Thuộc tính **đặc tả không nhắc tới** | `required`, `minlength`, `maxlength`, `pattern` | Đây là **quy tắc mà lập trình viên cài vào**. Nếu biết trước những quy tắc này thì ở S2, các lớp tương đương sẽ được chia theo code chứ không theo đặc tả. Khi đó kiểm thử thành hộp xám, và phần gap analysis không còn đo được AI tự suy ra từ đặc tả đến đâu |
+
+Vì vậy, khi điền bảng ở commit 2, bạn để trống các cột `type`, `required`, `minlength`/`maxlength`, `pattern`, dòng O05 (số thẻ `<h1>`), và **không chụp** các ảnh `S0_03` đến `S0_07` (ảnh DevTools). Ghi vào đó "Không quan sát ở S0 (để S6)". Đến commit 3, phiên mới sẽ viết lại bảng theo đúng hướng này.
+
+Đây cũng là một chỗ **AI lệch khỏi nguyên tắc hộp đen** mà bạn đã phát hiện: Nó tự đề xuất soi HTML dù đã được dặn là chỉ quan sát. Mình sẽ ghi vào phần chất liệu cho Critique.
+
+## 2. Các câu hỏi mở phải thao tác mới biết: Bỏ không trả lời được không?
+
+**Được, và nên bỏ.** Ngay đầu mục 3 trong file đã ghi là bạn quyết định ở bản review, bằng cách quan sát **hoặc ghi thành giả định**. Có thể chia 25 câu hỏi thành 3 nhóm:
+
+| Nhóm | Các câu | Xử lý |
+|---|---|---|
+| Trả lời được bằng mắt ở S0 | Q13 (Xác nhận mật khẩu có `*` không), Q24 (trang có những nút nào) | Trả lời trong bảng quan sát |
+| Phải thao tác hoặc chạy thử mới biết | Q16–Q20 (thông báo lỗi, thứ tự báo lỗi, sau khi đăng ký thành công, giữ dữ liệu trên form, đã đăng nhập thì vào trang được không); Q01, Q05, Q08, Q12, Q25 (cần DevTools) | **Để trống**, ghi "Để S6" |
+| Đặc tả không nói, giao diện cũng không cho biết | Q02–Q04, Q06, Q07, Q09–Q11, Q14, Q15, Q21–Q23 | **Không trả lời.** Đến S2 sẽ ghi thành giả định, hoặc tách thành lớp tương đương riêng |
+
+Điều quan trọng là **không đoán** để lấp chỗ trống. Một câu trả lời đoán sai sẽ làm sai kết quả mong đợi ở các bước sau.
+
+Nếu bạn muốn, mình thêm vào mục 3.1 của `WORKFLOW.md` một dòng: "S0 không dùng DevTools; DevTools chỉ dùng ở S6 để kiểm tra những thuộc tính mà đặc tả yêu cầu". Như vậy phiên mới và các lần chạy skill sau này sẽ không đề xuất lại. Bạn có muốn mình thêm không?
+````
+
+---
+
+### C64 | 14:47 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Thêm đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check WORKFLOW state and locate insertion points
+- Bash: Add DevTools rule to WORKFLOW.md
+- Bash: Tidy WORKFLOW, record critique and audit notes, export log
+
+**Output AI (nguyên văn):**
+
+````text
 (Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
