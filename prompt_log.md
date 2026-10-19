@@ -4386,6 +4386,7 @@ Như vậy có được không, tôi có bỏ sót chỗ nào không?
 - Bash: List S1 files and outline of the AI draft
 - Bash: Read S1 input tables and decision points
 - Bash: Audit new design-session tool calls and export log
+- Bash: Update tracker for FR-01 S0 and S1
 
 **Output AI (nguyên văn):**
 
@@ -4393,6 +4394,246 @@ Như vậy có được không, tôi có bỏ sót chỗ nào không?
 Mình kiểm tra các file S1 vừa tạo, đọc phần câu hỏi cần chốt trong bản nháp để hiểu các lựa chọn "a", và kiểm tra thao tác của phiên thiết kế:
 
 Mình kiểm tra thao tác của phiên thiết kế và xuất log:
+
+Phiên thiết kế **không vi phạm gì**. Ở S1 nó chỉ đọc `WORKFLOW.md` và `00_spec.md`, rồi ghi `ai_raw/S1_input_output.md`. Log đã xuất xong: 81 lượt từ 2 phiên.
+
+**Commit bản nháp AI của S1:**
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/ai_raw/S1_input_output.md prompt_log.md
+git commit -m "[A-FR01][S1] Identify input/output variables (AI draft)"
+git push
+```
+
+## Góp ý cho các lựa chọn của bạn
+
+**Bạn đang bỏ sót điểm 5.** Bản nháp có **5** điểm cần quyết định, bạn mới trả lời 4. Điểm 5 hỏi: Các yêu cầu ở mục 4 của bản nháp (những yêu cầu không mô hình hoá thành biến Input/Output) có tách thành một nhóm checklist riêng, nằm ngoài Domain Testing, hay không.
+
+**Điểm 1 (IN6, trạng thái đăng nhập):** Bạn hiểu đúng. Nếu giữ IN6 làm biến Input thì sẽ có lớp "đang đăng nhập", tức là phải test xem người đã đăng nhập có đăng ký được không. Nhưng FR-01 không nói gì về trường hợp này, nên **không viết được kết quả mong đợi** cho nó. Mình đề xuất chọn **(a)**: Bỏ IN6, và thêm "chưa đăng nhập" vào tiền điều kiện của mọi test case. Câu hỏi Q20 vẫn để mở. Nếu muốn, đến S5 bạn có thể thêm một test case khám phá cho trường hợp này, ghi rõ là nằm ngoài đặc tả.
+
+**Điểm 2 (a), chia thông báo lỗi theo nguyên nhân:** Hợp lý. Chỉ lưu ý: Đặc tả không nêu câu chữ của thông báo lỗi (Q16), nên kết quả mong đợi chỉ ghi được kiểu "báo lỗi liên quan tới Email", không ghi được chính xác câu chữ.
+
+**Điểm 3 (a), gộp 5 loại lỗi mật khẩu:** Được, nhưng cần hiểu đúng phạm vi. Gộp ở đây là gộp **Output**, nghĩa là cùng một loại thông báo "mật khẩu không đủ mạnh". Còn ở S2, **các lớp tương đương của Input vẫn phải tách riêng 5 điều kiện**: Thiếu độ dài, thiếu chữ hoa, thiếu chữ thường, thiếu chữ số, thiếu ký tự đặc biệt. Nếu gộp cả lớp Input thì sẽ vi phạm quy tắc "mỗi test case không hợp lệ chỉ phủ đúng một lớp không hợp lệ" trong slide S04. Bạn nên ghi rõ ý này khi trả lời.
+
+**Điểm 4 (a), chỉ dùng dấu hiệu chuyển trang:** Có 2 điểm yếu bạn nên cân nhắc:
+- Chuyển sang `/login` **không chứng minh** tài khoản đã được tạo. Ngược lại, việc có thông báo lỗi cũng không chứng minh tài khoản **không** được tạo.
+- Lựa chọn **(c)**, đăng ký lại cùng email xem có báo trùng không, vẫn nằm trong FR-01 (yêu cầu email duy nhất) mà kiểm chứng được tài khoản đã thực sự được tạo. Lựa chọn (b) thì phải dựa vào trang Đăng nhập, mà trang này đang có dấu hiệu lỗi riêng (Q27).
+
+Vì vậy mình nghiêng về **(a) kết hợp (c)**: Dùng dấu hiệu chuyển trang cho mọi test case, và thêm bước đăng ký lại cùng email ở những test case cần chứng minh tài khoản đã được tạo hoặc chưa được tạo. Đây vẫn là quyết định của bạn.
+
+**Trước khi phiên kia viết bản review (`01_io.md`):** Câu ở `WORKFLOW.md` mục 1.2 vẫn chưa được làm rõ. Phiên kia có thể hiểu là phải tạo `S1_input_output_v2.md` thay vì viết `01_io.md`. Bạn có muốn mình sửa ngay để tránh việc này không?
+````
+
+---
+
+### C82 | 22:50 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+- Không cần thêm WORKFLOW, cái đó là tôi hiểu nhầm, session đó không hiểu nhầm. WORKFLOW là để AI hiểu, không phải để tôi nên không cần.
+- Lúc này tôi gõ 4 ý nhưng tôi ghi nhầm, thật ra 4.a chính là 5a. Còn về 4, tôi đồng ý với bạn là nên kết hợp a và c, còn b về bên đăng nhập nên chắc mình không đụng, phải không?
+- Còn chỗ nào chưa sáng tỏ không, nếu không thì tôi sẽ commit và trả lời session.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng vậy. **Không dùng (b)** vì 2 lý do:
+- (b) dựa vào trang Đăng nhập, tức FR-02. Đó là feature của thành viên khác, và trang này đang có dấu hiệu lỗi riêng (Q27).
+- Nếu bước kiểm chứng của FR-01 dựa vào FR-02 thì khi test fail, không biết lỗi nằm ở Đăng ký hay Đăng nhập.
+
+Kết hợp (a) và (c) giúp FR-01 tự kiểm chứng được mà không phụ thuộc feature khác. Có một lưu ý cho (c): Bước đăng ký lại sẽ làm thay đổi dữ liệu. Nếu hệ thống có lỗi cho phép trùng email thì sẽ sinh thêm tài khoản. Vì vậy ở S6 phải reset DB giữa các đợt test, và `WORKFLOW.md` đã có quy tắc này.
+
+**Không còn chỗ nào chưa rõ.** Tổng hợp các quyết định để bạn trả lời phiên kia:
+
+| Điểm | Chọn | Ghi kèm |
+|---|---|---|
+| 1 | (a) | Bỏ IN6. Thêm "chưa đăng nhập" vào tiền điều kiện của mọi test case. Q20 để mở |
+| 2 | (a) | Chia thông báo lỗi theo nguyên nhân. Kết quả mong đợi không ghi câu chữ cụ thể (Q16) |
+| 3 | (a) | Gộp ở **Output**. Ở S2, các lớp **Input** vẫn tách riêng 5 điều kiện của mật khẩu |
+| 4 | (a) + (c) | Dùng dấu hiệu chuyển trang, cộng thêm bước đăng ký lại cùng email khi cần chứng minh tài khoản đã hoặc chưa được tạo. Không dùng (b) |
+| 5 | (a) | Các yêu cầu ở mục 4 kiểm tra thành nhóm checklist riêng |
+
+Đã ghi nhận: Không sửa `WORKFLOW.md`.
+
+Thứ tự tiếp theo:
+1. Commit bản nháp S1 bằng lệnh mình đưa ở trên.
+2. Trả lời phiên kia, để nó viết bản review `01_io.md`.
+3. Bạn duyệt `01_io.md` xong thì báo mình xuất log và đưa lệnh commit `[A-FR01][S1] Review input/output variables`.
+````
+
+---
+
+### C83 | 23:03 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+1.	(a)	Bỏ IN6. Thêm "chưa đăng nhập" vào tiền điều kiện của mọi test case. Q20 để mở
+2.	(a)	Chia thông báo lỗi theo nguyên nhân. Kết quả mong đợi không ghi câu chữ cụ thể (Q16)
+3.	(a)	Gộp ở Output. Ở S2, các lớp Input vẫn tách riêng 5 điều kiện của mật khẩu
+4.	(a) + (c)	Dùng dấu hiệu chuyển trang, cộng thêm bước đăng ký lại cùng email khi cần chứng minh tài khoản đã hoặc chưa được tạo. Không dùng (b) vì dính đến feature khác, khó phân biệt được đó là lỗi của feature nào.
+5.	(a)	Các yêu cầu ở mục 4 kiểm tra thành nhóm checklist riêng
+
+Tiện thể, tôi đã commit bản đó.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\01_io.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi viết `01_io.md` (bản review của S1) theo 5 quyết định của bạn. File `ai_raw/S1_input_output.md` giữ nguyên.
+
+Tôi đã viết xong [01_io.md](Homeworks/HW02/features/A_FR-01_DangKy/01_io.md), là bản review của S1 theo đúng 5 quyết định của bạn. File `ai_raw/S1_input_output.md` không bị sửa.
+
+**Những gì thay đổi so với bản AI:**
+1. **IN6:** Đã bỏ. Mục 1.1 mới ghi tiền điều kiện chung "chưa đăng nhập", còn Q20 vẫn để mở.
+2. **Thông báo lỗi:** Chia theo 7 nguyên nhân (ERR1 đến ERR7). Kết quả mong đợi chỉ nêu nguyên nhân, không ghi câu chữ cụ thể.
+3. **ERR6:** Gộp thành một loại ở phía Output. Có ghi chú rằng ở S2, phía Input vẫn tách riêng 5 điều kiện của mật khẩu.
+4. **Mục 3.4 (mới):** Cách xác nhận tài khoản đã hay chưa được tạo. Mọi test case dùng dấu hiệu chuyển trang; khi cần chứng minh thì đăng ký lại cùng email:
+   - Nếu tài khoản đã được tạo: Lần đăng ký lại bị từ chối với ERR4.
+   - Nếu chưa được tạo: Lần đăng ký lại thành công.
+
+   Có ghi lý do không dùng cách đăng nhập thử.
+5. **Mục 4:** Chốt các yêu cầu tĩnh thành nhóm checklist riêng.
+6. **Mục 5 và 6:** Mục 5 ghi các quyết định của bạn. Mục 6 liệt kê từng chỗ đã sửa so với bản AI.
+
+**Hai chỗ tôi tự thêm, bạn không yêu cầu, cần bạn xem có giữ không:**
+- Mục 1.1 thêm tiền điều kiện thứ hai: "reset dữ liệu về dữ liệu mẫu trước mỗi đợt test". Câu này lấy từ WORKFLOW mục 3.3.
+- Mục 3.4 thêm lưu ý cho cách đăng ký lại cùng email. Cách này dựa vào chính FR01-R05 (email duy nhất), nên nếu kiểm tra trùng email bị lỗi thì kết quả không còn đáng tin. Ngoài ra bước này tạo thêm dữ liệu, nên cần reset sau khi chạy.
+
+**Commit 2 của S1:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/01_io.md
+git commit -m "[A-FR01][S1] Review input/output variables"
+```
+
+Khi bạn duyệt xong `01_io.md` thì báo tôi để sang S2. Ở S2 tôi sẽ cần bạn chốt giả định cho các câu hỏi mở ảnh hưởng tới việc chia lớp, chủ yếu là độ dài tối đa, tập ký tự đặc biệt, quy tắc định dạng email và xử lý khoảng trắng.
+````
+
+---
+
+### C84 | 23:08 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi muốn hỏi chút, ai_raw là những bản do AI tạo ra. Còn các 00, 01 các thứ là bản do tôi review, chúng ta sẽ không tập trung vào hình thức mà những chỗ viết sai, thiếu, cần bổ sung,... đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng vậy. Phần review **tập trung vào nội dung**, còn hình thức chỉ cần đủ dùng. Cụ thể, khi đọc bản AI, bạn tìm 4 loại vấn đề:
+
+| Loại | Câu hỏi khi đọc | Ví dụ ở S1, S2 |
+|---|---|---|
+| **Sai** | Có điều gì trái với đặc tả không? | Ghi mật khẩu tối thiểu 6 ký tự, trong khi SRS ghi 8 |
+| **Thiếu** | Đặc tả có mà AI không đưa vào? | Thiếu biến Input "danh sách email đã có"; thiếu lớp "mật khẩu thiếu chữ số" |
+| **Thừa hoặc bịa** | AI tự đặt ra quy tắc mà đặc tả không có? | Tự cho Họ Tên tối đa 50 ký tự mà không ghi đó là giả định |
+| **Mơ hồ** | Kết quả mong đợi có kiểm chứng được không? | Ghi "hệ thống xử lý đúng" thay vì "chuyển tới `/login`" |
+
+Hình thức **chỉ cần quan tâm khi nó ảnh hưởng tới việc dùng** ở các bước sau:
+- Mỗi biến, mỗi lớp, mỗi test case có **mã** và **truy vết** được về yêu cầu (FR01-Rxx).
+- Có đủ các bảng mà slide S04 yêu cầu cho bước đó, ví dụ S2 phải có bảng Complete Set of Partitions, S3 phải có bảng Coverage và Minimum Set.
+- Tên trường dùng đúng như trên giao diện.
+
+Những thứ như dấu câu hay cách viết hoa thì phiên kia tự lo theo `WORKFLOW.md`, bạn không cần mất công.
+
+Có một điều nên làm thêm: **Mỗi bản review nên có một mục ngắn ghi lại những gì đã sửa so với `ai_raw/`**, gồm sửa gì, thuộc loại nào (sai, thiếu, thừa, mơ hồ) và lý do. Mục này dùng trực tiếp cho 2 phần:
+- **S8 (AI gap analysis):** Đây là danh sách những gì AI bỏ sót hoặc làm sai.
+- **AI Audit Report:** Cột "SV đã thay đổi gì" lấy từ đây.
+
+`00_spec.md` của FR-01 đã có một bảng tương tự (ghi O03, O06 đổi từ gì sang gì, vì sao). Bạn chỉ cần bảo phiên kia giữ cách làm đó cho `01_io.md` và các bước sau.
+````
+
+---
+
+### C85 | 23:13 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi thấy bản 01_io được rồi. Bạn xuất log, kiểm tra xem lại giúp tôi xem tôi có bỏ sót gì không, nếu không thì viết commit message.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check repo state and audit new design-session tool calls
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\01_io.md
+- Bash: Check formatting, ai_raw integrity, export log
+- Bash: Tick FR-01 S1 in tracker
+
+**Output AI (nguyên văn):**
+
+````text
+`01_io.md` **đạt**, không có gì chặn commit:
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác của phiên thiết kế | ✅ Chỉ ghi `01_io.md`, không đọc file bị cấm |
+| `ai_raw/S1_input_output.md` | ✅ Không bị sửa |
+| 5 quyết định của bạn | ✅ Đều có ở mục 5, và được áp vào đúng chỗ (mục 1.1, 2.1, 3.2, 3.4, 4) |
+| Mục ghi thay đổi so với bản AI | ✅ Có ở mục 6 |
+| Hình thức (dấu "—", "·", chữ hoa sau dấu `:`) | ✅ Đạt |
+
+Có 2 điểm nhỏ bạn có thể cân nhắc. Không sửa cũng commit được:
+
+1. **Bảng thay đổi ở mục 6 chưa có cột phân loại** (sai, thiếu, thừa, mơ hồ). Ở S1, các thay đổi đều đến từ quyết định của bạn, không phải sửa lỗi của AI, nên chưa thiếu gì. Từ S2 trở đi, khi bắt đầu có chỗ AI làm sai hoặc thiếu, nên dặn phiên kia thêm cột này để làm sẵn dữ liệu cho S8.
+
+2. **Thông báo lỗi khi Email sai định dạng (ERR3) có thể không phải do EShop hiện ra.** FR-22 yêu cầu ô Email dùng `type="email"`. Với kiểu ô này, chính trình duyệt sẽ chặn email sai định dạng bằng một bong bóng thông báo của trình duyệt, trước khi form được gửi đi. Đặc tả FR-02 cũng nhắc tới "validate HTML5 format". Như vậy, kết quả mong đợi của ERR3 có 2 khả năng: Thông báo của EShop, hoặc thông báo của trình duyệt. Điểm này không cần sửa ở S1, nhưng nên nhắc phiên kia khi tới S2 hoặc S3, lúc viết kết quả mong đợi.
+
+Log đã xuất, tracker đã đánh dấu S1 của FR-01 là xong. Commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/01_io.md prompt_log.md
+git commit -m "[A-FR01][S1] Review input/output variables"
+git push
+```
+
+Tiếp theo là **S2: Chia lớp tương đương**. Đây là bước nặng nhất, vì phải đặt giả định cho các câu hỏi mở Q01 đến Q11 và chốt cách xử lý XSS, SQL injection.
+````
+
+---
+
+### C86 | 23:19 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+S1 và S2 đều dựa trên quyết định của tôi, chưa có gì mà đúng không? Nếu thêm cột thì thêm vào WORKFLOW đi, như vậy sẽ không cần phải nhắc AI mỗi lần chat.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Locate review-file rule in WORKFLOW.md
+- Edit: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: Check WORKFLOW, note change, export log, show status
+
+**Output AI (nguyên văn):**
+
+````text
+Gần đúng. S2 chưa làm, còn S0 và S1 thì như sau:
+- **S1:** Đúng. Mọi thay đổi đều đến từ quyết định của bạn, AI không làm sai hay thiếu gì về nội dung.
+- **S0:** Nội dung trích đặc tả không sai. Nhưng AI có **2 lỗi về quy trình**: Đề xuất dùng DevTools, và ghi đè `ai_raw/`. Cả hai đã được ghi vào phần chất liệu Critique trong `_NOTES.md`. Đây là lỗi về cách AI làm việc, không thuộc bảng thay đổi nội dung, nhưng vẫn dùng được cho S8 và cho phần AI Critique.
+
+Giờ mình thêm cột phân loại vào `WORKFLOW.md`. Ngoài 4 loại sai, thiếu, thừa, mơ hồ, mình thêm loại thứ 5 là "Quyết định của SV" để ghi được những thay đổi như ở S1.
 ````
 
 

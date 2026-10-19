@@ -63,6 +63,22 @@ features/<Pool>_<FR>_<Tên>/        ví dụ: features/A_FR-01_DangKy/
 - Đầu mỗi file trong `ai_raw/` ghi tên bước và thời gian tạo, sau đó là nguyên văn câu trả lời của AI. Không chép prompt vào file (prompt đã có trong prompt log).
 - File bản viết lại (`_v2`, `_v3`...) ghi thêm ở đầu: Lần sửa thứ mấy, thời gian, lý do sửa (sinh viên yêu cầu gì, hoặc quy tắc nào trong tài liệu này bị vi phạm).
 - Bản review có thể nhờ AI viết lại, nhưng sinh viên quyết định nội dung sửa.
+- Cuối mỗi bản review có mục **"Thay đổi so với bản AI"**, dạng bảng với các cột:
+
+  | Vị trí | Thay đổi | Loại | Lý do hoặc căn cứ |
+  |---|---|---|---|
+
+  Cột "Loại" chỉ nhận một trong các giá trị:
+
+  | Loại | Khi nào dùng |
+  |---|---|
+  | Sai | Bản AI trái với đặc tả hoặc với giao diện quan sát được |
+  | Thiếu | Đặc tả có mà bản AI không đưa vào (biến, lớp, test case, giá trị biên...) |
+  | Thừa | Bản AI tự đặt quy tắc mà đặc tả không có, hoặc có mục trùng lặp, không cần thiết |
+  | Mơ hồ | Bản AI ghi chung chung, không kiểm chứng được (ví dụ "hệ thống xử lý đúng") |
+  | Quyết định của SV | Bản AI không sai, nhưng sinh viên chọn một trong các phương án AI đưa ra hoặc chốt một điểm đặc tả chưa rõ |
+
+  Bảng này là dữ liệu cho bước S8 (AI gap analysis) và cho AI Audit Report, nên ghi đủ mọi thay đổi, kể cả thay đổi nhỏ về nội dung. Không cần ghi thay đổi thuần hình thức (dấu câu, định dạng).
 - Các file của S5 đến S8 (test case cuối cùng, kết quả chạy, bug, gap analysis) sẽ được bổ sung vào cấu trúc này khi làm tới.
 
 ---
