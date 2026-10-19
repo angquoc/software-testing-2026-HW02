@@ -4277,6 +4277,122 @@ Tôi duyệt bản 00_spec này rồi. Bạn xuất log, kiểm tra lại g
 
 ````text
 Mình kiểm tra 4 việc: Có phiên mới nào không, các thay đổi đang chờ commit, ai đã sửa `WORKFLOW.md` và `_NOTES.md` (hệ thống báo hai file này vừa đổi trên đĩa), và các thao tác mới của phiên thiết kế.
+
+Mình đã kiểm tra xong, **không còn vấn đề gì chặn commit**.
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác của phiên thiết kế | ✅ Không đọc file bị cấm. Chỉ sửa `00_spec.md`. `ai_raw/` không bị đụng |
+| Dấu "—" và "·" | ✅ Chỉ còn trong phần trích nguyên văn SRS |
+| Chữ hoa sau dấu `:` | ✅ Không còn chỗ nào viết thường |
+| Còn chỗ nào hướng dẫn dùng DevTools không | ✅ Không, chỉ còn câu dặn "không dùng DevTools" |
+| Quyết định Q26, Q27, D04 | ✅ Đã ghi |
+| Prompt log | ✅ 79 lượt từ 2 phiên, không lẫn phiên khác |
+
+Có một chi tiết nhỏ, không bắt buộc sửa. Ở D04, cột lý do ghi "không phải tiếng Việt **và không mô tả nội dung trang**". Ý thứ hai trong FR-21 nói về thẻ `<h1>`, không phải tiêu đề tab. Căn cứ đúng cho D04 chỉ là ý về ngôn ngữ. Nếu muốn chính xác tuyệt đối thì bỏ ý thứ hai. Nếu giữ nguyên cũng không ảnh hưởng tới các bước sau.
+
+Commit 3 của S0:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/00_spec.md prompt_log.md
+git commit -m "[A-FR01][S0] Review spec and answer open questions"
+git push
+```
+
+Tracker đã đánh dấu S0 của FR-01 là xong. Bước tiếp theo là **S1: Xác định biến Input/Output**, làm ở phiên thiết kế. Bạn tự viết prompt cho bước này, nhớ dặn nó làm đúng một bước rồi dừng.
+
+Còn một việc chờ bạn trả lời từ lần trước: Có sửa câu ở `WORKFLOW.md` mục 1.2 không? Nội dung sửa là ghi rõ rằng chỉ tạo `_v2` khi AI sửa bản nháp trước khi bạn review, còn bản review thì chỉ sửa file review. Nên chốt trước S1, vì từ S1 trở đi bước nào cũng có cả bản nháp lẫn bản review.
+````
+
+---
+
+### C80 | 22:26 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã commit xong. Bây giờ hãy bắt đầu S1, nhớ bám theo đúng WORKFLOW.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: d:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: Review requirement list and decisions in 00_spec.md
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S1_input_output.md
+- Bash: Check S1 file for forbidden separators
+
+**Output AI (nguyên văn):**
+
+````text
+S1 xong, tôi dừng ở đây để bạn review. Tôi chỉ tạo [ai_raw/S1_input_output.md](Homeworks/HW02/features/A_FR-01_DangKy/ai_raw/S1_input_output.md). File `01_io.md` sẽ viết sau khi bạn review xong, đúng theo WORKFLOW mục 4.2.
+
+**Input:**
+- **Nhập trên form:**
+  - **IN1:** Họ Tên.
+  - **IN2:** Email.
+  - **IN3:** Mật khẩu.
+  - **IN4:** Xác nhận mật khẩu. Trường này giữ lại theo quyết định Q26 dù giao diện chưa có. Ràng buộc duy nhất của nó là phải khớp với IN3.
+
+  Mỗi input đều có cột trường API tương ứng và các ràng buộc lấy từ đặc tả.
+- **Không nhập trực tiếp:**
+  - **IN5:** Danh sách email đã có trong hệ thống. Dữ liệu mẫu có ít nhất `admin@eshop.com` và `test@eshop.com`.
+  - **IN6:** Trạng thái đăng nhập. Đặc tả không ràng buộc biến này nên tôi chỉ ghi là ứng viên.
+- **Sự kiện kích hoạt:** Bấm nút "Đăng Ký". Đây không phải biến nên không chia lớp.
+
+**Output:**
+- **OUT1, đăng ký thành công:** Nhận biết bằng hai dấu hiệu đã chốt ở Q27. Có ghi thêm hệ quả: Email vừa đăng ký được thêm vào IN5.
+- **OUT2, bị từ chối kèm thông báo lỗi:** Chia theo 7 nguyên nhân (ERR1 đến ERR7). Không ghi câu chữ của thông báo vì đặc tả không nêu.
+  - Thuộc tính của thông báo lỗi: Vị trí phải nằm trên nút submit (FR01-R21). Các thuộc tính chưa có trong đặc tả được trỏ về câu hỏi mở tương ứng: Q16, Q17, Q19.
+- **OUT3 và OUT4:** Phản hồi API. Chỉ dùng nếu ở S3 bạn quyết định test qua API.
+
+**Mục 4:** Các yêu cầu là thuộc tính tĩnh của trang (FR01-R14 đến R20, R23, R25) không có miền giá trị để chia lớp. Tôi đề xuất kiểm tra chúng thành một checklist riêng trong nhóm phụ.
+
+**Bạn cần quyết định 5 điểm ở mục 5 của file:**
+1. Giữ IN6 làm biến Input, hay chuyển "chưa đăng nhập" thành tiền điều kiện của mọi test case.
+2. Chia OUT2 theo từng nguyên nhân, hay gộp thành một Output "thông báo lỗi" như ví dụ "Invalid Input" trong slide.
+3. Gộp ERR6 thành một loại (vì đặc tả gọi chung là "mật khẩu mạnh"), hay tách thành 5 loại theo R06 đến R10.
+4. Cách xác nhận có hoặc không có tài khoản mới được tạo. Có ba cách: Chỉ dựa vào việc chuyển trang; đăng nhập thử bằng tài khoản vừa nhập; hoặc đăng ký lại cùng email để xem có báo trùng không.
+5. Có đồng ý tách nhóm checklist ở mục 4 không.
+
+Tôi không trả lời thay bạn các câu hỏi mở còn lại. Những câu đó sẽ thành giả định ở S2.
+
+**Commit 1 của S1:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S1_input_output.md
+git commit -m "[A-FR01][S1] Identify input/output variables (AI draft)"
+```
+````
+
+---
+
+### C81 | 22:41 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+AI đã viết nháp S1 rồi. Xuất log và đưa commit message cho tôi. Tiện thể tôi tính chốt các phần sau:
+1. IN6 (trạng thái đăng nhập) có giữ làm biến Input không? Đặc tả FR-01 không ràng buộc -> Tức là kiểm tra xem ở trạng thái đăng nhập có đăng ký được không sao?
+2. a
+3. a
+4. a
+
+Như vậy có được không, tôi có bỏ sót chỗ nào không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List S1 files and outline of the AI draft
+- Bash: Read S1 input tables and decision points
+- Bash: Audit new design-session tool calls and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Mình kiểm tra các file S1 vừa tạo, đọc phần câu hỏi cần chốt trong bản nháp để hiểu các lựa chọn "a", và kiểm tra thao tác của phiên thiết kế:
+
+Mình kiểm tra thao tác của phiên thiết kế và xuất log:
 ````
 
 
