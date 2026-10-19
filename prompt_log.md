@@ -3887,11 +3887,396 @@ Tôi chỉ điền kết quả ở bảng quan sát giao diện và đã bổ su
 **Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
 
 - Bash: Audit design session tool calls, export log, show changes
+- Bash: Inspect the Grep call's scope and result
 
 **Output AI (nguyên văn):**
 
 ````text
 Đúng vậy. Phiên kia lo phần nội dung, còn phiên này lo xuất log, đưa lệnh commit, và **kiểm tra phiên kia không đọc file bị cấm**. Mình không soát nội dung bảng bạn điền. Mình làm cả ba việc:
+
+Lệnh Grep đó chỉ tìm trong `WORKFLOW.md`, nên hợp lệ. Như vậy **phiên kia không vi phạm gì**: Trong 33 thao tác, không có lần nào đọc `prompt_log.md`, `_NOTES.md`, thư mục `DA/`, mã nguồn EShop hay các file `.jsonl`. Lần nó ghi đè `ai_raw/` lúc 08:01 thì đã được ghi nhận và sửa xong.
+
+Log đã xuất xong: 71 lượt từ 2 phiên, không lẫn phiên nào khác.
+
+**Commit 2.** Commit này gồm bảng quan sát trong `00_spec.md`, 3 ảnh mới, việc xoá file `.gitkeep` (thư mục ảnh giờ đã có file) và `prompt_log.md`:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add -A features/A_FR-01_DangKy/00_spec.md features/A_FR-01_DangKy/screenshots prompt_log.md
+git commit -m "[A-FR01][S0] Record UI exploration and screenshots"
+git push
+```
+
+Sau đó bạn bảo phiên kia đọc ảnh và bảng bạn đã điền, rồi viết lại `00_spec.md` theo mục 3.1 bước 3 của `WORKFLOW.md`. Khi nó viết xong và bạn đồng ý với nội dung, bạn quay lại đây để mình xuất log, kiểm tra thao tác và đưa lệnh commit 3.
+````
+
+---
+
+### C72 | 15:35 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã điền mục 4 trong 00_spec, thêm file ảnh. Bạn hãy giúp tôi kiểm tra nội dung, điền lại những chỗ chưa đúng, và dựa vào những ảnh tôi gửi, có thể sửa được những chỗ nào trong 00_spec thì sửa. Bám sát theo WORKFLOW đã quy định. Có vấn đề gì hỏi tôi, còn nếu không có thể làm.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: List feature folder, screenshots, and ai_raw
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_01_form_dang_ky.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_02_duong_vao_trang_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_02_duong_vao_trang_2.png
+- Bash: Compare user-filled 00_spec.md against v2 draft
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã có ảnh và bảng bạn điền. Trước khi sửa, tôi so `00_spec.md` với `S0_khao_sat_v2.md` để biết bạn đã đổi những chỗ nào.
+
+Tôi đã so bảng bạn điền với ảnh. Chưa sửa gì vì có một chỗ cần hỏi bạn trước.
+
+**Câu hỏi:** Bạn đã làm commit 2 của S0 chưa? Theo WORKFLOW mục 4.2, commit 2 lưu bảng do bạn điền cùng với ảnh, và phải có trước commit 3 là bản tôi viết lại. Nếu tôi sửa `00_spec.md` khi bạn chưa commit, lịch sử git sẽ mất bản bạn tự điền và không còn thấy phần nào bạn làm, phần nào AI sửa. Tôi không được xem lịch sử git nên không tự kiểm tra được.
+
+Nếu chưa commit thì bạn chạy lệnh này trước:
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/00_spec.md features/A_FR-01_DangKy/screenshots/
+git commit -m "[A-FR01][S0] Record UI exploration and screenshots"
+```
+
+**Những gì tôi định sửa khi bạn xác nhận đã commit:**
+
+*Sửa mục 4 (chỗ ghi nhầm khi đối chiếu với ảnh):*
+- **O01:** Đổi "nút Đang Ký" thành mục "Đăng ký" trên navbar. Ghi rõ "Đăng ký ngay" là liên kết nằm sau dòng "Chưa có tài khoản?".
+- **O03:** Sửa lỗi xuống dòng đang làm vỡ bảng. Ghi chú thêm rằng ảnh `S0_01` không chụp thanh tab nên giá trị "EShop" chưa đối chiếu được.
+- **O04:** Bỏ "Họ Tên, Email, Mật khẩu" vì đó là nhãn ô nhập, đã có ở O07 đến O09. Tiêu đề form là "Đăng Ký Tài Khoản"; "EShop" là logo trên navbar.
+- **O05:** Thêm vị trí của dòng hướng dẫn (chữ nhỏ màu xám dưới ô Mật khẩu), thêm các chữ trên navbar và footer "© 2026 EShop SUT. Dành cho mục đích kiểm thử.".
+- **O06:** Bạn ghi "Không có", nhưng thực tế có ba từ không phải tiếng Việt là "EShop", "Email" và "SUT". Tôi chỉ ghi lại; có tính là "thuật ngữ kỹ thuật chuẩn" (FR-21) hay không thì bạn quyết.
+- **O11:** Điền "Không có".
+- **O13:** Liên kết nằm dưới nút "Đăng Ký" (nút viết hoa chữ K). Ghi màu là "xanh dương" cho khớp với chữ trong FR-21.
+- **O14:** Khôi phục dòng này và điền "Không có".
+- **Cột Ảnh:** Điền cho tất cả các dòng.
+- **Mục 4.6 (thêm mới):** Liệt kê từng chỗ AI đã sửa so với bản bạn điền.
+
+*Thêm mục 5 "Khác biệt giữa giao diện và đặc tả":* Ghi là chờ xác nhận ở S6, chưa kết luận là bug.
+- **D01:** Không có trường Xác nhận mật khẩu (FR01-R11).
+- **D02:** Không nhãn nào có dấu `*` (FR01-R18).
+- **D03:** Nút "Đăng Ký" màu đỏ, trong khi FR-21 yêu cầu nút hành động tích cực màu xanh dương (FR01-R15).
+
+*Cập nhật câu hỏi mở (thêm mục 3.8):*
+- **Q24:** Đã trả lời được bằng quan sát.
+- **Q12, Q13:** Hiện chưa áp dụng được vì form không có trường xác nhận mật khẩu.
+- **Q08, Q09:** Vẫn mở, vì dòng hướng dẫn không nêu độ dài tối đa và không liệt kê tập ký tự đặc biệt.
+- **Q26 (thêm mới):** Form không có trường Xác nhận mật khẩu, vậy từ S1 đến S4 có vẫn thiết kế biến và lớp tương đương cho trường này theo đặc tả không? Bạn có thể trả lời câu này lúc bắt đầu S1.
+
+**Góp ý về ảnh (tùy bạn):**
+- Hai ảnh `S0_02_..._1` và `_2` dùng chung số thứ tự 02. Theo WORKFLOW mục 5 thì nên đặt thành `S0_02_...` và `S0_03_...`.
+- Ảnh `_2` cắt quá sát nên không thấy đó là trang Đăng nhập.
+- Nên có thêm một ảnh thấy được tiêu đề tab cho O03.
+
+Ngoài phạm vi đã chốt: Trên navbar, mục "Đăng ký" trông không được làm nổi bật so với các mục khác (FR-23). Tôi không ghi điểm này vào file.
+````
+
+---
+
+### C73 | 15:45 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+- Tôi đã commit bước đó của mình.
+- Tôi đã bổ sung lại ảnh chụp giao diện màn hình đăng nhập.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List screenshots and check 00_spec.md changes
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_03_duong_vao_trang_2.png
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s0_sec38.md
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s0_sec4.md
+- Bash: Splice new sections into 00_spec.md and verify structure
+
+**Output AI (nguyên văn):**
+
+````text
+Phần mới đã viết sẵn. Giờ tôi ghép vào `00_spec.md`: Chèn mục 3.8 trước mục 4, rồi thay toàn bộ mục 4 cũ bằng bản đã đối chiếu.
+
+Tôi đã viết lại `00_spec.md` (bước 3 của S0) và dừng ở đây để bạn review. Các file trong `ai_raw/` không bị đụng tới.
+
+**Những gì đã thay đổi trong [00_spec.md](Homeworks/HW02/features/A_FR-01_DangKy/00_spec.md):**
+- **Đầu file:** Ghi rõ đây là bản review, kèm thời gian cập nhật (15:45) và chỉ tới hai bản gốc trong `ai_raw/`.
+- **Mục 3.8 (mới):** Trạng thái câu hỏi mở sau khi quan sát.
+  - Q24 đã trả lời được bằng quan sát.
+  - Q12, Q13, Q14 hiện chưa áp dụng được vì form không có trường Xác nhận mật khẩu.
+  - Các câu còn lại vẫn mở.
+  - Thêm hai câu mới là Q26 và Q27 (xem bên dưới).
+- **Mục 4:** Đã đối chiếu với ảnh và điền cột Ảnh cho mọi dòng. Mục 4.6 liệt kê từng chỗ tôi sửa so với bản bạn điền, kèm lý do.
+- **Mục 5.1 (mới):** Ba khác biệt giữa giao diện và đặc tả, ghi là chờ xác nhận ở S6, chưa kết luận là bug.
+  - D01: Không có trường Xác nhận mật khẩu.
+  - D02: Không nhãn nào có dấu `*`.
+  - D03: Nút "Đăng Ký" màu đỏ, trong khi FR-21 yêu cầu xanh dương.
+- **Mục 5.2 (mới):** Ghi lại những gì thấy ở trang `/login` để tham khảo. Trang này thuộc FR-02 nên không xử lý ở đây.
+
+**Hai câu bạn cần trả lời trước khi sang S1:**
+- **Q26:** Form không có trường Xác nhận mật khẩu. Ở S1 đến S4, có vẫn đưa trường này vào biến Input và chia lớp tương đương theo đặc tả không?
+- **Q27:** FR01-R13 yêu cầu chuyển tới trang Đăng nhập. Dấu hiệu nào xác nhận đã tới trang đó? Trang `/login` hiện có tiêu đề "Đăng Ký", nhãn "Username" và nút "Sign In", nên tiêu đề không dùng làm dấu hiệu được.
+
+**Để bạn biết:**
+- File vẫn còn một dấu "—" trong câu trích nguyên văn FR-01. Đây là chữ của SRS nên tôi giữ nguyên.
+- Giá trị O03 ("EShop") chưa đối chiếu được vì không ảnh nào chụp thanh tab. Bạn có thể chụp thêm ảnh `S0_04_...` nếu muốn có bằng chứng.
+
+**Commit 3 của S0:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/00_spec.md features/A_FR-01_DangKy/screenshots/
+git commit -m "[A-FR01][S0] Review spec and answer open questions"
+```
+Tôi thêm `screenshots/` vào lệnh vì ảnh `S0_03_duong_vao_trang_2.png` được bạn thêm sau commit 2. Nếu bạn đã commit ảnh đó rồi thì lệnh vẫn chạy bình thường.
+````
+
+---
+
+### C74 | 16:03 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã bổ sung lại ảnh để có tiêu đề tab trình duyệt và dễ dàng hơn cho bạn. Vì tất cả các ảnh được cập nhật lại nên cần bạn kiểm tra xem được chưa, có gì cần sửa trong 00_spec không dựa trên các ảnh mới. Và đưa tôi commit mới để cập nhật riêng phần screenshots này.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List updated screenshots
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_01_form_dang_ky.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_02_duong_vao_trang_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_03_duong_vao_trang_2.png
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+
+**Output AI (nguyên văn):**
+
+````text
+Ba ảnh mới dùng được. Tôi đã cập nhật `00_spec.md` theo các ảnh này.
+
+**Những gì đã sửa trong [00_spec.md](Homeworks/HW02/features/A_FR-01_DangKy/00_spec.md):**
+- **O03 (sửa chỗ ghi nhầm):** Thanh tab ghi "frontend-web", không phải "EShop". "EShop" là chữ logo trên navbar. Cả trang `/register` và `/login` đều có cùng tiêu đề tab này. Mục 4.6 có ghi lại lý do sửa.
+- **O06:** Thêm tiêu đề tab "frontend-web" vào danh sách chữ không phải tiếng Việt, ghi rõ là nằm ngoài trang.
+- **Mục 4.5:** Cập nhật mô tả theo ảnh mới. Ảnh `S0_02` giờ thấy đủ 3 mục trên navbar, và không mục nào được làm nổi bật khác các mục còn lại. Bỏ dòng ghi là thiếu ảnh tiêu đề tab.
+- **D04 (mới):** Tiêu đề tab "frontend-web" có thể vi phạm FR01-R14 (giao diện phải dùng tiếng Việt). Bạn quyết định tiêu đề tab có được tính là "giao diện" theo FR-21 hay không.
+- **Đầu file:** Thêm dòng ghi lần cập nhật lúc 16:03.
+
+Các dòng còn lại (O01, O02, O04, O05, O07 đến O14, D01 đến D03) khớp với ảnh mới, không cần sửa.
+
+**Lưu ý trước khi commit:** Ảnh `S0_01` và `S0_03` có chụp thanh bookmark của bạn (HCMUS - Đăng nhập, Khtn GPA, CTDT_K2023..., fit.hcmus.edu.vn...) và ảnh đại diện tài khoản Chrome. Nếu bài nộp hoặc repo nhóm có người khác xem, bạn nên cắt hoặc che phần này. Thư mục `forms/` của bài có AI Privacy Checklist [AI-05], phần đó cũng có thể liên quan.
+
+**Commit riêng cho ảnh:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/screenshots/
+git commit -m "[A-FR01][S0] Retake screenshots with browser tab title"
+```
+
+**Commit cho `00_spec.md`:**
+- Nếu bạn **chưa** làm commit 3 của S0 (bản tôi viết ở lượt trước), gộp vào commit 3:
+  ```
+  git add features/A_FR-01_DangKy/00_spec.md
+  git commit -m "[A-FR01][S0] Review spec and answer open questions"
+  ```
+- Nếu **đã** làm commit 3:
+  ```
+  git add features/A_FR-01_DangKy/00_spec.md
+  git commit -m "[A-FR01][S0] Fix tab title observation from retaken screenshots"
+  ```
+
+Trước khi sang S1, bạn còn phải trả lời hai câu: **Q26** (có đưa trường Xác nhận mật khẩu vào thiết kế không) và **Q27** (dấu hiệu nào xác nhận đã tới trang Đăng nhập). Bạn có thể quyết luôn D04 cùng lúc.
+````
+
+---
+
+### C75 | 16:40 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi có sửa lại ảnh chụp sau khi session đó sửa đổi và có câu hỏi. Bản cuối tôi xem cũng được rồi, còn hai câu hỏi mở. Câu Q26 tôi không biết nên đưa vào không khi form không có. Còn Q27 thì tôi biết trả lời, vì xác nhận được là do tôi nhấn vào nút đăng nhập thì nó chuyển qua đó, có vẻ như là do lỗi feature ở đăng nhập nên nhìn nó mới vậy.
+
+Còn về các từ tiếng Anh như EShop, Email, SUT thì chắc chấp nhận được, frontend-web tiêu đề tab có thể là 1 lỗi đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find Q26, Q27 and English-text observations in spec
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đọc bản `00_spec.md` hiện tại để xem Q26, Q27 và phần chữ tiếng Anh:
+
+Mình xem bản mới nhất của `00_spec.md` rồi. Góp ý cho từng câu:
+
+## Q26: Form không có ô "Xác nhận mật khẩu"
+
+**Nên đưa vào**, tức là vẫn giữ trường này từ S1 đến S4. Lý do:
+- Domain testing thiết kế từ **đặc tả**, không phải từ giao diện hiện có. Đặc tả bắt buộc phải có trường này (FR01-R11) và hai mật khẩu phải khớp (FR01-R12). Nếu bỏ ra thì bộ test case không còn phản ánh đúng đặc tả.
+- Việc form thiếu trường này **tự nó đã là một ứng viên bug**, vi phạm FR01-R11. Ở S6 sẽ có một test case kiểm tra form có trường Xác nhận mật khẩu hay không, và test case đó sẽ Fail.
+- Các test case dựa vào trường này (ví dụ "hai mật khẩu không khớp") **vẫn được thiết kế**. Đến S6, chúng được ghi trạng thái **Blocked** (không chạy được vì thiếu trường), không phải bỏ đi. Như vậy báo cáo cho thấy rõ có bao nhiêu test case bị chặn vì lỗi này.
+
+## Q27: Dấu hiệu đã chuyển tới trang Đăng nhập
+
+Bạn nhận định đúng: Tiêu đề "Đăng Ký", nhãn "Username" và nút "Sign In" là **chuyện của trang Đăng nhập**, thuộc FR-02 và FR-21, không phải FR-01. Vì vậy, dấu hiệu dùng cho FR-01 **không nên dựa vào chữ trên trang đó**, mà nên là:
+- Đường dẫn trên thanh địa chỉ đổi thành `/login`, và
+- Trang hiện form đăng nhập (có ô nhập và nút gửi).
+
+Có một lưu ý: "Có vẻ là lỗi của trang Đăng nhập" mới là **giả thuyết của bạn**. Trong `00_spec.md` nên ghi đây là quan sát, chưa kết luận. FR-02 nằm trong gói của bạn cùng nhóm (gói 3), nên bạn có thể báo cho người đó biết những gì đã thấy.
+
+## Chữ tiếng Anh và tiêu đề tab
+
+| Chữ | Nhận định |
+|---|---|
+| "EShop" | Tên riêng của sản phẩm, chấp nhận được |
+| "Email" | Thuật ngữ kỹ thuật thông dụng, và chính SRS cũng dùng từ này, chấp nhận được |
+| "SUT" (ở footer) | Viết tắt chuyên ngành, có thể chấp nhận. Nếu muốn khắt khe thì ghi chú, nhưng mình không tính là lỗi |
+| Tiêu đề tab "frontend-web" | **Đúng, đây là ứng viên bug.** Tiêu đề tab là một phần của giao diện, và "frontend-web" không phải tiếng Việt, nên vi phạm yêu cầu "toàn bộ giao diện dùng tiếng Việt" của FR-21. Mức độ nhẹ (`severity: low`). Có một chi tiết: Ý "tiêu đề trang phải mô tả nội dung trang" của FR-21 nói về thẻ `<h1>`, **không phải** tiêu đề tab, nên lỗi này chỉ dựa trên ý về ngôn ngữ. Lỗi này cũng xuất hiện ở mọi trang, không riêng trang Đăng ký |
+
+Chỗ D04 trong file đã để bạn quyết định, nên bạn chỉ cần ghi "Tính là ứng viên lỗi của FR-21 (ngôn ngữ), kiểm chứng ở S6".
+
+**Bước tiếp theo:** Bạn chuyển các quyết định này (Q26, Q27, D04) cho phiên kia để nó ghi vào `00_spec.md`, hoặc tự sửa trực tiếp. Xong thì báo mình xuất log và đưa lệnh commit 3. Hiện `git status` chỉ còn `00_spec.md` đang thay đổi, nghĩa là các ảnh đã nằm trong commit 2.
+````
+
+---
+
+### C76 | 16:49 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Ở bước sửa 00_spec này có cần sinh ai_raw không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+**Không cần.** Có 2 trường hợp AI viết lại, và chúng khác nhau:
+
+| Trường hợp | Ví dụ | Có tạo file `ai_raw/` mới không |
+|---|---|---|
+| **AI sửa bản nháp của chính nó**, trước khi bạn review, vì bản nháp sai hoặc vi phạm quy tắc | Lần sửa 1 (bỏ DevTools) | **Có**, tạo `_v2`. Vì bản nháp AI đã thay đổi, `ai_raw/` phải lưu đủ các phiên bản nháp |
+| **AI viết bản review theo quyết định của bạn**, sau khi bạn đã quan sát và chốt | Commit 3 lần này: Ghi quyết định Q26, Q27, D04 vào `00_spec.md` | **Không.** Đây đúng là việc của file review. Bằng chứng nằm ở 2 chỗ: Prompt log (bạn yêu cầu gì, AI trả lời gì) và git diff giữa commit 2 và commit 3 (cái gì đã đổi) |
+
+Nói gọn: `ai_raw/` lưu **những gì AI tự đề xuất**, còn file review lưu **những gì bạn đã chốt**. Lần này là bạn chốt, nên chỉ sửa `00_spec.md`.
+
+Hiện `WORKFLOW.md` mục 1.2 ghi "Khi AI viết lại output của một bước (theo yêu cầu của sinh viên)… lưu thành file mới `_v2`". Câu này dễ bị hiểu là **mọi lần** viết lại đều phải tạo `_v2`, nên phiên kia có thể tạo thừa. Mình đề xuất sửa câu đó, nói rõ chỉ tạo `_v2` khi AI sửa bản nháp trước khi bạn review, còn bản review thì chỉ sửa file review. Bạn có muốn mình sửa không?
+````
+
+---
+
+### C77 | 16:50 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Q26. Vẫn đưa vào vì mình thiết kế từ đặc tả.
+Q27. Tiêu đề "Đăng Ký", nhãn "Username" và nút "Sign In" là chuyện của trang Đăng nhập, thuộc FR-02 và FR-21, không phải FR-01. Vì vậy, dấu hiệu dùng cho FR-01 không nên dựa vào chữ trên trang đó, mà nên là: Đường dẫn trên thanh địa chỉ đổi thành /login, và Trang hiện form đăng nhập (có ô nhập và nút gửi).
+Về chữ tiếng Anh: Tôi thấy chấp nhận được EShop, Email. Còn SUT cũng có thể chấp nhận, nếu khắt khe thì chỉ ghi chú chứ không tính lỗi. Còn về tiêu đề tab, đây là ứng viên bug về ngôn ngữ đó, vì nó không phải tiếng việt, cũng không mô tả nội dung trang đang có.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi ghi các quyết định này vào `00_spec.md`: Thêm mục 3.9 "Quyết định của sinh viên", rồi cập nhật O06 và D04 cho khớp.
+
+Tôi đã ghi các quyết định của bạn vào [00_spec.md](Homeworks/HW02/features/A_FR-01_DangKy/00_spec.md).
+
+**Những gì đã thay đổi:**
+- **Mục 3.9 (mới), "Quyết định của sinh viên":**
+  - **Q26:** Vẫn đưa trường Xác nhận mật khẩu vào thiết kế, vì test case được thiết kế từ đặc tả.
+  - **Q27:** Hai dấu hiệu xác nhận đã chuyển tới trang Đăng nhập là: Đường dẫn đổi thành `/login`, và trang hiện form đăng nhập (có ô nhập và nút gửi). Không dựa vào chữ trên trang đó, vì phần chữ thuộc FR-02 và FR-21.
+  - **Chữ không phải tiếng Việt:** Chấp nhận "EShop" và "Email". "SUT" cũng chấp nhận; nếu xét khắt khe thì chỉ ghi chú, không tính là lỗi.
+  - **D04:** Tiêu đề tab "frontend-web" là ứng viên bug về ngôn ngữ.
+- **O06 và D04:** Bỏ câu "do sinh viên quyết định", thay bằng quyết định ở trên và trỏ về mục 3.9.
+- **Đầu file:** Thêm dòng ghi thời gian ghi quyết định (16:50).
+
+**Commit:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/00_spec.md
+git commit -m "[A-FR01][S0] Record decisions on open questions and language"
+```
+Nếu bạn chưa commit bản `00_spec.md` ở lượt trước (bản sửa O03 theo ảnh chụp lại) thì lệnh này sẽ gộp luôn thay đổi đó vào cùng một commit.
+
+Nếu bạn duyệt bản này thì S0 coi như xong. Còn nhiều câu hỏi mở chưa quyết, gồm Q01 đến Q11, Q14 đến Q23 và Q25, chủ yếu là độ dài tối đa, tập ký tự đặc biệt và nội dung thông báo lỗi. Các câu này sẽ thành **giả định** khi chia lớp tương đương. Tôi đề xuất để tới S2 mới quyết từng câu, vì lúc đó mới thấy câu nào ảnh hưởng tới cách chia lớp. S1 không cần chúng.
+
+Bạn báo khi nào muốn bắt đầu S1.
+````
+
+---
+
+### C78 | 22:21 19/10/2026 | Tool: Claude Code (n/a) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+<task-notification>
+<task-id>b9irevlie</task-id>
+<task-id>b1rghzpoc</task-id>
+<task-id>__orphan_summary__:shell</task-id>
+<status>stopped</status>
+<summary>2 background shell command tasks didn't finish before the previous session ended. Task ids: b9irevlie, b1rghzpoc.</summary>
+<note>No completion record was found for them in the previous session. They may have been stopped (via the UI, Monitor timeout, or agent teardown — these leave no transcript marker), or they may have been running when the previous Claude Code process exited. They have been marked stopped. Task ids in this notification beginning with "__orphan_summary" are internal scan markers, not tasks.</note>
+</task-notification>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C79 | 22:22 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi duyệt bản 00_spec này rồi. Bạn xuất log, kiểm tra lại giúp tôi còn vấn đề gì nữa không. nếu không thì đưa commit message cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check sessions, pending changes, and who changed WORKFLOW
+- Bash: Audit design session tool calls since last check
+- Bash: Check formatting rules and recorded decisions in spec
+- Bash: Show the remaining dash and DevTools mention
+- Bash: Export log, tick FR-01 S0 in tracker, show status
+
+**Output AI (nguyên văn):**
+
+````text
+Mình kiểm tra 4 việc: Có phiên mới nào không, các thay đổi đang chờ commit, ai đã sửa `WORKFLOW.md` và `_NOTES.md` (hệ thống báo hai file này vừa đổi trên đĩa), và các thao tác mới của phiên thiết kế.
 ````
 
 
