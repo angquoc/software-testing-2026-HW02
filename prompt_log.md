@@ -4722,7 +4722,148 @@ Tôi đã duyệt bản sửa của cả 00_spec và 01_io về phần ba�
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Mình đã kiểm tra xong, **không còn thiếu gì**:
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác của phiên thiết kế | ✅ Chỉ đọc `WORKFLOW.md` và sửa 2 file review |
+| Bảng thay đổi trong `00_spec.md` | ✅ Có cột Loại: 1 dòng "Thừa" (vụ DevTools, có ghi bạn là người phát hiện), 6 dòng "Quyết định của SV" |
+| Bảng thay đổi trong `01_io.md` | ✅ Có cột Loại: 2 dòng "Thiếu" (AI tự bổ sung, đã đối chiếu và đúng), 6 dòng "Quyết định của SV" |
+| Hình thức | ✅ Không có dấu cấm ngoài phần trích nguyên văn SRS |
+| Prompt log | ✅ Đã xuất, chỉ gồm 2 phiên HW02 |
+
+Trong `_NOTES.md`, mình ghi thêm 2 mục cho Audit:
+- Các "Quyết định của SV" có tham khảo gợi ý của phiên điều phối.
+- Hai dòng "Thiếu" ở S1 là do AI tự phát hiện.
+
+Có 2 thay đổi thuộc 2 bước khác nhau, nên tách 2 commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/00_spec.md
+git commit -m "[A-FR01][S0] Add change type column to review table"
+git add features/A_FR-01_DangKy/01_io.md prompt_log.md
+git commit -m "[A-FR01][S1] Review input/output variables"
+git push
+```
+
+Commit xong là sang **S2: Chia lớp tương đương**. Ở bước này, bạn sẽ phải chốt nhiều giả định cho các câu hỏi Q01 đến Q11. Trước khi chốt, bạn nên tự đọc các phương án và quyết định trước, sau đó mới hỏi phiên này nếu cần. Như vậy phần "Quyết định của SV" ở S2 sẽ mang nhiều dấu ấn của bạn hơn.
+````
+
+---
+
+### C89 | 23:33 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đồng ý và đã commit. Bây giờ chúng ta sẽ sang S2. Hãy nhớ bám sát WORKFLOW
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S2_equivalence_classes.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S2_equivalence_classes.md
+- Bash: Check forbidden separators and duplicate EC codes
+
+**Output AI (nguyên văn):**
+
+````text
+S2 đã xong, tôi dừng ở đây để bạn review. File output là [ai_raw/S2_equivalence_classes.md](Homeworks/HW02/features/A_FR-01_DangKy/ai_raw/S2_equivalence_classes.md). File `02_ec.md` sẽ viết sau khi bạn quyết định các điểm bên dưới.
+
+**Tổng cộng 53 lớp, chia theo guideline của slide:**
+
+| Biến | Hợp lệ | Không hợp lệ | Phụ thuộc giả định |
+|---|---|---|---|
+| IN1 Họ Tên | 2 | 1 | 4 |
+| IN2 Email | 3 | 9 | 4 |
+| IN3 Mật khẩu | 6 | 6 | 5 |
+| IN4 Xác nhận mật khẩu | 1 | 1 | 3 |
+| Output | 1 (OUT1) | 7 (ERR1 đến ERR7) | |
+
+**Cách chia:**
+- Mỗi chỗ tách lớp đều có cột "Lý do tách" theo guideline "tách khi có lý do tin rằng các phần tử được xử lý khác nhau".
+- Độ dài mật khẩu là khoảng giá trị nhưng đặc tả chỉ có cận dưới (tối thiểu 8), nên chỉ có một lớp không hợp lệ (1 đến 7 ký tự).
+- Họ Tên và Email chưa có lớp theo độ dài vì đặc tả không nêu giới hạn. Phần này để S4 xét theo giá trị lớn nhất giao diện cho nhập.
+- Mật khẩu tách riêng 5 điều kiện ở phía Input, đúng quyết định 3 ở S1.
+
+**Dữ liệu chứa HTML hoặc ký tự đặc biệt (bạn giao cho tôi tự xét ở S2), mục 8 của file:**
+- Có lập lớp EC07 cho Họ Tên, theo cách nhìn "risk-based" trong slide.
+- Không lập lớp riêng cho Email và Mật khẩu, vì những ký tự đó đã rơi vào các lớp sẵn có.
+- Tôi có ghi rõ giới hạn: Trang Đăng ký không hiển thị lại Họ Tên, nên việc escape (FR01-R24) không kiểm chứng được trong phạm vi FR-01.
+
+**Bạn cần chốt 2 nhóm:**
+1. **13 giả định ở mục 7** (A01 đến A11, A13, A14). Mỗi giả định có các phương án, ghi rõ lớp nào sẽ thành hợp lệ hay không hợp lệ theo từng phương án, và chữ đặc tả viết gì. Tôi không chọn thay bạn. 16 lớp đang ghi "GĐ" (phụ thuộc giả định) sẽ đổi thành hợp lệ hoặc không hợp lệ sau khi bạn chốt.
+2. **4 điểm ở mục 10:**
+   - Tập 7 ký tự đặc biệt: Giữ 1 lớp hay tách thành 7 lớp?
+   - Định dạng email: Giữ 6 lớp không hợp lệ hay gộp thành 1?
+   - Có giữ EC22 (trùng với email vừa tạo bằng chức năng đăng ký) không?
+   - Có giữ EC07 không?
+
+**Commit 1 của S2:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S2_equivalence_classes.md
+git commit -m "[A-FR01][S2] Add equivalence classes (AI draft)"
+```
+````
+
+---
+
+### C90 | 00:20 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Xuất log và đưa tôi commit message để commit phần ai_raw vừa được tạo ra. Đồng thời sau khi đọc xong, tôi có câu hỏi và các quyết định cho session kia, không biết như vậy được chưa, có sót chỗ nào không? 
+
+
+Phần họ tên:
+1. Độ dài Họ Tên: Đặc tả không nêu giới hạn (Q01, giả định A01). Chưa lập lớp theo độ dài; S4 sẽ xét giá trị lớn nhất giao diện cho nhập. -> Vậy đặc tả có nêu tối thiểu bao nhiêu ký tự (ví dụ có thể 1 không, hay là phải từ 2...)? Cũng nên để S4 sao?
+2. Tại sao đại diện lại là Anh-Ngoc 2 -> Sao không tách số riêng, dấu câu riêng. Không thử trường hợp chỉ số thôi sao?
+3. Các ký tự đặc biệt như @, /, #,... không test sao?
+4. Có test trường hợp tên chỉ viết thường hết không?
+5. Không test trường hợp có khoảng trắng đầu và cuối và ở giữa là tên bình thường để xem có tự động xử lý dấu cách không à?
+
+Phần Email:
+1. Không kiểm tra trường hợp có dấu . ở đầu hoặc có .. đi chung hay dấu . ngay sau @ à?
+2. Các ký tự đặc biệt như @, /, #,... không test sao?
+3. Chứa tiếng Việt có dấu hoặc ký tự Unicode cũng không test à?
+4. Không có phần test kiểm tra dạng mã độc SQL Injection/XSS à?
+
+Giả định cần chốt:
+1. a
+2 + 9. Tôi chưa hiểu câu hỏi lắm.
+3. b. Khoảng trắng tức là cũng đã nhập vào. Mình nên để trường hợp rỗng là không nhập gì cả.
+4. b
+6. b
+7. a
+10. c
+11. a
+13. b
+14. a
+
+Điểm cần sinh viên quyết định khi review:
+1. a
+2. a
+3. a
+4. a
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit tool calls and outline the S2 draft
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S2_equivalence_classes.md
+- Bash: Export log and mark FR-01 S2 in progress
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đọc bản nháp S2 để đối chiếu với từng câu hỏi và lựa chọn của bạn, đồng thời kiểm tra thao tác của phiên thiết kế:
+
+Phiên thiết kế không vi phạm gì: Ở S2 nó chỉ đọc `WORKFLOW.md` và ghi `ai_raw/S2_equivalence_classes.md`. Mình xuất log trước:
 ````
 
 
