@@ -26,7 +26,8 @@ VN_TZ = timezone(timedelta(hours=7))
 
 # Danh sách trắng: chỉ các phiên này thuộc HW02 (session id đầy đủ)
 SESSIONS = [
-    "305c705a-d915-42fa-8501-b411992acb4b",  # 12/10/2026: đọc đề, lên kế hoạch, dựng khung HW02
+    "305c705a-d915-42fa-8501-b411992acb4b",  # 12/10/2026: đọc đề, lên kế hoạch, dựng khung HW02 (phiên điều phối)
+    "38378bef-e688-4ecf-8075-2b0d74493d66",  # 19/10/2026: phiên thiết kế test case sạch, bắt đầu với A FR-01
 ]
 
 # Ghi chú của sinh viên cho từng phiên (8 ký tự đầu của session id), hiển thị dưới tiêu đề mỗi mục
