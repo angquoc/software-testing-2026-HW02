@@ -2,6 +2,7 @@
 
 - Bước: S0 (Trích đặc tả, khảo sát giao diện)
 - Thời gian tạo: 2026-10-19 11:21 (+07:00)
+- Sửa lần 1: 2026-10-19 15:01 (+07:00). Bỏ mọi mục cần DevTools hoặc thuộc tính HTML khỏi câu hỏi mở và bảng quan sát, theo WORKFLOW mục 1.1 và 3.1
 - Nền tảng: Web, `http://localhost:5173`
 
 ---
@@ -136,7 +137,7 @@ Ghi chú: FR01-R23 và FR01-R25 không quan sát trực tiếp được bằng k
 
 | Mã | Câu hỏi | Liên quan | Có thể làm rõ bằng |
 |---|---|---|---|
-| Q01 | Họ Tên có độ dài tối thiểu và tối đa là bao nhiêu? | FR01-R01 | Quan sát S0 (thuộc tính `minlength`/`maxlength` nếu có); nếu không có thì chỉ có thể đặt giả định |
+| Q01 | Họ Tên có độ dài tối thiểu và tối đa là bao nhiêu? | FR01-R01 | Không có trong đặc tả |
 | Q02 | Họ Tên được phép chứa những ký tự nào (chữ có dấu tiếng Việt, chữ số, ký tự đặc biệt, thẻ HTML)? | FR01-R01, FR01-R24 | Không có trong đặc tả |
 | Q03 | Họ Tên chỉ gồm khoảng trắng có được coi là "đã cung cấp" không? | FR01-R01 | Không có trong đặc tả |
 
@@ -145,7 +146,7 @@ Ghi chú: FR01-R23 và FR01-R25 không quan sát trực tiếp được bằng k
 | Mã | Câu hỏi | Liên quan | Có thể làm rõ bằng |
 |---|---|---|---|
 | Q04 | "Định dạng hợp lệ (`user@domain.com`)" chỉ là ví dụ. Quy tắc định dạng cụ thể là gì? Ví dụ: `user@domain` (không có phần đuôi tên miền) có hợp lệ không, trong khi `type="email"` của HTML5 chấp nhận dạng này? | FR01-R04, FR01-R19 | Không có trong đặc tả |
-| Q05 | Email có độ dài tối đa là bao nhiêu? | FR01-R04 | Quan sát S0 (`maxlength` nếu có) |
+| Q05 | Email có độ dài tối đa là bao nhiêu? | FR01-R04 | Không có trong đặc tả |
 | Q06 | Kiểm tra trùng email có phân biệt chữ hoa, chữ thường không (`Test@eshop.com` so với `test@eshop.com`)? | FR01-R05 | Không có trong đặc tả |
 | Q07 | Khoảng trắng ở đầu hoặc cuối email có được cắt bỏ trước khi kiểm tra định dạng và kiểm tra trùng không? | FR01-R04, FR01-R05 | Không có trong đặc tả |
 
@@ -153,7 +154,7 @@ Ghi chú: FR01-R23 và FR01-R25 không quan sát trực tiếp được bằng k
 
 | Mã | Câu hỏi | Liên quan | Có thể làm rõ bằng |
 |---|---|---|---|
-| Q08 | Mật khẩu có độ dài tối đa không? Nếu có thì là bao nhiêu? | FR01-R06 | Quan sát S0 (`maxlength` nếu có) |
+| Q08 | Mật khẩu có độ dài tối đa không? Nếu có thì là bao nhiêu? | FR01-R06 | Không có trong đặc tả |
 | Q09 | Tập ký tự đặc biệt `@ $ ! % * ? &` là danh sách đóng hay chỉ là ví dụ? Mật khẩu mà ký tự đặc biệt duy nhất nằm ngoài tập này (ví dụ `#`, `_`, `-`) có đạt điều kiện "1 ký tự đặc biệt" không? | FR01-R10 | Không có trong đặc tả |
 | Q10 | Mật khẩu đã đủ 4 loại ký tự nhưng có thêm ký tự khác (khoảng trắng, `#`, chữ có dấu) thì được chấp nhận hay bị từ chối? Đặc tả chỉ nói "có ít nhất", không nói có cấm ký tự khác hay không. | FR01-R06 đến FR01-R10 | Không có trong đặc tả |
 | Q11 | "Chữ hoa" và "chữ thường" chỉ gồm `A-Z`, `a-z`, hay tính cả chữ có dấu (ví dụ `Ă`, `ă`)? | FR01-R07, FR01-R08 | Không có trong đặc tả |
@@ -162,7 +163,7 @@ Ghi chú: FR01-R23 và FR01-R25 không quan sát trực tiếp được bằng k
 
 | Mã | Câu hỏi | Liên quan | Có thể làm rõ bằng |
 |---|---|---|---|
-| Q12 | Trường Xác nhận mật khẩu có phải dùng `type="password"` không? FR-22 chỉ nhắc "Trường Mật khẩu". | FR01-R11, FR01-R20 | Quan sát S0 cho biết hiện trạng; đặc tả không nói yêu cầu |
+| Q12 | Trường Xác nhận mật khẩu có phải dùng `type="password"` không? FR-22 chỉ nhắc "Trường Mật khẩu". | FR01-R11, FR01-R20 | Không có trong đặc tả |
 | Q13 | Trường Xác nhận mật khẩu có bắt buộc (có dấu `*`) không? Đặc tả FR-01 ý 1 chỉ liệt kê Họ Tên, Email, Mật khẩu. | FR01-R11, FR01-R18 | Quan sát S0 cho biết hiện trạng; đặc tả không nói yêu cầu |
 | Q14 | "Khớp" có nghĩa là trùng khớp chính xác từng ký tự (phân biệt hoa thường, tính cả khoảng trắng) không? | FR01-R12 | Không có trong đặc tả |
 | Q15 | Body của `POST /api/register` không có trường xác nhận mật khẩu. Việc so khớp chỉ diễn ra ở phía giao diện? (Liên quan tới quyết định có gọi API ở S3.) | FR01-R12, FR01-R22 | Không có trong đặc tả |
@@ -190,17 +191,17 @@ Ghi chú: FR01-R23 và FR01-R25 không quan sát trực tiếp được bằng k
 | Mã | Câu hỏi | Liên quan | Có thể làm rõ bằng |
 |---|---|---|---|
 | Q24 | Trang Đăng ký có những nút nào? Nút nào được coi là "hành động tích cực", nút nào là "hủy bỏ"? | FR01-R15 | Quan sát S0 |
-| Q25 | Thẻ `<h1>` của trang Đăng ký phải có nội dung gì để được coi là "mô tả nội dung trang"? | FR01-R16 | Quan sát S0 cho biết hiện trạng; đặc tả không nêu câu chữ |
+| Q25 | Thẻ `<h1>` của trang Đăng ký phải có nội dung gì để được coi là "mô tả nội dung trang"? | FR01-R16 | Không có trong đặc tả |
 
 ---
 
 ## 4. Bảng quan sát giao diện (sinh viên điền)
 
-Phạm vi: Chỉ ghi những gì nhìn thấy được khi mở trang Đăng ký, **không nhập dữ liệu, không bấm nút submit**. Những gì chỉ thấy khi nhập (thông báo lỗi, vị trí thông báo lỗi, giới hạn ký tự khi gõ, thứ tự Tab) để tới S6.
+Phạm vi: Chỉ ghi những gì nhìn thấy được bằng mắt khi mở trang Đăng ký, **không nhập dữ liệu, không bấm nút submit, không dùng DevTools**. Những gì chỉ thấy khi nhập hoặc khi xem HTML (thông báo lỗi, vị trí thông báo lỗi, giới hạn ký tự, ký tự gõ vào có bị che không, thứ tự Tab, thuộc tính `type`, số thẻ `<h1>`) để tới S6.
 
 Trạng thái khi quan sát: Chưa đăng nhập; trình duyệt mở `http://localhost:5173`.
 
-Thuộc tính HTML (`type`, `required`, `maxlength`...) xem bằng DevTools: Nhấn F12, chọn thẻ Elements, nhấp chuột phải vào ô nhập trên trang và chọn Inspect. Ghi đúng chữ như trên giao diện, kể cả hoa thường và dấu câu. Ô nào không có thì ghi "Không có".
+Ghi đúng chữ như trên giao diện, kể cả hoa thường và dấu câu. Ô nào không có thì ghi "Không có".
 
 ### 4.1 Đường vào trang
 
@@ -214,30 +215,29 @@ Thuộc tính HTML (`type`, `required`, `maxlength`...) xem bằng DevTools: Nh�
 
 | # | Mục quan sát | Kết quả quan sát | Ảnh |
 |---|---|---|---|
-| O04 | Tiêu đề lớn của form (ghi đúng chữ) | | |
-| O05 | Số thẻ `<h1>` trên trang và nội dung từng thẻ (DevTools: Ctrl+F trong thẻ Elements, tìm `<h1`) | | |
-| O06 | Các dòng chữ hướng dẫn hiển thị sẵn (ví dụ gợi ý quy tắc mật khẩu, chú thích dấu `*`), ghi nguyên văn | | |
-| O07 | Có chữ tiếng Anh nào trên trang không? Ghi nguyên văn từng chỗ | | |
+| O04 | Các tiêu đề nhìn thấy trên trang (tiêu đề lớn của form và tiêu đề khác nếu có), ghi đúng chữ | | |
+| O05 | Các dòng chữ hướng dẫn hiển thị sẵn (ví dụ gợi ý quy tắc mật khẩu, chú thích dấu `*`), ghi nguyên văn | | |
+| O06 | Có chữ tiếng Anh nào trên trang không? Ghi nguyên văn từng chỗ | | |
 
 ### 4.3 Các ô nhập
 
 Ghi theo thứ tự từ trên xuống dưới trên form. Nếu form có thêm trường khác ngoài 4 trường dưới đây, thêm dòng ở cuối bảng.
 
-| # | Nhãn hiển thị (nguyên văn) | Có `*` cạnh nhãn? | Placeholder (nguyên văn) | Giá trị mặc định | `type` | `required` | `minlength` / `maxlength` | `pattern` | Có nút hiện/ẩn mật khẩu? | Ảnh |
-|---|---|---|---|---|---|---|---|---|---|---|
-| O08 (Họ Tên) | | | | | | | | | | |
-| O09 (Email) | | | | | | | | | | |
-| O10 (Mật khẩu) | | | | | | | | | | |
-| O11 (Xác nhận mật khẩu) | | | | | | | | | | |
-| O12 (trường khác, nếu có) | | | | | | | | | | |
+| # | Nhãn hiển thị (nguyên văn) | Có `*` cạnh nhãn? | Placeholder (nguyên văn) | Giá trị mặc định | Loại ô nhìn thấy được (ô chữ, dropdown, ô chọn ngày...) | Có biểu tượng hoặc nút nào trong ô (ví dụ nút hiện/ẩn mật khẩu)? | Ảnh |
+|---|---|---|---|---|---|---|---|
+| O07 (Họ Tên) | | | | | | | |
+| O08 (Email) | | | | | | | |
+| O09 (Mật khẩu) | | | | | | | |
+| O10 (Xác nhận mật khẩu) | | | | | | | |
+| O11 (trường khác, nếu có) | | | | | | | |
 
 ### 4.4 Nút và liên kết
 
 | # | Nhãn (nguyên văn) | Loại (nút hay liên kết) | Màu nền và màu chữ | Vị trí trên form | Ảnh |
 |---|---|---|---|---|---|
-| O13 (nút submit) | | | | | |
-| O14 (liên kết sang Đăng nhập, nếu có) | | | | | |
-| O15 (nút/liên kết khác, nếu có) | | | | | |
+| O12 (nút submit) | | | | | |
+| O13 (liên kết sang Đăng nhập, nếu có) | | | | | |
+| O14 (nút/liên kết khác, nếu có) | | | | | |
 
 ### 4.5 Ảnh cần chụp
 
@@ -245,10 +245,5 @@ Ghi theo thứ tự từ trên xuống dưới trên form. Nếu form có thêm 
 |---|---|
 | `S0_01_form_dang_ky.png` | Toàn bộ trang Đăng ký khi vừa mở, chưa nhập gì |
 | `S0_02_duong_vao_trang.png` | Nút hoặc liên kết dẫn tới trang Đăng ký (navbar hoặc trang Đăng nhập) |
-| `S0_03_devtools_ho_ten.png` | DevTools đang chọn ô Họ Tên, thấy rõ các thuộc tính |
-| `S0_04_devtools_email.png` | DevTools đang chọn ô Email |
-| `S0_05_devtools_mat_khau.png` | DevTools đang chọn ô Mật khẩu |
-| `S0_06_devtools_xac_nhan_mat_khau.png` | DevTools đang chọn ô Xác nhận mật khẩu |
-| `S0_07_devtools_h1.png` | Kết quả tìm `<h1` trong DevTools |
 
-Có thể thêm ảnh nếu thấy chi tiết nào cần lưu bằng chứng; đánh số tiếp từ `S0_08_`.
+Có thể thêm ảnh nếu thấy chi tiết nào cần lưu bằng chứng (ví dụ phóng to một nhãn hoặc một nút); đánh số tiếp từ `S0_03_`.

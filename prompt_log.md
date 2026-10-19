@@ -3747,7 +3747,103 @@ Bạn chỉ cần thêm vào WORKFLOW thôi. Còn việc khôi phục và v
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Mình chỉ sửa `WORKFLOW.md`, còn 2 file của FR-01 để nguyên cho phiên kia xử lý. Có 4 thay đổi:
+
+- **Mục 1.2:** Không bao giờ sửa hay ghi đè file trong `ai_raw/`. Khi AI viết lại output thì lưu thành file mới `_v2`, `_v3`…, file cũ giữ nguyên.
+- **Mục 1.4 (bảng được/không được đọc):** Thêm ngoại lệ: Được dùng `git checkout -- <file>` để khôi phục file `ai_raw/` **của feature đang làm** nếu lỡ sửa. Nếu không có ngoại lệ này, phiên kia sẽ không dám khôi phục, vì `WORKFLOW.md` đang cấm đụng vào lịch sử git.
+- **Mục 2:** Đầu file `_v2` phải ghi lần sửa thứ mấy, thời gian và lý do.
+- **Mục 4.2 (bảng commit):** Thêm dòng cho lần AI viết lại, ví dụ `[A-FR01][S0] Remove DevTools observations from spec (AI revision 1)`.
+
+Trong `_NOTES.md`, mình ghi việc AI ghi đè `ai_raw` dù đã có quy tắc cấm vào phần chất liệu Critique, và ghi lần cập nhật `WORKFLOW.md` vào phần Audit.
+
+**Thứ tự commit:**
+
+1. Commit `WORKFLOW.md` trước. **Chỉ `add` 2 file này**, đừng `add` 2 file của FR-01:
+   ```bat
+   cd /d D:\Dang\Test\Homeworks\HW02
+   git add WORKFLOW.md prompt_log.md
+   git commit -m "[setup] Keep ai_raw immutable and version AI revisions"
+   git push
+   ```
+2. Bảo phiên kia đọc lại `WORKFLOW.md` (mục 1.2, 1.4 và 2), rồi làm 3 việc:
+   - Lưu nội dung hiện tại của `ai_raw/S0_khao_sat.md` thành `ai_raw/S0_khao_sat_v2.md`, có ghi chú lần sửa ở đầu file.
+   - Khôi phục `ai_raw/S0_khao_sat.md` bằng `git checkout --`.
+   - Giữ nguyên `00_spec.md`.
+
+   Phải **tạo `_v2` trước rồi mới khôi phục**. Làm ngược lại thì bản sửa sẽ mất.
+3. Khi phiên kia làm xong, bạn báo mình. Mình sẽ kiểm tra file gốc đã khớp với commit `f1b7c75` chưa, xuất log, rồi đưa lệnh commit `(AI revision 1)`. Sau đó bạn mới điền quan sát cho commit 2.
+````
+
+---
+
+### C69 | 15:13 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi vừa bổ sung lại quy tắc ở WORKFLOW. Hãy đọc lại và làm cho đúng. Ba việc bạn phải làm đó là:
+Lưu nội dung hiện tại của ai_raw/S0_khao_sat.md thành ai_raw/S0_khao_sat_v2.md, có ghi chú lần sửa ở đầu file.
+Khôi phục ai_raw/S0_khao_sat.md bằng git checkout --.
+Giữ nguyên 00_spec.md.
+Phải tạo _v2 trước rồi mới khôi phục.
+
+
+Nếu có thắc mắc nào trước khi làm vì yêu cầu của tôi mâu thuẫn với WORKFLOW hoặc các vấn đè khác thì nói tôi. nếu không, hãy làm.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Grep: v2|_v\d|Sửa|sửa|git checkout|ai_raw
+- Bash: Create v2 copy, restore original via git checkout, verify
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã làm xong cả ba việc theo đúng thứ tự:
+
+1. **Tạo `ai_raw/S0_khao_sat_v2.md`:** Chép nguyên nội dung đã sửa, ở đầu file có dòng "Sửa lần 1" ghi thời gian (15:01) và lý do (vi phạm WORKFLOW mục 1.1 và 3.1). Tôi dùng `cp -n` để không ghi đè nếu file đã tồn tại.
+2. **Khôi phục `ai_raw/S0_khao_sat.md`:** Chạy `git checkout --` sau khi đã tạo `_v2`. Kiểm tra lại thì file đã về bản gốc: Thời gian tạo 11:21, vẫn còn mục DevTools, không còn dòng "Sửa lần 1".
+3. **`00_spec.md` giữ nguyên:** File này giống hệt `_v2`, nên bản để bạn điền là bản không có DevTools.
+
+Lệnh commit, theo mẫu message ở WORKFLOW mục 4.2:
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S0_khao_sat_v2.md features/A_FR-01_DangKy/00_spec.md
+git commit -m "[A-FR01][S0] Remove DevTools observations from spec (AI revision 1)"
+```
+
+Lệnh trên giả định bạn đã commit bản gốc `S0_khao_sat.md` từ trước (commit 1). Nếu chưa, thêm `features/A_FR-01_DangKy/ai_raw/S0_khao_sat.md` vào `git add`, hoặc commit riêng file đó trước với message `[A-FR01][S0] Add spec extract and requirement list (AI draft)`.
+
+Bạn chụp ảnh và điền bảng quan sát trong `00_spec.md` xong thì báo tôi để làm phần 3 của S0.
+````
+
+---
+
+### C70 | 15:15 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Kiểm tra đi. Tôi thấy đã đúng rồi vì file 00_spec không nằm trong changes. Và session đó cũng đã đưa commit message cho tôi:
+
+
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S0_khao_sat_v2.md features/A_FR-01_DangKy/00_spec.md
+git commit -m "[A-FR01][S0] Remove DevTools observations from spec (AI revision 1)"
+
+
+Bây giờ tôi sẽ commit, chụp màn hình, điền quan sát và commit. Sau đó bảo session mới đó kiểm tra cho tôi đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Verify ai_raw restore, v2 file and 00_spec state
+- Bash: Compare v2 with 00_spec and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Mình kiểm tra trạng thái hiện tại. Bạn nói `00_spec.md` không còn trong danh sách thay đổi, trong khi lúc nãy nó vẫn đang được sửa, nên mình cần xem kỹ chỗ này:
 ````
 
 
