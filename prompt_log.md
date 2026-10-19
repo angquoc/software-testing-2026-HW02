@@ -2763,6 +2763,643 @@ Tôi đồng ý.
 
 ````text
 Giờ mình bật backend và web cho trang Đăng ký. FR-01 không dùng tới Web Admin nên chưa cần bật.
+
+Mình đã làm xong 3 việc đã thống nhất:
+
+- **Tracker và `_NOTES.md`:** Ghi thứ tự mới (A FR-01 làm mẫu, sau đó đúc kết skill, rồi đến C, B, D) và lý do đổi feature mẫu. Ghi thêm: Cả S0 của FR-01 làm trong phiên mới, và chỉ quan sát.
+- **Server:** Backend `localhost:3000` và web `localhost:5173` đang chạy, cả hai trả về HTTP 200. Trang Đăng ký nằm trên web 5173.
+- **Prompt log:** Đã xuất lại.
+
+**Lệnh commit cho phần FR-17:**
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/00_spec.md prompt_log.md
+git commit -m "[C-FR17][S0] Move exploratory results out of spec file"
+git push
+```
+
+Có 2 file **không** commit:
+- `00_exploratory.md`: Bạn cất ra ngoài `D:\Dang\Test`, ví dụ `D:\Dang\HW02_private\`, **trước khi mở phiên mới**.
+- `ai_raw/S1_prompt.md` của FR-17: Đây là bản nháp prompt mình soạn ở phiên này, giờ không dùng nữa. Bạn có thể xóa, vì nội dung của nó vẫn còn trong log nếu cần đối chiếu.
+
+**Sau đó, mở phiên mới cho FR-01:** Mở cuộc trò chuyện mới trong khung Claude của VS Code. Prompt đầu tiên nên nêu rõ:
+- Feature đang làm (A, FR-01 Đăng ký, trên web `localhost:5173`), và thư mục làm việc là `Homeworks/HW02/features/A_FR-01_DangKy/`.
+- Những gì **được đọc**: SRS và API spec của EShop (`Homeworks/eshop-sut/README.md`, `api_specification.md`), slide môn học, skill `test-case-writing`, ảnh trong thư mục feature.
+- Những gì **không được đọc**: `prompt_log.md`, `_NOTES.md`, lịch sử git, thư mục `DA/`, mã nguồn EShop, các file `.jsonl` trong `~/.claude/projects/`.
+- Quy trình: Làm từng bước S0 đến S4 theo slide S04, dừng sau mỗi bước để bạn review, và lưu nguyên văn output vào `ai_raw/`.
+
+Lời prompt do bạn tự viết. Đề bài coi trọng việc chính bạn dẫn AI qua từng bước, và quy định chép prompt bị tính là gian lận. Làm xong mỗi bước, bạn quay lại phiên này để mình thêm session ID mới vào whitelist, kiểm tra danh sách thao tác của AI và đưa bạn lệnh commit.
+````
+
+---
+
+### C49 | 01:02 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Làm gì có file nào ai_raw/S1_prompt.md?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check whether the S1 prompt draft exists
+
+**Output AI (nguyên văn):**
+
+````text
+File đó có tồn tại, nhưng nằm trong **thư mục của FR-17**, không phải của FR-01:
+
+```
+D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S1_prompt.md
+```
+
+File dài 11 KB, được tạo lúc 00:11 ngày 19/10. Đó là bản nháp prompt S1 cho FR-17 mà mình soạn trước khi bạn hỏi về chuyện AI vẫn đọc được `00_spec.md`. `git status` cũng liệt kê nó là file chưa được git theo dõi, nên có thể bạn đang mở thư mục `ai_raw` của FR-01 (thư mục đó chỉ có `.gitkeep`).
+
+Lúc nãy mình chỉ ghi `ai_raw/S1_prompt.md` mà không nói rõ thuộc feature nào, nên dễ nhầm. Bạn có thể xóa file này, vì FR-17 sẽ chạy S1 bằng skill sau này. Nội dung của nó vẫn còn trong prompt log nếu cần đối chiếu.
+````
+
+---
+
+### C50 | 01:08 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đang làm bài tập HW02. Hãy chú trọng vào folder đó, đọc kỹ đề bài yêu cầu và các file liên quan. Tôi sẽ làm Feature A, FR-01 Đăng ký, trên web localhost:5173, và thư mục làm việc là Homeworks/HW02/features/A_FR-01_DangKy/.
+Những gì bạn được phép đọc: SRS và API spec của EShop (Homeworks/eshop-sut/README.md, api_specification.md), slide môn học, skill test-case-writing, ảnh trong thư mục feature.
+Những gì bạn TUYỆT ĐỐI KHÔNG được đọc: prompt_log.md, _NOTES.md, lịch sử git, thư mục DA/, mã nguồn EShop, các file .jsonl trong ~/.claude/projects/.
+Quy trình: Làm từng bước S0 đến S4 theo slide S04, dừng sau mỗi bước để bạn review, và lưu nguyên văn output vào ai_raw/.
+Đầu tiên, bạn hãy cứ đọc mọi thứ, xem thử đã hiểu yêu cầu tôi chưa, và chúng ta sẽ đi từng bước một. Chỗ nào bạn chưa hiểu, hãy hỏi tôi đến khi chắc chắn rồi mới bắt đầu làm.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List workspace and HW02 folder structure
+- Bash: List slides, eshop-sut, and skill folders
+- Read: D:\Dang\Test\Homeworks\HW02\2026.HW02.Domain Testing_En.md
+- Read: D:\Dang\Test\Homeworks\eshop-sut\README.md
+- Read: D:\Dang\Test\Homeworks\eshop-sut\api_specification.md
+- Read: D:\Dang\Test\.claude\skills\test-case-writing\SKILL.md
+- Bash: Check PDF tools and skill reference files
+- Bash: Extract slide PDFs to text and search for S0-S4 steps
+- Bash: List remaining course files and extracted slide texts
+- Bash: Read S04 Domain Testing slide text
+- Bash: Read reference Domain Testing slides
+- Read: D:\Dang\Test\.claude\skills\test-case-writing\references\test-case-guide.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi sẽ bắt đầu bằng việc liệt kê cấu trúc thư mục (chỉ xem tên file, không mở các file bị cấm).
+
+Thư mục feature A hiện chỉ có `ai_raw/` và `screenshots/` trống. Giờ tôi xem slide môn học, eshop-sut và skill.
+
+Đề bài đã đọc. Giờ đọc SRS, API spec và skill.
+
+Giờ tôi tìm slide có quy trình S0 đến S4 và đọc các tài liệu tham chiếu của skill.
+
+Danh sách ban đầu bị cắt; có thêm slide đánh số "S0x". Tôi liệt kê đủ.
+
+S04 là "S04_Domain Testing". Đọc nội dung slide này.
+
+S04 có 4 bước (1 đến 4), không có "S0". Tôi đọc thêm hai slide Domain Testing tham khảo và hướng dẫn của skill để hiểu đủ ngữ cảnh.
+
+Tôi đã đọc xong các tài liệu được phép. Dưới đây là phần tóm tắt những gì tôi hiểu, kèm các câu hỏi cần bạn trả lời trước khi bắt đầu.
+
+## Những gì tôi đã đọc (và không đọc)
+
+**Đã đọc:** Đề bài HW02, [README.md](Homeworks/eshop-sut/README.md) (SRS), [api_specification.md](Homeworks/eshop-sut/api_specification.md), slide S04_Domain Testing (cùng hai slide Domain Testing trong Refs), skill test-case-writing ([SKILL.md](.claude/skills/test-case-writing/SKILL.md) và test-case-guide.md).
+
+**Không mở:** prompt_log.md, _NOTES.md, .git, DA/, mã nguồn EShop, các file .jsonl. Ngoài ra tôi cũng chưa mở [Homeworks/HW02/README.md](Homeworks/HW02/README.md) và `00_spec.md` của feature C, vì hai file này không có trong danh sách bạn cho phép. Thư mục `screenshots/` của feature A hiện đang trống.
+
+## Cách tôi hiểu yêu cầu
+
+**Đối tượng test (FR-01):** Có 4 trường nhập (Họ Tên, Email, Mật khẩu, Xác nhận mật khẩu) với các ràng buộc sau:
+- Email đúng định dạng và không trùng với tài khoản đã có.
+- Mật khẩu từ 8 ký tự trở lên, có đủ chữ hoa, chữ thường, chữ số và ít nhất 1 ký tự đặc biệt trong tập `@$!%*?&`.
+- Xác nhận mật khẩu phải khớp với Mật khẩu.
+
+Kết quả đầu ra là chuyển sang trang Đăng nhập (thành công) hoặc thông báo lỗi (thất bại).
+
+**Bài nộp cần có cho feature này:** Domain Testing, BVA, phân tích những gì AI bỏ sót, và bug report (ghi trong Markdown và đăng lên GitHub Issues).
+
+**Slide S04 chỉ có 4 bước** (1: Xác định Input/Output, 2: Lớp tương đương, 3: Chọn test case, 4: BVA). Tôi đoán quy trình S0 đến S4 của bạn như sau:
+
+| Bước | Nội dung | Output dự kiến trong ai_raw/ |
+|---|---|---|
+| S0 | Khảo sát: Trích yêu cầu FR-01, ghi đúng tên trường/nút/thông báo trên UI, liệt kê chỗ spec còn mơ hồ | `S0_khao_sat.md` |
+| S1 | Xác định biến Input và Output | `S1_input_output.md` |
+| S2 | Lớp tương đương (bảng Complete Set of Partitions) | `S2_equivalence_classes.md` |
+| S3 | Test case phủ từng lớp, rồi rút gọn thành Minimum Set | `S3_test_cases.md` |
+| S4 | Boundary Value Analysis | `S4_bva.md` |
+
+## Câu hỏi cho bạn
+
+1. **Cách chia S0 đến S4** như bảng trên có đúng ý bạn không?
+2. **Ảnh chụp UI:** Tôi không được đọc mã nguồn, nên phải dựa vào ảnh để biết đúng tên trường, nhãn, thông báo lỗi. Bạn sẽ tự chụp form Đăng ký trên localhost:5173 rồi bỏ vào `screenshots/` (ví dụ `S0_01_form_dang_ky.png`) phải không? Hay bạn muốn tôi tự mở trang?
+3. **Phạm vi:** Ngoài 4 trường của FR-01, có tính thêm các yêu cầu chung áp dụng cho form này không? Gồm:
+   - FR-22: Dấu `*` ở trường bắt buộc, `type="email"`, `type="password"`, thông báo lỗi nằm trên nút submit.
+   - FR-21: Đúng 1 thẻ `<h1>`, giao diện tiếng Việt.
+   - SEC-04/05: Nhập XSS hoặc SQL injection vào Họ Tên.
+
+   Đề xuất của tôi: Lấy domain của 4 trường làm trọng tâm, còn FR-22 tách thành một nhóm phụ nhỏ.
+4. **Kiểm thử qua API:** Thân request của `POST /api/register` không có trường xác nhận mật khẩu, tức là phần kiểm tra khớp mật khẩu có thể chỉ nằm ở phía client. Bạn chỉ test trên UI, hay muốn thêm vài case gọi thẳng API để kiểm tra validation phía server?
+5. **Chỗ spec mơ hồ:** Ví dụ như độ dài tối đa của Họ Tên/Email/Mật khẩu, ký tự `#` có được tính là ký tự đặc biệt không, khoảng trắng đầu/cuối, Email viết hoa thường khác nhau có bị coi là trùng không. Tôi định liệt kê hết những điểm này ở S0 để bạn quyết định. Hay bạn muốn chốt luôn bây giờ?
+6. **Định dạng file ai_raw/:** Mỗi file chỉ chứa nguyên văn câu trả lời của tôi, hay có chép kèm prompt của bạn ở đầu? Bản đã review/chỉnh sửa thì bạn tự làm ở file khác, đúng không?
+7. **Ngôn ngữ:** Output viết tiếng Việt (giữ nguyên tên trường như trên UI) được không?
+8. **Skill test-case-writing:** Có dùng skill này để xuất Word/Excel không? Nếu có thì dùng ngay ở S3/S4, hay để một bước riêng sau S4?
+9. **Bộ nhớ cũ của tôi:** Tôi có một ghi nhớ từ trước về việc đánh dấu tiến độ trong `_NOTES.md`. Vì bạn đã cấm đọc file này, tôi sẽ không động vào nó. Về commit: Bạn tự commit, sau mỗi bước tôi chỉ đưa gợi ý commit message.
+10. **Hai file chưa mở:** Tôi có được đọc [Homeworks/HW02/README.md](Homeworks/HW02/README.md) không, vì nó có thể chứa quy ước chung của bài? Còn `00_spec.md` của feature C thì tôi sẽ không đọc.
+
+Bạn trả lời xong là tôi bắt đầu S0. Nếu đồng ý với đề xuất của tôi ở câu nào thì chỉ cần ghi "theo đề xuất" cho câu đó.
+````
+
+---
+
+### C51 | 01:12 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Vì mở phiên mới nên bạn có nhiều câu hỏi cho tôi, có câu hỏi dễ, có câu hỏi tôi chưa hiểu lắm. Bạn hãy đọc phiên chat mới nhất rồi nói giúp tôi. Xem thử có câu hỏi nào đang bị quá xa so với đi từng bước không.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List session transcripts to find the new one
+- Bash: Read the new session transcript (prompts, replies, tool calls)
+- Bash: List exact commands and files used by the new session
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
+- Bash: Record new session id in whitelist memory
+
+**Output AI (nguyên văn):**
+
+````text
+Mình tìm log của phiên mới và đọc nội dung.
+
+Mình thêm phiên mới vào whitelist của prompt log luôn:
+
+Mình đã đọc phiên mới (`38378bef`) và thêm phiên này vào whitelist.
+
+**Kiểm tra thao tác: Phiên mới chưa vi phạm gì.** Nó chỉ đọc đề HW02, SRS, API spec, slide S04 (cùng 2 slide tham khảo) và skill của thầy. Lệnh trích văn bản từ slide ghi vào thư mục tạm riêng của nó. Có một điểm nhỏ: Lệnh `find` đầu tiên liệt kê **tên** mọi file trong `HW02`, nên nó thấy tên file `00_exploratory.md` (nếu bạn chưa cất file đi), nhưng không mở nội dung. Lần sau nên cất file ra ngoài trước khi mở phiên mới.
+
+## Góp ý từng câu hỏi
+
+Ký hiệu: ✅ nên trả lời ngay · ⏭ **đi quá xa so với S0**, để dành cho bước sau.
+
+| Câu | Nội dung | Mức | Gợi ý trả lời |
+|---|---|---|---|
+| 1 | Cách chia S0 đến S4 | ✅ | **Đúng.** Thêm quy ước tên file cho giống FR-17: Bản AI nằm trong `ai_raw/`; bản đã review đặt ở thư mục feature với tên `00_spec.md`, `01_io.md`, `02_ec.md`, `03_tc.md`, `04_bva.md` |
+| 2 | Ai chụp ảnh giao diện | ✅ **Quan trọng** | **Bạn tự chụp**, lưu vào `screenshots/` với tên `S0_01_…`. AI **không được tự mở trang**: Nó không có trình duyệt, nên chỉ có thể tải HTML/JS của trang về đọc, và như vậy là **đọc mã nguồn frontend**, vi phạm nguyên tắc kiểm thử hộp đen. Bạn nên nói rõ điều này với nó |
+| 3 | Phạm vi (FR-22, FR-21, SEC) | ✅ phần khung | Chỉ chốt khung, **theo đề xuất của nó**: Trọng tâm là 4 trường của FR-01, còn FR-21/FR-22 là một nhóm phụ nhỏ. Riêng XSS và SQL injection thì đừng chốt bây giờ. Đến S2, nó sẽ tự xem có nên thêm lớp tương đương "chuỗi chứa HTML / ký tự đặc biệt" cho trường Họ Tên hay không. Để AI tự quyết ở bước đó thì mới đo được AI tự nghĩ ra gì |
+| 4 | Có test thẳng API không | ⏭ | **Để tới S3** (lúc chọn cách thực thi test case). Hiện tại chỉ cần ghi "test trên giao diện là chính; việc có gọi API hay không sẽ quyết định ở S3" |
+| 5 | Các chỗ đặc tả mơ hồ | ✅ | **Theo đề xuất của nó**: Liệt kê hết ở S0, bạn quyết định sau. Đừng chốt bây giờ |
+| 6 | Định dạng file trong `ai_raw/` | ✅ | `ai_raw/` chỉ chứa **nguyên văn câu trả lời của AI**, đầu file ghi bước và thời gian. Không cần chép prompt vì prompt log đã có. Bản đã review là file riêng (xem câu 1). Việc viết lại bản review có thể nhờ AI làm, nhưng bạn là người quyết định sửa gì |
+| 7 | Ngôn ngữ | ✅ | Tiếng Việt, giữ nguyên tên trường như trên giao diện |
+| 8 | Dùng skill `test-case-writing` | ⏭ | **Có dùng, nhưng để tới S3/S4.** Lúc đó test case được ghi thành file JSON theo schema của thầy, rồi dùng lint và build để xuất Word/Excel. Ở S0 chưa cần |
+| 9 | Ghi chú cũ trong bộ nhớ | ✅ | **Đúng.** Phiên đó không động vào `_NOTES.md`, việc đánh dấu tiến độ do phiên điều phối (phiên này) lo. Bạn tự commit, nó chỉ đưa commit message theo dạng `[A-FR01][S0] …` |
+| 10 | Có được đọc `HW02/README.md` không | ✅ | **Cho phép.** File này chỉ có cấu trúc thư mục, bảng feature, Test Summary trống và bảng tự chấm. Không có chi tiết nào làm lộ kết quả nhập thử |
+
+Câu 9 cho thấy một điểm cần biết: **Phiên mới tự động đọc bộ nhớ (memory) chung của workspace**, nên nó biết các quy tắc như bạn tự commit, không dùng dấu "—" và "·", viết hoa sau dấu `:`. Đây là điều có lợi. Trong memory chỉ có quy ước làm việc, không có chi tiết kiểm thử nào, nên không làm lộ thông tin.
+
+Bạn có thể trả lời gọn như sau: "1: Đúng, thêm quy ước tên file …; 2: Tôi tự chụp, bạn không tự mở trang; 3: Theo đề xuất, riêng XSS/SQLi để bạn tự xét ở S2; 4: Để S3; 5, 7: Theo đề xuất; 6: …; 8: Để S3/S4; 9: Đúng; 10: Được đọc." Tuy vậy, bạn nên **viết lại theo lời của bạn**, vì prompt của bạn là thứ được chấm.
+````
+
+---
+
+### C52 | 09:19 19/10/2026 | Tool: Claude Code (n/a) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+<task-notification>
+<task-id>btiuqs01i</task-id>
+<task-id>byyw3ehhs</task-id>
+<task-id>__orphan_summary__:shell</task-id>
+<status>stopped</status>
+<summary>2 background shell command tasks didn't finish before the previous session ended. Task ids: btiuqs01i, byyw3ehhs.</summary>
+<note>No completion record was found for them in the previous session. They may have been stopped (via the UI, Monitor timeout, or agent teardown — these leave no transcript marker), or they may have been running when the previous Claude Code process exited. They have been marked stopped. Task ids in this notification beginning with "__orphan_summary" are internal scan markers, not tasks.</note>
+</task-notification>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C53 | 09:19 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tiện thể thì về pool D đã có câu trả lời của giảng viên: Em chọn các chức năng trong FR-20 nhé.
+-> Điều này có ảnh hưởng đến feature tôi chọn và các feature liệt kê trong file excel gửi nhóm không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+**Với feature của bạn: Không ảnh hưởng.** Pool D của bạn là FR-04 Hồ sơ, và "Hồ sơ" có trong danh sách chức năng của FR-20.
+
+**Với file Excel gửi nhóm: Có ảnh hưởng một phần.** Theo nguyên văn SRS, FR-20 ghi:
+
+> Đầy đủ các chức năng: Xem sản phẩm, Đăng nhập, Đăng xuất, Đăng ký, Giỏ hàng, Thanh toán, Hồ sơ, Lịch sử đơn hàng. Chức năng Hủy đơn hàng tuân theo đúng State Machine ở FR-10.
+
+Đối chiếu với các dòng Pool D trong sheet "Chọn feature":
+
+| Dòng Pool D trong Excel | Thuộc chức năng nào của FR-20 | Kết luận |
+|---|---|---|
+| FR-01 Đăng ký | Đăng ký | ✅ Giữ |
+| FR-02 Đăng nhập & khóa | Đăng nhập | ✅ Giữ |
+| FR-04 Hồ sơ | Hồ sơ | ✅ Giữ |
+| FR-05 Danh sách & tìm kiếm | Xem sản phẩm | ✅ Giữ |
+| FR-06 Chi tiết sản phẩm | Xem sản phẩm | ✅ Giữ |
+| FR-07 Giỏ hàng | Giỏ hàng | ✅ Giữ |
+| FR-08 Thanh toán | Thanh toán | ✅ Giữ |
+| FR-10 Hủy đơn (State machine) | Hủy đơn hàng | ✅ Giữ |
+| FR-11 Lịch sử đơn hàng | Lịch sử đơn hàng | ✅ Giữ |
+| **FR-03 Quên mật khẩu** | **Không có trong FR-20** | ❌ Nên bỏ khỏi Pool D |
+| **FR-09 Mã giảm giá** | Không nêu tên riêng. Có thể tính là một phần của "Thanh toán", vì FR-09 ghi mã giảm giá được nhập "tại bước Checkout" | ⚠️ Không chắc, nên ghi chú hoặc bỏ cho an toàn |
+| (chưa có) Đăng xuất | Đăng xuất | Có thể thêm, nhưng gần như không có input nên không làm được domain testing hay BVA. Nên ghi rõ là không phù hợp |
+
+**Ba gói gợi ý không bị ảnh hưởng.** Pool D của 3 gói lần lượt là FR-04, FR-10 và FR-06, đều thuộc FR-20.
+
+**Câu trả lời của thầy chưa giải quyết câu hỏi cũ.** Thầy chỉ nói Pool D chọn trong FR-20, chưa nói Pool D có được trùng FR với feature web của người khác không. Vì vậy **quy tắc chặt vẫn nên giữ**: Mỗi FR chỉ do một người làm, tính chung cả Web lẫn Mobile.
+
+Nếu bạn muốn, mình sửa script tạo Excel như sau rồi tạo lại file để bạn gửi nhóm:
+- Bỏ dòng Pool D của FR-03.
+- Đánh dấu ⚠️ cho FR-09.
+- Sửa câu hướng dẫn thành "Pool D: Chọn trong các chức năng của FR-20 (theo trả lời của giảng viên)".
+
+Vì An và Hương chưa chốt feature nên cập nhật bây giờ không làm phiền ai. Bạn có muốn mình sửa không?
+````
+
+---
+
+### C54 | 09:25 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Hương đã chọn feature rồi nhưng Hương chọn theon trong gói. Tôi cũng đã bỏ FR03 và 09 ra khỏi google sheet. Nhưng cũng nên cập nhật lại file này ở dưới local máy để đảm bảo bạn không lẫn lộn khi cuộc trò chuyện đi xa và bạn quên mất.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check local workbook for user edits and locate Pool D text in script
+- Bash: Remove FR-03 and FR-09 from Pool D in the generator
+- Bash: Set FR-20 function names on Pool D rows and regenerate workbook
+- PowerShell: Verify regenerated workbook formulas in Excel
+- Bash: Record lecturer answer and Pool D list in notes
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng vậy, nên cập nhật bản ở máy cho khớp. Trước khi ghi đè, mình kiểm tra file Excel trên máy có bị sửa sau lần mình tạo gần nhất không:
+
+File trên máy chưa có chỉnh sửa nào (chưa điền tên, chưa ai chọn), nên ghi đè an toàn. Giờ mình sửa script:
+
+Cột ghi chú ở các dòng Pool D giờ sẽ hiện **đúng tên chức năng trong FR-20**, đồng thời bỏ luôn dấu "—" còn sót ở dòng FR-10:
+
+Bản Excel trên máy đã khớp với Google Sheet, và câu trả lời của thầy đã ghi vào `_NOTES.md`.
+
+**Bản Excel trên máy** (`Homeworks/HW02_chon_feature/`), tạo lại hôm 19/10:
+- Bỏ dòng Pool D của **FR-03** và **FR-09**. Còn 28 dòng: 19 dòng Web và 9 dòng Pool D.
+- Cột ghi chú ở các dòng Pool D ghi đúng tên chức năng trong FR-20, ví dụ "FR-20: Hồ sơ" hay "FR-20: Hủy đơn hàng".
+- Câu hướng dẫn số 4 ghi câu trả lời của thầy và lý do bỏ FR-03, FR-09 và Đăng xuất.
+- Trước khi ghi đè, mình đã kiểm tra: File cũ trên máy chưa có chỉnh sửa nào. Sau khi tạo lại, mình chạy thử bằng Excel: Cảnh báo vi phạm và phần đếm theo Pool đều đúng.
+
+**`_NOTES.md`** có thêm mục "Pool D: Giảng viên đã trả lời (19/10/2026)", gồm:
+- Danh sách chức năng của FR-20, kèm mã FR tương ứng.
+- FR-03 và FR-09 không thuộc Pool D.
+- Quy tắc chặt vẫn giữ, vì thầy chưa nói gì về chuyện trùng FR giữa Web và Mobile.
+- Feature của bạn và 3 gói gợi ý không bị ảnh hưởng.
+
+Mục 0.9 trong tracker còn thiếu một thông tin: **Hương chọn gói nào?** Bạn cho mình biết, mình sẽ ghi vào tracker. Khi Hương điền vào README của repo nhóm (hoặc bạn điền giúp), mình kiểm tra lại xem có trùng FR với gói của bạn không.
+````
+
+---
+
+### C55 | 10:50 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Hương chọn gói 2, tôi đã check và không thấy trùng. Nếu bạn lo lắng có thể check lại.
+
+Tiện thể quay về câu mà AI hỏi ở session mới, tôi trả lời như vậy đã được chưa, có thiếu thông tin hay mơ hồ ở đâu không?
+Phần tôi sẽ trả lời: 
+
+
+Để tới S3 (lúc chọn cách thực thi test case). Hiện tại chỉ cần ghi "test trên giao diện là chính; việc có gọi API hay không sẽ quyết định ở S3"1. Đúng. Quy ước đặt tên file: Bản AI nằm trong ai_raw/; bản đã review đặt ở thư mục feature với tên 00_spec.md, 01_io.md, 02_ec.md, 03_tc.md, 04_bva.md
+2. Tôi là người chụp giao diện và lưu vào screenshots. Bạn sẽ nhìn vào ảnh tôi gửi, KHÔNG ĐƯỢC ĐỌC mã nguồn, vì chúng ta đang kiểm thử hộp đen.
+3. Theo đề xuất khung của bạn.
+4. Để tới S3 (lúc chọn cách thực thi test case). Test trên giao diện là chính; việc có gọi API hay không sẽ quyết định ở S3.
+5. Theo đề xuất của bạn.
+6. ai_raw/ chỉ chứa nguyên văn câu trả lời của AI, đầu file ghi bước và thời gian. Không cần chép prompt vì prompt log đã có. Bản đã review là file riêng (xem câu 1). Việc viết lại bản review có thể tôi sẽ nhờ bạn làm, nhưng tôi là người quyết định sửa gì.
+7. Tiếng Việt
+8. Có dùng, nhưng để tới S3/S4
+9. Đúng vậy
+10. Cho phép đọc Homeworks/HW02/README.md
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Record Huong's bundle in tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Mình kiểm tra lại gói 2 của Hương so với gói 1 của bạn:
+
+| | Pool A | Pool B | Pool C | Pool D |
+|---|---|---|---|---|
+| Bạn (Gói 1) | FR-01 | FR-07 | FR-17 | FR-04 |
+| Hương (Gói 2) | FR-03 | FR-08 | FR-15 | FR-10 (Hủy đơn hàng) |
+
+**Không trùng FR nào.** FR-10 thuộc chức năng "Hủy đơn hàng" của FR-20, nên vẫn hợp lệ theo câu trả lời của thầy. Mình cập nhật tracker:
+
+Câu trả lời của bạn nhìn chung đã ổn. Có 1 lỗi khi dán và 4 chỗ nên bổ sung để AI không phải đoán:
+
+**1. Lỗi khi dán:** Đầu bản trả lời còn sót một câu trùng với câu 4 ("Để tới S3 … quyết định ở S3"), dính liền vào "1. Đúng". Bạn xóa câu đó đi.
+
+**2. Câu 2 thiếu ý "chỉ quan sát"**, và đây là chỗ quan trọng nhất. Ở FR-17, bảng câu hỏi của AI đã khiến bạn phải nhập thử. Nên thêm hai ý:
+- "S0 chỉ quan sát: Bảng quan sát và các câu hỏi chỉ được hỏi những gì nhìn thấy trên giao diện, không được yêu cầu tôi nhập thử dữ liệu."
+- Ý "không đọc mã nguồn" nên ghi rõ hơn: "**Không tự mở trang, không tải HTML/JS của trang** (bằng curl hay cách khác)." AI có thể không coi việc tải trang là đọc mã nguồn.
+
+**3. Câu 3 đang mơ hồ.** Đề xuất của AI chỉ nói tới FR-22. Trong khi đó, nó hỏi cả FR-21 (thẻ `<h1>`, tiếng Việt) và SEC-04/05 (XSS, SQL injection). Ghi "theo đề xuất khung" thì AI không biết hai phần sau xử lý ra sao. Nên ghi:
+- "Trọng tâm là 4 trường của FR-01. FR-21 và FR-22 gộp thành một nhóm phụ nhỏ."
+- "XSS/SQL injection: Chưa chốt. Đến S2, bạn tự xét có cần lớp tương đương cho dữ liệu chứa HTML hoặc ký tự đặc biệt không."
+
+**4. Câu 6 chưa nói tên file trong `ai_raw/`.** AI đã đề xuất tên `S0_khao_sat.md`, `S1_input_output.md`… trong bảng của nó. Nên thêm "Tên file trong `ai_raw/` theo bảng bạn đề xuất" để nó không phải hỏi lại.
+
+**5. Thiếu thứ tự công việc ở S0.** Thư mục `screenshots/` của FR-01 đang trống, mà AI cần ảnh mới viết được phần giao diện. Nên báo trước: "Ở S0, bạn trích đặc tả và lập bảng quan sát trước; tôi chụp ảnh rồi gửi sau; bạn chờ ảnh rồi mới hoàn tất S0."
+
+Các câu 1, 4, 5, 7, 8, 9, 10 đã rõ, không cần sửa.
+
+Server đã dừng sau lần phiên khởi động lại. Khi bạn cần chụp trang Đăng ký, báo mình để mình bật lại backend và web `localhost:5173`.
+````
+
+---
+
+### C56 | 10:54 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+4. Tại sao câu 1 đã có tên rồi mà sang câu 6 lại bảo AI đề xuất? Có phải nên xóa những tên ghi sẵn ở câu 1 đi không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Không mâu thuẫn, vì **đó là 2 bộ file khác nhau**. Mỗi bước có 2 file:
+
+| | Bản AI nguyên văn | Bản đã review |
+|---|---|---|
+| Nằm ở | `ai_raw/` | Thư mục feature |
+| Ai viết | AI, giữ nguyên, không sửa | AI viết lại theo quyết định của bạn, hoặc bạn tự sửa |
+| Tên file | Theo bảng AI đã đề xuất: `S0_khao_sat.md`, `S1_input_output.md`, `S2_equivalence_classes.md`, `S3_test_cases.md`, `S4_bva.md` | Theo câu 1 của bạn: `00_spec.md`, `01_io.md`, `02_ec.md`, `03_tc.md`, `04_bva.md` |
+
+Vậy **không cần xóa tên ở câu 1**. Vấn đề là hiện tại câu 1 chỉ nói về bản đã review, câu 6 chỉ nói về `ai_raw/`, nên đọc riêng từng câu dễ tưởng là chồng lên nhau. Cách gọn nhất là gộp phần tên file vào câu 1 cho đủ cả 2 loại, ví dụ:
+
+> 1. Đúng. Mỗi bước có 2 file: Bản AI nguyên văn lưu trong `ai_raw/`, tên theo bảng bạn đề xuất (`S0_khao_sat.md`, `S1_input_output.md`, ...); bản đã review lưu ở thư mục feature với tên `00_spec.md`, `01_io.md`, `02_ec.md`, `03_tc.md`, `04_bva.md`.
+
+Khi đó, câu 6 chỉ còn nói về **nội dung** của file trong `ai_raw/` (nguyên văn, đầu file ghi bước và thời gian, không chép prompt) và ai quyết định sửa gì, không cần nhắc lại tên file nữa.
+````
+
+---
+
+### C57 | 10:57 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Vì AI không đọc được file _NOTES nên sẽ không thấy được từng bước nên làm mà chúng ta đã vạch ra và quy ước commit 3 lần ở file 00_spec sao?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng vậy. Phiên mới chỉ biết những gì nằm trong prompt của bạn, trong các file nó được phép đọc, và trong bộ nhớ chung. Mình đối chiếu xem phiên đó đang thiếu những gì:
+
+| Quy ước đã thống nhất | Phiên mới đã biết chưa | Nguồn |
+|---|---|---|
+| Các bước S0–S4 theo slide S04 | ✅ Biết | Prompt đầu tiên của bạn |
+| Black-box, những file bị cấm đọc | ✅ Biết | Prompt đầu tiên |
+| Bạn tự commit; dạng `[A-FR01][S0] …`; không dùng "—" và "·"; viết hoa sau dấu `:` | ✅ Biết | Bộ nhớ chung (memory) |
+| `ai_raw/` và bản review; tên file | 🔄 Sẽ biết | Câu trả lời 1 và 6 của bạn |
+| **Tách commit:** Bản AI một commit, bạn quan sát một commit (riêng S0), bản review một commit | ❌ Chưa biết | Chỉ có trong `_NOTES.md` và cuộc trò chuyện này |
+| **S0 chỉ quan sát**, không hỏi những gì phải nhập thử mới biết | ❌ Chưa biết (nếu bạn không thêm vào câu 2) | Như trên |
+| Các bước sau S4: S5 bổ sung TC, S6 chạy test, S7 bug, S8 gap analysis | ❌ Chưa biết | Như trên, kèm README repo nhóm |
+| Quy ước label và tiêu đề issue | ❌ Chưa biết (S7 mới cần) | README repo nhóm |
+
+Có 2 cách xử lý:
+
+**A. Bạn ghi vào câu trả lời cho phiên mới.** Thêm một đoạn ngắn về cách tách commit và quy tắc S0 chỉ quan sát. Phần S5–S8 để tới lúc làm hẵng nói. Cách này nhanh, nhưng mỗi phiên mới sau này (ví dụ khi chạy skill cho FR-17, FR-07, FR-04) bạn lại phải nhắc lại từ đầu.
+
+**B. Viết một file quy trình mà phiên mới được đọc** (mình đề xuất cách này), ví dụ `HW02/WORKFLOW.md`, gồm:
+- Các bước S0–S8: Mỗi bước làm gì, ai làm, output là gì, tên file.
+- Quy tắc S0 chỉ quan sát, black-box, `ai_raw/` khác bản review ra sao.
+- Cách tách commit cho từng bước và dạng commit message.
+- Quy ước issue và label (để dành cho S7).
+
+File này **không chứa chi tiết kiểm thử nào** (không có kết quả nhập thử hay đặc tả của feature nào), nên không làm lộ gì. Nó còn có 3 lợi ích:
+1. Đề yêu cầu "the whole working process must be documented", và file này chính là phần đó.
+2. Đây là khung để viết skill sau này, vì skill cũng cần biết quy trình.
+3. Mọi phiên mới chỉ cần một câu "đọc `WORKFLOW.md`" là đủ.
+
+Nếu bạn chọn B, mình soạn `WORKFLOW.md` ở phiên này để bạn duyệt, rồi bạn thêm vào câu 10 cho phiên mới: "Cho phép đọc `Homeworks/HW02/README.md` và `Homeworks/HW02/WORKFLOW.md`, làm theo quy trình trong `WORKFLOW.md`". Bạn chọn cách nào?
+````
+
+---
+
+### C58 | 10:59 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Chọn B.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Write: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: Check WORKFLOW.md for banned marks, leaks, style
+- Bash: Locate the remaining mark, export log, show status
+- Bash: Record WORKFLOW.md in notes and allowed list
+
+**Output AI (nguyên văn):**
+
+````text
+Mình soạn `WORKFLOW.md`. Nội dung chỉ là quy trình và quy ước, không có chi tiết kiểm thử của feature nào.
+
+Mình kiểm tra file vừa viết theo 3 tiêu chí: không có dấu "—" và "·", viết hoa sau dấu `:`, và không có chi tiết kiểm thử nào bị lộ.
+
+Mình đã soạn xong [WORKFLOW.md](Homeworks/HW02/WORKFLOW.md), bạn đọc và sửa nếu cần. File gồm 7 mục:
+
+1. **Nguyên tắc chung:**
+   - Kiểm thử hộp đen, trong đó có ghi rõ "không tự mở trang, không tải HTML/JS".
+   - Mỗi lượt AI chỉ làm một bước.
+   - Vai trò của phiên điều phối và phiên thiết kế.
+   - **Bảng những gì được đọc và không được đọc.**
+2. **Cấu trúc thư mục một feature**, với tên file của cả bản AI trong `ai_raw/` lẫn bản đã review.
+3. **Các bước S0–S8:** Mỗi bước có ai làm và đầu ra là gì. S0 có quy tắc **chỉ quan sát**, kèm thứ tự: AI trích đặc tả trước, bạn chụp ảnh sau, rồi AI hoàn tất. S1–S4 bám theo các guideline của slide S04. Riêng việc dùng skill `test-case-writing` thì ghi là sẽ chốt khi tới S3, đúng như câu trả lời của bạn.
+4. **Commit:** Dạng message, và bảng tách commit (S0 có 3 commit, S1–S4 mỗi bước 2 commit, S5–S8 mỗi bước 1 commit), có ví dụ cho từng loại.
+5. **Quy ước đặt tên ảnh** cho S0, S6 và S7.
+6. **Issue:** Đường dẫn tới repo nhóm và tóm tắt quy ước tiêu đề, label.
+7. **Định dạng văn bản.**
+
+Mình đã kiểm tra: File không có chi tiết kiểm thử của feature nào. Dấu "—" và "·" chỉ xuất hiện đúng một lần, trong câu quy định không dùng chúng. Các chỗ sau dấu `:` đều viết hoa.
+
+Prompt log hiện có 58 lượt từ **2 phiên** (`305c705a` và `38378bef`), không lẫn phiên nào khác. Lần commit tới cần thêm cả thay đổi whitelist trong script:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add tools/export_prompt_log.py
+git commit -m "[setup] Add design session to prompt log whitelist"
+git add WORKFLOW.md prompt_log.md
+git commit -m "[setup] Add workflow document for design sessions"
+git push
+```
+
+**Câu trả lời cho phiên mới** cần sửa theo đó:
+- **Câu 10:** "Cho phép đọc `Homeworks/HW02/README.md` và `Homeworks/HW02/WORKFLOW.md`. Làm theo quy trình trong `WORKFLOW.md`."
+- **Câu 1, 2 và 6:** Có thể rút gọn thành "theo `WORKFLOW.md`", vì tên file, quy tắc S0 chỉ quan sát, việc không tải trang và nội dung `ai_raw/` đều đã có trong đó. Bạn vẫn có thể giữ nguyên câu chữ của mình nếu muốn.
+- **Câu 3:** Giữ phần đã bổ sung (FR-21/FR-22 là nhóm phụ; XSS/SQL injection để S2 tự xét), vì phần phạm vi riêng của FR-01 không có trong `WORKFLOW.md`.
+````
+
+---
+
+### C59 | 11:08 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+10. Cho phép đọc Homeworks/HW02/README.md và Homeworks/HW02/WORKFLOW.md. Làm theo quy trình trong WORKFLOW.md.
+1 + 2 + 6. Theo WORKFLOW.md
+3. Trọng tâm là 4 trường của FR-01. FR-21 và FR-22 gộp thành một nhóm phụ nhỏ. XSS/SQL injection: Chưa chốt. Đến S2, bạn tự xét có cần lớp tương đương cho dữ liệu chứa HTML hoặc ký tự đặc biệt không.
+4. Để tới S3 (lúc chọn cách thực thi test case). Test trên giao diện là chính; việc có gọi API hay không sẽ quyết định ở S3.
+5. Theo đề xuất của bạn.
+7. Tiếng Việt
+8. Có dùng, nhưng để tới S3/S4
+9. Đúng vậy
+
+
+WORKFLOW có thể thay đổi tùy vào tình hình khi làm (nếu có sẽ update sau), còn giờ chúng ta cứ đi từng bước theo đó. Bạn còn câu hỏi hay chỗ nào khác cần tôi giải đáp trước khi làm không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: d:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Read: d:\Dang\Test\Homeworks\HW02\README.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã đọc [WORKFLOW.md](Homeworks/HW02/WORKFLOW.md) và [README.md](Homeworks/HW02/README.md). WORKFLOW đã trả lời gần hết những gì tôi hỏi. Những điểm tôi sẽ làm theo:
+
+- Mỗi lượt chỉ làm một bước rồi dừng.
+- File trong `ai_raw/` mở đầu bằng tên bước và thời gian tạo, sau đó là nguyên văn câu trả lời, không chép prompt.
+- S0 chỉ hỏi những gì nhìn thấy được trên form mà không cần nhập thử. Hành vi khi nhập (thông báo lỗi, giới hạn) để tới S6.
+- Chỗ spec không nói rõ thì ghi thành câu hỏi mở hoặc giả định, không tự đặt quy tắc.
+- Mã yêu cầu dạng `FR01-R01`. Commit message dạng `[A-FR01][S0] ...` và bạn tự commit.
+- Không tự mở trang, không curl. Mọi thông tin giao diện lấy từ ảnh bạn chụp.
+
+Còn đúng một chỗ tôi chưa rõ. Theo WORKFLOW, ở S0 tôi lập bảng quan sát, bạn chụp ảnh và điền bảng (commit 2), sau đó tôi mới hoàn tất `00_spec.md`. Nhưng `ai_raw/S0_khao_sat.md` thì không được sửa, nên **bạn sẽ điền bảng quan sát vào file nào?** Tôi đề xuất như sau:
+
+1. Tôi viết `ai_raw/S0_khao_sat.md` (trích đặc tả, danh sách yêu cầu, câu hỏi mở, bảng quan sát trống). Đây là commit 1.
+2. Bạn tạo `00_spec.md` với một mục "Quan sát giao diện", chép bảng vào đó rồi điền, kèm ảnh `screenshots/S0_*.png`. Đây là commit 2.
+3. Tôi đọc ảnh và bảng bạn đã điền rồi viết tiếp phần còn lại của `00_spec.md`. Đây là commit 3.
+
+Về phạm vi trích đặc tả ở S0, tôi định lấy các phần sau:
+- FR-01 làm trọng tâm.
+- FR-21 và FR-22 vào nhóm phụ, như bạn đã chốt.
+- API `POST /api/register`.
+- SEC-01, SEC-04 và SEC-05, chỉ ghi là "tham khảo" để tới S2 bạn quyết có dùng hay không.
+
+Nếu bạn đồng ý cách làm với bảng quan sát ở trên thì tôi bắt đầu S0 luôn.
+````
+
+---
+
+### C60 | 11:12 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Xuất log câu trả lời mới nhất bên session mới đi. Theo như tôi nhớ cách làm với bạn ban đầu thì tôi sửa trong 00_specs và bạn sẽ đọc và sửa lại cho tôi đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Export log and print the new session's latest turns
+
+**Output AI (nguyên văn):**
+
+````text
+Mình xuất log và đọc phần mới nhất của phiên `38378bef`:
+
+Log đã xuất xong: 60 lượt từ 2 phiên, không lẫn phiên nào khác. Phiên mới lần này chỉ đọc `WORKFLOW.md` và `README.md`, cả hai đều được phép, nên **chưa vi phạm gì**.
+
+**Về câu hỏi của bạn:** Bạn nhớ đúng. Với FR-17, mình viết `00_spec.md` (commit 1), bạn điền bảng quan sát **ngay trong `00_spec.md`** (commit 2), rồi mình đọc và viết lại (commit 3). Lúc đó không có file `ai_raw/` cho S0. Bản AI gốc được giữ trong lịch sử git, chính là commit 1.
+
+Khi soạn `WORKFLOW.md`, mình thêm file `ai_raw/S0_khao_sat.md` nhưng **không nói rõ bạn điền bảng vào đâu**. Phiên mới đã phát hiện đúng chỗ hở này. Đề xuất của nó buộc bạn phải tự tạo `00_spec.md` rồi chép bảng sang, như vậy là thêm việc tay không cần thiết.
+
+Mình đề xuất làm như với FR-17, chỉ thêm một bản lưu nguyên văn:
+
+1. **AI viết `ai_raw/S0_khao_sat.md`**, đồng thời tạo **`00_spec.md` có nội dung y hệt** để bạn điền. Đây là commit 1.
+2. **Bạn điền bảng quan sát ngay trong `00_spec.md`** và lưu ảnh vào `screenshots/`. Đây là commit 2.
+3. **AI đọc ảnh và bảng bạn đã điền rồi viết lại `00_spec.md`.** Đây là commit 3.
+
+Như vậy bạn làm việc giống FR-17, mà `ai_raw/S0_khao_sat.md` vẫn giữ được bản AI gốc để đối chiếu ở S8.
+
+Phạm vi trích đặc tả mà phiên mới đề xuất là hợp lý: FR-01 làm trọng tâm, FR-21 và FR-22 là nhóm phụ, thêm API `POST /api/register`, còn SEC-01/04/05 chỉ ghi là tham khảo. Có một lưu ý nhỏ: SEC-01 (mật khẩu không được lưu dạng plaintext) **không kiểm tra được bằng kiểm thử hộp đen qua giao diện**, nên ghi là tham khảo là đúng.
+
+Nếu bạn đồng ý, mình sửa dòng S0 trong `WORKFLOW.md` theo 3 bước ở trên. Sau đó bạn trả lời phiên mới, ví dụ: "Không làm theo đề xuất của bạn. Tạo `ai_raw/S0_khao_sat.md` và một bản giống hệt là `00_spec.md`; tôi điền bảng trong `00_spec.md`. WORKFLOW đã cập nhật, đọc lại mục 3.1." Bạn có muốn mình sửa không?
+````
+
+---
+
+### C61 | 11:15 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Cập nhật WORKFLOW.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Locate S0 lines in WORKFLOW.md and check git state
+- Bash: Update S0 procedure in WORKFLOW.md
+- Bash: Export log and show pending changes
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
