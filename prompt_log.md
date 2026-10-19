@@ -4634,6 +4634,95 @@ Gần đúng. S2 chưa làm, còn S0 và S1 thì như sau:
 - **S0:** Nội dung trích đặc tả không sai. Nhưng AI có **2 lỗi về quy trình**: Đề xuất dùng DevTools, và ghi đè `ai_raw/`. Cả hai đã được ghi vào phần chất liệu Critique trong `_NOTES.md`. Đây là lỗi về cách AI làm việc, không thuộc bảng thay đổi nội dung, nhưng vẫn dùng được cho S8 và cho phần AI Critique.
 
 Giờ mình thêm cột phân loại vào `WORKFLOW.md`. Ngoài 4 loại sai, thiếu, thừa, mơ hồ, mình thêm loại thứ 5 là "Quyết định của SV" để ghi được những thay đổi như ở S1.
+
+Mình đã thêm vào `WORKFLOW.md`, mục 2: Cuối mỗi bản review bắt buộc có mục **"Thay đổi so với bản AI"**, gồm các cột Vị trí, Thay đổi, Loại, Lý do. Cột **Loại** chỉ nhận một trong 5 giá trị: Sai, Thiếu, Thừa, Mơ hồ, Quyết định của SV. Mỗi giá trị có giải thích khi nào dùng. Trong `WORKFLOW.md` cũng ghi rõ bảng này là dữ liệu cho S8 và cho Audit Report, và không cần ghi những thay đổi chỉ về hình thức. Dấu "—" duy nhất còn trong file vẫn là câu quy định không dùng nó.
+
+`01_io.md` **chưa được commit**, nên đây là lúc tiện bổ sung cột Loại cho nó. Bảng ở mục 6 của `01_io.md` sẽ có giá trị "Quyết định của SV" ở mọi dòng. Thứ tự đề xuất:
+
+1. **Commit `WORKFLOW.md` trước:**
+   ```bat
+   cd /d D:\Dang\Test\Homeworks\HW02
+   git add WORKFLOW.md prompt_log.md
+   git commit -m "[setup] Add change type column to review files in workflow"
+   git push
+   ```
+2. **Bảo phiên kia** đọc lại `WORKFLOW.md` mục 2 rồi thêm cột Loại vào bảng ở mục 6 của `01_io.md`. Bảng tương tự trong `00_spec.md` đã commit rồi, nên cập nhật hay không tuỳ bạn. Nếu muốn đồng bộ thì bảo nó sửa luôn, rồi commit với tag `[A-FR01][S0]`.
+3. Báo mình để xuất log, rồi commit `01_io.md`:
+   ```bat
+   git add features/A_FR-01_DangKy/01_io.md prompt_log.md
+   git commit -m "[A-FR01][S1] Review input/output variables"
+   git push
+   ```
+````
+
+---
+
+### C87 | 23:21 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi vừa cập nhật lại WORKFLOW, chủ yếu là về bảng thay đổi so với AI. Bạn đọc lại và bổ sung lại ở 00_spec và 01_io cho đồng bộ. Tôi chưa coomit 01_io đâu.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Grep: thay đổi|Thay đổi|bản review|Bản review
+- Read: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\00_spec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\01_io.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã bổ sung mục "Thay đổi so với bản AI" vào cả hai file, đúng 4 cột theo WORKFLOW mục 2: Vị trí, Thay đổi, Loại, Lý do hoặc căn cứ.
+
+**[00_spec.md](Homeworks/HW02/features/A_FR-01_DangKy/00_spec.md), mục 6 (mới, 7 dòng):**
+- 1 dòng loại **Thừa**: Bản AI đầu tiên yêu cầu xem thuộc tính HTML và dùng DevTools, vi phạm WORKFLOW mục 1.1 và 3.1. Dòng này ghi rõ bạn là người phát hiện, và bản sửa lưu ở `_v2`.
+- 6 dòng loại **Quyết định của SV**: Đóng Q24 bằng quan sát, Q26, Q27, cách xử lý chữ tiếng Anh, D04, và cách đặt tên ảnh.
+
+**[01_io.md](Homeworks/HW02/features/A_FR-01_DangKy/01_io.md), mục 6 (chuyển sang định dạng mới, 8 dòng):**
+- 6 dòng loại **Quyết định của SV**, ứng với 5 quyết định của bạn.
+- 2 dòng loại **Thiếu**: Đây là hai chỗ tôi tự thêm khi viết bản review (tiền điều kiện reset dữ liệu, và lưu ý về cách đăng ký lại cùng email). Cột lý do của hai dòng này có ghi rõ "AI bổ sung khi viết bản review".
+
+**Cách tôi xác định phạm vi bảng ở 00_spec, bạn cần xem có đồng ý không:** S0 khác các bước sau ở chỗ bạn điền bảng quan sát, và chính AI viết lại bản review ở bước 3. Vì vậy tôi **không** đưa vào bảng hai thứ sau, và có ghi lý do ở đầu mục 6:
+- Phần bạn điền bảng quan sát, vì đó là đầu vào theo quy trình chứ không phải sửa bản AI.
+- Các mục 3.8, 4.6 và 5, vì đó là nội dung AI viết khi đối chiếu ảnh.
+
+Nếu bạn muốn những phần này cũng có mặt trong bảng thì báo tôi. Lưu ý rằng không loại nào trong 5 loại hiện có phù hợp với chúng.
+
+**Hai dòng loại "Thiếu" ở 01_io cần bạn xác nhận:** Hai chỗ đó là tôi tự thêm, bạn chưa duyệt. Nếu bạn không muốn giữ thì tôi xóa cả nội dung lẫn dòng tương ứng trong bảng.
+
+**Commit:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/00_spec.md
+git commit -m "[A-FR01][S0] Add change log against AI draft"
+git add features/A_FR-01_DangKy/01_io.md
+git commit -m "[A-FR01][S1] Review input/output variables"
+```
+````
+
+---
+
+### C88 | 23:28 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã duyệt bản sửa của cả 00_spec và 01_io về phần bảng sửa. Bạn kiểm tra giúp tôi xem còn thiếu gì không, nếu không thì xuất log và commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit tool calls and show change tables in both review files
+- Bash: Read the student's latest prompts in the design session
+- Bash: Record disclosure note, check marks, export log
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
