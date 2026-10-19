@@ -207,17 +207,18 @@ Ghi đúng chữ như trên giao diện, kể cả hoa thường và dấu câu.
 
 | # | Mục quan sát | Kết quả quan sát | Ảnh |
 |---|---|---|---|
-| O01 | Cách mở trang Đăng ký (nút hoặc liên kết nào, nằm ở đâu: navbar, trang Đăng nhập...) | | |
-| O02 | Đường dẫn trên thanh địa chỉ khi đang ở trang Đăng ký | | |
-| O03 | Tiêu đề tab trình duyệt | | |
+| O01 | Cách mở trang Đăng ký (nút hoặc liên kết nào, nằm ở đâu: navbar, trang Đăng nhập...) | Ở nút Đang Ký trên navbar hoặc nút Đăng ký ngay ở trang Đăng nhập hoặc đường dẫn http://localhost:5173/register | |
+| O02 | Đường dẫn trên thanh địa chỉ khi đang ở trang Đăng ký | http://localhost:5173/register | |
+| O03 | Tiêu đề tab trình duyệt | EShop
+ | |
 
 ### 4.2 Tiêu đề và chữ hiển thị sẵn
 
 | # | Mục quan sát | Kết quả quan sát | Ảnh |
 |---|---|---|---|
-| O04 | Các tiêu đề nhìn thấy trên trang (tiêu đề lớn của form và tiêu đề khác nếu có), ghi đúng chữ | | |
-| O05 | Các dòng chữ hướng dẫn hiển thị sẵn (ví dụ gợi ý quy tắc mật khẩu, chú thích dấu `*`), ghi nguyên văn | | |
-| O06 | Có chữ tiếng Anh nào trên trang không? Ghi nguyên văn từng chỗ | | |
+| O04 | Các tiêu đề nhìn thấy trên trang (tiêu đề lớn của form và tiêu đề khác nếu có), ghi đúng chữ | EShop, Đăng Ký Tài Khoản, Họ Tên, Email, Mật khẩu | |
+| O05 | Các dòng chữ hướng dẫn hiển thị sẵn (ví dụ gợi ý quy tắc mật khẩu, chú thích dấu `*`), ghi nguyên văn | Yêu cầu: Tối thiểu 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt. | |
+| O06 | Có chữ tiếng Anh nào trên trang không? Ghi nguyên văn từng chỗ | Không có | |
 
 ### 4.3 Các ô nhập
 
@@ -225,19 +226,18 @@ Ghi theo thứ tự từ trên xuống dưới trên form. Nếu form có thêm 
 
 | # | Nhãn hiển thị (nguyên văn) | Có `*` cạnh nhãn? | Placeholder (nguyên văn) | Giá trị mặc định | Loại ô nhìn thấy được (ô chữ, dropdown, ô chọn ngày...) | Có biểu tượng hoặc nút nào trong ô (ví dụ nút hiện/ẩn mật khẩu)? | Ảnh |
 |---|---|---|---|---|---|---|---|
-| O07 (Họ Tên) | | | | | | | |
-| O08 (Email) | | | | | | | |
-| O09 (Mật khẩu) | | | | | | | |
-| O10 (Xác nhận mật khẩu) | | | | | | | |
+| O07 (Họ Tên) | Họ Tên | Không có | Không có | Không có | Ô chữ | Không có | |
+| O08 (Email) | Email | Không có | Không có | Không có | Ô chữ | Không có | |
+| O09 (Mật khẩu) | Mật khẩu | Không có | Không có | Không có | Ô chữ | Không có | |
+| O10 (Xác nhận mật khẩu) | KHÔNG CÓ Ô NÀY | | | | | | |
 | O11 (trường khác, nếu có) | | | | | | | |
 
 ### 4.4 Nút và liên kết
 
 | # | Nhãn (nguyên văn) | Loại (nút hay liên kết) | Màu nền và màu chữ | Vị trí trên form | Ảnh |
 |---|---|---|---|---|---|
-| O12 (nút submit) | | | | | |
-| O13 (liên kết sang Đăng nhập, nếu có) | | | | | |
-| O14 (nút/liên kết khác, nếu có) | | | | | |
+| O12 (nút submit) | Đăng Ký | Nút | Nền đỏ, chữ trắng | Dưới dòng Yêu cầu | |
+| O13 (liên kết sang Đăng nhập) | Đã có tài khoản? Đăng nhập | Liên kết | Màu đen, chữ Đăng nhập màu xanh biển | Dưới nút Đăng ký | |
 
 ### 4.5 Ảnh cần chụp
 

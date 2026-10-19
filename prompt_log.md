@@ -3839,11 +3839,59 @@ Bây giờ tôi sẽ commit, chụp màn hình, điền quan sát và comm
 
 - Bash: Verify ai_raw restore, v2 file and 00_spec state
 - Bash: Compare v2 with 00_spec and export log
+- Bash: Check web and backend are still up
 
 **Output AI (nguyên văn):**
 
 ````text
 Mình kiểm tra trạng thái hiện tại. Bạn nói `00_spec.md` không còn trong danh sách thay đổi, trong khi lúc nãy nó vẫn đang được sửa, nên mình cần xem kỹ chỗ này:
+
+Mình đã kiểm tra, **mọi thứ đều đúng**:
+
+| Kiểm tra | Kết quả |
+|---|---|
+| `ai_raw/S0_khao_sat.md` | ✅ Khớp hoàn toàn với bản gốc trong commit `f1b7c75` |
+| `ai_raw/S0_khao_sat_v2.md` | ✅ Đã tạo; đầu file ghi "Sửa lần 1: 2026-10-19 15:01…" kèm lý do (bỏ DevTools theo WORKFLOW mục 1.1 và 3.1) |
+| `00_spec.md` | ✅ Có nội dung giống hệt `_v2` |
+
+Có một chỗ cần đính chính: `00_spec.md` **vẫn đang nằm trong danh sách thay đổi**. `git status` báo nó là `M` (đã sửa). Có lẽ khung Source Control của VS Code không hiện ra (vấn đề dò repo sâu 2 cấp mà mình đã nói trước đây). Lệnh mà phiên kia đưa đã `add` file này nên không sao. Bạn chỉ cần thêm `prompt_log.md` (log vừa được xuất lại; phiên kia không tự xuất log nên không biết) và `git push`:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/ai_raw/S0_khao_sat_v2.md features/A_FR-01_DangKy/00_spec.md prompt_log.md
+git commit -m "[A-FR01][S0] Remove DevTools observations from spec (AI revision 1)"
+git push
+```
+
+**Các bước tiếp theo bạn hiểu đúng rồi:**
+
+1. Commit lệnh trên.
+2. Chụp màn hình trang Đăng ký và lưu vào `screenshots/` theo tên ở mục 4.5 của `00_spec.md`. Web `localhost:5173` đang chạy. Ở S0 bạn chỉ xem form, chưa gửi gì, nên xung đột cổng 3000 với `herobroker-api` không ảnh hưởng.
+3. Điền bảng quan sát **ngay trong `00_spec.md`**.
+4. **Báo mình trước khi commit 2** để mình xuất log và kiểm tra các thao tác của phiên kia. Sau đó bạn commit `[A-FR01][S0] Record UI exploration and screenshots`.
+5. Bảo phiên kia đọc ảnh và bảng bạn đã điền, rồi viết lại `00_spec.md` (commit 3). Bạn quyết định giữ hay bỏ những gì nó viết lại.
+
+Lưu ý thêm: Trong lúc điền bảng, câu hỏi mở nào phải thao tác mới biết thì để trống, đừng nhập thử.
+````
+
+---
+
+### C71 | 15:33 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi chỉ điền kết quả ở bảng quan sát giao diện và đã bổ sung ảnh. Đúng hay sai tôi nghĩ nên để session kia làm. Còn bạn là xuất log và viết commit cho tôi, đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit design session tool calls, export log, show changes
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng vậy. Phiên kia lo phần nội dung, còn phiên này lo xuất log, đưa lệnh commit, và **kiểm tra phiên kia không đọc file bị cấm**. Mình không soát nội dung bảng bạn điền. Mình làm cả ba việc:
 ````
 
 
