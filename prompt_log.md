@@ -3553,6 +3553,200 @@ Thêm đi.
 **Output AI (nguyên văn):**
 
 ````text
+Mình đã thêm quy tắc DevTools vào `WORKFLOW.md`, ở 3 chỗ:
+
+- **Mục 1.1 (Kiểm thử hộp đen):** Thêm dòng không dùng DevTools (thẻ Elements, Inspect) ở các bước thiết kế S0 đến S5, kèm lý do: Các thuộc tính như `required`, `maxlength`, `pattern` là quy tắc do lập trình viên cài vào, biết trước thì lớp tương đương sẽ bị chia theo code.
+- **Mục 3.1 (S0):** Những gì được quan sát giờ ghi rõ là "không cần DevTools". "Loại ô nhập" chỉ còn là loại nhìn thấy được, như ô chữ, dropdown hay ô chọn ngày.
+- **Mục 3.3 (S6):** DevTools chỉ dùng để kiểm tra các thuộc tính mà **đặc tả yêu cầu**: `type="email"`, `type="password"` (FR-22) và số thẻ `<h1>` (FR-21).
+
+Trong `_NOTES.md`, mình ghi việc AI đề xuất dùng DevTools vào phần chất liệu Critique (bạn là người phát hiện), và ghi 2 lần cập nhật `WORKFLOW.md` vào phần Audit.
+
+Commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add WORKFLOW.md prompt_log.md
+git commit -m "[setup] Forbid DevTools during design steps in workflow"
+git push
+```
+
+Khi điền bảng quan sát cho commit 2 của S0, bạn để trống các cột thuộc tính HTML, dòng O05 và các ảnh DevTools, ghi "Không quan sát ở S0 (để S6)". Ở commit 3, bạn nhắc phiên mới đọc lại `WORKFLOW.md`, mục 1.1 và 3.1, để nó viết lại bảng quan sát và bỏ các yêu cầu dùng DevTools.
+````
+
+---
+
+### C65 | 14:53 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Chạy web đi dể tôi mở trang và chụp màn hình cho commit 2. Bạn là người chạy, để đỡ session mới vô tình đọc code.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Start EShop backend on port 3000
+- Bash: Start EShop customer web on port 5173
+- Bash: Wait until backend and web respond
+- Bash: Inspect backend output and port 3000 status
+- PowerShell: Identify processes listening on port 3000
+- Bash: Compare IPv4 vs IPv6 responses and list WSL distros
+- Bash: Find which container or WSL process uses port 3000
+- Bash: Identify the WSL node process on port 3000
+
+**Output AI (nguyên văn):**
+
+````text
+Web đã chạy, nhưng backend trả về 404 thay vì 200 như các lần trước. Mình xem log của backend:
+
+Web khách hàng `http://localhost:5173` đã chạy, bạn mở trang Đăng ký để chụp màn hình được rồi. Tuy vậy, mình phát hiện **một xung đột cổng cần xử lý trước S6**.
+
+**Xung đột:** Trong WSL (Ubuntu) có một ứng dụng Node khác cũng đang dùng cổng 3000. Đó là `herobroker-api`, chạy từ 07:51 sáng nay ở thư mục `/home/enovo/src/app/backend/herobroker-api`. WSL chuyển cổng này ra `localhost` của Windows qua IPv6 `[::1]`, nên trên máy hiện có 2 backend cùng chiếm cổng 3000:
+
+| Gọi tới | Trúng vào | Kết quả |
+|---|---|---|
+| `127.0.0.1:3000` | Backend EShop | 200 (đúng) |
+| `[::1]:3000` | `herobroker-api` trong WSL | 404 |
+
+Trang web EShop gọi API qua `localhost:3000`. Trình duyệt có thể chọn IPv4 hoặc IPv6 tuỳ lúc, nên app có lúc chạy đúng, có lúc lỗi ngẫu nhiên: Không tải được sản phẩm, đăng ký thất bại… Nếu để vậy mà chạy test ở S6, bạn sẽ ghi nhận **những lỗi giả không phải lỗi của EShop**.
+
+**Ảnh hưởng tới việc chụp ảnh S0 ngay bây giờ:** Gần như không có. Form Đăng ký vẫn hiển thị bình thường, và ở S0 bạn không bấm gửi form. Chỉ có trang chủ (danh sách sản phẩm) là có thể lúc hiện lúc không.
+
+**Trước S6 cần tắt tạm `herobroker-api`.** Đây là project khác của bạn nên mình không tự tắt. Bạn có thể:
+- Tự dừng nó trong terminal Ubuntu nơi bạn đã chạy nó, hoặc
+- Cho phép mình dừng tiến trình đó (PID 63600 trong Ubuntu). Muốn chạy lại thì bạn khởi động như bình thường.
+
+Bạn muốn xử lý thế nào? Nếu bạn chưa muốn tắt ngay, cứ chụp ảnh S0 trước, đến S6 mình nhắc lại.
+````
+
+---
+
+### C66 | 15:00 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã đọc file của bạn, thấy có vài chỗ vi phạm về kiểm thử hộp đen. Nên tôi đã bổ sung thêm ở WORKFLOW. Đọc lại file WORKFLOW rồi sửa lại những chỗ chưa đúng.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: d:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: Get current local time
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S0_khao_sat.md
+- Bash: Check 00_spec.md for user edits and scan for leftover DevTools references
+- Bash: Confirm differences are only the fixes, then sync 00_spec.md
+
+**Output AI (nguyên văn):**
+
+````text
+Trước khi chép đè, tôi kiểm tra xem bạn đã điền gì vào `00_spec.md` chưa, để không xóa mất phần bạn viết.
+
+`00_spec.md` vẫn còn trống, chưa có gì bạn điền. Tôi so sánh hai file để chắc rằng chỗ khác nhau chỉ là những chỗ tôi vừa sửa, rồi mới chép đè.
+
+Đã sửa xong. Hai file `ai_raw/S0_khao_sat.md` và `00_spec.md` vẫn giống hệt nhau (đã kiểm tra bằng `cmp`). Trước khi chép đè, tôi đã xác nhận `00_spec.md` chưa có nội dung bạn điền và thư mục `screenshots/` còn trống, nên không mất gì của bạn.
+
+**Những chỗ đã sửa:**
+- **Câu hỏi mở:** `Q01`, `Q05`, `Q08`, `Q12`, `Q25` trước đây ghi có thể làm rõ bằng thuộc tính HTML ở S0. Nay đổi thành "Không có trong đặc tả".
+- **Phần mở đầu bảng quan sát:** Bỏ hướng dẫn dùng DevTools. Thay bằng câu nói rõ là không dùng DevTools, và liệt kê những gì để tới S6: Thuộc tính `type`, số thẻ `<h1>`, ký tự gõ vào có bị che không, giới hạn ký tự, thứ tự Tab.
+- **Bỏ mục đếm `<h1>`:** Mục này cần DevTools nên đã bỏ. Mục tiêu đề đổi thành "các tiêu đề nhìn thấy trên trang".
+- **Bảng ô nhập:**
+  - Bỏ 4 cột `type`, `required`, `minlength`/`maxlength`, `pattern`.
+  - Thêm cột "Loại ô nhìn thấy được".
+  - Cột nút hiện/ẩn mật khẩu nới thành "biểu tượng hoặc nút trong ô".
+- **Ảnh:** Bỏ 5 ảnh DevTools, chỉ còn `S0_01_form_dang_ky.png` và `S0_02_duong_vao_trang.png`.
+- **Đánh số lại:** Mã quan sát giờ chạy từ `O01` đến `O14`.
+
+**Bạn cần quyết định:** Tôi có thêm dòng "Sửa lần 1" ở đầu file ai_raw để ghi lại rằng bản này đã sửa sau khi bạn review. Nếu bạn muốn ai_raw chỉ ghi thời gian tạo thì báo tôi để bỏ dòng này.
+
+**Commit:** Tôi không được xem lịch sử git nên không biết bạn đã làm commit 1 của S0 hay chưa.
+- Nếu chưa commit:
+  ```
+  git add features/A_FR-01_DangKy/ai_raw/S0_khao_sat.md features/A_FR-01_DangKy/00_spec.md
+  git commit -m "[A-FR01][S0] Add spec extract and requirement list (AI draft)"
+  ```
+- Nếu đã commit bản cũ:
+  ```
+  git add features/A_FR-01_DangKy/ai_raw/S0_khao_sat.md features/A_FR-01_DangKy/00_spec.md
+  git commit -m "[A-FR01][S0] Remove DevTools-based observations from spec draft"
+  ```
+
+Bạn chụp ảnh và điền bảng trong `00_spec.md` xong thì báo tôi để làm tiếp phần 3 của S0.
+````
+
+---
+
+### C67 | 15:06 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã bảo session mới đọc lại workflow rồi sửa trước khi tôi ghi những gì mình quan sát để tránh bị ghi đè. Và nó đã sửa lại ở cả hai file. Câu hỏi là ai_raw cần giữ nguyên hiện trạng hay là sẽ được phép ghi Sửa lần 1 các thứ?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Show what the design session changed in the S0 files
+
+**Output AI (nguyên văn):**
+
+````text
+Mình xem phiên mới đã sửa gì trong 2 file, so với bản bạn đã commit ở commit 1:
+
+Phiên mới đã sửa **cả** `ai_raw/S0_khao_sat.md` lẫn `00_spec.md` với cùng một nội dung. Cụ thể nó đã bỏ các cột thuộc tính HTML, bỏ dòng đếm thẻ `<h1>`, đánh số lại O04 đến O13, và đổi cột "Có thể làm rõ bằng" của Q01, Q05, Q08, Q12, Q25 thành "Không có trong đặc tả". Bản gốc của AI **vẫn còn nguyên trong git**, ở commit `f1b7c75` mà bạn đã commit.
+
+## Mình đề xuất: `ai_raw/` luôn giữ nguyên, mỗi lần AI sửa thì lưu thành **file mới**
+
+Không ghi "Sửa lần 1" vào file cũ, vì 2 lý do:
+- Đến S8, `ai_raw/` là bằng chứng "AI đã đưa ra gì". Nếu file bị ghi đè thì phải đào lại lịch sử git mới thấy bản đầu.
+- Lần sửa này **cũng là output của AI**, viết lại theo yêu cầu của bạn. Bản đầu (có đề xuất dùng DevTools) và bản sửa đều có giá trị: Bản đầu là bằng chứng AI trôi sang kiểm thử hộp xám, bản sửa cho thấy AI sửa lại sau khi bạn chỉ ra.
+
+Cách làm:
+
+| File | Nội dung |
+|---|---|
+| `ai_raw/S0_khao_sat.md` | **Khôi phục** về bản gốc trong commit `f1b7c75` |
+| `ai_raw/S0_khao_sat_v2.md` | Bản AI vừa sửa (nội dung hiện tại), đầu file ghi "Sửa lần 1", thời gian và lý do (bỏ DevTools theo `WORKFLOW.md` mục 1.1) |
+| `00_spec.md` | Giữ nguyên bản đã sửa, để bạn điền quan sát cho commit 2 |
+
+Commit cho lần sửa này nên nằm **riêng, trước khi bạn điền quan sát**:
+
+```
+[A-FR01][S0] Remove DevTools observations from spec (AI revision 1)
+```
+
+Mình cũng đề xuất thêm vào `WORKFLOW.md` (mục 1.2 và mục 2) quy tắc: "Không sửa file trong `ai_raw/`. Khi AI sửa output của một bước, lưu thành file mới có đuôi `_v2`, `_v3`, đầu file ghi lần sửa, thời gian và lý do". Như vậy các phiên sau sẽ không ghi đè nữa.
+
+Các việc này gồm: Khôi phục file `ai_raw` bằng `git checkout`, tạo `_v2`, và sửa `WORKFLOW.md`. Bạn có muốn mình làm không?
+````
+
+---
+
+### C68 | 15:09 19/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bạn chỉ cần thêm vào WORKFLOW thôi. Còn việc khôi phục và viết _v2, tôi nghĩ nên để session kia làm.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Locate lines to update in WORKFLOW.md
+- Bash: Add ai_raw versioning rule to WORKFLOW.md
+- Bash: Record notes and export log
+
+**Output AI (nguyên văn):**
+
+````text
 (Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 

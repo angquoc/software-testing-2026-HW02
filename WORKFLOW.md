@@ -18,7 +18,8 @@ Tài liệu này mô tả cách làm bài HW02 cho từng feature: Các bước,
 
 - AI được dẫn qua **từng bước** của kỹ thuật Domain Testing theo slide S04, mỗi lượt chỉ làm **một bước**, sau đó dừng lại chờ sinh viên review.
 - Sinh viên review và quyết định sửa gì ở mọi output của AI.
-- Output của AI ở mỗi bước được lưu **nguyên văn** trong `ai_raw/`, không sửa. Mọi chỉnh sửa nằm ở bản review.
+- Output của AI ở mỗi bước được lưu **nguyên văn** trong `ai_raw/`. **Không bao giờ sửa hay ghi đè file trong `ai_raw/`.** Mọi chỉnh sửa nằm ở bản review.
+- Khi AI viết lại output của một bước (theo yêu cầu của sinh viên), bản viết lại cũng là output của AI: Lưu thành **file mới** có đuôi `_v2`, `_v3`... (ví dụ `ai_raw/S0_khao_sat_v2.md`), file cũ giữ nguyên.
 
 ### 1.3 Phiên điều phối và phiên thiết kế
 
@@ -33,7 +34,7 @@ Tài liệu này mô tả cách làm bài HW02 cho từng feature: Các bước,
 |---|---|
 | Đề bài `Homeworks/HW02/2026.HW02.Domain Testing_En.md` | `Homeworks/HW02/prompt_log.md` |
 | `Homeworks/HW02/README.md`, `Homeworks/HW02/WORKFLOW.md` | `Homeworks/HW02/_NOTES.md` |
-| SRS và API spec của EShop (mục 1.1) | Lịch sử git (`git log`, `git show`, `git diff`) |
+| SRS và API spec của EShop (mục 1.1) | Lịch sử git (`git log`, `git show`, `git diff`). Ngoại lệ: Được dùng `git checkout -- <file>` để khôi phục một file trong `ai_raw/` **của feature đang làm** nếu lỡ sửa |
 | Slide môn học (S04 Domain Testing, tài liệu tham khảo Domain Testing, Test Cases AI First) | Thư mục `DA/` |
 | Skill `test-case-writing` của giảng viên (`.claude/skills/test-case-writing/`) | Mã nguồn EShop (mục 1.1) |
 | File trong thư mục feature đang làm và ảnh trong `screenshots/` | File `.jsonl` trong `~/.claude/projects/` |
@@ -60,6 +61,7 @@ features/<Pool>_<FR>_<Tên>/        ví dụ: features/A_FR-01_DangKy/
 ```
 
 - Đầu mỗi file trong `ai_raw/` ghi tên bước và thời gian tạo, sau đó là nguyên văn câu trả lời của AI. Không chép prompt vào file (prompt đã có trong prompt log).
+- File bản viết lại (`_v2`, `_v3`...) ghi thêm ở đầu: Lần sửa thứ mấy, thời gian, lý do sửa (sinh viên yêu cầu gì, hoặc quy tắc nào trong tài liệu này bị vi phạm).
 - Bản review có thể nhờ AI viết lại, nhưng sinh viên quyết định nội dung sửa.
 - Các file của S5 đến S8 (test case cuối cùng, kết quả chạy, bug, gap analysis) sẽ được bổ sung vào cấu trúc này khi làm tới.
 
@@ -129,6 +131,7 @@ Tách để lịch sử git cho thấy rõ phần AI viết và phần sinh viê
 | | (2) Ảnh chụp và bảng quan sát sinh viên điền trong `00_spec.md` | `[A-FR01][S0] Record UI exploration and screenshots` |
 | | (3) `00_spec.md` do AI viết lại sau khi đọc ảnh và bảng | `[A-FR01][S0] Review spec and answer open questions` |
 | S1 đến S4 | (1) Output AI trong `ai_raw/` | `[A-FR01][S2] Add equivalence classes (AI draft)` |
+| Bất kỳ bước nào | AI viết lại theo yêu cầu: Thêm `ai_raw/..._v2.md` và cập nhật bản review | `[A-FR01][S0] Remove DevTools observations from spec (AI revision 1)` |
 | | (2) Bản review | `[A-FR01][S2] Review equivalence classes` |
 | S5 đến S8 | Mỗi bước một commit; thêm commit nếu phải sửa | `[A-FR01][S6] Execute tests and record results` |
 
