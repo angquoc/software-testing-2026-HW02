@@ -1,0 +1,821 @@
+S6, FR-17: Nhóm test case API
+Thời gian bắt đầu: 2026-10-21 00:34:00
+Base URL: http://localhost:3000
+Chế độ: gửi thật
+Test case: TC-CPN-60, TC-CPN-62, TC-CPN-63, TC-CPN-64, TC-CPN-65, TC-CPN-66, TC-CPN-67, TC-CPN-68, TC-CPN-69, TC-CPN-70, TC-CPN-71, TC-CPN-72, TC-CPN-73, TC-CPN-74, TC-CPN-75, TC-CPN-76, TC-CPN-77, TC-CPN-78, TC-CPN-79, TC-CPN-80, TC-CPN-81, TC-CPN-118, TC-CPN-131, TC-CPN-140, TC-CPN-141, TC-CPN-142, TC-CPN-143
+Script không reset dữ liệu, không xóa mã mẫu, không chạy nhóm H.
+
+Đăng nhập admin: POST /api/login với admin@eshop.com
+  Lấy được token admin (HTTP 200)
+Đăng nhập user: POST /api/login với test@eshop.com
+  Lấy được token user (HTTP 200)
+
+==============================================================================
+TC-CPN-60: API tạo mã thành công
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC60", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 5
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã 'FR17TC60'; bản ghi: {"id": 5, "code": "FR17TC60", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý giá trị lưu: khớp giá trị đã gửi
+  >>> VIỆC LÀM TAY: Mở trang Mã Giảm Giá, kiểm dòng FR17TC60 có đúng giá trị
+
+==============================================================================
+TC-CPN-62: API xóa mã vừa tạo
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Chuẩn bị: Tạo FR17TC62 bằng token admin
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC62", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 6
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  Request: DELETE http://localhost:3000/api/admin/coupons/6
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 200
+    {
+      "message": "Coupon deleted"
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Không có mã 'FR17TC62'
+
+==============================================================================
+TC-CPN-63: API nhận Mã là số JSON
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": 2026, "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 7
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã '2026'; bản ghi: {"id": 7, "code": "2026", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý giá trị lưu: khớp giá trị đã gửi
+
+==============================================================================
+TC-CPN-64: API nhận chuỗi chứa số (3 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC64A", "type": "percent", "discount_value": "15", "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 8
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã 'FR17TC64A'; bản ghi: {"id": 8, "code": "FR17TC64A", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý giá trị lưu: khớp giá trị đã gửi
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC64B", "type": "percent", "discount_value": 15, "min_order_amount": "300000", "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 9
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã 'FR17TC64B'; bản ghi: {"id": 9, "code": "FR17TC64B", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý giá trị lưu: khớp giá trị đã gửi
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC64C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": "3"}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 10
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã 'FR17TC64C'; bản ghi: {"id": 10, "code": "FR17TC64C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý giá trị lưu: khớp giá trị đã gửi
+
+==============================================================================
+TC-CPN-65: API từ chối type không hợp lệ (3 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC65A", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 11
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC65A'; bản ghi: {"id": 11, "code": "FR17TC65A", "type": null, "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC65B", "type": "free", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 12
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC65B'; bản ghi: {"id": 12, "code": "FR17TC65B", "type": "free", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC65C", "type": "PERCENT", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 13
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC65C'; bản ghi: {"id": 13, "code": "FR17TC65C", "type": "PERCENT", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+
+==============================================================================
+TC-CPN-66: API từ chối null, chuỗi rỗng (6 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": null, "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 14
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  Số mã trước 12, sau 13: THAY ĐỔI
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC66B", "type": "", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 15
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC66B'; bản ghi: {"id": 15, "code": "FR17TC66B", "type": "", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC66C", "type": "percent", "discount_value": null, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 16
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC66C'; bản ghi: {"id": 16, "code": "FR17TC66C", "type": "percent", "discount_value": null, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng D
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC66D", "type": "percent", "discount_value": 15, "min_order_amount": null, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 17
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC66D'; bản ghi: {"id": 17, "code": "FR17TC66D", "type": "percent", "discount_value": 15, "min_order_amount": null, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng E
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC66E", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 18
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC66E'; bản ghi: {"id": 18, "code": "FR17TC66E", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng F
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC66F", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": null}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 19
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC66F'; bản ghi: {"id": 19, "code": "FR17TC66F", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 1}
+
+==============================================================================
+TC-CPN-67: API từ chối trường số không phải số (3 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC67A", "type": "percent", "discount_value": "abc", "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 20
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC67A'; bản ghi: {"id": 20, "code": "FR17TC67A", "type": "percent", "discount_value": "abc", "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC67B", "type": "percent", "discount_value": 15, "min_order_amount": "abc", "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 21
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC67B'; bản ghi: {"id": 21, "code": "FR17TC67B", "type": "percent", "discount_value": 15, "min_order_amount": "abc", "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC67C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": "abc"}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 22
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC67C'; bản ghi: {"id": 22, "code": "FR17TC67C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": "abc"}
+
+==============================================================================
+TC-CPN-68: API từ chối ngày sai định dạng (3 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC68A", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "12/31/2027", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 23
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC68A'; bản ghi: {"id": 23, "code": "FR17TC68A", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "12/31/2027", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC68B", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2027-02-30", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 24
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC68B'; bản ghi: {"id": 24, "code": "FR17TC68B", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2027-02-30", "is_active": 1, "max_uses_per_user": 3}
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC68C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2027-12-31T10:00:00Z", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 25
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  GET: Có mã 'FR17TC68C'; bản ghi: {"id": 25, "code": "FR17TC68C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2027-12-31T10:00:00Z", "is_active": 1, "max_uses_per_user": 3}
+
+==============================================================================
+TC-CPN-69: API từ chối request không đọc được (4 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC69A",
+  Response: HTTP 400
+  Body phản hồi (không phải JSON): '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>SyntaxError: Expected double-quoted property name in JSON at position 21<br> &nbsp; &nbsp;at JSON.parse (&lt;anonymous&gt;)<br> &nbsp; &nbsp;at parse (D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\body-parser\\lib\\types\\json.js:72:19)<br> &nbsp; &nbsp;at D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\body-parser\\lib\\read.js:162:18<br> &nbsp; &nbsp;at AsyncResource.runInAsyncScope'
+  Gợi ý: HTTP 400 (4xx): khớp mong đợi 4xx
+  GET: Không có mã 'FR17TC69A'
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: {"code": "FR17TC69B", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 500
+  Body phản hồi (không phải JSON): '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>TypeError: Cannot destructure property &#39;code&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\server.js:459:5<br> &nbsp; &nbsp;at Layer.handleRequest (D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\router\\lib\\layer.js:152:17)<br> &nbsp; &nbsp;at next (D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\router\\lib\\route.js:'
+  Gợi ý: HTTP 500: 5xx, theo quy ước là Fail
+  GET: Không có mã 'FR17TC69B'
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "text/plain"}
+  Body: {"code": "FR17TC69C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 500
+  Body phản hồi (không phải JSON): '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>TypeError: Cannot destructure property &#39;code&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\server.js:459:5<br> &nbsp; &nbsp;at Layer.handleRequest (D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\router\\lib\\layer.js:152:17)<br> &nbsp; &nbsp;at next (D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\router\\lib\\route.js:'
+  Gợi ý: HTTP 500: 5xx, theo quy ước là Fail
+  GET: Không có mã 'FR17TC69C'
+  --- Dòng D
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 500
+  Body phản hồi (không phải JSON): '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>TypeError: Cannot destructure property &#39;code&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\server.js:459:5<br> &nbsp; &nbsp;at Layer.handleRequest (D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\router\\lib\\layer.js:152:17)<br> &nbsp; &nbsp;at next (D:\\Dang\\Test\\Homeworks\\eshop-sut\\backend\\node_modules\\router\\lib\\route.js:'
+  Gợi ý: HTTP 500: 5xx, theo quy ước là Fail
+  Số mã trước 24, sau 24: không đổi
+
+==============================================================================
+TC-CPN-70: API từ chối body {}
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 26
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx
+  Số mã trước 24, sau 25: THAY ĐỔI
+  Ghi lại: Thông báo liệt kê đủ 6 trường thiếu hay chỉ một
+
+==============================================================================
+TC-CPN-71: API xóa với id không hợp lệ (3 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: DELETE http://localhost:3000/api/admin/coupons/999999
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 200
+    {
+      "message": "Coupon deleted"
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx|4xx
+  Số mã trước 25, sau 25: không đổi
+  --- Dòng B
+  Request: DELETE http://localhost:3000/api/admin/coupons/abc
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 200
+    {
+      "message": "Coupon deleted"
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx|4xx
+  Số mã trước 25, sau 25: không đổi
+  --- Dòng C
+  Chuẩn bị dòng C: Tạo FR17TC71C bằng token admin
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC71C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 27
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  Request: DELETE http://localhost:3000/api/admin/coupons/27
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 200
+    {
+      "message": "Coupon deleted"
+    }
+  Chuẩn bị: Xóa lần 1, HTTP 200 (2xx): khớp mong đợi 2xx
+  Request: DELETE http://localhost:3000/api/admin/coupons/27
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 200
+    {
+      "message": "Coupon deleted"
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx|4xx
+  Số mã trước 25, sau 25: không đổi
+
+==============================================================================
+TC-CPN-72: Tạo mã không có header Authorization
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC72", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 401
+    {
+      "error": "Unauthorized"
+    }
+  Gợi ý: HTTP 401 (4xx): khớp mong đợi 4xx (ERR12)
+  GET: Không có mã 'FR17TC72'
+
+==============================================================================
+TC-CPN-73: Tạo mã khi header thiếu Bearer
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "<token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC73", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 401
+    {
+      "error": "Unauthorized"
+    }
+  Gợi ý: HTTP 401 (4xx): khớp mong đợi 4xx (ERR12)
+  GET: Không có mã 'FR17TC73'
+
+==============================================================================
+TC-CPN-74: Tạo mã khi token không hợp lệ
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer abc.def.ghi", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC74", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 403
+    {
+      "error": "Forbidden"
+    }
+  Gợi ý: HTTP 403 (4xx): khớp mong đợi 4xx (ERR12)
+  GET: Không có mã 'FR17TC74'
+
+==============================================================================
+TC-CPN-75: Tạo mã bằng token user thường
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token user>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC75", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 28
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR13)
+  GET: Có mã 'FR17TC75'; bản ghi: {"id": 28, "code": "FR17TC75", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+
+==============================================================================
+TC-CPN-76: Xem danh sách không có header
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: GET http://localhost:3000/api/coupons
+  Header: (không có header)
+  Body: (không có body)
+  Response: HTTP 401
+    {
+      "error": "Unauthorized"
+    }
+  Gợi ý: HTTP 401 (4xx): khớp mong đợi 4xx (ERR12)
+
+==============================================================================
+TC-CPN-77: Xem danh sách bằng token user thường
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: GET http://localhost:3000/api/coupons
+  Header: {"Authorization": "Bearer <token user>"}
+  Body: (không có body)
+  Response: HTTP 200
+    [
+      {
+        "id": 1,
+        "code": "SAVE10",
+        "type": "percent",
+        "discount_value": 10,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 1
+      },
+      {
+        "id": 2,
+        "code": "BIGBUY",
+        "type": "fixed",
+        "discount_value": 50000,
+        "min_order_amount": 500000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 1
+      },
+      {
+        "id": 3,
+        "code": "VIP100",
+        "type": "fixed",
+        "discount_value": 100000,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 2
+      },
+      {
+        "id": 4,
+        "code": "EXPIRED",
+        "type": "percent",
+        "discount_value": 20,
+        "min_order_amount": 100000,
+        "expired_at": "2020-01-01",
+        "is_active": 1,
+        "max_uses_per_user": 1
+      },
+      {
+        "id": 5,
+        "code": "FR17TC60",
+        "type": "percent",
+        "discount_value": 15,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 3
+      },
+      {
+        "id": 7,
+        "code": "2026",
+        "type": "percent",
+        "discount_value": 15,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 3
+    ... (cắt bớt, còn 202 dòng)
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR13); 2xx là Khác giả định A28
+  Gợi ý: Phản hồi CÓ chứa danh sách
+
+==============================================================================
+TC-CPN-78: Xóa mã không có header
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Chuẩn bị: Tạo FR17TC78 bằng token admin
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC78", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 29
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  Request: DELETE http://localhost:3000/api/admin/coupons/29
+  Header: (không có header)
+  Body: (không có body)
+  Response: HTTP 401
+    {
+      "error": "Unauthorized"
+    }
+  Gợi ý: HTTP 401 (4xx): khớp mong đợi 4xx (ERR12)
+  GET: Có mã 'FR17TC78'; bản ghi: {"id": 29, "code": "FR17TC78", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý: Mã vẫn còn (đúng mong đợi)
+
+==============================================================================
+TC-CPN-79: Xóa mã bằng token user thường
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Chuẩn bị: Tạo FR17TC79 bằng token admin
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC79", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 30
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  Request: DELETE http://localhost:3000/api/admin/coupons/30
+  Header: {"Authorization": "Bearer <token user>"}
+  Body: (không có body)
+  Response: HTTP 200
+    {
+      "message": "Coupon deleted"
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR13)
+  GET: Không có mã 'FR17TC79'
+  Gợi ý: Mã ĐÃ BỊ XÓA
+
+==============================================================================
+TC-CPN-80: POST /api/coupons (FR-12) không header
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/coupons
+  Header: {"Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC80", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 404
+  Body phản hồi (không phải JSON): '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot POST /api/coupons</pre>\n</body>\n</html>\n'
+  Gợi ý: HTTP 404 (4xx): khớp mong đợi không 5xx; 404 cũng Pass
+  GET: Không có mã 'FR17TC80'
+  Gợi ý: Mã không được tạo (đúng mong đợi)
+
+==============================================================================
+TC-CPN-81: DELETE /api/coupons/:id (FR-12) bằng user thường
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Chuẩn bị: Tạo FR17TC81 bằng token admin
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC81", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 31
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  Request: DELETE http://localhost:3000/api/coupons/31
+  Header: {"Authorization": "Bearer <token user>"}
+  Body: (không có body)
+  Response: HTTP 404
+  Body phản hồi (không phải JSON): '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot DELETE /api/coupons/31</pre>\n</body>\n</html>\n'
+  Gợi ý: HTTP 404 (4xx): khớp mong đợi không 5xx (404 cũng Pass)
+  GET: Có mã 'FR17TC81'; bản ghi: {"id": 31, "code": "FR17TC81", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý: Mã vẫn còn (đúng mong đợi)
+
+==============================================================================
+TC-CPN-118: Số lần dùng tối đa viết là 1.0
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC118", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 1.0}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 32
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã 'FR17TC118'; bản ghi: {"id": 32, "code": "FR17TC118", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 1}
+  Gợi ý giá trị lưu: khớp giá trị đã gửi
+
+==============================================================================
+TC-CPN-131: Server lưu chính xác 2^53 + 1 (3 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC131A", "type": "fixed", "discount_value": 9007199254740993, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 33
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx|4xx
+  GET: Có mã 'FR17TC131A'; bản ghi: {"id": 33, "code": "FR17TC131A", "type": "fixed", "discount_value": 9007199254740992, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý giá trị lưu: KHÁC: discount_value: gửi 9007199254740993, lưu 9007199254740992
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC131B", "type": "percent", "discount_value": 15, "min_order_amount": 9007199254740993, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 34
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx|4xx
+  GET: Có mã 'FR17TC131B'; bản ghi: {"id": 34, "code": "FR17TC131B", "type": "percent", "discount_value": 15, "min_order_amount": 9007199254740992, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Gợi ý giá trị lưu: KHÁC: min_order_amount: gửi 9007199254740993, lưu 9007199254740992
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC131C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 9007199254740993}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 35
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx|4xx
+  GET: Có mã 'FR17TC131C'; bản ghi: {"id": 35, "code": "FR17TC131C", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 9007199254740992}
+  Gợi ý giá trị lưu: KHÁC: max_uses_per_user: gửi 9007199254740993, lưu 9007199254740992
+  Đọc cùng TC-CPN-111, 114, 119 theo bảng ở 05_final_tc.md mục 7.1; lưu 9007199254740992 là Fail
+
+==============================================================================
+TC-CPN-140: API tạo mã có chữ thường
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "fr17tc140", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 36
+    }
+  Gợi ý bước 1: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã 'fr17tc140'; bản ghi: {"id": 36, "code": "fr17tc140", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+  Bước 2 (K5): Gửi lại FR17TC140
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC140", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 37
+    }
+  Gợi ý bước 2: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR2)
+
+==============================================================================
+TC-CPN-141: API từ chối mã khác mã mẫu ở hoa thường
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "save10", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 38
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR2)
+  GET: CÓ mã 'save10' (chữ thường)
+  Gợi ý: SAVE10 giữ nguyên
+
+==============================================================================
+TC-CPN-142: API tạo mã là 1 chữ thường
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "m", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 39
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: Có mã 'm'; bản ghi: {"id": 39, "code": "m", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "is_active": 1, "max_uses_per_user": 3}
+
+==============================================================================
+TC-CPN-143: API cắt dấu cách đầu cuối của Mã (4 dòng)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  --- Dòng A
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": " FR17TC143A", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 40
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: CÓ mã lưu nguyên dấu cách ' FR17TC143A'
+  GET: Không có mã 'FR17TC143A'
+  K5: Gửi lại 'FR17TC143A'
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC143A", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 41
+    }
+  Gợi ý K5: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR2)
+  --- Dòng B
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC143B ", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 42
+    }
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET: CÓ mã lưu nguyên dấu cách 'FR17TC143B '
+  GET: Không có mã 'FR17TC143B'
+  K5: Gửi lại 'FR17TC143B'
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "FR17TC143B", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 43
+    }
+  Gợi ý K5: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR2)
+  --- Dòng C
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": "   ", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 44
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR1)
+  Số mã trước 40, sau 41: THAY ĐỔI
+  --- Dòng D
+  Request: POST http://localhost:3000/api/admin/coupons
+  Header: {"Authorization": "Bearer <token admin>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"code": " SAVE10", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+  Response: HTTP 200
+    {
+      "message": "Coupon created",
+      "id": 45
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi 4xx (ERR2)
+  Gợi ý: SAVE10 giữ nguyên
+  GET: CÓ mã ' SAVE10'
+
+==============================================================================
+Kết thúc: 2026-10-21 00:34:02
+Việc làm tay qua giao diện còn lại:
+  - TC-CPN-60: Mở trang Mã Giảm Giá, kiểm dòng FR17TC60 có đúng giá trị
+Nhắc: Nhóm H (TC-CPN-54, 55, 56) làm tay qua giao diện, sau cùng; reset trước và sau TC-CPN-56.
+Log: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\logs\S6_api_20261021_003400.log

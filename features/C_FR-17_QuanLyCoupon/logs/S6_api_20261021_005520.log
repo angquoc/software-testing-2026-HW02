@@ -1,0 +1,27 @@
+S6, FR-17: Nhóm test case API
+Thời gian bắt đầu: 2026-10-21 00:55:20
+Base URL: http://localhost:3000
+Chế độ: gửi thật
+Test case: TC-CPN-144
+Script không reset dữ liệu, không xóa mã mẫu, không chạy nhóm H.
+
+Đăng nhập admin: POST /api/login với admin@eshop.com
+  Lấy được token admin (HTTP 200)
+Đăng nhập user: POST /api/login với test@eshop.com
+  Lấy được token user (HTTP 200)
+
+==============================================================================
+TC-CPN-144: Tạo 100 mã cho danh sách rất dài (nhóm G)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Tạo 100 mã từ FR17TC144N001 đến FR17TC144N100 bằng token admin (chỉ log tóm tắt)
+  Kết quả tạo: {'HTTP 200': 100}
+  GET: 148 mã, trong đó 100 mã FR17TC144N...
+  >>> VIỆC LÀM TAY: Mở trang Mã Giảm Giá; cuộn hoặc chuyển trang tới cuối; đếm số dòng so với số mã trong GET ở trên; kiểm FR17TC144N001, FR17TC144N100, bố cục, nút Xóa ở dòng cuối; chụp ảnh
+
+==============================================================================
+Kết thúc: 2026-10-21 00:55:21
+Việc làm tay qua giao diện còn lại:
+  - TC-CPN-144: Mở trang Mã Giảm Giá; cuộn hoặc chuyển trang tới cuối; đếm số dòng so với số mã trong GET ở trên; kiểm FR17TC144N001, FR17TC144N100, bố cục, nút Xóa ở dòng cuối; chụp ảnh
+Nhắc: Nhóm H (TC-CPN-54, 55, 56) làm tay qua giao diện, sau cùng; reset trước và sau TC-CPN-56.
+Log: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\logs\S6_api_20261021_005520.log

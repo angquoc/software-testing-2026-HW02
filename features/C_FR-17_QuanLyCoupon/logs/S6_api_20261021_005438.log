@@ -1,0 +1,93 @@
+S6, FR-17: Nhóm test case API
+Thời gian bắt đầu: 2026-10-21 00:54:38
+Base URL: http://localhost:3000
+Chế độ: gửi thật
+Test case: TC-CPN-61
+Script không reset dữ liệu, không xóa mã mẫu, không chạy nhóm H.
+
+Đăng nhập admin: POST /api/login với admin@eshop.com
+  Lấy được token admin (HTTP 200)
+Đăng nhập user: POST /api/login với test@eshop.com
+  Lấy được token user (HTTP 200)
+
+==============================================================================
+TC-CPN-61: API trả danh sách mã đủ trường (nhóm A, chạy trước nhóm B)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Request: GET http://localhost:3000/api/coupons
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 200
+    [
+      {
+        "id": 1,
+        "code": "SAVE10",
+        "type": "percent",
+        "discount_value": 10,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 1
+      },
+      {
+        "id": 2,
+        "code": "BIGBUY",
+        "type": "fixed",
+        "discount_value": 50000,
+        "min_order_amount": 500000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 1
+      },
+      {
+        "id": 3,
+        "code": "VIP100",
+        "type": "fixed",
+        "discount_value": 100000,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 2
+      },
+      {
+        "id": 4,
+        "code": "EXPIRED",
+        "type": "percent",
+        "discount_value": 20,
+        "min_order_amount": 100000,
+        "expired_at": "2020-01-01",
+        "is_active": 1,
+        "max_uses_per_user": 1
+      },
+      {
+        "id": 5,
+        "code": "FR17TC60",
+        "type": "percent",
+        "discount_value": 15,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 3
+      },
+      {
+        "id": 7,
+        "code": "2026",
+        "type": "percent",
+        "discount_value": 15,
+        "min_order_amount": 300000,
+        "expired_at": "2099-12-31",
+        "is_active": 1,
+        "max_uses_per_user": 3
+    ... (cắt bớt, còn 422 dòng)
+  Gợi ý: HTTP 200 (2xx): khớp mong đợi 2xx
+  Số mã trong danh sách: 48
+  SAVE10: Có; đủ 6 trường và id
+  BIGBUY: Có; đủ 6 trường và id
+  VIP100: Có; đủ 6 trường và id
+  EXPIRED: Có; đủ 6 trường và id
+  Điền mục 1 của 06_results.md: GET có trả id và đủ 6 trường không
+
+==============================================================================
+Kết thúc: 2026-10-21 00:54:38
+Nhắc: Nhóm H (TC-CPN-54, 55, 56) làm tay qua giao diện, sau cùng; reset trước và sau TC-CPN-56.
+Log: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\logs\S6_api_20261021_005438.log

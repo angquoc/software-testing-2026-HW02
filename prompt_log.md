@@ -11279,6 +11279,924 @@ Phiên A đã viết xong bug report. Tôi xem tiếp phiên C.
 Tôi đọc script của C và bug report của A.
 
 Script của C an toàn: chỉ xoá các mã do chính nó tạo, không đụng mã mẫu, không reset. Giờ tôi đọc bug report của A.
+
+Cả hai phiên đều làm đúng, tôi không thấy lỗi nào. Log đã xuất (191 lượt, đúng 3 phiên). Bạn duyệt nhanh 5 câu phiên A hỏi theo đề xuất của tôi bên dưới, rồi commit.
+
+## Phiên C: Script API
+
+- Chỉ xoá các mã do chính script tạo. Không đụng 4 mã mẫu, không reset DB, không chạy nhóm H.
+- Token được che trong log. TC-CPN-144 (tạo 100 mã) chạy bằng một lệnh riêng.
+- Dòng 3 của `06_results.md` đã sửa giống FR-01. Mục 1 đã ghi Ngày chạy 21/10, reset lúc 23:41 ngày 20/10.
+- **Script đăng nhập bằng `test@eshop.com` / `Test1234!` để lấy token user thường.** Nếu đăng nhập thất bại thì script dừng ngay và báo lỗi; khi đó bạn gửi tôi phần log đó.
+
+**Thứ tự chạy khi test C:**
+1. Mở trang, xác nhận TC-CPN-50 (4 mã mẫu).
+2. `python scripts/run_api_tests.py --only 61` (chạy trong thư mục `features/C_FR-17_QuanLyCoupon`).
+3. Chụp các nhóm giao diện mức 1.
+4. Chạy cả nhóm API: `python scripts/run_api_tests.py`.
+5. Chạy `python scripts/run_api_tests.py --only 144`, rồi chụp 1 ảnh danh sách.
+
+## Phiên A: `bugs/bug_report.md` (13 bug)
+
+- Đủ 19 dòng Fail, mỗi dòng nằm trong một bug.
+- Tiêu đề, label và các mục khớp với template và quy ước của repo nhóm.
+- Có 1 dấu "—", nhưng nằm trong đoạn trích nguyên văn README của EShop, nên giữ.
+- Số test case Blocked (14) khớp với `06_results.md`.
+
+| Mức độ | Bug |
+|---|---|
+| Critical | 01: Giao diện từ chối mật khẩu hợp lệ |
+| High | 02: Không có trường Xác nhận mật khẩu. 03 đến 08: API nhận dữ liệu sai, tách theo từng yêu cầu |
+| Medium | 09: Ô Email là `type="text"` |
+| Low | 10 đến 13: Thiếu dấu `*`, nút màu đỏ, thiếu thẻ `<h1>`, có chữ tiếng Anh |
+
+**Đề xuất cho 5 câu phiên A hỏi:**
+
+| Câu | Đề xuất | Lý do |
+|---|---|---|
+| 1. Mức độ của BUG-02, 05, 08 | Giữ **High** cả ba | Theo lưu đồ ở mục 4.3 README nhóm: Câu 1 (lộ hay mất dữ liệu, vượt quyền, chặn luồng chính) không đúng; câu 2 (chấp nhận dữ liệu sai mà người dùng không tránh được) đúng, nên dừng ở High. Như vậy là nhất quán, không phải tự cân nhắc từng bug |
+| 2. Gắn `technique: EP` cho các bug tìm bằng checklist | Đồng ý | README chỉ cho phép gắn EP hoặc BVA; xét từng yêu cầu "phải có hay không" là đúng guideline của EP |
+| 3. Ảnh cho bug API | Chụp đoạn log, 6 ảnh | Template bắt buộc có ảnh. Mở file log trong VS Code, chụp đúng đoạn của test case, mất khoảng 5 phút |
+| 4. Tách BUG-13 không | Giữ 1 issue | Cùng yêu cầu, cùng test case |
+| 5. Điền số issue | Đồng ý | Tạo xong issue thì báo số, phiên A điền một lượt |
+
+Nếu đồng ý cả 5 câu, bạn dán vào phiên A:
+
+```text
+1. Giữ High cho BUG-02, 05, 08 (theo lưu đồ mục 4.3: câu 1 không đúng, câu 2 đúng).
+2. Đồng ý gắn technique: EP cho các bug checklist.
+3. Tôi sẽ chụp đoạn log cho BUG-03 đến 08, đặt tên S6_TC-REG-<số>_log.png; chụp xong tôi báo để bạn cập nhật đường dẫn ảnh.
+4. Giữ BUG-13 là 1 issue.
+5. Tạo xong issue tôi sẽ báo số để bạn điền.
+```
+
+## Commit (2 lần)
+
+```
+git add bugs/bug_report.md prompt_log.md
+git commit -m "[A-FR01][S7] Draft bug reports for GitHub issues"
+
+git add features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py features/C_FR-17_QuanLyCoupon/06_results.md
+git commit -m "[C-FR17][S6] Add API test runner script and update run info"
+```
+
+Khi đã tạo issue xong và phiên A điền số, sẽ có thêm một commit `[A-FR01][S7] Link GitHub issues`, kèm các ảnh chụp trang issue `S7_issue_NN.png`.
+
+**Về thời gian:** Tạo tay 13 issue (dán nội dung, chọn label, kéo ảnh, tự gán cho mình, chụp trang issue) mất khoảng 2 đến 3 phút mỗi issue, tức khoảng 30 đến 40 phút. Nên làm việc này sau khi test xong C, vì test C cần DB và server, còn tạo issue thì không.
+````
+
+---
+
+### C192 | 00:11 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Giữ High cho BUG-02, 05, 08 (theo lưu đồ mục 4.3: câu 1 không đúng, câu 2 đúng).
+2. Đồng ý gắn technique: EP cho các bug checklist.
+3. Tôi sẽ chụp đoạn log cho BUG-03 đến 08, đặt tên S6_TC-REG-<số>_log.png; chụp xong tôi báo để bạn cập nhật đường dẫn ảnh.
+4. Giữ BUG-13 là 1 issue.
+5. Tạo xong issue tôi sẽ báo số để bạn điền.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã nhận năm quyết định. File [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md) đã viết đúng như vậy nên không cần sửa:
+- Bốn quyết định đầu khớp với file hiện tại: BUG-02, 05, 08 giữ mức High; các bug tìm bằng checklist gắn `technique: EP`; BUG-13 là một issue.
+- Phần ảnh log và số issue đang để chỗ trống, chờ bạn gửi.
+
+**Ảnh log cần chụp cho BUG-03 đến 08**, 11 ảnh theo mẫu tên `S6_TC-REG-<số>_log.png`:
+
+| Bug | Ảnh |
+|---|---|
+| BUG-03 | `S6_TC-REG-71_log.png`, `S6_TC-REG-72_log.png` |
+| BUG-04 | `S6_TC-REG-73_log.png`, `S6_TC-REG-80_log.png` |
+| BUG-05 | `S6_TC-REG-75_log.png` |
+| BUG-06 | `S6_TC-REG-74_log.png`, `S6_TC-REG-130_log.png` |
+| BUG-07 | `S6_TC-REG-71_log.png` (dùng chung với BUG-03, cần thấy cả **bước kiểm chứng** với id 4 và 5), `S6_TC-REG-82_log.png` |
+| BUG-08 | `S6_TC-REG-76_log.png`, `S6_TC-REG-77_log.png`, `S6_TC-REG-129_log.png` |
+
+Mỗi ảnh nên thấy đủ ba phần: Dòng tên test case, body request, và phản hồi (`HTTP 200` cùng body có `id`).
+
+Bạn chụp xong thì báo, tôi cập nhật đường dẫn ảnh. Khi tạo xong issue thì gửi số, tôi điền vào cột Issue, dòng "Issue" của từng bug và các dòng Related.
+````
+
+---
+
+### C193 | 00:12 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phần C nói lại đi. Tôi vẫn chưa chụp ảnh, chưa test gì cả. Theo thứ tự nào, từng TC nào?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Extract data for chosen C test cases
+
+**Output AI (nguyên văn):**
+
+````text
+Đây là danh sách làm C theo đúng thứ tự, từng test case một. Thứ tự này đã tính để dữ liệu không ảnh hưởng lẫn nhau.
+
+## Chuẩn bị
+
+- Mở **http://localhost:5174**, đăng nhập `admin@eshop.com` / `Admin123!`, vào trang "Mã Giảm Giá".
+- **Dữ liệu cơ sở** (ô nào bảng dưới không nhắc tới thì nhập như này):
+
+| Mã | Loại | Giá trị | Đơn tối thiểu | Hết hạn | Giới hạn/người |
+|---|---|---|---|---|---|
+| `FR17TCnn` (nn là số test case) | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` |
+
+- **Tên ảnh:** `S6_TC-CPN-nn.png`. Nếu một test case cần nhiều ảnh thì đặt `_1`, `_2`. Lưu vào `features/C_FR-17_QuanLyCoupon/screenshots/`.
+- **Mỗi ảnh nên thấy cùng lúc** thông báo (hoặc bong bóng của trình duyệt) và bảng danh sách.
+- Mở sẵn một file ghi chú nháp để ghi những điều ảnh không thể hiện. Bước 6 có ví dụ.
+
+## Bước 1: Nhóm A, checklist (làm ngay, khi chưa tạo mã nào)
+
+| TC | Làm gì | Ảnh |
+|---|---|---|
+| 50, 90, 91, 92, 93 | Chụp toàn màn hình trang "Mã Giảm Giá", thấy cả **tiêu đề tab**, form và bảng 4 mã mẫu | `S6_TC-CPN-50.png` (một ảnh dùng cho cả 5 test case) |
+| 94 | Bấm sang "Dashboard", chụp menu bên trái | `S6_TC-CPN-94.png` |
+| 95 | Quay lại "Mã Giảm Giá". F12, vào tab Console, gõ `[location.pathname, document.querySelectorAll('h1').length]`, Enter | `S6_TC-CPN-95.png` |
+
+## Bước 2: Script lấy danh sách (TC-CPN-61)
+
+Mở terminal tại `features/C_FR-17_QuanLyCoupon`, rồi chạy:
+
+```
+python scripts/run_api_tests.py --only 61
+```
+
+Không cần chụp, script tự ghi log. Nếu script báo lỗi đăng nhập thì dừng lại và báo tôi.
+
+## Bước 3: Thêm hợp lệ (bấm "Tạo mã" sau mỗi dòng)
+
+| TC | Khác dữ liệu cơ sở ở chỗ | Mong đợi | Ảnh |
+|---|---|---|---|
+| 01 | Không khác | Tạo được, dòng hiện `15%`, `300,000 ₫`, `2099-12-31`, `3 lần` | `S6_TC-CPN-01.png` |
+| 02 | Loại "Số tiền cố định (₫)", Giá trị `50000` | Tạo được, hiện `50,000 ₫` | `S6_TC-CPN-02.png` |
+| 06 | Gõ Mã `fr17tc06` | Tạo được. Ghi lại ô có tự đổi thành chữ hoa không | `_1` |
+| 06 (tiếp) | Tạo tiếp với Mã `FR17TC06` | Bị báo trùng | `_2` |
+| 10 | Mã `<b>FR17TC10</b>` | Tạo được, mã hiện nguyên dạng chữ, không in đậm | `S6_TC-CPN-10.png` |
+| 15 | Giá trị `12.5` | Tạo được, hiện `12.5%`. Nếu trình duyệt chặn thì chụp bong bóng | `S6_TC-CPN-15.png` |
+| 23 | Hết hạn `01/31/2025` | Tạo được, cột Hết hạn hiện chữ "Hết hạn" | `S6_TC-CPN-23.png` |
+| 14 | Giá trị `100` | Tạo được, hiện `100%` | `S6_TC-CPN-14.png` |
+| 121 | Mã `Q` | Tạo được, hiện `Q` | `S6_TC-CPN-121.png` |
+| 127 | Hết hạn `10/20/2026` (hôm qua) | Tạo được, hiện chữ "Hết hạn" | `S6_TC-CPN-127.png` |
+| 128 | Hết hạn `10/22/2026` (ngày mai) | Tạo được, hiện `2026-10-22` | `S6_TC-CPN-128.png` |
+
+## Bước 4: Không hợp lệ (mong đợi: bị từ chối, bảng không có dòng mới)
+
+| TC | Khác dữ liệu cơ sở ở chỗ | Ảnh |
+|---|---|---|
+| 30 | Để trống Mã | `S6_TC-CPN-30.png` |
+| 32 | Mã `SAVE10` | `S6_TC-CPN-32.png` (thấy dòng `SAVE10` cũ vẫn nguyên) |
+| 33 | Tạo `FR17TC33`, rồi tạo `FR17TC33` thêm lần nữa | Chụp sau lần 2: `S6_TC-CPN-33.png` (bảng chỉ có 1 dòng) |
+| 37 | Giá trị `150` | `S6_TC-CPN-37.png` |
+| 106 | Giá trị `101` | `S6_TC-CPN-106.png` |
+| 38 | Giá trị `0` | `S6_TC-CPN-38.png` |
+| 100 | Giá trị `-1` | `S6_TC-CPN-100.png` |
+| 41 | Đơn tối thiểu `-1` | `S6_TC-CPN-41.png` |
+| 43 | Để trống Hết hạn | `S6_TC-CPN-43.png` |
+| 44 | Giới hạn/người `0` | `S6_TC-CPN-44.png` |
+
+## Bước 5: Xóa
+
+| TC | Làm gì | Ảnh |
+|---|---|---|
+| 51 | Tạo `FR17TC51`, bấm "Xóa" ở dòng đó. Nếu có hộp thoại xác nhận thì chụp, rồi đồng ý. Tải lại trang | `_1` (hộp thoại, nếu có), `_2` (sau khi tải lại, dòng đã mất) |
+| 52 | Chỉ làm nếu bước 51 có hộp thoại: Tạo `FR17TC52`, bấm "Xóa", chọn hủy, tải lại | `S6_TC-CPN-52.png`. Không có hộp thoại thì bỏ qua, test case này ghi "Không áp dụng" |
+
+## Bước 6: Script API và danh sách dài
+
+```
+python scripts/run_api_tests.py
+python scripts/run_api_tests.py --only 144
+```
+
+Sau lệnh thứ hai, mở trang "Mã Giảm Giá", cuộn xuống cuối danh sách, chụp `S6_TC-CPN-144.png` (thấy mã `FR17TC144N100` và nút "Xóa" ở dòng cuối).
+
+Rồi ghi vào file nháp mấy ý ảnh không thể hiện, ví dụ:
+- Ô Mã tự viết hoa: Có hay không.
+- Ô số có chặn số thập phân, số âm không (xem ở 15, 100, 41).
+- Có hộp thoại xác nhận khi xóa không.
+- Giờ bạn bấm "Tạo mã" ở 127 và 128.
+
+## Nếu còn thời gian (mức 2)
+
+- 22: Hết hạn `10/21/2026` (hôm nay).
+- 39: Loại cố định, Giá trị `0`.
+- 115: Giới hạn/người `-1`.
+- 36: Mã `EXPIRED`.
+- 13: Tạo, xoá, rồi tạo lại `FR17TC13`.
+- 125: Mã `FR17TC125` cộng 991 chữ `X`; ghi lại ô nhận bao nhiêu ký tự.
+
+**Không làm nhóm H** (xóa mã mẫu) lúc này.
+
+Xong hết thì báo tôi. Tôi sẽ soát số ảnh và log trước, rồi bạn mới cho phiên C điền một lượt.
+````
+
+---
+
+### C194 | 00:18 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Hình như S0_03_... có mà đúng không, chỉ là không có tiêu đề tab. Tôi có cần chụp lại và xóa đặt tên lại cho S0_03_... không để bảng đỡ sửa và lặp ảnh? Hay là vẫn phải tách ra để không ảnh hưởng đến các kết quả cũ?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Không cần chụp lại, và **không nên đổi tên hay xoá `S0_03_...`**.
+
+**Vì sao không đổi tên hay xoá:**
+- Ảnh này đã được commit, và đang được nhắc tới trong `00_spec.md`, trong file `ai_raw/S0` và trong `06_results.md`.
+- Đổi tên sẽ làm hỏng các chỗ đó. File trong `ai_raw` lại không được sửa, nên chỗ nhắc ở đó sẽ trỏ tới một ảnh không còn tồn tại.
+- Ảnh là bằng chứng của bước S0 (ngày 18/10), nên cần giữ nguyên.
+
+**Cách làm nhanh nhất là dùng lại ảnh S0, giống FR-01:** FR-01 cũng lấy `S0_01_form_dang_ky.png` làm bằng chứng cho 90, 92, 95, rồi ghi "sinh viên xác nhận trên trang hiện tại". Áp vào bước 1 của C:
+
+| TC | Làm gì |
+|---|---|
+| 50, 90, 92, 93 | Không chụp. Mở trang, nhìn xác nhận vẫn giống `S0_03`, rồi bảo phiên C ghi "sinh viên xác nhận trên trang hiện tại ngày 21/10/2026" |
+| 94 | Không chụp. `S0_02` và `S0_03` đã đủ |
+| **91** | **Chụp mới `S6_TC-CPN-91.png`**, thấy được tiêu đề tab. Đây là thông tin duy nhất `S0_03` không có |
+| 95 | Vẫn chụp `S6_TC-CPN-95.png` (Console đếm số thẻ `<h1>`), vì chưa có ảnh nào cho test case này |
+
+Như vậy bước 1 chỉ còn 2 ảnh. Các dòng 50, 90, 92, 93, 94 trong bảng giữ nguyên ảnh S0. Phiên C chỉ cần thêm ảnh mới cho 91 và câu xác nhận, nên bảng ít phải sửa và không có ảnh trùng.
+
+Các bước còn lại giữ nguyên như danh sách trước.
+````
+
+---
+
+### C195 | 00:19 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên C vốn dĩ đã làm vậy, chỉ là không có tab tiêu đề nên tôi muốn hỏi bạn thôi. Tôi nghĩ bạn nên đọc file mà C đã viết, rồi nói tôi nên test các TC nào, chụp ảnh nào, thay vì cứ nói những thứ đã có hoặc chưa đúng.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read header and setup sections of C results
+- Bash: List all C result rows with notes
+- Bash: Read observation section and TC-50 note
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn nói đúng. Tôi đọc kỹ `06_results.md` của C rồi mới lập lại danh sách.
+
+Tôi đã đọc hết `06_results.md` của C. Dưới đây là danh sách dựa trên file đó: test case nào đã có kết quả, test case nào còn trống và file yêu cầu ghi thêm gì.
+
+## Đã có kết quả, chỉ cần nhìn xác nhận (không chụp)
+
+TC-CPN-50, 90, 92, 93, 94 đã được điền từ ảnh S0, trong ghi chú có câu "sinh viên xác nhận trên trang hiện tại". Bạn mở trang, thấy vẫn giống ảnh S0 là xong.
+
+## Phải chụp hoặc chạy (mức 1), theo thứ tự nhóm trong file
+
+Ô nào không nhắc tới thì nhập theo giá trị cơ sở ở mục 3: `FR17TCnn`, Phần trăm (%), `15`, `300000`, `12/31/2099`, `3`.
+
+| Nhóm | TC | Nhập gì | Chụp gì |
+|---|---|---|---|
+| A | 91 | Không nhập | `S6_TC-CPN-91.png`: Ảnh thấy được tiêu đề tab. Ngôn ngữ của thông báo lỗi sẽ lấy từ các ảnh nhóm C, file đã ghi chú như vậy |
+| A | 95 | DevTools, tab Console: `[location.pathname, document.querySelectorAll('h1').length]` | `S6_TC-CPN-95.png` |
+| A | 61 | Chạy `python scripts/run_api_tests.py --only 61` | Không chụp (có log) |
+| B | 01 | Giá trị cơ sở | `S6_TC-CPN-01.png` |
+| B | 02 | Chọn "Số tiền cố định (₫)" **trước**, chụp ô Giá trị lúc còn trống, rồi nhập `50000` và tạo | `_1`: Placeholder, dùng cho dòng quan sát ở mục 6. `_2`: Kết quả |
+| B | 06 | Gõ `fr17tc06`. File yêu cầu ghi giá trị trong ô **trước khi** bấm "Tạo mã" | `_1`: Ô trước khi bấm. `_2`: Kết quả |
+| B | 10 | `<b>FR17TC10</b>` | `S6_TC-CPN-10.png` |
+| B | 15 | Giá trị `12.5` | `S6_TC-CPN-15.png` |
+| B | 23 | Hết hạn `01/31/2025` | `S6_TC-CPN-23.png` |
+| B | 14 | Giá trị `100` | `S6_TC-CPN-14.png` |
+| C | 30 | Để trống Mã | `S6_TC-CPN-30.png` |
+| C | 32 | Mã `SAVE10` | `S6_TC-CPN-32.png` |
+| C | 33 | Tạo `FR17TC33` hai lần | Chụp sau lần 2 |
+| C | 37 | Giá trị `150` | `S6_TC-CPN-37.png` |
+| C | 38 | Giá trị `0` | `S6_TC-CPN-38.png` |
+| C | 41 | Đơn tối thiểu `-1` | `S6_TC-CPN-41.png` |
+| C | 43 | Để trống Hết hạn | `S6_TC-CPN-43.png` |
+| C | 44 | Giới hạn/người `0` | `S6_TC-CPN-44.png` |
+| D | 100 | Giá trị `-1` | `S6_TC-CPN-100.png` |
+| D | 106 | Giá trị `101` | `S6_TC-CPN-106.png` |
+| D | 121 | Mã `Q` | `S6_TC-CPN-121.png` |
+| D | 127 | Hết hạn `10/20/2026` | `S6_TC-CPN-127.png` |
+| D | 128 | Hết hạn `10/22/2026` | `S6_TC-CPN-128.png` |
+| E | 51 | Tạo `FR17TC51`, rồi bấm "Xóa" | `_1`: Hộp thoại xác nhận (nếu có). `_2`: Sau khi tải lại trang |
+| E | 52 | Chỉ làm nếu ở 51 có hộp thoại: Tạo `FR17TC52`, bấm "Xóa", chọn hủy, tải lại trang | `S6_TC-CPN-52.png` |
+| F | Cả nhóm | Chạy `python scripts/run_api_tests.py` | Không chụp (có log) |
+| G | 144 | Chạy `python scripts/run_api_tests.py --only 144`, mở trang, cuộn tới cuối | `S6_TC-CPN-144.png` |
+
+**Các dòng dự phòng, file đã ghi sẵn trong cột ghi chú:** Nếu trình duyệt chặn không cho nhập (có bong bóng báo lỗi) ở 15, 41, 44 hoặc 100, thì bạn vẫn chụp bong bóng. Sau đó chạy thêm dòng API tương ứng:
+- 15 bị chặn: `--only 82 --rows A`
+- 41 bị chặn: `--only 82 --rows E`
+- 44 bị chặn: `--only 82 --rows F`
+- 100 bị chặn: `--only 130 --rows A`
+
+Cùng 82 thì gộp các dòng vào một lệnh, ví dụ `--only 82 --rows A,E,F`.
+
+**Mục 1 của file còn 3 ô trống**, phiên C sẽ điền từ ảnh và ghi chú của bạn:
+- Ô số có chặn số thập phân, số âm không: Thấy ở 15, 41.
+- Ô Mã nhận tối đa bao nhiêu ký tự: Chỉ biết nếu chạy 12 hoặc 125 (mức 2). Không chạy thì để trống.
+- Có hộp thoại xác nhận khi xóa không: Thấy ở 51.
+
+## Nếu còn thời gian (mức 2)
+
+22 (Hết hạn `10/21/2026`), 39, 115, 36, 13, 125.
+
+Nhóm H làm sau cùng, chỉ khi còn thời gian, và cần tôi reset trước và sau TC-CPN-56.
+
+Phần còn lại ghi Not run, giống FR-01.
+````
+
+---
+
+### C196 | 00:45 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Nhiều quá, không thể rút ngắn hơn được nữa à? Tôi làm tới cái B 10
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Rút được. Nhóm API chạy bằng script đã kiểm từng trường ở phía server (bỏ trống, sai kiểu, âm, quá lớn), nên phần giao diện chỉ cần đại diện cho mỗi quy tắc chính. Bạn đã xong tới B10 (gồm 91, 95, 61, 01, 02, 06, 10), giờ chỉ còn:
+
+| Thứ tự | TC | Nhập gì | Ảnh |
+|---|---|---|---|
+| 1 | 30 | Để trống Mã | `S6_TC-CPN-30.png` |
+| 2 | 32 | Mã `SAVE10` | `S6_TC-CPN-32.png` |
+| 3 | 37 | Giá trị `150` | `S6_TC-CPN-37.png` |
+| 4 | 38 | Giá trị `0` | `S6_TC-CPN-38.png` |
+| 5 | 51 | Tạo `FR17TC51`, bấm "Xóa", rồi tải lại trang | `_1`: Hộp thoại xác nhận (nếu có). `_2`: Sau khi tải lại |
+| 6 | Nhóm F | `python scripts/run_api_tests.py` | Không chụp |
+| 7 | 144 | `python scripts/run_api_tests.py --only 144`, mở trang, cuộn tới cuối | `S6_TC-CPN-144.png` |
+
+Tổng cộng còn khoảng 6 ảnh và 2 lệnh, khoảng 15 phút.
+
+**Bỏ và vì sao:**
+- **14, 15, 23 (hợp lệ):** Đã có TC-CPN-01 và 02 đại diện cho trường hợp tạo thành công.
+- **41, 43, 44, 100, 106 (không hợp lệ và biên):** Script API đã kiểm các trường đó ở phía server. 37 và 38 vẫn đại diện cho cận trên và cận dưới của phần trăm qua giao diện.
+- **121, 127, 128:** Biên của mã và ngày, mức ưu tiên thấp hơn.
+- **52:** Chỉ làm nếu ở 51 có hộp thoại. Nếu có, chỉ mất thêm 30 giây.
+
+**Hệ quả của việc bỏ, nói trước để khỏi bất ngờ:**
+- Ô "Ô số có chặn số thập phân, số âm không" ở mục 1 sẽ để trống, vì bỏ 15 và 41.
+- Phần BVA của C chạy qua giao diện sẽ rất ít. Phần biên chủ yếu nằm ở API: TC-CPN-131 là biên 2^53+1, TC-CPN-142 là mã 1 chữ thường. Ở S8 nên ghi thẳng: "BVA qua giao diện Not run vì thiếu thời gian". Ghi như vậy trung thực và không bị trừ vì che giấu.
+
+Chạy xong thì báo tôi. Tôi soát ảnh và log rồi bạn cho phiên C điền.
+````
+
+---
+
+### C197 | 00:57 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Xong rồi á, kiểm tra đi, chắc log rồi đợi phiên C điền và commit luôn.
+Trong lúc test, tôi phát hiện ra chỉ cần reload trang là sẽ bị đá về Dashboard. Đây là lỗi trải nghiệm đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List C screenshots, logs, and git state
+- Bash: Inspect which test cases each log covers
+- Bash: Search EShop spec for navigation and reload rules
+- Bash: Read FR-23 navigation requirements
+- Bash: Export prompt log and verify sessions
+
+**Output AI (nguyên văn):**
+
+````text
+Ảnh và log đã đủ, log không lộ token. Tôi kiểm thêm đặc tả xem có yêu cầu nào về việc tải lại trang không, để trả lời câu hỏi của bạn.
+
+Đủ ảnh và log, có một chỗ thứ tự chạy cần ghi trung thực (ở dưới). Log tôi vừa xuất (197 lượt, đúng 3 phiên), nhưng sau khi phiên C điền xong thì phải xuất lại trước khi commit.
+
+## Kết quả kiểm
+
+- **21 ảnh S6**, gồm cả `S6_TC-CPN-60.png` (bước kiểm tay của TC-CPN-60).
+- **3 log:**
+  - `003400`: Cả nhóm API, 27 test case.
+  - `005438`: TC-CPN-61.
+  - `005520`: TC-CPN-144.
+- Log không lộ token.
+
+**Chỗ cần ghi trung thực:** Bạn chạy nhóm API lúc 00:34, *trước* khi test giao diện. Còn TC-CPN-61 chạy lúc 00:54, *sau* khi đã tạo nhiều mã, không phải "ngay sau reset" như thứ tự trong file.
+- Kết quả không sai: TC-CPN-61 chỉ kiểm `GET` có `id` và đủ trường, không phụ thuộc số mã trong danh sách.
+- Nhưng phiên C phải ghi đúng thứ tự thật, không ghi theo thứ tự trong kế hoạch.
+
+## Reload bị đá về Dashboard: Có phải lỗi không?
+
+**Là vấn đề trải nghiệm, nhưng không vi phạm yêu cầu nào trong đặc tả.**
+- FR-23 (Navigation) chỉ yêu cầu highlight trang đang chọn, badge giỏ hàng, nhãn "Đăng xuất" và breadcrumb. Không có câu nào về việc tải lại trang hay giữ trang hiện tại.
+- Ảnh S0 cho thấy trang Dashboard và trang Mã Giảm Giá cùng một địa chỉ `localhost:5174`. Tức là trang admin không đổi URL khi chuyển trang, nên tải lại thì quay về trang mặc định. Đây là điều bạn nhìn thấy được từ bên ngoài, không cần đọc mã.
+
+**Nên làm:** Ghi vào mục 6 ("Quan sát không có Pass hay Fail"), rồi đến S7 xét có báo bug không. Nếu báo, chỉ nên là **Low** và nói rõ là góp ý trải nghiệm, không gắn với yêu cầu nào. Vì tiêu đề issue theo quy ước là "Hành vi sai so với đặc tả", tôi nghiêng về **không tạo issue**, chỉ ghi lại là quan sát.
+
+**Một hệ quả cần ghi rõ:** Nhiều kết quả mong đợi có câu "còn sau khi tải lại trang" (OUT1, OUT8). Với C, "tải lại" nghĩa là tải lại rồi bấm "Mã Giảm Giá" để quay về trang. Phiên C nên ghi một câu như vậy ở mục 2.
+
+## Tin nhắn để dán vào phiên C
+
+```text
+Tôi đã chạy xong S6 (mức rút gọn vì thiếu thời gian). Điền 06_results.md theo ảnh trong screenshots/ (S6_*) và 3 log trong logs/:
+- Log: S6_api_20261021_003400.log (cả nhóm F, chạy 00:34, TRƯỚC khi test giao diện); S6_api_20261021_005438.log (TC-CPN-61, chạy 00:54, sau khi test giao diện, không phải ngay sau reset); S6_api_20261021_005520.log (TC-CPN-144). Ghi đúng thứ tự chạy thực tế này.
+- Test giao diện đã chạy: TC-CPN-91, 95, 01, 02, 06, 10, 30, 32, 37, 38, 51 (và bước kiểm tay của 60, 144). Mỗi test case một hoặc nhiều ảnh S6_TC-CPN-<số>_<n>.png. TC-CPN-50, 90, 92, 93, 94: Tôi xác nhận trên trang hiện tại ngày 21/10/2026 giống ảnh S0.
+- Không chạy dòng dự phòng của TC-CPN-82, 130. Mọi test case không có ảnh hay log ghi Not run, lý do: Sinh viên không chạy do không đủ thời gian. Nhóm H Not run.
+- Mục 1: Điền những ô có thể điền từ ảnh (hộp thoại xác nhận khi xóa: Xem ảnh của TC-CPN-51; GET có id: Xem log TC-CPN-61). Ô nào không có bằng chứng thì để trống.
+- Mục 6: Thêm quan sát: Tải lại trang (F5) ở bất kỳ trang nào của Web Admin đều quay về Dashboard; URL luôn là localhost:5174 dù đang ở trang nào. Ghi thêm ở mục 2: Với FR-17, "sau khi tải lại trang" nghĩa là tải lại rồi bấm "Mã Giảm Giá" để quay về trang.
+- Đếm mục 7 sau khi điền xong. Ô kết quả chỉ ghi sự kiện; câu hỏi thì hỏi tôi ở đây. Không cần đưa lệnh commit.
+```
+
+Phiên C điền xong thì báo tôi. Tôi soát, xuất lại log, rồi đưa bạn lệnh commit.
+````
+
+---
+
+### C198 | 01:03 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Ảnh chụp là tôi phải tải file lên lại github hả? Hay là chỉ cần ghi như bạn ghi, trích đường dẫn ra?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Hai chỗ xử lý khác nhau:
+
+**1. Trong issue trên GitHub: Phải kéo thả ảnh thật.** README nhóm mục 4.1 ghi rõ "Phải có ảnh chụp: Kéo thả ảnh vào ô Ảnh chụp". Đường dẫn như `features/A_FR-01_DangKy/screenshots/S6_TC-REG-01.png` chỉ có nghĩa trong repo cá nhân của bạn; dán vào issue của repo nhóm thì sẽ không hiện ra ảnh. Cách làm:
+- Mở thư mục `screenshots/` trong File Explorer, kéo file ảnh thả vào ô "Ảnh chụp" của form issue.
+- GitHub tự tải ảnh lên và chèn một dòng dạng `![S6_TC-REG-01](https://github.com/user-attachments/...)`. Bạn không cần sửa dòng đó.
+- Một bug có nhiều ảnh thì kéo lần lượt từng ảnh vào cùng ô.
+- Với bug API (BUG-03 đến 08), ngoài ảnh log bạn có thể dán thêm đoạn log dạng chữ trong khối code vào ô "Ghi chú" để người đọc dễ copy. Phần này tùy bạn, không bắt buộc.
+
+**2. Trong `bugs/bug_report.md`: Giữ đường dẫn như hiện tại là đủ.** File này nằm trong repo cá nhân và sẽ được nộp cùng thư mục `screenshots/`, nên đường dẫn trỏ đúng tới ảnh trong bài nộp. Không cần tải ảnh lên đâu khác.
+
+Ngoài ra, theo WORKFLOW mục 5, mỗi issue sau khi tạo cần chụp lại trang issue, lưu thành `screenshots/S7_issue_<số>.png`, làm bằng chứng cho bài nộp. Khi bạn gửi số issue, tôi sẽ thêm đường dẫn các ảnh này vào bảng tổng hợp cùng lúc với điền số issue.
+````
+
+---
+
+### C199 | 01:07 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi có thể để bạn tạo issue luôn không, sau đó tôi chỉ vào sửa bằng cách bổ sung ảnh, và cap màn hình để lưu cho nhanh? Tôi tạo tay cũng là copy lại nội dung trong file mà tôi đã duyệt cho bạn.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check gh auth, repo labels, and existing issues (read-only)
+- PowerShell: Look for GitHub CLI on this machine
+- AskUserQuestion
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\make_issue_links.py
+- Bash: Generate prefilled issue form links from bug_report.md
+- Bash: Decode two generated links to verify all fields
+- Bash: Find code spans with leading/trailing spaces in bug_report.md
+- Bash: Fix space-stripped code spans and regenerate links
+
+**Output AI (nguyên văn):**
+
+````text
+Được, tôi có thể tạo issue bằng GitHub CLI (`gh`). Vì đây là thao tác lên repo nhóm, có 13 issue và theo quy ước thì không xóa issue được, nên tôi kiểm tra trước vài điều mà không thay đổi gì: `gh` đã đăng nhập bằng tài khoản nào, repo nhóm có sẵn các label cần dùng chưa, và đã có issue nào trùng chưa (README nhóm mục 4.1 yêu cầu tìm issue tương tự trước khi tạo).
+
+Git Bash không tìm thấy `gh`. Tôi thử tìm trong PowerShell và ở thư mục cài đặt mặc định.
+
+Đã sinh xong 13 link. Mở file sau bằng trình duyệt (nhấp đúp hoặc kéo vào Chrome):
+
+`C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\FR01_issue_links.html`
+
+File là một bảng 13 dòng theo thứ tự BUG-FR01-01 đến 13. Mỗi dòng có tiêu đề (bấm vào để mở form), danh sách label và danh sách ảnh cần kéo thả. Tôi đã giải mã ngược hai link để kiểm tra: Đủ 13 trường của template, nội dung đúng như `bug_report.md`.
+
+**Mỗi issue, bạn làm theo thứ tự này:**
+1. Bấm tiêu đề, form "Bug report" mở ra với tiêu đề và các ô đã điền sẵn.
+2. Kéo thả ảnh ghi ở cột "Ảnh cần kéo thả" vào ô "Ảnh chụp". Với BUG-03 đến 08 thì dùng các ảnh log `S6_TC-REG-<số>_log.png` bạn sẽ chụp.
+3. **Kiểm tra hai dropdown "Nền tảng" và "Mức độ", cùng các label.** GitHub có thể không tự chọn sẵn dropdown từ link. Label cũng chỉ được gắn tự động nếu tài khoản của bạn có quyền ghi vào repo nhóm. Ô nào trống thì chọn tay theo cột Labels trong file HTML.
+4. Tự gán issue cho mình (Assignees), rồi bấm Submit.
+5. Chụp trang issue vừa tạo, lưu thành `screenshots/S7_issue_<số>.png`.
+
+**Hai chỗ khác so với `bug_report.md`:**
+- Ô Ghi chú mở đầu bằng "Mã trong báo cáo cá nhân: BUG-FR01-xx", để đối chiếu giữa issue và file.
+- Các dòng "Related" ghi bằng mã nội bộ (ví dụ "Related: BUG-FR01-03") thay vì số issue, nên bạn không phải quay lại sửa issue.
+
+**Một sửa nhỏ trong `bug_report.md`:** Ở BUG-FR01-07, 3 chỗ ghi `` ` test@eshop.com ` `` đã đổi thành `␣test@eshop.com␣` (kèm chú thích `␣` là một dấu cách). Lý do: Khi GitHub hiển thị, code span có dấu cách ở cả hai đầu sẽ bị mất dấu cách, làm sai dữ liệu test.
+
+Tạo xong 13 issue thì gửi tôi danh sách số theo thứ tự BUG-01 đến 13. Tôi sẽ điền số issue vào bảng tổng hợp và dòng "Issue" của từng bug, thêm đường dẫn ảnh `S7_issue_<số>.png`, và cập nhật đường dẫn các ảnh log.
+````
+
+---
+
+### C200 | 01:09 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã chạy xong S6 (mức rút gọn vì thiếu thời gian). Điền 06_results.md theo ảnh trong screenshots/ (S6_*) và 3 log trong logs/:
+- Log: S6_api_20261021_003400.log (cả nhóm F, chạy 00:34, TRƯỚC khi test giao diện); S6_api_20261021_005438.log (TC-CPN-61, chạy 00:54, sau khi test giao diện, không phải ngay sau reset); S6_api_20261021_005520.log (TC-CPN-144). Ghi đúng thứ tự chạy thực tế này.
+- Test giao diện đã chạy: TC-CPN-91, 95, 01, 02, 06, 10, 30, 32, 37, 38, 51 (và bước kiểm tay của 60, 144). Mỗi test case một hoặc nhiều ảnh S6_TC-CPN-<số>_<n>.png. TC-CPN-50, 90, 92, 93, 94: Tôi xác nhận trên trang hiện tại ngày 21/10/2026 giống ảnh S0.
+- Không chạy dòng dự phòng của TC-CPN-82, 130. Mọi test case không có ảnh hay log ghi Not run, lý do: Sinh viên không chạy do không đủ thời gian. Nhóm H Not run.
+- Mục 1: Điền những ô có thể điền từ ảnh (hộp thoại xác nhận khi xóa: Xem ảnh của TC-CPN-51; GET có id: Xem log TC-CPN-61). Ô nào không có bằng chứng thì để trống.
+- Mục 6: Thêm quan sát: Tải lại trang (F5) ở bất kỳ trang nào của Web Admin đều quay về Dashboard; URL luôn là localhost:5174 dù đang ở trang nào. Ghi thêm ở mục 2: Với FR-17, "sau khi tải lại trang" nghĩa là tải lại rồi bấm "Mã Giảm Giá" để quay về trang.
+- Đếm mục 7 sau khi điền xong. Ô kết quả chỉ ghi sự kiện; câu hỏi thì hỏi tôi ở đây. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List S6 screenshots and logs
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\logs\S6_api_20261021_005438.log
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\logs\S6_api_20261021_005520.log
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\logs\S6_api_20261021_003400.log
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-91.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-95.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-01_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-01_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-02_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-02_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-02_3.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-06_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-06_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-10_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-10_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-30.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-32.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-37_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-37_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-38_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-38_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-51_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-51_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-60.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-144.png
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\fill_s6.py
+- Bash: Fill S6 results from screenshots and logs, then verify
+- Bash: Spot-check a few filled rows
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi xem danh sách ảnh S6 và ba file log trước.
+
+Đã đọc xong ba log. Bây giờ tôi xem các ảnh S6.
+
+Đã điền xong [06_results.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md) theo 21 ảnh và 3 log. Script kiểm định dạng báo 0 lỗi.
+
+**Đã điền:**
+- **Mục 1:**
+  - Ô Mã coupon tự chuyển chữ hoa: Có, dẫn ảnh TC-CPN-06 và TC-CPN-10.
+  - Hộp thoại khi xóa: Ảnh TC-CPN-51 không có hộp thoại.
+  - `GET` có `id`, đủ 6 trường và có thêm trường `is_active`.
+  - 3 file log.
+  - Các ô không có bằng chứng để trống: Ô số có chặn không, số ký tự tối đa của ô, thời điểm reset quanh TC-CPN-56.
+- **Mục 2:** Thêm câu về "sau khi tải lại trang" của FR-17.
+- **Mục 4:**
+  - Thêm "Thứ tự chạy thực tế" theo giờ trong log và ảnh. TC-CPN-91 và 95 chụp lúc 00:31 đến 00:32, trước khi chạy script lúc 00:34.
+  - Ảnh TC-CPN-91 (00:31) chỉ có đúng 4 mã mẫu, nên tôi thêm ảnh này làm bằng chứng cho TC-CPN-50.
+- **Mục 5:** Kết quả từng dòng của các test case API dạng bảng. Dòng dự phòng của TC-CPN-82, 130 ghi "Không chạy".
+- **Mục 6:** Quan sát về F5 và URL.
+- **Mục 7:** Đếm bằng script:
+
+| Pass | Fail | Khác giả định | Not run | Chưa có trạng thái |
+|---|---|---|---|---|
+| 25 | 13 | 6 | 70 | 1 (TC-CPN-02) |
+
+**13 Fail** (ứng viên bug cho S7):
+- Giao diện:
+  - TC-CPN-90: Không có dấu `*`.
+  - TC-CPN-91: Tiêu đề tab là `frontend-admin`, menu có mục "Dashboard".
+  - TC-CPN-92: Nút "Tạo mã" màu cam.
+  - TC-CPN-32: Thông báo trùng mã là lỗi SQLite bằng tiếng Anh.
+  - TC-CPN-38: Giá trị `0%` vẫn tạo được.
+- API:
+  - TC-CPN-65, 66, 67, 70: Thiếu trường hoặc sai giá trị vẫn tạo được mã.
+  - TC-CPN-69: Trả 500 kèm đường dẫn tệp trên máy chủ.
+  - TC-CPN-75, 79: Token user thường tạo và xóa được mã.
+  - TC-CPN-131: Lưu `...992` thay cho `...993`.
+
+**6 Khác giả định:** TC-CPN-37 (A01), TC-CPN-68 (A13), TC-CPN-77 (A28), TC-CPN-140 và 141 (A04), TC-CPN-143 (A09).
+
+## Cần anh/chị trả lời
+
+1. **TC-CPN-02 đang để trống trạng thái.**
+   - Ảnh cho thấy dữ liệu nhập khác kế hoạch. Loại vẫn là "Phần trăm" và `50000` được nhập vào ô "Đơn tối thiểu" (ô duy nhất có mặc định `0`), thay vì chọn "Số tiền cố định (₫)" và nhập vào ô "Giá trị". Vì vậy lớp EC25, EC35 chưa được kiểm.
+   - Anh/chị muốn chạy lại, hay ghi Not run? Tôi đề xuất ghi Not run kèm ghi chú hiện có, vì test case chưa kiểm được điều nó nhắm tới.
+2. **Hộp thoại xác nhận khi xóa.** Ảnh TC-CPN-51 chỉ có trước và sau khi bấm "Xóa". Anh/chị xác nhận là không có hộp thoại? Nếu đúng thì TC-CPN-52 nên là **"Không áp dụng"** (theo A07), không phải Not run.
+3. **TC-CPN-69 trả 500.** Tôi ghi Fail theo quy ước "mọi 5xx là Sai" ở `05_final_tc.md` mục 1.2. Nhưng quy ước này dựa trên giả định A20, A23 chứ không dựa trên đặc tả. Anh/chị giữ Fail hay đổi sang "Khác giả định (A23)"?
+4. **Bong bóng tiếng Anh của trình duyệt** ("Please fill out this field.", TC-CPN-30). Có tính là vi phạm R14 không? Hiện TC-CPN-30 để Pass. TC-CPN-91 đã Fail vì các lý do khác, không phụ thuộc điểm này.
+5. **TC-CPN-95 để Pass** dựa trên kết quả có 1 thẻ `<h1>`. Ảnh không cho thấy nội dung thẻ đó có mô tả trang hay không. Anh/chị giữ Pass, hay cần chụp thêm?
+````
+
+---
+
+### C201 | 01:10 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+À riêng cái này [23120061][FR-01][Web] Đăng ký với mật khẩu hợp lệ: Báo "Mật khẩu quá yếu" và không tạo được tài khoản
+ #42
+thì tôi tạo rồi nha.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Record issue #42 for BUG-FR01-01 in bug_report.md and mark it in the links page
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi ghi #42 cho BUG-FR01-01 vào `bug_report.md`, và đánh dấu dòng đó trong file HTML là đã tạo, để bạn không bấm tạo trùng.
+
+Đã ghi **#42** cho BUG-FR01-01:
+- **`bugs/bug_report.md`:** Cột Issue trong bảng tổng hợp, và dòng "Issue" của bug, kèm đường dẫn ảnh `screenshots/S7_issue_42.png`.
+- **File HTML các link:** Dòng BUG-FR01-01 nay ghi "#42 (đã tạo, không bấm lại)". Tải lại trang (F5) là thấy.
+
+Bạn nhớ chụp trang issue #42 lưu thành `S7_issue_42.png` nếu chưa chụp. Issue này bạn tạo tay, nên ô Ghi chú có thể chưa có dòng "Mã trong báo cáo cá nhân: BUG-FR01-01" như các link điền sẵn. Không bắt buộc phải có, nhưng thêm vào thì đồng nhất với 12 issue còn lại.
+
+Tạo xong BUG-02 đến 13 thì gửi tôi các số còn lại.
+````
+
+---
+
+### C202 | 01:14 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Sao phần ảnh chụp, tôi không thể sửa nội dung? Tôi đã xóa để chèn ảnh mà nó vẫn hiện lại dòng bạn đã điền, cũng không load ảnh tôi kéo thả vào.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Regenerate links without prefilling the screenshots field, keep #42 mark
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi không xem được trình duyệt của bạn nên không chắc nguyên nhân. Khả năng cao là giao diện tạo issue mới của GitHub cứ nạp lại giá trị điền sẵn từ link mỗi khi ô được vẽ lại, nên phần bạn xóa hiện lại và ảnh thả vào bị ghi đè. Cách chắc ăn nhất là **không điền sẵn ô "Ảnh chụp"**, để ô đó trống cho bạn kéo thả ảnh như bình thường. Tôi sinh lại link theo cách này, giữ nguyên đánh dấu #42.
+
+Đã sinh lại 13 link. Ô "Ảnh chụp" giờ để trống ở cả 13 link; các trường khác vẫn điền sẵn như cũ. Danh sách ảnh cần kéo thả cho từng bug vẫn nằm ở cột "Ảnh cần kéo thả" trong file HTML. Dòng BUG-FR01-01 vẫn đánh dấu "#42 (đã tạo, không bấm lại)".
+
+**Cách làm tiếp:**
+1. Đóng tab form đang làm dở, đừng Submit tab đó.
+2. Tải lại file HTML (F5) để lấy link mới, rồi mở lại link của bug đang làm.
+3. Kéo thả ảnh vào ô "Ảnh chụp" đang trống. Chờ dòng "Uploading..." chuyển thành `![tên ảnh](https://github.com/user-attachments/...)` rồi mới Submit.
+
+**Nếu vẫn không kéo thả ảnh được trong form:** Ô "Ảnh chụp" là trường bắt buộc, nên gõ tạm một dòng như "Ảnh ở bên dưới" để Submit được. Sau khi issue tạo xong, bấm "..." ở phần nội dung, chọn **Edit**, rồi kéo thả ảnh vào ngay dưới mục "Ảnh chụp". Trình sửa của issue đã tạo là trình soạn thảo Markdown bình thường, nên kéo thả ảnh luôn hoạt động.
+
+Với issue #42 đã tạo, nếu ô ảnh đang là dòng chữ tôi điền sẵn, bạn cũng sửa theo cách này: Edit issue, xóa dòng chữ đó, kéo thả ảnh vào.
+````
+
+---
+
+### C203 | 01:20 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Tôi đã test lại, chụp và bổ sung. Bạn viết dựa trên ảnh mới chụp đi.
+2. Tôi quên nói, xóa là xóa luôn, không có thông báo hay hộp thoại xác nhận nào.
+3. Có thể ghi cả hai hoặc ở ghi chú để rõ nghĩa không?
+4. Có tính vi phạm là tiếng Anh á, có thểm tham khảo bên Feature A cùng tên file này để thấy nó làm cho đồng nhất.
+5. Pass
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find new TC-02 screenshots and FR-01 handling of browser bubble
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-02_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-02_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-02_3.png
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\fill_s6_2.py
+- Bash: Apply S6 answers and recount
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã cập nhật [06_results.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md) theo 5 câu trả lời. Script kiểm định dạng báo 0 lỗi; mục 7 đã đếm lại bằng script.
+
+| # | Đã làm |
+|---|---|
+| 1 | **TC-CPN-02 là Pass**, theo 3 ảnh chụp lại: Chọn "Số tiền cố định (₫)", nhập `50000`, dòng tạo ra là "Cố định", `50,000 ₫`, `300,000 ₫`. Ghi chú có nhắc lần chạy đầu dữ liệu khác kế hoạch. Thứ tự chạy thực tế thêm bước "khoảng 01:17 đến 01:18 chạy lại TC-CPN-02" (lấy theo giờ tạo tệp ảnh). Ảnh `_1` cũng trả lời quan sát ở mục 6: Placeholder ô "Giá trị" đổi thành "Số tiền (VD: 50000)" khi chọn loại cố định |
+| 2 | Mục 1 ghi: Bấm "Xóa" là xóa ngay, không có thông báo hay hộp thoại (sinh viên xác nhận). **TC-CPN-52 thành "Không áp dụng"**, theo A07 (b). TC-CPN-51 có thêm ghi chú xác nhận |
+| 3 | TC-CPN-69 giữ **Fail** để bảng đếm không bị đếm hai lần. Ghi chú nói rõ: Fail theo quy ước "mọi 5xx là Sai" ở `05_final_tc.md` mục 1.2; vì quy ước này dựa trên A20, A23, nên xét theo giả định thì cũng là Khác giả định (A23) |
+| 4 | Làm như FR-01: TC-CPN-30 vẫn **Pass** (đúng nguyên nhân, đúng vị trí, ghi chú là bong bóng tiếng Anh của trình duyệt). TC-CPN-91 tính bong bóng "Please fill out this field." vào lý do **Fail** của FR17-R14, "vì người dùng thấy nó trên trang", dẫn TC-REG-91 |
+| 5 | TC-CPN-95 giữ Pass |
+
+**Tổng hợp mới:**
+
+| Pass | Fail | Khác giả định | Không áp dụng | Not run |
+|---|---|---|---|---|
+| 26 | 13 | 6 | 1 | 69 |
+
+## Còn hai điểm cần anh/chị cho biết
+
+- **Dòng `FR17TC02` của lần chạy đầu** (loại "Phần trăm") xử lý thế nào trước khi chạy lại? Nếu nó còn, tạo lại cùng mã sẽ bị lỗi trùng như TC-CPN-32. Ảnh mới cho thấy tạo được, nên có lẽ anh/chị đã xóa dòng cũ hoặc reset. Tôi cần biết cách nào để ghi vào thứ tự chạy thực tế.
+- **Lịch chọn ngày** ("October 2026", "Clear", "Today") cũng là thành phần của trình duyệt hiện bằng tiếng Anh. Theo cùng lý do "người dùng thấy trên trang" thì nó cũng tính vào FR17-R14. Hiện ghi chú chỉ nói nó là thành phần của trình duyệt, chưa tính vào lý do Fail. Anh/chị có muốn tính không?
+````
+
+---
+
+### C204 | 01:24 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Ảnh chụp: Log features/A_FR-01_DangKy/logs/S6_api_20261020_233042.log, đoạn TC-REG-71 và TC-REG-72
+-> Sao tôi không hề có sẵn mấy cái này vậy?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Show required log screenshot names in the links page for BUG-03 to 08
+
+**Output AI (nguyên văn):**
+
+````text
+Dòng đó không phải là ảnh có sẵn. Với BUG-FR01-03 đến 08, bằng chứng hiện chỉ là **file log** (`logs/S6_api_20261020_233042.log`), chưa có ảnh nào. Cột "Ảnh cần kéo thả" trong file HTML đang chép nguyên trường "Ảnh chụp" của `bug_report.md`, nên chỉ trỏ tới đoạn log. Đây chính là việc ta đã thống nhất ở lượt trước: Bạn chụp các đoạn log thành ảnh `S6_TC-REG-<số>_log.png`, rồi tôi mới cập nhật đường dẫn.
+
+Để cột đó rõ ràng hơn, tôi đổi 6 dòng BUG-03 đến 08 trong file HTML thành tên các ảnh cần chụp.
+
+Đã cập nhật file HTML. Bạn tải lại trang (F5): Cột "Ảnh cần kéo thả" của BUG-03 đến 08 nay ghi "Chưa có, cần chụp trước" kèm tên ảnh và cách chụp.
+
+**Ảnh cần chụp (11 ảnh, lưu vào `features/A_FR-01_DangKy/screenshots/`):**
+
+| Bug | Ảnh |
+|---|---|
+| BUG-03 | `S6_TC-REG-71_log.png`, `S6_TC-REG-72_log.png` |
+| BUG-04 | `S6_TC-REG-73_log.png`, `S6_TC-REG-80_log.png` |
+| BUG-05 | `S6_TC-REG-75_log.png` |
+| BUG-06 | `S6_TC-REG-74_log.png`, `S6_TC-REG-130_log.png` |
+| BUG-07 | `S6_TC-REG-71_log.png` (dùng chung với BUG-03), `S6_TC-REG-82_log.png` |
+| BUG-08 | `S6_TC-REG-76_log.png`, `S6_TC-REG-77_log.png`, `S6_TC-REG-129_log.png` |
+
+**Cách chụp nhanh:**
+1. Mở `features/A_FR-01_DangKy/logs/S6_api_20261020_233042.log` trong VS Code.
+2. Nhấn Ctrl+F, gõ mã test case (ví dụ `TC-REG-71:`) để nhảy tới đoạn đó.
+3. Nhấn Win+Shift+S, chụp từ dòng tên test case tới hết phần phản hồi. Ảnh phải thấy đủ body request, `Response: HTTP 200` và body có `id`. Riêng TC-REG-71, khung chụp kéo dài xuống tới hết **bước kiểm chứng** (id 5), vì BUG-07 dùng phần đó.
+4. Lưu theo tên ở bảng trên.
+
+**Thứ tự gợi ý:** Tạo trước các bug đã có ảnh (BUG-02, 09 đến 13). Chụp xong 11 ảnh log thì tạo nốt BUG-03 đến 08.
+
+Khi chụp xong thì báo tôi, tôi cập nhật đường dẫn ảnh trong `bug_report.md`.
+````
+
+---
+
+### C205 | 01:25 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Tôi xóa
+2. Tính
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\fill_s6_3.py
+- Bash: Apply final S6 answers and check format
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã cập nhật [06_results.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md). Script kiểm định dạng báo 0 lỗi.
+
+1. **Xóa dòng cũ:** Bước 6 của "Thứ tự chạy thực tế" giờ ghi: Xóa dòng `FR17TC02` của lần chạy đầu qua giao diện, rồi chạy lại TC-CPN-02. Ghi chú của TC-CPN-02 cũng ghi việc xóa này.
+2. **Lịch chọn ngày:** Lý do Fail của TC-CPN-91 giờ có thêm lịch chọn ngày ("October 2026", "Clear", "Today", `mm/dd/yyyy`), cùng lý do với bong bóng của trình duyệt: Người dùng thấy chúng trên trang.
+
+Không có trạng thái nào đổi (TC-CPN-91 vốn đã Fail), nên mục 7 giữ nguyên: 26 Pass, 13 Fail, 6 Khác giả định, 1 Không áp dụng, 69 Not run. Đầu file có thêm một dòng lịch sử cho lần cập nhật này.
+````
+
+---
+
+### C206 | 01:26 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên C đã viết xong, bạn kiểm rta xem thử. Xuất log, có gì báo tôi nếu có dòng nào chưa điền. Ngoài ra nên để pool C viết report và tạo html giống pool A để tôi tiết kiệm thời gian tạo issue.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read sessions C and A latest turns and git state
+- Bash: Count statuses and find empty rows in C results
+- Bash: Retry counting statuses in C results
+- Bash: Check expectations and C summary sections
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên A đã làm một trang HTML chứa sẵn link tạo issue. Giờ tôi soát `06_results.md` của C, xem còn dòng nào trống.
+
+C đã có trạng thái cho đủ 115 test case và số đếm ở mục 7 khớp. Còn vài ô để trống, đều là chỗ nhỏ, liệt kê ở dưới. Log đã xuất xong. Tôi chưa sửa gì trong file của C, chờ bạn chọn cách xử lý.
+
+## Kết quả S6 của C
+
+| Pass | Fail | Khác giả định | Không áp dụng | Not run |
+|---|---|---|---|---|
+| 26 | 13 | 6 | 1 | 69 |
+
+Tôi đối chiếu kết quả với ảnh và log, khớp. Mấy phát hiện đáng chú ý cho S7:
+- **TC-CPN-75, 79 (vượt quyền, có thể là Critical):** Token của user thường **tạo được và xoá được** mã giảm giá.
+- **TC-CPN-32:** Tạo mã trùng `SAVE10` thì bị từ chối, nhưng thông báo là lỗi thô của cơ sở dữ liệu ("SQLITE_CONSTRAINT: UNIQUE constraint failed"), không phải tiếng Việt.
+- **TC-CPN-38:** Phần trăm `0` được chấp nhận.
+- **TC-CPN-65 đến 70:** API nhận `type` sai, nhận trường bắt buộc rỗng, nhận chữ ở trường số, nhận cả body rỗng `{}`.
+- **TC-CPN-131:** Số `2^53+1` bị lưu thành `2^53`.
+- **6 dòng "Khác giả định"** (37, 68, 77, 140, 141, 143): Cần xét ở S7 xem có nên báo bug không.
+
+## Những ô còn trống
+
+1. **Mục 1, 4 ô:**
+   - "Ô số có chặn số thập phân, số âm không" và "Ô Mã nhận tối đa bao nhiêu ký tự": Không có bằng chứng, vì các test case liên quan bị bỏ.
+   - Hai ô "Reset trước, sau TC-CPN-56": Nhóm H không chạy.
+   - Nên ghi rõ thay vì để trống, ví dụ "Không xác định: TC-CPN-15, 41 Not run" và "Không reset: Nhóm H Not run".
+2. **69 dòng Not run để trống cột "Kết quả thực tế".** FR-01 ghi "Không chạy" ở cột này. Nên điền giống để hai file thống nhất.
+3. **Dòng nhật ký cuối ở đầu file không có giờ**, hai dòng trước ghi "sau 00:56", "sau 01:18". FR-01 ghi giờ cụ thể.
+
+Ba chỗ này chỉ là thay chữ, không đổi trạng thái hay số đếm. Có hai cách:
+- **(a)** Tôi sửa thẳng, khoảng 2 phút. Cách này nhanh hơn, nhưng phải chắc là phiên C đang không mở file đó.
+- **(b)** Bạn dán tin nhắn này vào phiên C:
+
+```text
+Sửa 3 chỗ nhỏ trong 06_results.md, không đổi trạng thái:
+1. Mục 1: 2 ô không có bằng chứng ghi "Không xác định (TC-CPN-15, 41, 12, 125 Not run)" cho đúng từng ô; 2 ô reset TC-CPN-56 ghi "Không reset (nhóm H Not run)".
+2. Cột Kết quả thực tế của mọi dòng Not run ghi "Không chạy" (như FR-01).
+3. Dòng lịch sử ở đầu file: Ghi giờ cụ thể (chạy date để lấy giờ), không ghi "sau 00:56" hay để trống.
+Không cần đưa lệnh commit.
+```
+
+## Commit S6 của C (sau khi sửa xong, báo tôi để xuất lại log)
+
+```
+git add features/C_FR-17_QuanLyCoupon/06_results.md features/C_FR-17_QuanLyCoupon/logs features/C_FR-17_QuanLyCoupon/screenshots/S6_*.png prompt_log.md
+git commit -m "[C-FR17][S6] Execute reduced test set and record results"
+```
+
+Đừng `add` file `bugs/bug_report.md`. File này đang có thay đổi của phiên A (S7 của FR-01) chưa commit, sẽ đi cùng commit S7 của A.
+
+## S7 của C: Bug report và trang HTML tạo issue giống A
+
+Đồng ý, cách này tiết kiệm thời gian. Trang HTML của phiên A được sinh ra từ script `make_issue_links.py`, nằm trong thư mục tạm của phiên A, không nằm trong repo. Sau khi commit S6, bạn dán vào phiên C:
+
+```text
+Sang S7 cho FR-17. Thêm mục FR-17 vào bugs/bug_report.md (file dùng chung; mục FR-01 đã có, giữ nguyên), theo đúng cấu trúc của mục FR-01:
+- Gom các dòng Fail theo yêu cầu bị vi phạm, mỗi bug một mục, có test case làm bằng chứng (ảnh, log). Nội dung theo template issue và quy ước mục 4 README repo nhóm (D:/Dang/Test/Homeworks/HW02_group/.github/ISSUE_TEMPLATE/bug_report.yml, D:/Dang/Test/Homeworks/HW02_group/README.md). Severity theo lưu đồ mục 4.3; platform: admin; pool: C.
+- 6 dòng Khác giả định và các quan sát ở mục 6: Đừng tự quyết, liệt kê cho tôi kèm đề xuất (thành bug hay không, vì sao), tôi chọn.
+- Bug nào bằng chứng chỉ là log thì ghi tên ảnh log cần chụp, như FR-01.
+- Tạo trang HTML có link tạo issue điền sẵn giống phiên A đã làm cho FR-01; tham khảo script C:/Users/Lenovo/AppData/Local/Temp/claude/d--Dang-Test/38378bef-e688-4ecf-8075-2b0d74493d66/scratchpad/s7/make_issue_links.py. Không tự tạo issue. Câu hỏi hỏi tôi ở đây. Không cần đưa lệnh commit.
+```
+
+Bạn chọn (a) hay (b) cho 3 chỗ sửa thì báo tôi.
+````
+
+---
+
+### C207 | 01:30 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bạn sửa đi, sửa xong xuất log rồi báo tôi commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Fill empty cells and history times in C results
+- Bash: Export log and update tracker for C S6
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
