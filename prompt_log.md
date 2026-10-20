@@ -9501,6 +9501,10 @@ Phiên C: Đã xong, xuất log, kiểm tra và báo tôi.
 - Bash: Find compaction summary entries in transcript and log
 - Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
 - Bash: Re-export log and confirm summary is gone
+- Bash: Locate S5 tracker rows and note sections
+- Bash: View tracker rows and note sections context
+- Bash: Update tracker row and notes for C S5
+- Bash: Check commit format convention and recent history
 
 **Output AI (nguyên văn):**
 
@@ -9510,6 +9514,317 @@ Phiên C không có thao tác nghi vấn, `ai_raw` cũ còn nguyên, và `05_fin
 Nội dung đạt. Giờ tôi xuất prompt log và kiểm chỉ có 3 phiên.
 
 `8298971a` xuất hiện 3 lần, nên tôi kiểm xem đó chỉ là chỗ nhắc tên hay có nội dung của phiên đó lọt vào.
+
+Log đã sạch: 159 lượt, đúng 3 phiên. Giờ tôi cập nhật tracker và ghi chú.
+
+Phiên C đã xong bản AI của S5 và đạt yêu cầu. Bạn commit theo hai lệnh ở dưới.
+
+## Kết quả soát phiên C (S5)
+
+| Mục kiểm | Kết quả |
+|---|---|
+| Thao tác bị cấm | Không có. Phiên C có đọc `05_final_tc.md` của FR-01 để làm theo cùng cấu trúc, nhưng là sau khi bạn cho phép, và chỉ đọc đúng file đó |
+| Các file `ai_raw` từ S1 đến S4 | Còn nguyên |
+| `05_final_tc.md` so với `ai_raw/S5_final_test_cases.md` | Giống hệt |
+| `check_step.py` | 0 lỗi, 113 test case, cả 123 lớp đều có test case. Cảnh báo EC77 là do lớp đã bỏ ở S2 chỉ còn được nhắc trong phần giải thích, không phải lỗi |
+| Phần bạn thêm | TC-CPN-140 (lớp EC07), TC-CPN-141 (lớp EC18, mã `save10`), TC-CPN-142 (điểm biên 1 chữ thường) đều ghi "SV thêm" và có đúng lý do bạn đưa. TC-CPN-06, 34, 123 giữ lại, có thêm giới hạn GH9 |
+| Dấu "—" và "·" | Không có |
+
+**Câu phiên C nhờ bạn quyết:** TC-CPN-18, 21, 25 được gắn thêm giới hạn GH8 nhưng vẫn ghi nguồn gốc "AI". Tôi đề nghị giữ "AI", vì nhận xét GH8 đã có sẵn trong bản AI của S4, và FR-01 cũng xử lý TC-REG-103 như vậy.
+
+## Một lỗi tôi vừa sửa trong script xuất log
+
+Hệ thống vừa phải tóm tắt bớt cuộc trò chuyện của phiên này vì quá dài. Bản tóm tắt đó được lưu trong transcript dưới tên người dùng, nên script xuất nó ra thành một "prompt nguyên văn" như thể bạn gõ. Tôi đã sửa [export_prompt_log.py](tools/export_prompt_log.py) để bỏ qua bản tóm tắt. Log hiện còn 159 lượt, đúng 3 phiên, và không có nội dung nào của phiên `8298971a`. Tôi đã ghi lỗi này vào phần chất liệu cho AI Critique trong `_NOTES.md`.
+
+## Commit (2 lần, theo thứ tự)
+
+```
+git add tools/export_prompt_log.py
+git commit -m "[setup] Skip context-compaction summaries in prompt log export"
+
+git add features/C_FR-17_QuanLyCoupon/05_final_tc.md features/C_FR-17_QuanLyCoupon/ai_raw/S5_final_test_cases.md prompt_log.md
+git commit -m "[C-FR17][S5] Merge final test case set (AI draft)"
+```
+
+Đừng `add` file `screenshots/S6_TC-REG-30.png` của FR-01; nó sẽ đi cùng commit S6 của A.
+
+## Tình trạng
+
+| Phiên | Đang ở đâu | Việc tiếp theo |
+|---|---|---|
+| A (FR-01) | S6: Bạn đang chạy test và chụp ảnh (đã có ảnh TC-REG-30) | Chạy TC-REG-79 sau cùng, rồi báo tôi để reset DB |
+| C (FR-17) | S5: Xong bản AI | Bạn review `05_final_tc.md`, nhất là mục 13 và câu hỏi về GH8 |
+| Server | Backend ở cổng 3000, web ở cổng 5173 đang chạy | Trang admin (5174) chưa bật. Khi C sang S6, báo tôi để bật |
+
+**Tin nhắn để dán vào phiên C sau khi bạn review xong** (nếu bạn đồng ý giữ TC-CPN-18, 21, 25 là "AI"):
+
+```text
+Tôi đã review 05_final_tc.md. Giữ TC-CPN-18, 21, 25 là "AI" như bạn đề xuất (GH8 đã có trong bản AI của S4). Mục 13 tôi không thêm gì. Hãy ghi "Cập nhật lần 1" và bảng "Thay đổi so với bản AI" theo cách FR-01, chạy lại check_step.py rồi đưa tôi lệnh commit review.
+```
+
+Nếu bạn có thêm sửa đổi, cứ ghi vào tin nhắn đó. Tôi sẽ soát lại trước khi bạn commit phần review.
+````
+
+---
+
+### C160 | 22:09 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Bạn hãy kiểm tra lại các ý sau. Tôi đang thắc mắc, cảm thấy sai sai khi đọc bài của bạn chứ cũng chưa chắc đúng 100%, hãy kiểm chứng:
+- Xem lại giúp tôi logic endpoint. Nếu xem danh sách admin là GET /api/admin/coupons thì cần sửa URL. Nếu dùng chung GET /api/coupons cho cả storefront, thì TC-CPN-77 (token user thường) phải thành công (2xx) thay vì báo lỗi ERR13 chứ đúng không?
+- Ở TC-CPN-112, tôi nghĩ nên thêm ghi chú ở cột kết quả là trả về âm hoặc sai định dạng, được không?
+- Chưa có API kiểm tra cắt khoảng trắng đầu/cuối
+- Có nên check xem vỡ UI không khi nhập 1 danh sách thật dài (coi thử có phân trang hay cuộn hợp lý không)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- AskUserQuestion
+- Bash: Get current local date and time
+- Bash: Apply S5 review update to 05_final_tc.md via checked script
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\patch_s5.py
+- Bash: Run the S5 review patch script
+- Bash: Verify review file: checks, counts, ai_raw untouched
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã đối chiếu lại API spec (mục 5.2, 6.4) và FR-12. Kết quả: Ba ý đầu đúng hoàn toàn hoặc đúng một phần, ý thứ tư nên thêm nhưng phải bám vào FR17-R02. Chi tiết từng ý:
+
+## 1. Endpoint và TC-CPN-77: Anh/chị đúng một phần
+
+- **URL không cần sửa.** API spec chỉ có `GET /api/coupons` (mục 5.2, tiêu đề "Lấy danh sách mã giảm giá (Dành cho Admin)", header `Authorization: Bearer <token>`). Không có `GET /api/admin/coupons`; mục 6.4 chỉ có `POST` và `DELETE`.
+- **Kết quả mong đợi của TC-CPN-77 dựa trên căn cứ yếu hơn những gì bộ test đang ghi.**
+  - FR-12 chỉ bắt buộc quyền admin cho `/api/admin/*` và các method thay đổi dữ liệu (`POST/PUT/DELETE ... /api/coupons`). `GET /api/coupons` không thuộc nhóm nào trong đó.
+  - Cũng vậy, FR17-R11 trong `00_spec.md` ghi "thêm/xem/xóa" với nguồn FR-12, tức đã gộp cả "xem" vào FR-12.
+  - Căn cứ duy nhất cho "chỉ admin" là nhãn "(Dành cho Admin)" ở mục 5.2. Nhãn này có thể chỉ nói mục đích sử dụng, không nhất thiết là quy tắc chặn quyền.
+- **Mong đợi 2xx cũng không có căn cứ.** Đặc tả không nói storefront dùng endpoint này (người mua áp mã qua `POST /api/apply-coupon`).
+- **Kết luận:** Đây là chỗ đặc tả không nói rõ. Bản AI đã viết như thể có căn cứ (ERR13, truy vết về FR-12), tức là khẳng định quá căn cứ. Cần thêm giả định mới **A28**.
+- **Không bị ảnh hưởng:** TC-CPN-76 (không có header) vẫn có căn cứ, nhờ header bắt buộc ở mục 5.2 và SEC-02.
+
+## 2. TC-CPN-112 (`-0.01`): Nên thêm ghi chú, nhưng không nên tính "sai định dạng" là Đạt
+
+- Theo A03 (i)(a), `min_order_amount` nhận số thập phân. Vì vậy `-0.01` chỉ vi phạm điều kiện "không âm", và kết quả đúng là ERR9.
+- Nếu hệ thống từ chối với lý do "sai định dạng" hay "phải là số nguyên", nó vẫn từ chối nhưng vì nguyên nhân khác. Đó là "Khác giả định A03", không phải Đạt.
+- Điều test case này thật sự cần bắt là trường hợp hệ thống **chấp nhận** (cắt `-0.01` thành `0`); trường hợp đó là Sai.
+- Ghi chú nên áp cho mọi điểm theo bước 0.01: TC-CPN-101, 105, 108, 112 và các dòng tương ứng của TC-CPN-130.
+
+## 3. Chưa có API kiểm cắt khoảng trắng đầu, cuối: Đúng
+
+- Các lớp EC03, EC04, EC05, EC19 hiện chỉ chạy qua giao diện. Bản AI cho rằng như vậy là đủ vì ô chữ thường không tự cắt khoảng trắng (theo `platforms.md`).
+- Nhưng thông tin anh/chị đưa ở S5 (ô tự chuyển chữ hoa khi gõ) cho thấy mã JavaScript của trang có xử lý giá trị trước khi gửi. Nó cũng có thể cắt khoảng trắng. Khi đó test case qua giao diện chỉ kiểm được trang Web Admin, không kiểm được server.
+- Cần thêm bản API, giống cách đã làm với lớp chữ thường.
+
+## 4. Danh sách rất dài: Nên thêm, nhưng gắn với FR17-R02
+
+- Đặc tả không yêu cầu phân trang, nên không thể mong đợi "có phân trang".
+- FR17-R02 yêu cầu "admin xem được danh sách mã". Với nhiều mã, mỗi mã phải xem được (bằng cách cuộn hoặc phân trang đều đạt), bảng không vỡ bố cục, cột "Hành động" vẫn bấm được.
+- Ở S2, AI chỉ chia "số mã đang có" thành "ít nhất 1" và "0 mã", chưa tách lớp "rất nhiều mã" theo rủi ro.
+- Dữ liệu chuẩn bị bằng cách gọi API tạo hàng loạt mã, sau đó reset.
+
+Bốn chỗ sửa này đều thay đổi bộ test case cuối và bảng thay đổi, nên tôi cần anh/chị chốt phương án:
+
+Lệnh bash bị lỗi trích dẫn chuỗi khi nhúng script, nên script chưa chạy và file chưa bị đổi. Tôi ghi script thành file trong scratchpad rồi chạy.
+
+Script đã chạy xong. Tôi kiểm lại bằng script của skill, đếm lại nguồn gốc theo từng nhóm, và xác nhận `ai_raw/` không bị đổi.
+
+Tôi đã cập nhật [05_final_tc.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/05_final_tc.md) (cập nhật lần 1): Từ 113 lên **115 test case**.
+
+**Kiểm tra:**
+- Script kiểm phủ lớp, định dạng và bảng thay đổi đều báo 0 lỗi. Script có cảnh báo vì EC77 được nhắc dù không còn trong `02_ec.md`; đó là lớp đã bỏ ở S2, chỉ nhắc trong phần giải thích.
+- Số đếm theo nguồn gốc khớp với kết quả đếm bằng script: 80 AI, 30 AI có SV sửa, 5 SV thêm; 28 test case có phần do SV phát hiện.
+- File `ai_raw/S5_final_test_cases.md` giữ nguyên từ 21:39.
+
+## Kết quả kiểm chứng 4 ý
+
+| Ý | Kết luận | Đã sửa |
+|---|---|---|
+| 1. Endpoint | URL đúng: API spec chỉ có `GET /api/coupons`, không có `GET /api/admin/coupons`. Nhưng anh/chị đúng ở chỗ TC-CPN-77 không có căn cứ chắc: FR-12 không bắt buộc quyền admin cho `GET`. Căn cứ duy nhất là nhãn "(Dành cho Admin)" ở mục 5.2 | Thêm giả định **A28** (chỉ admin). TC-CPN-77 giữ mong đợi 4xx; nếu nhận 2xx thì ghi "Khác giả định A28" và xét ở S7. Truy vết đổi sang mục 5.2 và A28. Bảng thay đổi ghi loại **Thừa**, vì từ S1 bản AI đã khẳng định quá căn cứ |
+| 2. TC-CPN-112 | Nên ghi chú, nhưng bị từ chối với lý do "sai định dạng" không được tính là Đạt | Ghi chú "Khác giả định A02, A03" cho TC-CPN-101, 105, 108, 112 và TC-CPN-130. Riêng `-0.01`: Nếu được chấp nhận thì là **Sai** |
+| 3. Cắt khoảng trắng qua API | Đúng là thiếu. Ô tự chuyển chữ hoa cho thấy mã của trang có xử lý giá trị trước khi gửi, nên có thể cũng cắt khoảng trắng | Thêm **TC-CPN-143** (dạng bảng, 4 dòng: EC03, EC04, EC05, EC19). Thêm giới hạn **GH14** cho 6 test case giao diện |
+| 4. Danh sách dài | Nên thêm, nhưng mong đợi bám vào FR17-R02 (xem được mọi mã), không đòi có phân trang | Thêm **TC-CPN-144**: Tạo 100 mã qua API; mong đợi xem được mọi mã, số dòng khớp với `GET`, bảng không vỡ |
+
+**Hai điểm anh/chị nên biết:**
+- Sáu test case giao diện về khoảng trắng (TC-CPN-03, 04, 31, 35, 120, 122) chuyển sang "AI có SV sửa" vì có thêm ghi chú GH14. Cách này giống FR-01 xử lý GH2.
+- Khoảng trắng ở giữa mã (EC06, TC-CPN-05) vẫn chưa có bản API, theo phương án 4 dòng anh/chị chọn. Tôi đã ghi rõ trong GH14.
+
+## Commit
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/05_final_tc.md
+git commit -m "[C-FR17][S5] Review final test cases"
+```
+
+Nếu bản AI của S5 chưa commit, chạy lệnh này trước:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S5_final_test_cases.md
+git commit -m "[C-FR17][S5] Merge final test case set (AI draft)"
+```
+````
+
+---
+
+### C161 | 22:20 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Vẫn đang thêm ảnh.
+Phiên C: Tôi đã review và AI đã sửa, giúp tôi kiểm tra, xuất log và báo lại.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C latest turn and check git state
+- Bash: Show user's review message and rerun checks
+- Bash: View change table and new test cases
+- Bash: Export prompt log and check bookkeeping rows in FR-01
+- Bash: Update tracker and notes for C S5 review
+
+**Output AI (nguyên văn):**
+
+````text
+Nội dung đạt. Còn 2 điểm về cách phân loại trong bảng thay đổi, tôi nêu ở dưới. Giờ tôi xuất log.
+
+Bản review S5 của phiên C đã sửa đúng cả 4 ý bạn nêu, các kiểm tra đều đạt. Còn 2 chỗ phân loại trong bảng thay đổi nên chốt trước khi commit, vì chúng làm lệch số liệu cho phần AI gap analysis (S8).
+
+## Kết quả soát
+
+| Mục kiểm | Kết quả |
+|---|---|
+| Thao tác bị cấm | Không có |
+| Các file trong `ai_raw` | Còn nguyên, kể cả bản AI của S5 |
+| `check_step.py` | 0 lỗi; 115 test case; cả 123 lớp đều có test case |
+| Dấu "—" và "·" | Không có |
+| Dòng "Cập nhật lần 1" và bảng thay đổi (mục 14) | Có |
+| Người phát hiện | Cả 4 ý ghi "Sinh viên phát hiện (S5, ý N)". Đúng, vì bạn tự viết 4 ý này, tôi không soạn |
+| Prompt log | Đã xuất: 161 lượt, đúng 3 phiên |
+
+Phiên C không nhận nguyên văn ý 2 của bạn. Bạn muốn tính "bị từ chối vì sai định dạng" là Đạt, còn AI đề xuất ghi là "Khác giả định". Tôi thấy AI đúng: Test case này cần bắt trường hợp hệ thống từ chối vì số âm. Nếu bị từ chối vì lý do khác thì đó chưa phải là bằng chứng.
+
+## Hai chỗ phân loại nên sửa
+
+1. **TC-CPN-77 đang ghi loại "Thừa". Nên đổi thành "Sai".**
+   - Bản AI không thêm thứ gì dư. Nó ghi căn cứ sai: FR-12 không yêu cầu quyền admin cho `GET`.
+   - "Thừa" là để chỉ test case hay lớp không cần thiết. Ghi như vậy sẽ làm sai số liệu ở S8.
+2. **Dòng cuối của mục 14 ("Mục 2, 9.1, 10, 12, 13... Hệ quả của 4 dòng trên") đang ghi loại "Thiếu".**
+   - Dòng này chỉ là cập nhật số đếm và các bảng đi kèm, không phải chỗ AI bỏ sót. Nếu tính vào thì số "Thiếu" bị đếm thừa 1.
+   - Bảng thay đổi của FR-01 không có dòng nào như vậy. Nên bỏ dòng này, hoặc ghi rõ là không tính vào S8.
+
+Nếu đồng ý, bạn dán tin nhắn này vào phiên C:
+
+```text
+Sửa 2 chỗ ở mục 14 của 05_final_tc.md:
+1. Dòng TC-CPN-77: Đổi Loại từ "Thừa" thành "Sai" (bản AI không thêm gì dư, mà truy vết sai căn cứ: FR-12 không yêu cầu quyền admin cho GET).
+2. Bỏ dòng cuối "Mục 2, 9.1, 10, 12, 13 ..." khỏi bảng thay đổi, vì đó là cập nhật hệ quả, không phải chỗ AI bỏ sót; nếu cần thì ghi một câu dưới bảng: "Các mục 2, 9.1, 10, 12, 13 cập nhật theo 4 dòng trên."
+Chạy lại check_step.py, không cần đưa lệnh commit.
+```
+
+## Commit (sau khi phiên C sửa xong, báo tôi để xuất lại log trước)
+
+```
+git add features/C_FR-17_QuanLyCoupon/05_final_tc.md prompt_log.md
+git commit -m "[C-FR17][S5] Review final test cases"
+```
+
+Đừng dùng lệnh commit phiên C đưa: Đường dẫn của nó bắt đầu bằng `Homeworks/HW02/...`, sẽ không chạy được trong repo HW02. Lệnh commit bản AI nó nhắc thì bạn đã chạy rồi (`f848655`).
+
+## Tình trạng
+
+| Phiên | Đang ở đâu | Việc tiếp theo |
+|---|---|---|
+| A (FR-01) | S6: Đang thêm ảnh, đã có ảnh từ TC-REG-30 đến 39 | **Có 1 ảnh tên `S0_TC-REG-33.png`, có lẽ là đặt nhầm từ `S6_`.** Bạn xem lại giúp. Nhớ chạy TC-REG-79 sau cùng rồi báo tôi để reset DB |
+| C (FR-17) | S5: Đã review, còn 2 chỗ phân loại | Sửa 2 chỗ, rồi commit, rồi sang S6. Khi đó báo tôi bật trang admin (cổng 5174). TC-CPN-144 tạo 100 mã, nên chạy gần cuối rồi reset DB |
+````
+
+---
+
+### C162 | 22:25 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Sửa 2 chỗ ở mục 14 của 05_final_tc.md:
+1. Dòng TC-CPN-77: Đổi Loại từ "Thừa" thành "Sai" (bản AI không thêm gì dư, mà truy vết sai căn cứ: FR-12 không yêu cầu quyền admin cho GET).
+2. Bỏ dòng cuối "Mục 2, 9.1, 10, 12, 13 ..." khỏi bảng thay đổi, vì đó là cập nhật hệ quả, không phải chỗ AI bỏ sót; nếu cần thì ghi một câu dưới bảng: "Các mục 2, 9.1, 10, 12, 13 cập nhật theo 4 dòng trên."
+Chạy lại check_step.py, không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get time and locate lines to edit
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\05_final_tc.md
+- Bash: Rerun all checks and show end of file
+
+**Output AI (nguyên văn):**
+
+````text
+Đã sửa xong 2 chỗ ở mục 14 của [05_final_tc.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/05_final_tc.md):
+
+1. **Dòng TC-CPN-77:** Loại đổi từ "Thừa" thành **"Sai"**. Cột lý do ghi lại theo ý anh/chị: Bản AI truy vết sai căn cứ, vì FR-12 không yêu cầu quyền admin cho `GET`. Cuối dòng có ghi "Cập nhật lần 2: Đổi loại từ "Thừa"", giống cách đã làm ở S1.
+2. **Bỏ dòng "Mục 2, 9.1, 10, 12, 13"** khỏi bảng. Dưới bảng có thêm câu: "Các mục 2, 9.1, 10, 12, 13 cập nhật theo 4 dòng trên."
+
+Đầu file có thêm dòng "Cập nhật lần 2" (22:26) ghi hai thay đổi này.
+
+**Kết quả `check_step.py all`:** 0 lỗi. Bảng thay đổi còn 4 dòng: 1 Sai, 2 Thiếu, 1 Mơ hồ. Cả 123 lớp đều được nhắc tới, có 115 test case. Các cảnh báo còn lại là đã biết: Các lớp bỏ có chủ ý ở S2 (EC77, EC123, EC124, EC126), và file S5 không có bảng phủ lớp riêng (giống FR-01).
+
+**Lưu ý:** Khi tôi sửa, công cụ báo `05_final_tc.md` đã bị thay đổi trên đĩa từ ngoài phiên này kể từ lần tôi đọc gần nhất, có thể là anh/chị sửa tay. Tôi chỉ thay đúng ba chỗ trên, không đụng phần khác, và kiểm tra vẫn đạt. Nếu anh/chị không chủ ý sửa file thì nên xem lại phần thay đổi đó.
+````
+
+---
+
+### C163 | 22:27 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi cũng không sửa, tôi chỉ bật đọc thôi. Kiểm tra xem thử lại giúp tôi. Có thể lúc đọc tôi vô tình nhấn lộn gì đó.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\edits_lan2.py
+- Bash: Rebuild expected file and compare with current one
+
+**Output AI (nguyên văn):**
+
+````text
+Rất có thể cảnh báo đó do chính tôi gây ra: Tôi sửa file lần 1 bằng một script Python chạy qua Bash, nên công cụ Edit không biết có lần sửa đó và báo là "bị thay đổi từ bên ngoài". Để chắc chắn, tôi dựng lại file mong đợi rồi so với file hiện tại. Cách dựng: Lấy bản gốc trong `ai_raw/`, chạy lại đúng script cập nhật lần 1, rồi áp ba chỗ sửa của lần 2. Tôi không dùng lịch sử git vì quy trình của dự án không cho phép.
+
+File không bị thay đổi ngoài ý muốn. Anh/chị không vô tình sửa gì cả.
+
+**Kiểm tra:** Tôi lấy bản gốc `ai_raw/S5_final_test_cases.md`, chạy lại đúng script của cập nhật lần 1, rồi áp ba chỗ sửa của cập nhật lần 2. So bằng `cmp`, kết quả **giống hệt từng byte** với `05_final_tc.md` hiện tại. Nghĩa là file chỉ chứa ba phần: Bản AI gốc, cập nhật lần 1 và cập nhật lần 2.
+
+**Nguyên nhân của cảnh báo:** Do cách tôi sửa file, không phải do anh/chị. Ở cập nhật lần 1, tôi sửa `05_final_tc.md` bằng một script Python chạy qua Bash. Công cụ Edit không theo dõi được lần sửa đó, nên đến lần 2 nó thấy file khác với lần đọc cuối và báo "bị thay đổi từ bên ngoài".
+
+`ai_raw/S5_final_test_cases.md` vẫn giữ nguyên từ 21:39.
+````
+
+---
+
+### C164 | 22:28 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Xuất log đi, tiện thể hình như có tư liệu AI ảo giác vì AI tj sửa mà do dùng lệnh nên tưởng tôi có sửa gì đó.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C latest turns
+- Bash: Verify session C's second update independently
+- Bash: Export prompt log and record notes
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã tự kiểm lại, kết quả khớp với kết luận của phiên C. Giờ tôi xuất log và ghi chú.
 ````
 
 

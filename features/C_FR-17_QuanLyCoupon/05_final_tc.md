@@ -3,6 +3,8 @@
 - Bước: S5 (Review lần cuối, bổ sung test case AI bỏ sót). Bản này do AI gộp `03_tc.md` và `04_bva.md`, đã đưa vào phần sinh viên bổ sung khi yêu cầu gộp (mục 13); sinh viên review và bổ sung tiếp ngay trong `05_final_tc.md`
 - Thời gian tạo: 2026-10-20 21:35 (UTC+07:00)
 - Bản gốc của AI: `ai_raw/S5_final_test_cases.md`. `05_final_tc.md` lúc tạo giống hệt bản này
+- Cập nhật lần 1: 2026-10-20 22:16 (UTC+07:00). Theo 4 ý sinh viên nêu khi review S5: Thêm giả định A28 cho quyền xem danh sách qua API (TC-CPN-77); ghi chú các điểm bước 0.01 (TC-CPN-101, 105, 108, 112, 130); thêm TC-CPN-143 (khoảng trắng qua API) và giới hạn GH14; thêm TC-CPN-144 (danh sách rất dài). Thay đổi ở mục 14
+- Cập nhật lần 2: 2026-10-20 22:26 (UTC+07:00). Mục 14: Dòng TC-CPN-77 đổi loại từ "Thừa" thành "Sai" (truy vết sai căn cứ); bỏ dòng cập nhật hệ quả "Mục 2, 9.1, 10, 12, 13" khỏi bảng, thay bằng một câu dưới bảng. Theo yêu cầu của sinh viên
 - Căn cứ: `03_tc.md` (bản review S3, 78 test case), `04_bva.md` (bản review S4, 32 test case), `ai_raw/S3_test_cases.md` và `ai_raw/S4_bva.md` (để xác định nguồn gốc), `01_io.md` (câu hỏi của sinh viên ở S1), `02_ec.md` (lớp), `00_spec.md` (yêu cầu); cấu trúc theo `A_FR-01_DangKy/05_final_tc.md` (sinh viên cho phép tham khảo)
 
 ---
@@ -97,23 +99,29 @@ Body API cơ sở:
 {"code": "FR17TCNN", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
 ```
 
+### 1.5 Giả định phát sinh ở S5
+
+| Mã | Câu hỏi | Phương án chọn | Chữ đặc tả | Hệ quả |
+|---|---|---|---|---|
+| A28 | `GET /api/coupons` chỉ dành cho admin hay mọi user đã đăng nhập? | Chỉ admin; nếu user thường nhận 2xx thì ghi "Khác giả định A28", xét ở S7 | API spec mục 5.2: "Lấy danh sách mã giảm giá (Dành cho Admin)", header `Authorization: Bearer <token>`. FR-12 chỉ bắt buộc quyền admin cho `/api/admin/*` và `POST/PUT/DELETE` của `/api/coupons`, không nói `GET`. Đặc tả không nói storefront dùng endpoint này (người mua áp mã qua `POST /api/apply-coupon`) | TC-CPN-77 giữ mong đợi 4xx nhưng căn cứ là A28, không phải FR-12. TC-CPN-76 (không có header) vẫn dựa trên header bắt buộc ở mục 5.2 và SEC-02. URL giữ nguyên vì API spec không có `GET /api/admin/coupons` |
+
 ---
 
 ## 2. Tổng hợp
 
 | Nhóm | Mã | Số TC | AI | AI có SV sửa | SV thêm | Có phần do SV phát hiện |
 |---|---|---|---|---|---|---|
-| TS-01 Thêm hợp lệ qua giao diện (EP) | TC-CPN-01 đến TC-CPN-25 | 25 | 20 | 5 | 0 | 2 |
-| TS-02 Thêm không hợp lệ qua giao diện (EP) | TC-CPN-30 đến TC-CPN-46 | 17 | 13 | 4 | 0 | 1 |
-| TS-03 Xem, Xóa qua giao diện (EP) | TC-CPN-50 đến TC-CPN-56 | 7 | 6 | 1 | 0 | 2 |
-| TS-04 Giá trị biên qua giao diện (BVA) | TC-CPN-100 đến TC-CPN-117, TC-CPN-119 đến TC-CPN-129 | 29 | 25 | 4 | 0 | 1 |
-| TS-05 API (EP, BVA) | TC-CPN-60 đến TC-CPN-82, TC-CPN-118, TC-CPN-130, TC-CPN-131, TC-CPN-140 đến TC-CPN-142 | 29 | 22 | 4 | 3 | 8 |
+| TS-01 Thêm hợp lệ qua giao diện (EP) | TC-CPN-01 đến TC-CPN-25 | 25 | 18 | 7 | 0 | 4 |
+| TS-02 Thêm không hợp lệ qua giao diện (EP) | TC-CPN-30 đến TC-CPN-46 | 17 | 11 | 6 | 0 | 3 |
+| TS-03 Xem, Xóa qua giao diện (EP) | TC-CPN-50 đến TC-CPN-56, TC-CPN-144 | 8 | 6 | 1 | 1 | 3 |
+| TS-04 Giá trị biên qua giao diện (BVA) | TC-CPN-100 đến TC-CPN-117, TC-CPN-119 đến TC-CPN-129 | 29 | 19 | 10 | 0 | 7 |
+| TS-05 API (EP, BVA) | TC-CPN-60 đến TC-CPN-82, TC-CPN-118, TC-CPN-130, TC-CPN-131, TC-CPN-140 đến TC-CPN-143 | 30 | 20 | 6 | 4 | 11 |
 | TS-06 Checklist giao diện | TC-CPN-90 đến TC-CPN-95 | 6 | 6 | 0 | 0 | 0 |
-| **Tổng** | | **113** | **92** | **18** | **3** | **14** |
+| **Tổng** | | **115** | **80** | **30** | **5** | **28** |
 
-Cột cuối đếm test case mà cột "Phát hiện" có phần ghi "SV". Trong 14 test case đó có 6 test case vẫn mang nguồn gốc "AI" vì đã có trong bản AI, nhưng lớp chúng phủ bắt nguồn từ câu hỏi của sinh viên ở S1 (mục 9.2): TC-CPN-53, TC-CPN-55, TC-CPN-69, TC-CPN-70, TC-CPN-71, TC-CPN-73.
+Cột cuối đếm test case mà cột "Phát hiện" có phần ghi "SV". Trong 28 test case đó có 6 test case vẫn mang nguồn gốc "AI" vì đã có trong bản AI, nhưng lớp chúng phủ bắt nguồn từ câu hỏi của sinh viên ở S1 (mục 9.2): TC-CPN-53, TC-CPN-55, TC-CPN-69, TC-CPN-70, TC-CPN-71, TC-CPN-73.
 
-Theo kỹ thuật: 80 test case Domain Testing (EP) và checklist (78 từ S3, TC-CPN-140, TC-CPN-141 thêm ở S5), 33 test case BVA (32 từ S4, TC-CPN-142 thêm ở S5). Có điều kiện: TC-CPN-52 không áp dụng nếu không có hộp thoại xác nhận (A07); TC-CPN-82, TC-CPN-130 chỉ chạy các dòng cần thiết.
+Theo kỹ thuật: 82 test case Domain Testing (EP) và checklist (78 từ S3; TC-CPN-140, TC-CPN-141, TC-CPN-143, TC-CPN-144 thêm ở S5), 33 test case BVA (32 từ S4, TC-CPN-142 thêm ở S5). Có điều kiện: TC-CPN-52 không áp dụng nếu không có hộp thoại xác nhận (A07); TC-CPN-82, TC-CPN-130 chỉ chạy các dòng cần thiết.
 
 ---
 
@@ -125,8 +133,8 @@ Quy trình QT-GD; kết quả KQ-H-GD cộng phần ghi ở cột "Kết quả m
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | TC-CPN-01 | Kiểm tra tạo mã thành công với dữ liệu hợp lệ cơ sở, loại phần trăm | EC01, EC08, EC15, EC24, EC30, EC44, EC53, EC62, EC82 | R01, R02, R04 đến R10, R14 | `FR17TC01` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; dòng hiện `FR17TC01`, "Phần trăm", `15%`, `300,000 ₫`, `2099-12-31`, `3 lần` | AI | AI | |
 | TC-CPN-02 | Kiểm tra tạo mã thành công với dữ liệu hợp lệ cơ sở, loại số tiền cố định | EC25, EC35 | R01, R06, R07, R14 | `FR17TC02` | Số tiền cố định (₫) | `50000` | `300000` | `12/31/2099` | `3` | OUT1; cột "Giá trị" hiện `50,000 ₫` | AI | AI | |
-| TC-CPN-03 | Kiểm tra tạo mã thành công khi Mã có dấu cách ở đầu | EC04 | R04, R05 | `␣FR17TC03` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; cột "Mã" hiện `FR17TC03`. K5: Tạo lại `FR17TC03`, mong đợi ERR2 | AI | AI | |
-| TC-CPN-04 | Kiểm tra tạo mã thành công khi Mã có dấu cách ở cuối | EC05 | R04, R05 | `FR17TC04␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; cột "Mã" hiện `FR17TC04`. K5: Tạo lại `FR17TC04`, mong đợi ERR2 | AI | AI | |
+| TC-CPN-03 | Kiểm tra tạo mã thành công khi Mã có dấu cách ở đầu | EC04 | R04, R05 | `␣FR17TC03` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; cột "Mã" hiện `FR17TC03`. K5: Tạo lại `FR17TC03`, mong đợi ERR2. Giới hạn GH14: Bản API ở TC-CPN-143 dòng A | AI có SV sửa | SV: Chưa có API kiểm cắt khoảng trắng đầu cuối (S5, ý 3) | AI dựa vào lưu ý chung "ô chữ không tự cắt khoảng trắng" (`platforms.md`), chưa xét mã JavaScript của trang có thể chuẩn hóa giá trị trước khi gửi; dấu hiệu trang có xử lý giá trị (tự chuyển chữ hoa) chỉ có từ lần nhập thử ở S0 |
+| TC-CPN-04 | Kiểm tra tạo mã thành công khi Mã có dấu cách ở cuối | EC05 | R04, R05 | `FR17TC04␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; cột "Mã" hiện `FR17TC04`. K5: Tạo lại `FR17TC04`, mong đợi ERR2. Giới hạn GH14: Bản API ở TC-CPN-143 dòng B | AI có SV sửa | SV: Chưa có API kiểm cắt khoảng trắng đầu cuối (S5, ý 3) | AI dựa vào lưu ý chung "ô chữ không tự cắt khoảng trắng" (`platforms.md`), chưa xét mã JavaScript của trang có thể chuẩn hóa giá trị trước khi gửi; dấu hiệu trang có xử lý giá trị (tự chuyển chữ hoa) chỉ có từ lần nhập thử ở S0 |
 | TC-CPN-05 | Kiểm tra tạo mã thành công khi Mã có dấu cách ở giữa | EC06 | R01 | `FR17␣TC05` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; cột "Mã" giữ dấu cách ở giữa. K5: Tạo `FR17TC05`, mong đợi OUT1 (mã khác) | AI | AI | |
 | TC-CPN-06 | Kiểm tra tạo mã thành công khi Mã gõ bằng chữ thường | EC07 | R01, R05 | `fr17tc06` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; cột "Mã" hiện `fr17tc06` hoặc `FR17TC06` (A10). K5: Tạo lại `FR17TC06`, mong đợi ERR2. Giới hạn GH9: Lớp EC07 kiểm thật ở TC-CPN-140 | AI có SV sửa | SV: Ô Mã coupon tự chuyển chữ hoa khi gõ (S5) | Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế |
 | TC-CPN-07 | Kiểm tra tạo mã thành công khi Mã chỉ gồm chữ số có số 0 ở đầu | EC09 | R01, R15 | `0017007` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; cột "Mã" hiện đúng `0017007` | AI | AI | |
@@ -158,11 +166,11 @@ Quy trình QT-GD; kết quả KQ-KH-GD với mã lỗi ở cột "Kết quả mo
 | TC | Tiêu đề | Lớp | Yêu cầu | `code` | `type` | `discount_value` | `min_order_amount` | `expired_at` | `max_uses_per_user` | Kết quả mong đợi | Nguồn gốc | Phát hiện | Vì sao AI bỏ sót |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | TC-CPN-30 | Kiểm tra tạo mã bị từ chối khi Mã để trống | EC02 | R04, R13 | (để trống) | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR1. Giới hạn GH3 | AI | AI | |
-| TC-CPN-31 | Kiểm tra tạo mã bị từ chối khi Mã chỉ gồm 3 dấu cách | EC03 | R04, R13 | `␣␣␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR1. Giới hạn GH3 | AI | AI | |
+| TC-CPN-31 | Kiểm tra tạo mã bị từ chối khi Mã chỉ gồm 3 dấu cách | EC03 | R04, R13 | `␣␣␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR1. Giới hạn GH3. Giới hạn GH14: Bản API ở TC-CPN-143 dòng C | AI có SV sửa | SV: Chưa có API kiểm cắt khoảng trắng đầu cuối (S5, ý 3) | AI dựa vào lưu ý chung "ô chữ không tự cắt khoảng trắng" (`platforms.md`), chưa xét mã JavaScript của trang có thể chuẩn hóa giá trị trước khi gửi; dấu hiệu trang có xử lý giá trị (tự chuyển chữ hoa) chỉ có từ lần nhập thử ở S0 |
 | TC-CPN-32 | Kiểm tra tạo mã bị từ chối khi Mã trùng mã mẫu | EC16 | R05, R13 | `SAVE10` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR2; dòng `SAVE10` cũ giữ nguyên. Giới hạn GH3 | AI | AI | |
 | TC-CPN-33 | Kiểm tra tạo mã bị từ chối khi Mã trùng mã vừa tạo | EC17 | R05, R13 | `FR17TC33` (tạo 2 lần) | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | Lần 1: OUT1. Lần 2: ERR2; bảng chỉ có một dòng `FR17TC33`. Giới hạn GH3 | AI | AI | |
 | TC-CPN-34 | Kiểm tra tạo mã bị từ chối khi Mã chỉ khác mã mẫu ở chữ hoa, chữ thường | EC18 | R05, R13 | `save10` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR2. Giới hạn GH3, GH9: Lớp EC18 kiểm thật ở TC-CPN-141 | AI có SV sửa | SV: Ô Mã coupon tự chuyển chữ hoa khi gõ (S5) | Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế |
-| TC-CPN-35 | Kiểm tra tạo mã bị từ chối khi Mã trùng mã mẫu sau khi cắt dấu cách | EC19 | R05, R13 | `␣SAVE10` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR2. Giới hạn GH3 | AI | AI | |
+| TC-CPN-35 | Kiểm tra tạo mã bị từ chối khi Mã trùng mã mẫu sau khi cắt dấu cách | EC19 | R05, R13 | `␣SAVE10` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR2. Giới hạn GH3. Giới hạn GH14: Bản API ở TC-CPN-143 dòng D | AI có SV sửa | SV: Chưa có API kiểm cắt khoảng trắng đầu cuối (S5, ý 3) | AI dựa vào lưu ý chung "ô chữ không tự cắt khoảng trắng" (`platforms.md`), chưa xét mã JavaScript của trang có thể chuẩn hóa giá trị trước khi gửi; dấu hiệu trang có xử lý giá trị (tự chuyển chữ hoa) chỉ có từ lần nhập thử ở S0 |
 | TC-CPN-36 | Kiểm tra tạo mã bị từ chối khi Mã trùng mã đã hết hạn | EC20 | R05, R13 | `EXPIRED` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR2. Chạy trước TC-CPN-55. Giới hạn GH3 | AI | AI | |
 | TC-CPN-37 | Kiểm tra tạo mã bị từ chối khi giá trị phần trăm là 150 | EC32 | R07, R13 | `FR17TC37` | Phần trăm (%) | `150` | `300000` | `12/31/2099` | `3` | ERR17. Giới hạn GH3 | AI | AI | |
 | TC-CPN-38 | Kiểm tra tạo mã bị từ chối khi giá trị phần trăm bằng 0 | EC33 | R07, R13 | `FR17TC38` | Phần trăm (%) | `0` | `300000` | `12/31/2099` | `3` | ERR6. Giới hạn GH3 | AI | AI | |
@@ -188,6 +196,7 @@ Quy trình QT-GD; kết quả KQ-KH-GD với mã lỗi ở cột "Kết quả mo
 | TC-CPN-54 | Kiểm tra xóa mã mẫu còn hạn | EC70 | R03 | Bấm "Xóa" trên dòng `BIGBUY` | OUT8; tải lại, `BIGBUY` không còn; 3 mã mẫu còn lại giữ nguyên. **Phá dữ liệu mẫu**, chạy ở nhóm cuối | AI | AI | |
 | TC-CPN-55 | Kiểm tra xóa mã mẫu đã hết hạn | EC72 | R03 | Bấm "Xóa" trên dòng `EXPIRED` | OUT8; tải lại, `EXPIRED` không còn. **Phá dữ liệu mẫu**, chạy sau TC-CPN-36, TC-CPN-50 | AI | SV: Hỏi biến gián tiếp của thao tác Xóa (S1, câu 1), dẫn tới IN13 và lớp EC72 | |
 | TC-CPN-56 | Kiểm tra trang trống khi không còn mã nào | EC81 | R02, R18 | 1. Reset dữ liệu mẫu (chỉ còn 4 mã). 2. Xóa lần lượt 4 mã. 3. Tải lại trang | OUT6; `GET /api/coupons` trả danh sách rỗng (OUT7). **Chạy cuối cùng**, sau một lần reset riêng; reset ngay sau đó | AI có SV sửa | AI bổ sung khi review S3: Reset riêng trước khi chạy | Bản AI để test case chạy sau mọi test case khác, khi danh sách có hàng chục mã phải xóa tay |
+| TC-CPN-144 | Kiểm tra danh sách hiển thị đủ và không vỡ bố cục khi có rất nhiều mã | Số mã đang có (IN9): Rất nhiều mã (lớp bổ sung ở S5, chưa có mã EC); EC80 | R02 | 1. Tạo 100 mã bằng API: Gửi lặp `POST /api/admin/coupons` với body cơ sở, `code` từ `FR17TC144N001` đến `FR17TC144N100`. 2. Mở trang "Mã Giảm Giá". 3. Cuộn hoặc chuyển trang tới cuối danh sách | OUT5: Xem được mọi mã, cuộn hay phân trang đều đạt; tổng số dòng (cộng các trang nếu có) bằng số mã trong `GET /api/coupons`; có `FR17TC144N001` và `FR17TC144N100`; các cột không chồng lên nhau; nút "Xóa" ở dòng cuối nhìn thấy và bấm được (không bấm). Ghi lại nếu trang tải chậm rõ rệt | SV thêm | SV: Kiểm giao diện với danh sách rất dài (S5, ý 4) | AI chỉ chia số mã đang có theo đặc tả (có mã, không còn mã) và chưa tách lớp "rất nhiều mã" theo rủi ro hiển thị, vì đặc tả không nêu phân trang |
 
 ---
 
@@ -198,27 +207,27 @@ Quy trình QT-GD. Phân vùng P1 đến P6 theo `04_bva.md` mục 2. Cột "Biê
 | TC | Tiêu đề | Biên | Yêu cầu | `code` | `type` | `discount_value` | `min_order_amount` | `expired_at` | `max_uses_per_user` | Kết quả mong đợi | Nguồn gốc | Phát hiện | Vì sao AI bỏ sót |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | TC-CPN-100 | Kiểm tra tạo mã bị từ chối khi giá trị phần trăm là -1 | P1, giá trị âm (EC33) | R07 | `FR17TC100` | Phần trăm (%) | `-1` | `300000` | `12/31/2099` | `3` | ERR6. Dự phòng: TC-CPN-130 dòng A. Giới hạn GH2, GH3 | AI | AI | |
-| TC-CPN-101 | Kiểm tra tạo mã thành công khi giá trị phần trăm là 0.01 | P1, LB theo bước 0.01 (EC34) | R07 | `FR17TC101` | Phần trăm (%) | `0.01` | `300000` | `12/31/2099` | `3` | OUT1; hiện `0.01%`. Dự phòng: TC-CPN-130 dòng B. Giới hạn GH1, GH2 | AI | AI | |
+| TC-CPN-101 | Kiểm tra tạo mã thành công khi giá trị phần trăm là 0.01 | P1, LB theo bước 0.01 (EC34) | R07 | `FR17TC101` | Phần trăm (%) | `0.01` | `300000` | `12/31/2099` | `3` | OUT1; hiện `0.01%`. Dự phòng: TC-CPN-130 dòng B. Giới hạn GH1, GH2. Nếu bị từ chối vì là số thập phân: Khác giả định A02 | AI có SV sửa | SV: Ghi chú kết quả cho điểm bước 0.01 (S5, ý 2) | Bản AI không nói cách đọc khi hệ thống từ chối vì nguyên nhân khác với nguyên nhân đang kiểm (số thập phân thay vì giá trị) |
 | TC-CPN-102 | Kiểm tra tạo mã thành công khi giá trị phần trăm là 1 | P1, LB (EC30) | R07 | `FR17TC102` | Phần trăm (%) | `1` | `300000` | `12/31/2099` | `3` | OUT1; hiện `1%` | AI | AI | |
 | TC-CPN-103 | Kiểm tra tạo mã thành công khi giá trị phần trăm là 2 | P1, LB+1 (EC30) | R07 | `FR17TC103` | Phần trăm (%) | `2` | `300000` | `12/31/2099` | `3` | OUT1; hiện `2%` | AI | AI | |
 | TC-CPN-104 | Kiểm tra tạo mã thành công khi giá trị phần trăm là 99 | P1, UB-1 (EC30) | R07 | `FR17TC104` | Phần trăm (%) | `99` | `300000` | `12/31/2099` | `3` | OUT1; hiện `99%` | AI | AI | |
-| TC-CPN-105 | Kiểm tra tạo mã bị từ chối khi giá trị phần trăm là 100.01 | P1, UB theo bước 0.01 (EC32) | R07 | `FR17TC105` | Phần trăm (%) | `100.01` | `300000` | `12/31/2099` | `3` | ERR17. Dự phòng: TC-CPN-130 dòng C. Giới hạn GH2, GH3 | AI | AI | |
+| TC-CPN-105 | Kiểm tra tạo mã bị từ chối khi giá trị phần trăm là 100.01 | P1, UB theo bước 0.01 (EC32) | R07 | `FR17TC105` | Phần trăm (%) | `100.01` | `300000` | `12/31/2099` | `3` | ERR17. Dự phòng: TC-CPN-130 dòng C. Giới hạn GH2, GH3. Nếu bị từ chối với lý do số thập phân thay vì vượt 100: Khác giả định A02 | AI có SV sửa | SV: Ghi chú kết quả cho điểm bước 0.01 (S5, ý 2) | Bản AI không nói cách đọc khi hệ thống từ chối vì nguyên nhân khác với nguyên nhân đang kiểm (số thập phân thay vì giá trị) |
 | TC-CPN-106 | Kiểm tra tạo mã bị từ chối khi giá trị phần trăm là 101 | P1, UB+1 (EC32) | R07 | `FR17TC106` | Phần trăm (%) | `101` | `300000` | `12/31/2099` | `3` | ERR17. Giới hạn GH3 | AI | AI | |
 | TC-CPN-107 | Kiểm tra tạo mã bị từ chối khi số tiền cố định là -1 | P2, giá trị âm (EC36) | R07 | `FR17TC107` | Số tiền cố định (₫) | `-1` | `300000` | `12/31/2099` | `3` | ERR6. Dự phòng: TC-CPN-130 dòng D. Giới hạn GH2, GH3 | AI | AI | |
-| TC-CPN-108 | Kiểm tra tạo mã thành công khi số tiền cố định là 0.01 | P2, LB theo bước 0.01 (EC37) | R07 | `FR17TC108` | Số tiền cố định (₫) | `0.01` | `300000` | `12/31/2099` | `3` | OUT1; ghi cách hiển thị; K6 có `0.01`. Dự phòng: TC-CPN-130 dòng E. Giới hạn GH1, GH2 | AI | AI | |
+| TC-CPN-108 | Kiểm tra tạo mã thành công khi số tiền cố định là 0.01 | P2, LB theo bước 0.01 (EC37) | R07 | `FR17TC108` | Số tiền cố định (₫) | `0.01` | `300000` | `12/31/2099` | `3` | OUT1; ghi cách hiển thị; K6 có `0.01`. Dự phòng: TC-CPN-130 dòng E. Giới hạn GH1, GH2. Nếu bị từ chối vì là số thập phân: Khác giả định A02 | AI có SV sửa | SV: Ghi chú kết quả cho điểm bước 0.01 (S5, ý 2) | Bản AI không nói cách đọc khi hệ thống từ chối vì nguyên nhân khác với nguyên nhân đang kiểm (số thập phân thay vì giá trị) |
 | TC-CPN-109 | Kiểm tra tạo mã thành công khi số tiền cố định là 1 | P2, LB (EC35) | R07 | `FR17TC109` | Số tiền cố định (₫) | `1` | `300000` | `12/31/2099` | `3` | OUT1; hiện `1 ₫` | AI | AI | |
 | TC-CPN-110 | Kiểm tra tạo mã thành công khi số tiền cố định là 2 | P2, LB+1 (EC35) | R07 | `FR17TC110` | Số tiền cố định (₫) | `2` | `300000` | `12/31/2099` | `3` | OUT1; hiện `2 ₫` | AI | AI | |
 | TC-CPN-111 | Kiểm tra số tiền cố định 2^53 + 1 được lưu chính xác | P2, lớn nhất (độ chính xác) (EC39) | R07 | `FR17TC111` | Số tiền cố định (₫) | `9007199254740993` | `300000` | `12/31/2099` | `3` | Đạt nếu OUT1 hiện đúng `9,007,199,254,740,993 ₫` và K6 có đúng giá trị, hoặc ERR22 có thông báo rõ. Sai nếu hiện hoặc lưu `...992`, lỗi máy chủ. Chạy cùng TC-CPN-131 dòng A. Giới hạn GH5, GH7 | AI có SV sửa | Claude phiên điều phối `305c705a`: Giá trị có thể bị làm tròn trước khi gửi | Bản AI coi kết quả qua giao diện là kết quả của hệ thống, chưa xét việc làm tròn ở trình duyệt hoặc mã của trang |
-| TC-CPN-112 | Kiểm tra tạo mã bị từ chối khi đơn tối thiểu là -0.01 | P3, LB-1 theo bước 0.01 (EC46) | R09 | `FR17TC112` | Phần trăm (%) | `15` | `-0.01` | `12/31/2099` | `3` | ERR9. Dự phòng: TC-CPN-130 dòng F. Giới hạn GH2, GH3 | AI | AI | |
+| TC-CPN-112 | Kiểm tra tạo mã bị từ chối khi đơn tối thiểu là -0.01 | P3, LB-1 theo bước 0.01 (EC46) | R09 | `FR17TC112` | Phần trăm (%) | `15` | `-0.01` | `12/31/2099` | `3` | ERR9. Dự phòng: TC-CPN-130 dòng F. Giới hạn GH2, GH3. Nếu bị từ chối với lý do số thập phân thay vì âm: Khác giả định A03 (i). Nếu được chấp nhận (lưu `-0.01` hoặc `0`): Sai | AI có SV sửa | SV: Ghi chú kết quả cho điểm bước 0.01 (S5, ý 2) | Bản AI không nói cách đọc khi hệ thống từ chối vì nguyên nhân khác với nguyên nhân đang kiểm (số thập phân thay vì giá trị) |
 | TC-CPN-113 | Kiểm tra tạo mã thành công khi đơn tối thiểu là 1 | P3, LB+1 (EC44) | R09 | `FR17TC113` | Phần trăm (%) | `15` | `1` | `12/31/2099` | `3` | OUT1; hiện `1 ₫` | AI | AI | |
 | TC-CPN-114 | Kiểm tra đơn tối thiểu 2^53 + 1 được lưu chính xác | P3, lớn nhất (độ chính xác) (EC48) | R09 | `FR17TC114` | Phần trăm (%) | `15` | `9007199254740993` | `12/31/2099` | `3` | Như TC-CPN-111, với cột "Đơn tối thiểu". Chạy cùng TC-CPN-131 dòng B. Giới hạn GH5, GH7 | AI có SV sửa | Claude phiên điều phối `305c705a`: Giá trị có thể bị làm tròn trước khi gửi | Như TC-CPN-111 |
 | TC-CPN-115 | Kiểm tra tạo mã bị từ chối khi số lần dùng tối đa là -1 | P4, giá trị âm (EC63) | R10 | `FR17TC115` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `-1` | ERR11. Dự phòng: TC-CPN-130 dòng G. Giới hạn GH2, GH3 | AI | AI | |
 | TC-CPN-116 | Kiểm tra tạo mã thành công khi số lần dùng tối đa là 1 | P4, LB (EC62) | R10 | `FR17TC116` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `1` (gõ lại, không để mặc định) | OUT1; hiện `1 lần` | AI | AI | |
 | TC-CPN-117 | Kiểm tra tạo mã thành công khi số lần dùng tối đa là 2 | P4, LB+1 (EC62) | R10 | `FR17TC117` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `2` | OUT1; hiện `2 lần` | AI | AI | |
 | TC-CPN-119 | Kiểm tra số lần dùng tối đa 2^53 + 1 được lưu chính xác | P4, lớn nhất (độ chính xác) (EC65) | R10 | `FR17TC119` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `9007199254740993` | Như TC-CPN-111, với cột "Giới hạn/người". Chạy cùng TC-CPN-131 dòng C. Giới hạn GH5, GH7 | AI có SV sửa | Claude phiên điều phối `305c705a`: Giá trị có thể bị làm tròn trước khi gửi | Như TC-CPN-111 |
-| TC-CPN-120 | Kiểm tra tạo mã bị từ chối khi Mã là 1 dấu cách | P5, LB-1 sau khi cắt (EC03) | R04 | `␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR1. Giới hạn GH3 | AI | AI | |
+| TC-CPN-120 | Kiểm tra tạo mã bị từ chối khi Mã là 1 dấu cách | P5, LB-1 sau khi cắt (EC03) | R04 | `␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | ERR1. Giới hạn GH3. Giới hạn GH14: Bản API ở TC-CPN-143 dòng C (lớp EC03) | AI có SV sửa | SV: Chưa có API kiểm cắt khoảng trắng đầu cuối (S5, ý 3) | AI dựa vào lưu ý chung "ô chữ không tự cắt khoảng trắng" (`platforms.md`), chưa xét mã JavaScript của trang có thể chuẩn hóa giá trị trước khi gửi; dấu hiệu trang có xử lý giá trị (tự chuyển chữ hoa) chỉ có từ lần nhập thử ở S0 |
 | TC-CPN-121 | Kiểm tra tạo mã thành công khi Mã dài 1 ký tự | P5, LB (EC01) | R01, R04 | `Q` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; hiện `Q` | AI | AI | |
-| TC-CPN-122 | Kiểm tra tạo mã thành công khi Mã 1 ký tự có dấu cách hai bên | P5, LB có khoảng trắng (EC04, EC05) | R01, R04 | `␣K␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; hiện `K`. K5: Tạo lại `K`, mong đợi ERR2 | AI | AI | |
+| TC-CPN-122 | Kiểm tra tạo mã thành công khi Mã 1 ký tự có dấu cách hai bên | P5, LB có khoảng trắng (EC04, EC05) | R01, R04 | `␣K␣` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; hiện `K`. K5: Tạo lại `K`, mong đợi ERR2. Giới hạn GH14: Bản API ở TC-CPN-143 dòng A, B (lớp EC04, EC05) | AI có SV sửa | SV: Chưa có API kiểm cắt khoảng trắng đầu cuối (S5, ý 3) | AI dựa vào lưu ý chung "ô chữ không tự cắt khoảng trắng" (`platforms.md`), chưa xét mã JavaScript của trang có thể chuẩn hóa giá trị trước khi gửi; dấu hiệu trang có xử lý giá trị (tự chuyển chữ hoa) chỉ có từ lần nhập thử ở S0 |
 | TC-CPN-123 | Kiểm tra tạo mã thành công khi Mã là 1 chữ thường | P5, LB chữ thường (EC07) | R01, R04 | `j` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; hiện `j` hoặc `J` (A10). Giới hạn GH9: Điểm này kiểm thật ở TC-CPN-142 | AI có SV sửa | SV: Ô Mã coupon tự chuyển chữ hoa khi gõ (S5) | Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế |
 | TC-CPN-124 | Kiểm tra tạo mã thành công khi Mã dài 2 ký tự | P5, LB+1 (EC01) | R01, R04 | `QZ` | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | OUT1; hiện `QZ` | AI | AI | |
 | TC-CPN-125 | Kiểm tra tạo mã với Mã dài 1000 ký tự | P5, lớn nhất giao diện cho nhập (EC14) | R01 | `FR17TC125` + 991 chữ `X` (1000 ký tự) | Phần trăm (%) | `15` | `300000` | `12/31/2099` | `3` | Đạt nếu OUT1 đủ 1000 ký tự, hoặc ERR22 có thông báo rõ. Sai nếu cắt cụt, lỗi máy chủ. Ghi số ký tự ô nhận. Giới hạn GH5, GH10 | AI | AI | |
@@ -252,18 +261,19 @@ Kết quả KQ-H-API hoặc KQ-KH-API cộng phần ghi ở cột "Kết quả m
 | TC-CPN-74 | Kiểm tra API từ chối tạo mã khi token không hợp lệ | EC88 | EP | R11 | `POST`, `Authorization: Bearer abc.def.ghi`, `code` `"FR17TC74"` | ERR12: 4xx; mã không được tạo | AI | AI | |
 | TC-CPN-75 | Kiểm tra API từ chối tạo mã khi dùng token user thường | EC89 | EP | R11 | `POST`, token user thường, `code` `"FR17TC75"` | ERR13: 4xx; mã không được tạo | AI | AI | |
 | TC-CPN-76 | Kiểm tra API từ chối xem danh sách khi không có header Authorization | EC86 | EP | R11 | `GET /api/coupons`, không có header | ERR12: 4xx; không trả danh sách | AI | AI | |
-| TC-CPN-77 | Kiểm tra API từ chối xem danh sách khi dùng token user thường | EC89 | EP | R11 | `GET /api/coupons`, token user thường | ERR13: 4xx; không trả danh sách | AI | AI | |
+| TC-CPN-77 | Kiểm tra API từ chối xem danh sách khi dùng token user thường | EC89 | EP | R11 (API spec mục 5.2, A28) | `GET /api/coupons`, token user thường | ERR13: 4xx; không trả danh sách. Nếu 2xx: Khác giả định A28 (FR-12 không bắt buộc quyền admin cho `GET`) | AI có SV sửa | SV: Hỏi lại logic endpoint `GET /api/coupons` (S5, ý 1) | Bản AI coi quyền admin của `GET` là yêu cầu FR-12, trong khi FR-12 chỉ nói `/api/admin/*` và các method thay đổi dữ liệu; căn cứ duy nhất là nhãn "(Dành cho Admin)" ở API spec mục 5.2, nên phải là giả định |
 | TC-CPN-78 | Kiểm tra API từ chối xóa mã khi không có header Authorization | EC86 | EP | R03, R11 | 1. Tạo `FR17TC78` bằng token admin, lấy `id`. 2. `DELETE` không có header | ERR12: 4xx; `FR17TC78` vẫn còn | AI | AI | |
 | TC-CPN-79 | Kiểm tra API từ chối xóa mã khi dùng token user thường | EC89 | EP | R03, R11 | Như TC-CPN-78 với `FR17TC79`, bước 2 dùng token user thường | ERR13: 4xx; `FR17TC79` vẫn còn | AI | AI | |
 | TC-CPN-80 | Kiểm tra đường `POST /api/coupons` của FR-12 không cho tạo mã khi không có header | EC86 | EP | R11 | `POST /api/coupons`, body cơ sở, `code` `"FR17TC80"`, không có header | Mã không được tạo; không 5xx; 404 cũng đạt (A22) | AI | AI | |
 | TC-CPN-81 | Kiểm tra đường `DELETE /api/coupons/:id` của FR-12 không cho user thường xóa mã | EC89 | EP | R11 | 1. Tạo `FR17TC81` bằng token admin, lấy `id`. 2. `DELETE /api/coupons/<id>` bằng token user thường | `FR17TC81` vẫn còn; không 5xx; 404 cũng đạt | AI | AI | |
 | TC-CPN-82 | Kiểm tra qua API các lớp số lẻ, số âm khi giao diện bị chặn (dự phòng) | EC34, EC37, EC46, EC47, EC63, EC64 | EP | R07, R09, R10 | `POST`, dạng bảng 6 dòng | Theo từng dòng; **chỉ chạy dòng nào** mà test case giao diện tương ứng bị trình duyệt chặn; dòng không chạy ghi "Không chạy" | AI có SV sửa | AI bổ sung khi review S3: Dòng F gửi `0`, chạy khi TC-CPN-44 bị chặn | Bản AI ghi dòng F gửi `-1` với điều kiện chạy trỏ sang S4, không khớp TC-CPN-44 |
 | TC-CPN-118 | Kiểm tra API nhận số lần dùng tối đa viết là 1.0 | P4, LB dạng thập phân (EC62) | BVA | R10 | `POST`, `"max_uses_per_user": 1.0`, `code` `"FR17TC118"` | OUT2, lưu là 1 (A27). Giới hạn GH12 | AI có SV sửa | SV: Chốt A27 (S4, quyết định 1) | Không bỏ sót: Quyết định của SV |
-| TC-CPN-130 | Kiểm tra qua API các điểm biên số lẻ, số âm khi giao diện bị chặn (dự phòng) | P1 đến P4 (EC33, EC34, EC36, EC37, EC46, EC63) | BVA | R07, R09, R10 | `POST`, dạng bảng 7 dòng | Theo từng dòng; **chỉ chạy dòng nào** mà test case giao diện tương ứng bị trình duyệt chặn | AI | AI | |
+| TC-CPN-130 | Kiểm tra qua API các điểm biên số lẻ, số âm khi giao diện bị chặn (dự phòng) | P1 đến P4 (EC33, EC34, EC36, EC37, EC46, EC63) | BVA | R07, R09, R10 | `POST`, dạng bảng 7 dòng | Theo từng dòng; **chỉ chạy dòng nào** mà test case giao diện tương ứng bị trình duyệt chặn. Dòng B, C, E, F: Bị từ chối vì là số thập phân (không phải vì giá trị) thì ghi Khác giả định A02 hoặc A03; dòng F được chấp nhận là Sai | AI có SV sửa | SV: Ghi chú kết quả cho điểm bước 0.01 (S5, ý 2) | Bản AI không nói cách đọc khi hệ thống từ chối vì nguyên nhân khác với nguyên nhân đang kiểm (số thập phân thay vì giá trị) |
 | TC-CPN-131 | Kiểm tra server lưu chính xác giá trị 2^53 + 1 | P2, P3, P4 lớn nhất (độ chính xác) (EC39, EC48, EC65) | BVA | R07, R09, R10 | `POST`, dạng bảng 3 dòng; luôn chạy cùng TC-CPN-111, TC-CPN-114, TC-CPN-119 | Theo từng dòng; đọc kết hợp với test case giao diện theo bảng ở mục 7.1. Giới hạn GH7 | AI có SV sửa | Claude phiên điều phối `305c705a`: Giá trị có thể bị làm tròn trước khi gửi | Bản AI chỉ chạy điểm này qua giao diện, nên không tách được phần server |
 | TC-CPN-140 | Kiểm tra API tạo mã thành công khi Mã có chữ thường | EC07 | EP | R01, R05 | 1. `POST`, `"code": "fr17tc140"`. 2. `POST`, `"code": "FR17TC140"` | Bước 1: OUT2; `GET` có `fr17tc140` hoặc `FR17TC140` (A10). Bước 2 (K5): 4xx (ERR2), vì so trùng không phân biệt hoa thường (A04) | SV thêm | SV: Ô Mã coupon tự chuyển chữ hoa khi gõ nên TC-CPN-06 không kiểm được EShop (S5) | Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế |
 | TC-CPN-141 | Kiểm tra API từ chối Mã chỉ khác mã mẫu ở chữ hoa, chữ thường | EC18 | EP | R05 | `POST`, `"code": "save10"` | 4xx (ERR2); `GET` không có `save10`, `SAVE10` giữ nguyên giá trị. Cần dữ liệu mẫu nguyên vẹn | SV thêm | SV: Ô Mã coupon tự chuyển chữ hoa khi gõ nên TC-CPN-34 không kiểm được EShop (S5) | Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế |
 | TC-CPN-142 | Kiểm tra API tạo mã thành công khi Mã là 1 chữ thường | P5, LB chữ thường (EC07) | BVA | R01, R04 | `POST`, `"code": "m"` | OUT2; `GET` có `m` hoặc `M` (A10). Dùng `m` thay cho `j` để không trùng mã `J` mà TC-CPN-123 có thể đã tạo | SV thêm | SV: Ô Mã coupon tự chuyển chữ hoa khi gõ nên TC-CPN-123 không kiểm được EShop (S5). AI bổ sung ở S5: Đổi ký tự để tránh trùng dữ liệu | Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế |
+| TC-CPN-143 | Kiểm tra API cắt dấu cách đầu cuối của Mã khi tạo và khi so trùng | EC03, EC04, EC05, EC19 | EP | R04, R05 | `POST`, dạng bảng 4 dòng | Theo từng dòng (mục 7.1). Đọc cùng TC-CPN-03, TC-CPN-04, TC-CPN-31, TC-CPN-35: Giao diện đạt mà API sai thì việc cắt chỉ do mã của trang làm, server không cắt | SV thêm | SV: Chưa có API kiểm cắt khoảng trắng đầu cuối (S5, ý 3) | AI dựa vào lưu ý chung "ô chữ không tự cắt khoảng trắng" (`platforms.md`), chưa xét mã JavaScript của trang có thể chuẩn hóa giá trị trước khi gửi; dấu hiệu trang có xử lý giá trị (tự chuyển chữ hoa) chỉ có từ lần nhập thử ở S0 |
 
 ### 7.1 Chi tiết test case dạng bảng
 
@@ -367,6 +377,15 @@ Cách đọc TC-CPN-131 cùng test case giao diện (TC-CPN-111, TC-CPN-114, TC-
 | Sai | Sai | Server làm tròn |
 | Đúng | Sai | Bất thường; ghi lại và kiểm lại cách gửi request |
 
+**TC-CPN-143: Khoảng trắng của `code` qua API (A09)**
+
+| Dòng | Lớp | Thay đổi | Kết quả mong đợi |
+|---|---|---|---|
+| A | EC04 | `"code": "␣FR17TC143A"` | 2xx; `GET` có `FR17TC143A` (đã cắt). K5: Gửi lại `"FR17TC143A"`, mong đợi 4xx (ERR2) |
+| B | EC05 | `"code": "FR17TC143B␣"` | 2xx; `GET` có `FR17TC143B`. K5: Gửi lại `"FR17TC143B"`, mong đợi 4xx (ERR2) |
+| C | EC03 | `"code": "␣␣␣"` | 4xx (ERR1); số mã không đổi |
+| D | EC19 | `"code": "␣SAVE10"` | 4xx (ERR2); `SAVE10` giữ nguyên. Cần dữ liệu mẫu nguyên vẹn |
+
 ---
 
 ## 8. TS-06: Checklist giao diện
@@ -411,6 +430,20 @@ Quan sát ở S6, không có Đạt hay Sai: Placeholder ô "Giá trị" có đ�
 | 19 | TC-CPN-140 | SV thêm | Không có (thêm ở S5) | Bản API của EC07 | Sinh viên (S5) | Mục 13 |
 | 20 | TC-CPN-141 | SV thêm | Không có (thêm ở S5) | Bản API của EC18 | Sinh viên (S5) | Mục 13 |
 | 21 | TC-CPN-142 | SV thêm | Không có (thêm ở S5) | Bản API của điểm P5 "1 chữ thường"; dùng `m` để tránh trùng | Sinh viên (S5); AI ở phiên này chọn ký tự | Mục 13 |
+| 22 | TC-CPN-03 | AI có SV sửa | TC-CPN-03 (S3) | Thêm GH14: Bản API ở TC-CPN-143 dòng A | Sinh viên (S5, ý 3) | Mục 13, 14 |
+| 23 | TC-CPN-04 | AI có SV sửa | TC-CPN-04 (S3) | Thêm GH14: Bản API ở TC-CPN-143 dòng B | Sinh viên (S5, ý 3) | Mục 13, 14 |
+| 24 | TC-CPN-31 | AI có SV sửa | TC-CPN-31 (S3) | Thêm GH14: Bản API ở TC-CPN-143 dòng C | Sinh viên (S5, ý 3) | Mục 13, 14 |
+| 25 | TC-CPN-35 | AI có SV sửa | TC-CPN-35 (S3) | Thêm GH14: Bản API ở TC-CPN-143 dòng D | Sinh viên (S5, ý 3) | Mục 13, 14 |
+| 26 | TC-CPN-77 | AI có SV sửa | TC-CPN-77 (S3) | Căn cứ đổi từ FR-12 sang API spec mục 5.2 và giả định A28; thêm cách đọc khi nhận 2xx | Sinh viên (S5, ý 1) | Mục 13, 14 |
+| 27 | TC-CPN-101 | AI có SV sửa | TC-CPN-101 (S4) | Thêm ghi chú: Bị từ chối vì là số thập phân là Khác giả định A02 | Sinh viên (S5, ý 2) | Mục 13, 14 |
+| 28 | TC-CPN-105 | AI có SV sửa | TC-CPN-105 (S4) | Thêm ghi chú như TC-CPN-101 | Sinh viên (S5, ý 2) | Mục 13, 14 |
+| 29 | TC-CPN-108 | AI có SV sửa | TC-CPN-108 (S4) | Thêm ghi chú như TC-CPN-101 | Sinh viên (S5, ý 2) | Mục 13, 14 |
+| 30 | TC-CPN-112 | AI có SV sửa | TC-CPN-112 (S4) | Thêm ghi chú: Bị từ chối vì số thập phân là Khác giả định A03 (i); được chấp nhận là Sai | Sinh viên (S5, ý 2) | Mục 13, 14 |
+| 31 | TC-CPN-120 | AI có SV sửa | TC-CPN-120 (S4) | Thêm GH14 | Sinh viên (S5, ý 3) | Mục 13, 14 |
+| 32 | TC-CPN-122 | AI có SV sửa | TC-CPN-122 (S4) | Thêm GH14 | Sinh viên (S5, ý 3) | Mục 13, 14 |
+| 33 | TC-CPN-130 | AI có SV sửa | TC-CPN-130 (S4) | Thêm ghi chú cho dòng B, C, E, F như TC-CPN-101, TC-CPN-112 | Sinh viên (S5, ý 2) | Mục 13, 14 |
+| 34 | TC-CPN-143 | SV thêm | Không có (thêm ở S5) | Bản API cho khoảng trắng đầu cuối của `code` (EC03, EC04, EC05, EC19) | Sinh viên (S5, ý 3) | Mục 13, 14 |
+| 35 | TC-CPN-144 | SV thêm | Không có (thêm ở S5) | Danh sách 100 mã: Xem được mọi mã, bố cục không vỡ | Sinh viên (S5, ý 4) | Mục 13, 14 |
 ### 9.2 Test case "AI" có lớp bắt nguồn từ câu hỏi của sinh viên ở S1
 
 Các test case dưới đây giữ nguyên bản AI (nên nguồn gốc là "AI"), nhưng biến hoặc lớp mà chúng phủ được thêm khi review S1 theo câu hỏi của sinh viên, rồi bản AI của S2, S3 mới lập lớp và test case. Ghi lại để S8 thấy đầy đủ đóng góp ở bước xác định biến.
@@ -434,7 +467,7 @@ Không có. Bản review S3, S4 không bỏ test case nào. Lớp EC77 (mã đã
 2. Cần dữ liệu mẫu nguyên vẹn: TC-CPN-50, TC-CPN-61; checklist TC-CPN-90 đến TC-CPN-95 (TC-CPN-93 dùng bảng sau TC-CPN-50).
 3. Thêm qua giao diện: TC-CPN-01 đến TC-CPN-25, TC-CPN-30 đến TC-CPN-46, TC-CPN-100 đến TC-CPN-117, TC-CPN-119 đến TC-CPN-129 (TC-CPN-32, TC-CPN-34, TC-CPN-35, TC-CPN-36 cần mã mẫu còn nguyên; TC-CPN-127, TC-CPN-22, TC-CPN-128 tạo và xem trong cùng ngày).
 4. Xóa không phá dữ liệu mẫu: TC-CPN-51, TC-CPN-52, TC-CPN-53.
-5. API: TC-CPN-60 đến TC-CPN-81, TC-CPN-118, TC-CPN-131 (cùng đợt với TC-CPN-111, TC-CPN-114, TC-CPN-119), TC-CPN-140 đến TC-CPN-142 (TC-CPN-141 cần `SAVE10` còn nguyên). TC-CPN-82, TC-CPN-130 chỉ chạy các dòng cần thiết.
+5. API: TC-CPN-60 đến TC-CPN-81, TC-CPN-118, TC-CPN-131 (cùng đợt với TC-CPN-111, TC-CPN-114, TC-CPN-119), TC-CPN-140 đến TC-CPN-143 (TC-CPN-141 và dòng D của TC-CPN-143 cần `SAVE10` còn nguyên). TC-CPN-82, TC-CPN-130 chỉ chạy các dòng cần thiết. Sau nhóm API chạy TC-CPN-144 (thêm 100 mã; không ảnh hưởng test case khác vì TC-CPN-56 chạy sau một lần reset riêng).
 6. Phá dữ liệu mẫu: TC-CPN-54, TC-CPN-55 (sau TC-CPN-36, TC-CPN-50).
 7. Reset dữ liệu, rồi chạy TC-CPN-56.
 8. Reset dữ liệu ngay sau TC-CPN-56. Nếu kết quả bất thường ở bất kỳ bước nào làm hỏng dữ liệu mẫu, ghi lại rồi reset trước khi chạy tiếp.
@@ -458,6 +491,7 @@ Không có. Bản review S3, S4 không bỏ test case nào. Lớp EC77 (mã đã
 | GH11 | Giá trị lưu qua API chỉ thấy được nếu `GET` trả đủ trường (A17); thiếu thì kiểm trên bảng của giao diện | TC-CPN-60, TC-CPN-61, TC-CPN-63, TC-CPN-64 |
 | GH12 | Nhiều bộ đọc JSON coi `1.0` và `1` là cùng một số, nên test case có thể không phân biệt được | TC-CPN-118 |
 | GH13 | Không kiểm được trong FR-17: Mã mới có `is_active = 1` không (FR-09 C1); xóa mã đã dùng trong đơn hàng (A16); escape ở màn hình của feature khác | Toàn bộ |
+| GH14 | Mã JavaScript của trang có xử lý giá trị ô Mã coupon (tự chuyển chữ hoa, GH9), nên cũng có thể cắt khoảng trắng trước khi gửi; test case khoảng trắng qua giao diện có thể chỉ kiểm trang. Bản API ở TC-CPN-143. Khoảng trắng ở giữa (EC06, TC-CPN-05) chưa có bản API theo quyết định của sinh viên | TC-CPN-03, TC-CPN-04, TC-CPN-31, TC-CPN-35, TC-CPN-120, TC-CPN-122 |
 
 ---
 
@@ -466,16 +500,16 @@ Không có. Bản review S3, S4 không bỏ test case nào. Lớp EC77 (mã đã
 | Yêu cầu | Nội dung ngắn | Test case | Mức phủ |
 |---|---|---|---|
 | FR17-R01 | Thêm được mã khi mọi trường hợp lệ | TC-CPN-01 đến TC-CPN-25, TC-CPN-60, TC-CPN-69, TC-CPN-121 đến TC-CPN-125, TC-CPN-140, TC-CPN-142 | Đủ |
-| FR17-R02 | Xem danh sách mã | TC-CPN-50, TC-CPN-61, TC-CPN-22, TC-CPN-23, TC-CPN-126 đến TC-CPN-128 | Đủ |
+| FR17-R02 | Xem danh sách mã | TC-CPN-50, TC-CPN-61, TC-CPN-22, TC-CPN-23, TC-CPN-126 đến TC-CPN-128, TC-CPN-144 | Đủ |
 | FR17-R03 | Xóa mã | TC-CPN-13, TC-CPN-51 đến TC-CPN-55, TC-CPN-62, TC-CPN-71, TC-CPN-78, TC-CPN-79 | Một phần: Không kiểm xóa mã đã dùng trong đơn hàng (GH13) |
-| FR17-R04 | `code` bắt buộc | TC-CPN-30, TC-CPN-31, TC-CPN-66, TC-CPN-120 đến TC-CPN-124, TC-CPN-142 | Đủ |
-| FR17-R05 | `code` duy nhất | TC-CPN-03, TC-CPN-06, TC-CPN-13, TC-CPN-32 đến TC-CPN-36, TC-CPN-140, TC-CPN-141 | Đủ |
+| FR17-R04 | `code` bắt buộc | TC-CPN-30, TC-CPN-31, TC-CPN-66, TC-CPN-120 đến TC-CPN-124, TC-CPN-142, TC-CPN-143 | Đủ |
+| FR17-R05 | `code` duy nhất | TC-CPN-03, TC-CPN-06, TC-CPN-13, TC-CPN-32 đến TC-CPN-36, TC-CPN-140, TC-CPN-141, TC-CPN-143 | Đủ |
 | FR17-R06 | `type` bắt buộc, chỉ `percent`/`fixed` | TC-CPN-01, TC-CPN-02, TC-CPN-65, TC-CPN-66 | Đủ |
 | FR17-R07 | `discount_value` bắt buộc, dương | TC-CPN-14 đến TC-CPN-18, TC-CPN-37 đến TC-CPN-40, TC-CPN-64, TC-CPN-67, TC-CPN-100 đến TC-CPN-111, TC-CPN-130, TC-CPN-131 | Đủ |
 | FR17-R08 | `expired_at` bắt buộc | TC-CPN-22 đến TC-CPN-24, TC-CPN-43, TC-CPN-68, TC-CPN-126 đến TC-CPN-129 | Đủ |
 | FR17-R09 | `min_order_amount` bắt buộc, >= 0 | TC-CPN-19 đến TC-CPN-21, TC-CPN-41, TC-CPN-42, TC-CPN-112 đến TC-CPN-114, TC-CPN-130, TC-CPN-131 | Đủ |
 | FR17-R10 | `max_uses_per_user` bắt buộc, >= 1 | TC-CPN-25, TC-CPN-44 đến TC-CPN-46, TC-CPN-115 đến TC-CPN-119, TC-CPN-130, TC-CPN-131 | Đủ |
-| FR17-R11 | Chỉ admin có JWT hợp lệ | TC-CPN-72 đến TC-CPN-81 | Đủ trên thiết kế; Xem, Xóa chỉ kiểm 2 trong 4 lớp không hợp lệ (S3, cách A1) |
+| FR17-R11 | Chỉ admin có JWT hợp lệ | TC-CPN-72 đến TC-CPN-81 | Đủ trên thiết kế; Xem, Xóa chỉ kiểm 2 trong 4 lớp không hợp lệ (S3, cách A1). Phần "xem" (TC-CPN-76, TC-CPN-77) dựa trên API spec mục 5.2 và A28, không trên FR-12; FR17-R11 ở `00_spec.md` gộp "xem" vào nguồn FR-12 |
 | FR17-R12 | Dấu `*` | TC-CPN-90 | Đủ |
 | FR17-R13 | Thông báo lỗi trên nút submit | TC-CPN-30 đến TC-CPN-46 | Đủ |
 | FR17-R14 | Tiếng Việt, màu nút, tiền `₫` | TC-CPN-01, TC-CPN-50, TC-CPN-91 đến TC-CPN-93, TC-CPN-30 đến TC-CPN-46 (ngôn ngữ thông báo) | Đủ |
@@ -498,8 +532,24 @@ R16 đến R19 là yêu cầu bổ sung ở S1 (`01_io.md` mục 7.1), không c�
 | Sinh viên cho biết ô Mã coupon trên giao diện tự chuyển chữ thường thành chữ hoa ngay khi gõ (quan sát lúc nhập thử ở S0). Test case nhập chữ thường qua giao diện chỉ kiểm hành vi giao diện, không kiểm EShop | Thêm TC-CPN-140 (EC07), TC-CPN-141 (EC18), TC-CPN-142 (P5, 1 chữ thường) qua API; thêm GH9 cho TC-CPN-06, TC-CPN-34, TC-CPN-123 | Kết quả mong đợi theo giả định đã chốt: A10 (lưu, hiển thị chữ hoa hay giữ nguyên đều đạt), A04 (so trùng không phân biệt hoa thường) |
 | Hệ quả AI nhận ra từ thông tin trên: Chuỗi `<b>FR17TC10</b>` sẽ thành `<B>FR17TC10</B>` khi gõ | Sửa kết quả mong đợi của TC-CPN-10, thêm GH9 | Thẻ HTML không phân biệt hoa thường nên test case vẫn kiểm được escape (R15) |
 
-Phần sinh viên review và bổ sung thêm (điền khi review):
+Phần sinh viên review và bổ sung thêm (cập nhật lần 1):
 
-| TC | Nội dung | Lớp hoặc biên | Ghi chú |
+| Ý | Nội dung sinh viên nêu | Test case | Ghi chú |
 |---|---|---|---|
-| | | | |
+| 1 | Logic endpoint: Nếu `GET /api/coupons` dùng chung cho storefront thì TC-CPN-77 phải 2xx | TC-CPN-77; A28 (mục 1.5) | URL giữ nguyên (API spec chỉ có `GET /api/coupons`); quyền admin của `GET` là giả định A28, không phải yêu cầu FR-12 |
+| 2 | TC-CPN-112 nên ghi chú trường hợp trả về âm hoặc sai định dạng | TC-CPN-101, TC-CPN-105, TC-CPN-108, TC-CPN-112, TC-CPN-130 | Bị từ chối vì số thập phân là Khác giả định, không phải Đạt; áp cho mọi điểm bước 0.01 |
+| 3 | Chưa có API kiểm cắt khoảng trắng đầu, cuối | TC-CPN-143; GH14 cho TC-CPN-03, TC-CPN-04, TC-CPN-31, TC-CPN-35, TC-CPN-120, TC-CPN-122 | Dạng bảng 4 dòng (EC03, EC04, EC05, EC19) |
+| 4 | Kiểm giao diện khi danh sách rất dài (phân trang hay cuộn) | TC-CPN-144 | 100 mã tạo bằng API; mong đợi theo R02, không đòi phân trang |
+
+---
+
+## 14. Thay đổi so với bản AI (`ai_raw/S5_final_test_cases.md`)
+
+| Vị trí | Thay đổi | Loại | Lý do hoặc căn cứ |
+|---|---|---|---|
+| TC-CPN-77, mục 1.5 (A28), mục 12 (R11) | Căn cứ của TC-CPN-77 đổi từ FR-12 sang API spec mục 5.2 và giả định mới A28 (chỉ admin); nhận 2xx ghi Khác giả định A28; URL giữ nguyên | Sai | Bản AI (từ S1) truy vết sai căn cứ: Ghi quyền admin của `GET /api/coupons` là yêu cầu FR-12, trong khi FR-12 chỉ nói `/api/admin/*` và các method thay đổi dữ liệu, không yêu cầu quyền admin cho `GET`; căn cứ duy nhất là nhãn "(Dành cho Admin)" ở mục 5.2. Sinh viên phát hiện (S5, ý 1); sinh viên chọn A28 phương án "chỉ admin". Cập nhật lần 2: Đổi loại từ "Thừa" theo yêu cầu của sinh viên |
+| TC-CPN-101, TC-CPN-105, TC-CPN-108, TC-CPN-112, TC-CPN-130 | Thêm cách đọc khi bị từ chối vì là số thập phân (Khác giả định A02, A03); với `-0.01`, được chấp nhận là Sai | Mơ hồ | Kết quả mong đợi của bản AI chỉ ghi một mã lỗi, không phân xử được khi hệ thống từ chối vì nguyên nhân khác. Sinh viên phát hiện (S5, ý 2); sinh viên chọn ghi "Khác giả định" thay vì chấp nhận mọi lý do từ chối |
+| TC-CPN-143, mục 7.1, mục 11 (GH14); TC-CPN-03, TC-CPN-04, TC-CPN-31, TC-CPN-35, TC-CPN-120, TC-CPN-122 | Thêm test case API dạng bảng 4 dòng cho khoảng trắng đầu cuối của `code`; thêm giới hạn GH14 cho 6 test case giao diện | Thiếu | Bản AI chỉ chạy các lớp khoảng trắng qua giao diện, dựa vào lưu ý chung ô chữ không tự cắt khoảng trắng; không xét mã của trang có thể chuẩn hóa giá trị. Sinh viên phát hiện (S5, ý 3) |
+| TC-CPN-144 | Thêm test case danh sách 100 mã: Xem được mọi mã, bố cục không vỡ | Thiếu | Bản AI không tách lớp "rất nhiều mã" của số mã đang có theo rủi ro hiển thị, dù FR17-R02 yêu cầu admin xem được danh sách. Sinh viên phát hiện (S5, ý 4) |
+
+Các mục 2, 9.1, 10, 12, 13 cập nhật theo 4 dòng trên.
