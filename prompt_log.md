@@ -4864,6 +4864,560 @@ Giả định cần chốt:
 Mình đọc bản nháp S2 để đối chiếu với từng câu hỏi và lựa chọn của bạn, đồng thời kiểm tra thao tác của phiên thiết kế:
 
 Phiên thiết kế không vi phạm gì: Ở S2 nó chỉ đọc `WORKFLOW.md` và ghi `ai_raw/S2_equivalence_classes.md`. Mình xuất log trước:
+
+Log đã xuất. Commit bản nháp AI của S2:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/ai_raw/S2_equivalence_classes.md prompt_log.md
+git commit -m "[A-FR01][S2] Identify equivalence classes (AI draft)"
+git push
+```
+
+## Góp ý cho bản trả lời của bạn
+
+### 1. Còn sót 4 giả định
+
+Mục 7 của bản nháp có 13 giả định: A01 đến A11, cùng A13 và A14 (không có A12). Bạn đã trả lời 9 câu. Còn thiếu:
+
+| Giả định | Nội dung | Gợi ý |
+|---|---|---|
+| **A05** | Độ dài tối đa của Email | Ghi "như A01", tức (a) |
+| **A08** | Độ dài tối đa của Mật khẩu | Ghi "như A01", tức (a) |
+| **A02** | Họ Tên được chứa những ký tự nào | Xem giải thích bên dưới |
+| **A09** | Tập ký tự đặc biệt là đóng hay mở | Xem giải thích bên dưới |
+
+**Giải thích A02:** Đặc tả chỉ nói Họ Tên "phải cung cấp", không cấm ký tự nào.
+- **(a)** Mọi ký tự đều hợp lệ. Tên có dấu tiếng Việt, có số, có dấu câu, có `<` hay `'` đều phải đăng ký **thành công**.
+- **(b)** Bạn tự đặt luật cấm một số ký tự. Khi đó phải nói rõ cấm ký tự nào, và sẽ phát sinh thêm một loại lỗi mới.
+
+Vì đặc tả không có luật nào, chọn (a) là sát đặc tả nhất. Chọn (b) là tự đặt ra quy tắc.
+
+**Giải thích A09:** Đặc tả ghi mật khẩu phải có "1 ký tự đặc biệt (`@`, `$`, `!`, `%`, `*`, `?`, `&`)".
+- **(a) Đóng:** Chỉ 7 ký tự này mới được tính. Mật khẩu mà ký tự đặc biệt duy nhất là `#` sẽ bị từ chối.
+- **(b) Mở:** 7 ký tự đó chỉ là ví dụ. `#` cũng được tính, nên mật khẩu đó hợp lệ.
+
+### 2. Có 3 lựa chọn bạn nên xem lại, vì kết quả có thể khác với điều bạn muốn
+
+**A03 (b) và A07 (a) đang xử lý khoảng trắng không nhất quán.**
+- Với Họ Tên, bạn coi "chỉ gồm khoảng trắng" là **đã nhập**, tức hợp lệ. Như vậy, đăng ký với Họ Tên là `"   "` phải **thành công**. Nếu hệ thống từ chối thì test case Fail và bạn phải báo bug. Bạn có thật sự muốn kết quả đó không?
+- Với Email, bạn lại chọn **cắt khoảng trắng** trước khi kiểm tra.
+
+Câu hỏi số 5 của bạn về Họ Tên (khoảng trắng ở đầu và cuối một tên bình thường) cũng xoay quanh chuyện có cắt khoảng trắng hay không. Mình gợi ý **chọn một cách áp dụng chung cho mọi trường**: Cắt khoảng trắng đầu và cuối, nên tên chỉ gồm khoảng trắng tính như rỗng, tức A03 (a). Nếu bạn vẫn chọn (b) thì nên ghi rõ lý do.
+
+**A06 (b), so trùng email có phân biệt chữ hoa, chữ thường.** Với lựa chọn này, `Test@Eshop.com` được coi là email **mới**, phải đăng ký thành công dù `test@eshop.com` đã tồn tại. Thực tế người dùng coi đây là cùng một email, và hầu hết hệ thống đều từ chối. Nếu giữ (b), một hệ thống làm đúng theo thói quen thông thường sẽ bị bạn ghi là Fail. Bạn nên cân nhắc chọn (a).
+
+**A10 (c) chưa trả lời đủ.** Lựa chọn (c) chỉ nói "tách riêng khoảng trắng và ký tự khác", nhưng chưa nói mỗi loại là hợp lệ hay không. Cần ghi thêm, ví dụ: "Khoảng trắng: …; Ký tự khác (chữ có dấu, ký tự ngoài tập): …".
+
+### 3. Các câu hỏi của bạn: Đều đáng hỏi
+
+| Câu | Nhận xét |
+|---|---|
+| Họ Tên 1 (tối thiểu bao nhiêu ký tự) | Đặc tả chỉ nói "phải cung cấp", tức tối thiểu 1 ký tự. EC01 và EC02 đã phủ, các giá trị 0, 1, 2 ký tự sẽ xét ở S4. Hỏi để AI ghi rõ điều này là được |
+| Họ Tên 2 (`Anh-Ngoc 2` gộp số và dấu câu) | **Câu hỏi tốt.** Gộp chữ số và dấu câu vào một lớp là chưa giải thích vì sao hai thứ này được xử lý giống nhau. Tên chỉ gồm số (ví dụ `12345`) cũng là một rủi ro riêng |
+| Họ Tên 3 (ký tự `@`, `/`, `#`) | **Câu hỏi tốt.** EC07 chỉ phủ các ký tự liên quan tới HTML và SQL |
+| Họ Tên 4 (tên toàn chữ thường) | Đặc tả không có luật nào về hoa thường của Họ Tên, nên có thể không cần lớp riêng. Cứ hỏi để AI giải thích |
+| Họ Tên 5 (khoảng trắng đầu và cuối) | **Câu hỏi tốt**, đúng là đang thiếu. Liên quan tới việc chốt A03 như mục 2 ở trên |
+| Email 1 (dấu chấm ở đầu, `..`, `.` ngay sau `@`) | **Câu hỏi tốt.** Đáng chú ý: Theo quy tắc của `type="email"` mà bạn chọn ở A04 (b), dấu chấm ở đầu hay hai dấu chấm liền nhau **ở phần trước `@` lại được coi là hợp lệ**, còn dấu chấm ngay sau `@` thì không. AI cần làm rõ theo đúng lựa chọn của bạn |
+| Email 2 (ký tự `/`, `#`…) | **Câu hỏi tốt.** Theo `type="email"`, nhiều ký tự đặc biệt được phép ở phần trước `@` |
+| Email 3 (tiếng Việt có dấu, Unicode) | **Câu hỏi tốt.** Chưa có lớp nào cho trường hợp này |
+| Email 4 (SQL injection, XSS) | **Đây là câu quan trọng nhất**, vì nó chỉ ra một lập luận sai của AI. Ở mục 8, AI nói không cần lớp riêng vì các ký tự này "đã làm email sai định dạng". Nhưng theo `type="email"`, dấu `'` **được phép** ở phần trước `@`, ví dụ `a'or'1@domain.com` vẫn đúng định dạng và sẽ đi vào cơ sở dữ liệu. Khi bản review sửa chỗ này, bạn ghi loại **"Sai"** |
+
+### 4. Các điểm cần quyết định (1a, 2a, 3a, 4a)
+
+Đã đủ 4 điểm và đều hợp lý.
+
+Nếu bạn sửa xong các chỗ ở mục 1 và mục 2 thì gửi được cho phiên kia. Nhớ dặn nó: Câu nào bạn **hỏi** thì nó phải giải thích, hoặc bổ sung lớp nếu đúng là thiếu; còn câu nào bạn **chọn phương án** thì áp vào bản review. Mọi thay đổi ghi vào bảng thay đổi, kèm đúng loại.
+````
+
+---
+
+### C91 | 00:29 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+A03. Tôi tưởng khoảng trắng là đã nhập, nhưng nó thuộc dạng không hợp lệ.
+A06. Tôi gõ nhầm, phải là a.
+A10. Theo tôi nhớ, khi gõ khoảng trắng vẫn được xem là 1 phần của password và không bị clear phần trống, nhưng tôi không rõ có tính đó là 1 ký tự không. Tôi cần bạn góp ý.
+
+Ngoài ra, bạn có góp ý, rcm tôi chọn cái nào tốt hơn so với lựa chọn, câu hỏi của tôi không? Tôi chỉ hỏi thôi vì tôi sợ mình chọn cũng bị mâu thuẫn.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Mình góp ý theo một nguyên tắc chung, để các lựa chọn của bạn không mâu thuẫn nhau. **Khi đặc tả không nói, ưu tiên theo thứ tự:**
+1. Bám sát chữ của đặc tả.
+2. Theo thông lệ phổ biến và điều người dùng mong đợi.
+3. Nhất quán giữa các trường.
+
+Lựa chọn nào cũng ghi kèm lý do.
+
+## A10: Khoảng trắng trong mật khẩu
+
+Mình đề xuất chọn **(a) Cho phép**, kèm 2 ghi chú:
+- **Khoảng trắng là một ký tự bình thường của mật khẩu.** Nó được tính vào độ dài và **không bị cắt**, kể cả khi nằm ở đầu hoặc cuối. Đây là thông lệ phổ biến: Mật khẩu là chuỗi bí mật, mọi ký tự đều có nghĩa, nên hệ thống không tự sửa.
+- **Chữ có dấu và ký tự ngoài tập cũng hợp lệ** nếu mật khẩu vẫn đủ 4 loại bắt buộc, vì đặc tả chỉ nói "có ít nhất…", không cấm ký tự nào khác.
+
+Một lưu ý: Khi bạn nói "theo tôi nhớ thì khoảng trắng không bị xoá", nếu đó là điều bạn **đã thấy trên chính EShop** thì không nên dùng làm căn cứ. Đó là kết quả nhập thử, và nếu dùng thì sẽ lặp lại chuyện của FR-17. Căn cứ nên là thông lệ chung như trên.
+
+Điểm hay ở đây là **sự khác biệt giữa các trường lại hợp lý**:
+
+| Nhóm trường | Cách xử lý khoảng trắng | Lý do |
+|---|---|---|
+| Họ Tên, Email (thông tin định danh) | Cắt khoảng trắng đầu và cuối; chỉ gồm khoảng trắng thì tính như rỗng | Người dùng gõ thừa dấu cách là lỗi vô ý |
+| Mật khẩu, Xác nhận mật khẩu (thông tin bí mật) | Không cắt, so khớp chính xác từng ký tự | Mọi ký tự đều có nghĩa |
+
+Bạn ghi bảng này vào bản review là các lựa chọn A03, A07, A10, A14 có chung một lý do, không còn mâu thuẫn.
+
+## Đề xuất cho toàn bộ giả định
+
+| Giả định | Bạn chọn | Mình đề xuất | Lý do |
+|---|---|---|---|
+| A01 Độ dài Họ Tên | (a) | ✅ (a) | Đặc tả không giới hạn. S4 sẽ thử giá trị dài nhất giao diện cho nhập |
+| A02 Ký tự trong Họ Tên | Chưa chọn | **(a)** | Đặc tả không cấm ký tự nào. Chọn (b) là tự đặt luật |
+| A03 Họ Tên chỉ có khoảng trắng | (a) | ✅ (a) | Thống nhất với A07 |
+| A04 Định dạng email | (b) | ✅ (b) | FR-22 bắt buộc `type="email"`, FR-02 cũng nhắc tới kiểm tra định dạng HTML5. Theo đó, các lớp về dấu chấm, ký tự đặc biệt, Unicode trong câu hỏi của bạn sẽ có đáp án rõ ràng |
+| A05 Độ dài Email | Chưa chọn | **(a)** | Giống A01 |
+| A06 Trùng email khác hoa thường | (a) | ✅ (a) | Thông lệ và mong đợi của người dùng |
+| A07 Khoảng trắng đầu, cuối của email | (a) | ✅ (a) | Thống nhất với A03 |
+| A08 Độ dài tối đa mật khẩu | Chưa chọn | **(a)** | Giống A01 |
+| A09 Tập ký tự đặc biệt | Chưa chọn | **(a) Đóng** | Đặc tả liệt kê cụ thể 7 ký tự trong ngoặc. Đọc theo chữ thì đó là danh sách đầy đủ |
+| A10 Ký tự khác trong mật khẩu | (c) | **(a)**, kèm ghi chú ở trên | Đặc tả không cấm |
+| A11 Chữ có dấu tính là hoa, thường | (a) | ✅ (a) | Đọc theo chữ thông thường, chỉ tính `A-Z`, `a-z` |
+| A13 Xác nhận mật khẩu để trống | (b) | **(a)**, có cân nhắc | Đặc tả chỉ có một quy tắc là "từ chối nếu không khớp". Ô trống tất nhiên không khớp, tức ERR7. Chọn (b) là tự đặt thêm một loại lỗi mà đặc tả không có. Tác động thực tế nhỏ, vì giao diện đang không có trường này |
+| A14 "Khớp" là trùng chính xác | (a) | ✅ (a) | Thống nhất với cách xử lý mật khẩu |
+
+Có một hệ quả của A09 (a) bạn nên biết trước: Nếu hệ thống chấp nhận mật khẩu chỉ có `#` làm ký tự đặc biệt thì test case đó Fail, và bạn báo là **lệch với đặc tả**. Đây là cách đọc đặc tả có căn cứ, nên báo như vậy được.
+
+Các câu hỏi của bạn và 4 điểm quyết định (1a, 2a, 3a, 4a) giữ nguyên như góp ý lần trước.
+
+Lưu ý khi khai báo: Những đề xuất trong bảng trên là gợi ý của AI (phiên điều phối). Mình đã ghi trong `_NOTES.md` rằng các "Quyết định của SV" có tham khảo gợi ý của Claude. Chọn theo hay không vẫn là quyền của bạn. Nếu bạn giữ lựa chọn khác với đề xuất, ví dụ A13 (b), thì chỉ cần ghi lý do của bạn.
+````
+
+---
+
+### C92 | 00:32 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Giúp tôi soạn lại các câu hỏi, cũng như các quyết định đi để tôi copy, đọc chỉnh sửa và đưa cho session kia. Dù sao tôi cũng đã tự chọn, tự hỏi trước, sau đó mới đưa bạn để tham khảo, tôi lười gõ lại vì khá dài.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đây là bản soạn sẵn theo giọng của bạn. Những chỗ bạn **chưa tự chọn** mình đánh dấu `[CHƯA CHỌN]`, những chỗ bạn chọn khác với gợi ý của mình thì đánh dấu `[XEM LẠI]`. Bạn sửa các chỗ đó rồi **xoá dấu ngoặc vuông** trước khi gửi.
+
+```text
+Tôi đã đọc bản S2. Dưới đây là câu hỏi và quyết định của tôi. Với phần câu hỏi: Bạn giải thích, nếu đúng là thiếu thì bổ sung lớp. Với phần quyết định: Áp vào bản review. Sau đó viết 02_ec.md theo WORKFLOW, mọi thay đổi so với bản AI ghi vào bảng "Thay đổi so với bản AI" kèm đúng loại.
+
+PHẦN 1. CÂU HỎI
+
+Họ Tên:
+1. Đặc tả có nêu độ dài tối thiểu của Họ Tên không (ví dụ 1 ký tự được không, hay phải từ 2)? Nếu chỉ hiểu là "phải cung cấp" thì ghi rõ tối thiểu là bao nhiêu, và các giá trị biên quanh đó để S4 xét.
+2. Vì sao lớp EC06 lấy đại diện "Anh-Ngoc 2", gộp chữ số và dấu câu vào một lớp? Có lý do gì để coi hai loại này được xử lý giống nhau không? Sao không tách riêng chữ số, dấu câu, và trường hợp tên chỉ gồm chữ số?
+3. Các ký tự đặc biệt khác như @, /, # có cần lớp riêng không? EC07 mới chỉ có các ký tự liên quan tới HTML và SQL.
+4. Có cần lớp cho tên viết toàn chữ thường không?
+5. Chưa có lớp cho tên bình thường nhưng có khoảng trắng ở đầu và cuối. Có cần bổ sung không?
+
+Email:
+1. Chưa có lớp cho email có dấu chấm ở đầu, có hai dấu chấm liền nhau, hoặc có dấu chấm ngay sau @. Theo giả định A04 tôi chọn (b) bên dưới thì các trường hợp này thuộc lớp nào?
+2. Các ký tự đặc biệt như /, #, ... trong email có cần lớp riêng không? Theo A04 (b) thì chúng hợp lệ hay không?
+3. Chưa có lớp cho email chứa chữ tiếng Việt có dấu hoặc ký tự Unicode. Có cần bổ sung không?
+4. Mục 8 cho rằng email không cần lớp riêng cho dữ liệu dạng SQL injection hoặc XSS vì các ký tự này đã làm email sai định dạng. Nhưng theo A04 (b), có ký tự như dấu nháy đơn vẫn được phép ở phần trước @, nên email vẫn đúng định dạng. Bạn kiểm tra lại lập luận này.
+
+PHẦN 2. GIẢ ĐỊNH
+
+Nguyên tắc chung về khoảng trắng (áp cho A03, A07, A10, A14):
+- Họ Tên, Email là thông tin định danh: Cắt khoảng trắng đầu và cuối trước khi kiểm tra; chỉ gồm khoảng trắng thì tính như rỗng.
+- Mật khẩu, Xác nhận mật khẩu là thông tin bí mật: Không cắt khoảng trắng; khoảng trắng là một ký tự bình thường, được tính vào độ dài; so khớp chính xác từng ký tự.
+
+A01. (a) Không giới hạn độ dài Họ Tên, không lập lớp độ dài.
+A02. [CHƯA CHỌN] (a) Mọi ký tự đều hợp lệ trong Họ Tên, vì đặc tả không cấm ký tự nào.
+A03. (a) Họ Tên chỉ gồm khoảng trắng tính như rỗng, là lớp không hợp lệ, ERR1.
+A04. (b) Định dạng email theo type="email" của HTML5, vì FR-22 yêu cầu ô Email dùng type="email".
+A05. [CHƯA CHỌN] (a) Như A01.
+A06. (a) So trùng email không phân biệt chữ hoa, chữ thường.
+A07. (a) Cắt khoảng trắng đầu và cuối của email trước khi kiểm tra.
+A08. [CHƯA CHỌN] (a) Như A01.
+A09. [CHƯA CHỌN] (a) Tập ký tự đặc biệt là danh sách đóng, vì đặc tả liệt kê cụ thể 7 ký tự trong ngoặc.
+A10. [XEM LẠI, trước đó chọn c] (a) Cho phép ký tự khác ngoài 4 loại: Khoảng trắng là ký tự hợp lệ, được tính vào độ dài và không bị cắt; chữ có dấu và ký tự ngoài tập cũng hợp lệ nếu mật khẩu vẫn đủ 4 loại. Đặc tả chỉ nói "có ít nhất", không cấm ký tự khác.
+A11. (a) Chữ hoa, chữ thường chỉ tính A-Z, a-z.
+A13. [XEM LẠI, đang chọn b] (b) Xác nhận mật khẩu để trống là lỗi riêng "thiếu Xác nhận mật khẩu". Nếu đổi sang (a): Để trống là trường hợp không khớp, ERR7, vì đặc tả chỉ có quy tắc "từ chối nếu không khớp".
+A14. (a) "Khớp" là trùng chính xác từng ký tự.
+
+PHẦN 3. ĐIỂM CẦN QUYẾT ĐỊNH (mục 10)
+
+1. (a) Giữ 1 lớp cho tập ký tự đặc biệt; ở S3 hoặc S4 thử đủ 7 ký tự.
+2. (a) Giữ 6 lớp không hợp lệ cho định dạng email.
+3. (a) Giữ EC22.
+4. (a) Giữ EC07, kèm giới hạn quan sát như mục 8.
+```
+
+Một vài chỗ bạn nên tự đọc lại cho chắc:
+- **A13:** Bạn giữ (b) hay đổi sang (a)? Bản soạn để sẵn cả hai cách viết, bạn xoá cách không chọn.
+- **A10:** Mình đã ghi theo gợi ý (a). Nếu bạn vẫn muốn (c) thì phải nói rõ khoảng trắng và ký tự khác, mỗi loại là hợp lệ hay không.
+- **Câu hỏi Email 4:** Mình viết hơi "gợi đáp án" (nêu luôn ví dụ dấu nháy đơn). Nếu bạn muốn đo xem AI có **tự** nhận ra lỗi lập luận hay không, thì chỉ hỏi: "Bạn kiểm tra lại lập luận ở mục 8 về email với A04 (b)." Như vậy phần gap analysis sẽ rõ hơn.
+````
+
+---
+
+### C93 | 00:36 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã đọc bản S2. Dưới đây là câu hỏi và quyết định của tôi. Với phần câu hỏi: Bạn giải thích, nếu đúng là thiếu thì bổ sung lớp. Với phần quyết định: Áp vào bản review. Sau đó viết 02_ec.md theo WORKFLOW, mọi thay đổi so với bản AI ghi vào bảng "Thay đổi so với bản AI" kèm đúng loại.
+
+PHẦN 1. CÂU HỎI
+
+Họ Tên:
+1. Đặc tả có nêu độ dài tối thiểu của Họ Tên không (ví dụ 1 ký tự được không, hay phải từ 2)? Nếu chỉ hiểu là "phải cung cấp" thì ghi rõ tối thiểu là bao nhiêu, và các giá trị biên quanh đó để S4 xét.
+2. Vì sao lớp EC06 lấy đại diện "Anh-Ngoc 2", gộp chữ số và dấu câu vào một lớp? Có lý do gì để coi hai loại này được xử lý giống nhau không? Sao không tách riêng chữ số, dấu câu, và trường hợp tên chỉ gồm chữ số?
+3. Các ký tự đặc biệt khác như @, /, # có cần lớp riêng không? EC07 mới chỉ có các ký tự liên quan tới HTML và SQL.
+4. Có cần lớp cho tên viết toàn chữ thường không?
+5. Chưa có lớp cho tên bình thường nhưng có khoảng trắng ở đầu và cuối. Có cần bổ sung không?
+
+Email:
+1. Chưa có lớp cho email có dấu chấm ở đầu, có hai dấu chấm liền nhau, hoặc có dấu chấm ngay sau @. Theo giả định A04 tôi chọn (b) bên dưới thì các trường hợp này thuộc lớp nào?
+2. Các ký tự đặc biệt như /, #, ... trong email có cần lớp riêng không? Theo A04 (b) thì chúng hợp lệ hay không?
+3. Chưa có lớp cho email chứa chữ tiếng Việt có dấu hoặc ký tự Unicode. Có cần bổ sung không?
+4. Mục 8 cho rằng email không cần lớp riêng cho dữ liệu dạng SQL injection hoặc XSS vì các ký tự này đã làm email sai định dạng. Nhưng theo A04 (b), có ký tự như dấu nháy đơn vẫn được phép ở phần trước @, nên email vẫn đúng định dạng. Bạn kiểm tra lại lập luận này.
+
+PHẦN 2. GIẢ ĐỊNH
+
+Nguyên tắc chung về khoảng trắng (áp cho A03, A07, A10, A14):
+- Họ Tên, Email là thông tin định danh: Cắt khoảng trắng đầu và cuối trước khi kiểm tra; chỉ gồm khoảng trắng thì tính như rỗng.
+- Mật khẩu, Xác nhận mật khẩu là thông tin bí mật: Không cắt khoảng trắng; khoảng trắng là một ký tự bình thường, được tính vào độ dài; so khớp chính xác từng ký tự.
+
+A01. (a) Không giới hạn độ dài Họ Tên, không lập lớp độ dài.
+A02. (a) Mọi ký tự đều hợp lệ trong Họ Tên, vì đặc tả không cấm ký tự nào.
+A03. (a) Họ Tên chỉ gồm khoảng trắng tính như rỗng, là lớp không hợp lệ, ERR1.
+A04. (b) Định dạng email theo type="email" của HTML5, vì FR-22 yêu cầu ô Email dùng type="email".
+A05. (a) Như A01.
+A06. (a) So trùng email không phân biệt chữ hoa, chữ thường.
+A07. (a) Cắt khoảng trắng đầu và cuối của email trước khi kiểm tra.
+A08. (a) Như A01.
+A09. (a) Tập ký tự đặc biệt là danh sách đóng, vì đặc tả liệt kê cụ thể 7 ký tự trong ngoặc.
+A10. (a) Cho phép ký tự khác ngoài 4 loại: Khoảng trắng là ký tự hợp lệ, được tính vào độ dài và không bị cắt; chữ có dấu và ký tự ngoài tập cũng hợp lệ nếu mật khẩu vẫn đủ 4 loại. Đặc tả chỉ nói "có ít nhất", không cấm ký tự khác.
+A11. (a) Chữ hoa, chữ thường chỉ tính A-Z, a-z.
+A13. (a): Để trống là trường hợp không khớp, ERR7, vì đặc tả chỉ có quy tắc "từ chối nếu không khớp".
+A14. (a) "Khớp" là trùng chính xác từng ký tự.
+
+PHẦN 3. ĐIỂM CẦN QUYẾT ĐỊNH (mục 10)
+
+1. (a) Giữ 1 lớp cho tập ký tự đặc biệt; ở S3 hoặc S4 thử đủ 7 ký tự.
+2. (a) Giữ 6 lớp không hợp lệ cho định dạng email.
+3. (a) Giữ EC22.
+4. (a) Giữ EC07, kèm giới hạn quan sát như mục 8.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Bash: Count classes by type and check numbering in 02_ec.md
+- Bash: Re-run class count with UTF-8 output
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã xem các câu hỏi và quyết định của bạn. Trước khi viết, tôi kiểm tra quy tắc `type="email"` của HTML5 vì giả định A04 (b) quyết định câu trả lời cho phần lớn câu hỏi về Email.
+
+Theo định nghĩa "valid email address" của HTML Standard, quy tắc như sau:
+- **Phần trước `@`:** Gồm chữ cái, chữ số và các ký tự `. ! # $ % & ' * + / = ? ^ _ { } ~ -`, cùng dấu huyền ngược và dấu gạch đứng. Dấu chấm được đặt ở bất kỳ đâu.
+- **Phần sau `@`:** Là các nhãn cách nhau bằng dấu chấm. Mỗi nhãn chỉ gồm chữ cái, chữ số và `-`, phải bắt đầu và kết thúc bằng chữ cái hoặc chữ số, dài tối đa 63 ký tự. Không bắt buộc có đuôi tên miền.
+
+Tôi kiểm tra lại số lớp theo từng loại bằng script, để tránh đếm nhầm như lần trước.
+
+Tôi đã viết xong [02_ec.md](Homeworks/HW02/features/A_FR-01_DangKy/02_ec.md). Đếm bằng script thì khớp với bảng tổng hợp: 68 lớp, gồm 27 hợp lệ, 32 không hợp lệ, 1 phụ thuộc giả định và 8 lớp Output. File `ai_raw/` không bị sửa.
+
+**Trả lời câu hỏi (ghi đầy đủ ở mục 11 của file):**
+
+*Họ Tên:*
+1. **Độ dài tối thiểu:** Đặc tả không nêu. "Phải cung cấp" nghĩa là tối thiểu 1 ký tự sau khi cắt khoảng trắng; không có căn cứ để đòi từ 2 ký tự. Tôi đã ghi các giá trị biên cho S4: 0, 1, 2 ký tự, kèm các biến thể có khoảng trắng.
+2. **Gộp chữ số với dấu câu ở EC06:** Bản AI gộp mà không có lý do. Một hệ thống có thể cho phép `-` và `.` nhưng cấm chữ số, nên tôi tách thành EC06 (chữ số kèm chữ cái), EC56 (ký tự đặc biệt thông thường) và EC55 (không có chữ cái nào, ví dụ tên chỉ gồm chữ số).
+3. **`@`, `/`, `#`:** Không cần lớp riêng, vì không có lý do để tin chúng được xử lý khác `-` và `.`. Tôi đưa chúng vào làm đại diện của EC56.
+4. **Tên viết toàn chữ thường:** Không cần lớp riêng, vì đặc tả không có điều kiện nào về chữ hoa, chữ thường của tên. Tên viết thường thuộc EC04.
+5. **Khoảng trắng đầu cuối:** Cần lớp riêng, đã thêm EC54.
+
+*Email (theo quy tắc HTML5 mà bạn chọn ở A04):*
+1. **Dấu chấm:** Phải xét theo từng phía của `@`.
+   - Phía trước `@`: Dấu chấm ở đầu, ở cuối hay hai dấu liền nhau đều **hợp lệ** theo HTML5, dù sai theo RFC 5322 (EC57).
+   - Phía sau `@`: Các trường hợp đó **không hợp lệ** (EC58).
+   - **Lưu ý:** Hệ quả này khá lạ. Nếu bạn thấy không ổn thì đây là lúc xem lại A04.
+2. **`/` và `#`:**
+   - Phía trước `@`: Hợp lệ (EC59). Ký tự ngoài tập cho phép như `(`, `,`, `<` thì không hợp lệ (EC60).
+   - Phía sau `@`: Không hợp lệ (EC61).
+   - Tôi bổ sung thêm 2 luật HTML5 mà bản AI bỏ sót: Nhãn tên miền không được bắt đầu hoặc kết thúc bằng `-` (EC62), và mỗi nhãn dài tối đa 63 ký tự (EC63). Luật 63 ký tự sẽ là biên cần xét ở S4.
+3. **Unicode:**
+   - Phía trước `@`: Không hợp lệ (EC64).
+   - Phía sau `@`: Chưa kết luận được, đưa vào giả định mới A15 (EC65).
+4. **Lập luận ở mục 8:** Bạn nói đúng, lập luận của bản AI sai. Dấu nháy đơn vẫn hợp lệ ở phía trước `@`, nên tôi thêm EC66 (lớp theo rủi ro SQL) và sửa lại mục 8.
+
+**Giả định và quyết định của bạn:** Đã áp hết. Nguyên tắc khoảng trắng nằm ở mục 1.1, các giả định đã chốt ở mục 7.2, bốn quyết định ở mục 10. Sau khi áp, 15 lớp trước đây ghi "phụ thuộc giả định" đã đổi thành hợp lệ hoặc không hợp lệ.
+
+**Bảng "Thay đổi so với bản AI" (mục 12), 32 dòng:**
+- **Sai (1 dòng):** Lập luận về email ở mục 8.
+- **Thiếu (12 dòng):** Các lớp bổ sung và giả định A15. Trong đó có 4 thứ do tôi tự thêm, bạn chưa hỏi tới:
+  - EC62, EC63: Hai luật HTML5 về nhãn tên miền.
+  - EC67: Email trùng sau khi cắt khoảng trắng. Lý do: Hệ thống có thể chỉ cắt khoảng trắng khi kiểm tra định dạng mà quên cắt khi so trùng.
+  - EC68: Mật khẩu chỉ đủ 8 ký tự khi tính cả khoảng trắng ở đầu hoặc cuối. Lý do: Kiểm tra trường hợp hệ thống lỡ cắt khoảng trắng của mật khẩu.
+
+  Bốn dòng này đều ghi rõ "AI bổ sung".
+- **Quyết định của SV (19 dòng):** Phần còn lại.
+
+**Bạn cần trả lời một câu trước khi sang S3:**
+- **A15:** Email có tên miền chứa chữ có dấu, ví dụ `user01@tênmiền.vn`, xử lý thế nào?
+  - (a) Theo định nghĩa của HTML Standard, chỉ nhận ký tự ASCII, nên không hợp lệ.
+  - (b) Theo hành vi trình duyệt chuyển tên miền sang dạng punycode, nên hợp lệ.
+
+**Commit 2 của S2:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/02_ec.md
+git commit -m "[A-FR01][S2] Review equivalence classes"
+```
+````
+
+---
+
+### C94 | 09:57 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi có câu hỏi muốn hỏi. Tôi vẫn chưa hiểu về ai_raw cho lắm. Tại sao S0_khao_sat lại có _v2 dù đó là bản sửa dựa trên quyết định/góp ý của tôi mà các bản khác không có? Tôi cần bạn confirm lại về ai_raw chứa những gì? Và nếu giờ tôi review 02_ec tiếp thì nó có sinh ra file nào trong ai_raw không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Mình giải thích lại cho rõ.
+
+## `ai_raw/` chứa gì
+
+**`ai_raw/` lưu bản nháp mà AI tự đề xuất cho một bước, trước khi bạn review.** Mỗi bước thường chỉ có **một** file:
+
+| Bước | File trong `ai_raw/` | Bản review tương ứng |
+|---|---|---|
+| S0 | `S0_khao_sat.md` (+ `S0_khao_sat_v2.md`, xem bên dưới) | `00_spec.md` |
+| S1 | `S1_input_output.md` | `01_io.md` |
+| S2 | `S2_equivalence_classes.md` | `02_ec.md` |
+| S3, S4 | Tương tự | `03_tc.md`, `04_bva.md` |
+
+## Vì sao S0 có `_v2` mà các bước khác không có
+
+Ranh giới nằm ở chỗ: **Bản nháp có dùng được để review không?**
+
+| Trường hợp | Ví dụ | Kết quả |
+|---|---|---|
+| **Bản nháp hỏng**, vi phạm quy tắc làm bài, phải làm lại trước khi review | S0 lần đầu yêu cầu bạn dùng DevTools, vi phạm nguyên tắc hộp đen. Bạn chưa thể điền bảng quan sát theo bản đó | AI làm lại **bản nháp**, lưu thành `_v2` |
+| **Bản nháp dùng được**, bạn đọc rồi chọn phương án, đặt câu hỏi, yêu cầu bổ sung | S1: Bạn chọn 5 quyết định. S2 bây giờ: Bạn hỏi và chốt giả định | AI viết **bản review** (`01_io.md`, `02_ec.md`), không tạo file nào trong `ai_raw/` |
+
+Lần sửa S0 cũng do bạn yêu cầu, nên mình hiểu vì sao bạn thấy khó phân biệt. Điểm khác nằm ở **lý do sửa**: Lần đó AI làm sai quy tắc, không phải bạn chốt nội dung.
+
+## Review `02_ec.md` bây giờ có sinh file trong `ai_raw/` không?
+
+**Không.** Toàn bộ câu hỏi và quyết định của bạn đi vào `02_ec.md`. Bằng chứng nằm ở 3 chỗ:
+- **Prompt log:** Bạn hỏi gì, AI trả lời và giải thích ra sao.
+- **Bảng "Thay đổi so với bản AI" trong `02_ec.md`:** Những lớp bị thêm hoặc sửa, kèm loại (Thiếu, Sai, Quyết định của SV…).
+- **Git diff** giữa commit bản nháp và commit bản review.
+
+Chỉ có một trường hợp sẽ sinh `S2_equivalence_classes_v2.md`: Bạn thấy bản nháp S2 hỏng đến mức phải **làm lại cả bước từ đầu**. Hiện tại không phải như vậy.
+
+Có một gợi ý cho bảng thay đổi trong `02_ec.md`: Ở cột "Lý do", nên ghi rõ **ai phát hiện**, ví dụ "SV hỏi (câu Email 4)" hoặc "AI tự bổ sung". Ở S8 bạn sẽ cần phân biệt chỗ nào AI bỏ sót và bạn tìm ra, chỗ nào AI tự sửa được.
+````
+
+---
+
+### C95 | 10:01 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Mỗi lần review 1 commit hay là review hết 1 đợt và commit 1 lần?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+**Review xong cả đợt rồi mới commit một lần.** Đây đúng là quy ước ở `WORKFLOW.md` mục 4.2: Mỗi bước từ S1 đến S4 có 2 commit.
+1. Bản nháp AI, ví dụ `[A-FR01][S2] Identify equivalence classes (AI draft)`.
+2. Bản review **khi bạn đã duyệt xong**, ví dụ `[A-FR01][S2] Review equivalence classes`.
+
+Trong lúc review, bạn hỏi đáp và sửa đi sửa lại với AI bao nhiêu vòng cũng được, **không cần commit từng vòng**. Các vòng đó đã được prompt log ghi đủ. Commit từng vòng chỉ làm git log dài thêm mà không thêm thông tin gì.
+
+Có 2 trường hợp nên commit thêm:
+- **Đã commit bản review rồi mới phát hiện sai:** Thêm một commit sửa, giữ nguyên tag của bước, ví dụ `[A-FR01][S2] Fix missing class for unicode email`.
+- **Phải dừng giữa chừng** (hết ngày, đổi máy…) mà review chưa xong: Có thể commit tạm với message ghi rõ, ví dụ `[A-FR01][S2] Review equivalence classes (part 1)`, rồi commit phần còn lại sau. Nếu làm liền một mạch thì không cần.
+````
+
+---
+
+### C96 | 10:11 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+- Nếu trong trường hợp mật khẩu toàn khoảng trắng thì sao? Là kiểu 8 dấu cách, theo kỳ vọng thì sẽ không rỗng như vi phạm độ mạnh. Mỗi tội không rõ hệ thống sẽ có tính đó là thiếu mật khẩu không.
+- Nếu khoảng trắng giữa họ tên (ví dụ: Nguyen  Van A) thì có được tính không? Đặc tả có nhắc gì về chuẩn hóa khoảng trắng ở giữa không?
+- A15 tôi dự định chọn b. Bạn có thể xem thử quyết định của tôi có bị mâu thuẫn với các quyết định trước không.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi trả lời từng ý. Chưa sửa `02_ec.md`; bạn chốt xong thì tôi áp một lần.
+
+**1. Mật khẩu chỉ gồm khoảng trắng (8 dấu cách)**
+
+Theo nguyên tắc khoảng trắng đã chốt (không cắt, khoảng trắng là ký tự bình thường):
+- Mật khẩu **đã được cung cấp**, nên không vi phạm FR01-R03 và không phải ERR5.
+- Độ dài là 8, nên đạt FR01-R06.
+- Nhưng không có chữ hoa, chữ thường, chữ số, ký tự đặc biệt. Kết quả mong đợi là **ERR6**. Nếu hệ thống báo "thiếu mật khẩu" (ERR5) thì nghĩa là nó đã cắt khoảng trắng, trái với giả định, và đó là ứng viên bug.
+
+Vướng mắc: Lớp này **không thể có đại diện chỉ vi phạm một lớp không hợp lệ**. Một chuỗi toàn khoảng trắng chắc chắn rơi vào cả EC29, EC32, EC35 và EC37. Vì vậy test case của lớp này sẽ trái với quy tắc ở S3 ("mỗi test case không hợp lệ chỉ phủ đúng một lớp không hợp lệ"). Có hai cách:
+- **(a)** Thêm EC69, xếp vào điều kiện "Bắt buộc cung cấp", loại H vì "đã cung cấp". Kết quả mong đợi là ERR6, không phải ERR5. Ghi rõ đây là ngoại lệ của quy tắc S3, vì mục đích của lớp là phân biệt ERR5 với ERR6.
+- **(b)** Không thêm. Việc hệ thống có lỡ cắt khoảng trắng của mật khẩu hay không thì EC68 đã kiểm tra một cách "sạch" (chỉ vi phạm một điều kiện).
+
+Tôi nghiêng về (a): EC68 chỉ cho biết hệ thống có cắt khoảng trắng hay không, còn EC69 cho biết bước kiểm tra "rỗng" diễn ra trước hay sau khi cắt. Đây là hai lỗi khác nhau.
+
+**2. Nhiều khoảng trắng ở giữa Họ Tên (`Nguyen  Van A`)**
+
+- Đặc tả không nhắc gì tới chuẩn hóa khoảng trắng ở giữa. Nguyên tắc của bạn chỉ nói tới khoảng trắng **đầu và cuối**. Kết hợp với A02 (a) (mọi ký tự hợp lệ), tên này **hợp lệ**, kết quả mong đợi là OUT1.
+- Hệ thống có gộp các khoảng trắng liền nhau khi lưu hay không thì trong FR-01 không quan sát được, vì trang Đăng ký không hiển thị lại tên. Tôi sẽ ghi điểm này thành giới hạn quan sát, giống mục 8.
+- **Có nên lập lớp riêng không:** Tôi đề xuất **có** (EC70, loại H). Lý do giống lúc tách EC06 và EC56: Nhiều hệ thống kiểm tra tên theo mẫu "các từ cách nhau đúng một dấu cách", nên có lý do để tin tên này bị xử lý khác EC04. Không cần giả định mới, nhưng tôi sẽ ghi thêm vào mục 1.1 một câu: "Khoảng trắng ở giữa giữ nguyên, không chuẩn hóa".
+
+**3. A15 chọn (b): Không mâu thuẫn, nhưng có 3 hệ quả cần ghi rõ**
+
+- **Khớp với A04 (b):** A04 (b) nghĩa là "theo hành vi của `type="email"`". Chuẩn HTML mô tả chính hành vi này: Trình duyệt chuyển phần tên miền quốc tế sang punycode, còn phần trước `@` vẫn chỉ nhận ASCII. Vì vậy EC64 (Unicode ở phần trước `@` là KH) và EC65 (Unicode ở phần sau `@` là H) không mâu thuẫn nhau.
+- **Hệ quả 1, phụ thuộc trình duyệt:** Chuẩn HTML chỉ ghi trình duyệt "nên" chuyển (should), không bắt buộc. Do đó kết quả mong đợi của EC65 chỉ đúng với trình duyệt có làm việc này. Ở S6 cần ghi rõ trình duyệt dùng để test (ảnh của bạn đang dùng Chrome).
+- **Hệ quả 2, test qua API:** Gọi thẳng API thì không có trình duyệt nào chuyển punycode. Email Unicode sẽ tới hệ thống ở dạng nguyên bản, và theo định nghĩa ASCII thì nó không hợp lệ. Như vậy cùng một giá trị nhưng **kết quả mong đợi qua giao diện và qua API khác nhau**. Điểm này cần chốt ở S3 nếu có test qua API.
+- **Hệ quả 3, biên của EC63:** Luật 63 ký tự áp lên **dạng punycode**, mà dạng này dài hơn dạng có dấu. S4 phải tính biên theo dạng punycode.
+
+Ngoài ra, nếu email được lưu ở dạng punycode, thì `user01@tênmiền.vn` và dạng punycode tương ứng là cùng một email. Đây là một trường hợp so trùng có thể xét, nhưng tôi thấy đi quá sâu so với FR-01 nên **đề xuất không thêm lớp**, chỉ ghi chú.
+
+**Nếu bạn đồng ý, tôi sẽ sửa `02_ec.md` như sau:**
+- Thêm EC69 nếu bạn chọn (a) ở ý 1.
+- Thêm EC70 và câu về khoảng trắng ở giữa vào mục 1.1.
+- Chốt A15 (b), chuyển EC65 thành H, ghi 3 hệ quả trên.
+- Cập nhật mục 6, 9, 11 và bảng "Thay đổi so với bản AI".
+
+Bạn chọn (a) hay (b) cho ý 1, và có đồng ý thêm EC70 không?
+````
+
+---
+
+### C97 | 10:15 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Chọn a và đồng ý thêm EC70. Tôi cũng đồng ý việc không nên đi quá sâu phần user01@tênmiền.vn và dạng punycode tương ứng là cùng một email, chúng ta chỉ nên ghi chú.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Bash: Verify class counts and numbering after update
+- Bash: Check for leftover GĐ classes and forbidden separators
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi áp các quyết định vào `02_ec.md`: Thêm EC69 và EC70, chốt A15 (b) kèm 3 hệ quả, ghi chú về trường hợp trùng email ở dạng punycode, và cập nhật mục 6, 9, 11, 12.
+
+Tôi kiểm tra lại số lớp và các mã lớp bằng script.
+
+Tôi đã cập nhật [02_ec.md](Homeworks/HW02/features/A_FR-01_DangKy/02_ec.md). Đếm lại bằng script thì có 70 lớp: 30 hợp lệ, 32 không hợp lệ, 8 lớp Output. Không còn lớp nào phụ thuộc giả định; chữ "GĐ" chỉ còn xuất hiện trong bảng thay đổi để ghi lại lịch sử.
+
+**Những gì đã thêm và sửa:**
+- **EC69 (mật khẩu chỉ gồm khoảng trắng):**
+  - Xếp vào điều kiện "bắt buộc cung cấp" với loại H. Kết quả mong đợi là **ERR6**, không phải ERR5.
+  - Ghi rõ đây là ngoại lệ của quy tắc S3 ("mỗi test case không hợp lệ chỉ phủ một lớp không hợp lệ"), và nêu điểm khác với EC68.
+  - Phần quy ước ở mục 1 có thêm một câu: Cột "Loại" xét theo điều kiện của từng dòng. Câu này để giải thích vì sao một lớp H lại cho kết quả lỗi.
+- **EC70 (nhiều khoảng trắng ở giữa Họ Tên):** Thêm lớp H. Mục 1.1 ghi thêm "khoảng trắng ở giữa giữ nguyên, không chuẩn hóa". Mục 8 ghi rằng trong FR-01 không quan sát được hệ thống có gộp khoảng trắng khi lưu hay không.
+- **A15 (b):**
+  - Đưa vào bảng giả định đã chốt; EC65 đổi thành hợp lệ.
+  - Mục 7.3 ghi 3 hệ quả: Kết quả phụ thuộc trình duyệt; qua giao diện và qua API có thể ra kết quả khác nhau; biên 63 ký tự tính trên dạng punycode.
+  - Trường hợp `user01@tênmiền.vn` và dạng punycode của nó là cùng một email chỉ được ghi chú, không lập lớp.
+- **Mục 11.3 (mới):** Ghi lại ba câu bạn hỏi và câu trả lời.
+- **Mục 12:** Thêm 8 dòng. EC69 và EC70 ghi loại **Thiếu**, kèm ghi chú "sinh viên phát hiện"; các dòng còn lại là **Quyết định của SV**. Sửa dòng tổng hợp thành 70 lớp.
+
+**Ba điểm sẽ phải chốt ở S3:**
+- Cách thực thi các lớp của IN4 (Xác nhận mật khẩu), vì giao diện chưa có trường này.
+- Có test qua API hay không. Nếu có thì kết quả mong đợi của EC65 qua API cần chốt riêng (hệ quả 2 của A15).
+- Cách xử lý ngoại lệ EC69 khi chọn test case.
+
+**Commit:** Bạn chưa commit `02_ec.md` lần nào thì dùng lệnh này:
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/02_ec.md
+git commit -m "[A-FR01][S2] Review equivalence classes"
+```
+Nếu đã commit bản trước thì đổi message thành `[A-FR01][S2] Add whitespace classes and resolve IDN email assumption`.
+````
+
+---
+
+### C98 | 10:30 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã review xong bản 02_ec. Bạn xuất log, kiểm tra lại lần nữa giúp tôi. Nếu không có gì thì đưa tôi commit message, còn nếu có gì, hãy nói tôi (vì đôi lúc tôi sợ mình bỏ sót gì đó)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit design session and check ai_raw integrity
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
+- Bash: Check formatting, class numbering, export log
+
+**Output AI (nguyên văn):**
+
+````text
+Nội dung `02_ec.md` đầy đủ và nhất quán. Mình kiểm tra thêm phần hình thức rồi xuất log:
 ````
 
 
