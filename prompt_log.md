@@ -6113,7 +6113,268 @@ S4 đã có ai_raw, xuất log và đưa tôi commit message. Sau đó tôi
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Log đã xuất xong, chỉ có 2 phiên HW02. Phiên thiết kế **không vi phạm gì**:
+- Đọc `WORKFLOW.md` và `03_tc.md`.
+- Dùng Python tính độ dài dạng punycode của tên miền có dấu, để lấy biên 63 và 64 ký tự (đúng hệ quả 3 của A15).
+- Ghi `ai_raw/S4_bva.md`.
+
+Các file `ai_raw/` cũ vẫn nguyên vẹn.
+
+Commit bản nháp S4:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/ai_raw/S4_bva.md prompt_log.md
+git commit -m "[A-FR01][S4] Design boundary value test cases (AI draft)"
+git push
+```
+
+Khi review S4, bạn đối chiếu với slide S04 (bước 4) theo các ý sau:
+
+| Kiểm tra | Câu hỏi |
+|---|---|
+| Đủ biên cho mỗi phân vùng có thứ tự | Có đủ LB-1, LB, LB+1 và UB-1, UB, UB+1 không? Ví dụ: Mật khẩu 7/8/9 ký tự; Họ Tên 0/1/2 ký tự (sau khi cắt khoảng trắng); nhãn tên miền 63/64 ký tự |
+| Phân vùng không có cận trên | Họ Tên, Email, Mật khẩu (A01, A05, A08) xử lý thế nào? Slide có mục "giá trị lớn nhất mà giao diện cho nhập" |
+| Biên lấy đúng chỗ | Các biên có khớp với giả định đã chốt không? Ví dụ: Biên của mật khẩu tính **cả khoảng trắng** (vì không cắt); biên của Họ Tên tính **sau khi cắt** khoảng trắng |
+| Trùng với S3 | Giá trị biên nào đã có test case ở S3 thì nên tham chiếu lại, không tạo test case trùng |
+| Mỗi test case không hợp lệ chỉ vi phạm một biên | Giống quy tắc ở S3 |
+
+Một lưu ý cho lúc review: Nếu muốn **chắc chắn có lượt soát độc lập** như lần S3, bạn nên đọc và tự đặt câu hỏi trước, rồi gửi cho phiên này soát lại **trước khi** phiên thiết kế viết `04_bva.md`. Như vậy những điểm phiên điều phối phát hiện được đưa vào cùng một lần review, không phải sửa thêm lần 2.
+````
+
+---
+
+### C110 | 13:50 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Phần họ tên sao không có testcase hai khoảng trắng ở trước và sau 1 ký tự (VD: ' A ') bởi vì không biết hệ thống kiểm tra >=1 rồi mới trim hay trim làm mất ký tự duy nhất mất.
+2. Tại sao mật khẩu lại thử mật khẩu 1 ký tự? Nó vi phạm cả 4 điều kiện, thì lúc trả về sao biết lỗi vì gì được. Hay bạn đang đo lười một lỗi nào khác?
+3. Tại sao lại test thêm mật khẩu 20 ký tự dù đã có các bài test về  9 ký tự rồi? Tôi tưởng nó nằm trong 1 khoảng với nhau.
+4. Điều kiện khớp chuỗi là phép so sánh bằng, không có khoảng giá trị thứ tự; các trường hợp lệch 1 ký tự hoặc lệch khoảng trắng có khả năng giống nhau không? Như vậy có nên bỏ bớt không?
+
+Điểm cần sinh viên quyết định khi review:
+1. a
+2. a
+3. a
+4. a
+5. a
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Outline the S4 draft
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S4_bva.md
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đọc bản nháp S4 để góp ý cho sát với từng câu hỏi và từng điểm quyết định:
+
+Mình đã đọc bản nháp S4 và có góp ý cho từng ý của bạn. Cuối cùng là bản tin nhắn soạn sẵn để bạn gửi.
+
+## Các câu hỏi của bạn
+
+**Câu 1 (`␣A␣`): Rất tốt, và đây là chỗ AI bỏ sót có bằng chứng rõ ràng.** Ở cuối mục 2 của `02_ec.md`, phiên thiết kế **tự ghi** cho S4 xét "các biến thể có khoảng trắng như `␣A␣` (còn 1 ký tự, hợp lệ)". Vậy mà bản nháp S4 lại không có test case nào cho giá trị đó. Đây là lỗi loại "Thiếu" do bạn phát hiện. Kết quả mong đợi là OUT1, vì sau khi cắt khoảng trắng vẫn còn 1 ký tự.
+
+**Câu 2 (mật khẩu 1 ký tự): Lập luận đúng, nhưng đang mâu thuẫn với quyết định 2 bạn chọn.** Câu hỏi của bạn cho thấy TC-REG-105 vi phạm nhiều điều kiện cùng lúc, nên không biết lỗi do điều kiện nào. Nhưng ở quyết định 2 bạn lại chọn **(a) Giữ**. Bạn cần chọn một trong hai:
+- **(b) Bỏ**, nếu theo đúng lập luận của bạn. Khi đó TC-REG-106 (4 ký tự, chỉ vi phạm độ dài) là giá trị nhỏ nhất cho lớp không hợp lệ.
+- **(a) Giữ**, nhưng phải ghi lý do: Slide yêu cầu xét điểm LB của lớp (1 ký tự). Vì lỗi mật khẩu đã gộp chung thành ERR6 (quyết định ở S1), kết quả mong đợi vẫn xác định được, chỉ không chẩn đoán được nguyên nhân.
+
+**Câu 3 (mật khẩu 20 ký tự): Đúng.** Đó là điểm "Giữa" trong 9 điểm của slide. Nhưng phân vùng hợp lệ không có cận trên, nên 20 ký tự chỉ là một giá trị nằm cùng lớp với 9 ký tự. Bỏ đi hoàn toàn hợp lý, ghi là "Quyết định của SV".
+
+**Câu 4 (lệch 1 ký tự khi so khớp): Đúng, và còn một lý do mạnh hơn.** Mục 1 của chính bản nháp ghi "**chỉ áp BVA cho phân vùng có thứ tự**", trong khi P8 (so khớp chuỗi) **không có thứ tự**. Như vậy bản nháp tự mâu thuẫn với quy tắc của nó, và đây là lỗi loại "Thừa". Các giá trị "gần khớp" thực ra là kiểm tra theo rủi ro, không phải BVA. Hơn nữa, cả 4 test case đều sẽ bị chặn vì giao diện không có ô Xác nhận mật khẩu (D01), nên chỉ làm tăng số test case mà không chạy được. Mình đề xuất bỏ cả P8, hoặc giữ tối đa 1 test case.
+
+## Bạn còn sót
+
+**Điểm quyết định 6** (TC-REG-111, khoảng trắng ở **đầu** mật khẩu). Mình đề xuất chọn **(a) Giữ**: Test case này rẻ, và kiểm một rủi ro riêng là hệ thống có thể chỉ cắt khoảng trắng một phía.
+
+## Phiên điều phối phát hiện thêm 1 điểm
+
+**TC-REG-124 (Email là 1 dấu cách) gặp đúng vấn đề như ở S3.** Ô `type="email"` tự cắt khoảng trắng, nên qua giao diện giá trị này biến thành chuỗi rỗng và trùng với TC-REG-32. Nên bỏ, hoặc chỉ ghi chú giới hạn giống ghi chú 6 ở S3.
+
+## Tin nhắn soạn sẵn
+
+Bạn sửa chỗ `[CHỌN]` rồi xoá dấu ngoặc vuông trước khi gửi:
+
+```text
+Tôi đã đọc bản S4. Với câu hỏi: Bạn giải thích, nếu đúng là thiếu hoặc thừa thì sửa. Với quyết định: Áp vào bản review. Sau đó viết 04_bva.md theo WORKFLOW, ghi mọi thay đổi vào bảng "Thay đổi so với bản AI" kèm đúng loại.
+
+CÂU HỎI
+1. Họ Tên: Sao không có test case một ký tự có khoảng trắng hai bên (ví dụ ␣A␣)? Không biết hệ thống kiểm tra độ dài >= 1 trước rồi mới cắt khoảng trắng, hay cắt trước làm mất ký tự duy nhất. Lưu ý: Cuối mục 2 của 02_ec.md đã ghi biến thể này cho S4 xét.
+2. Mật khẩu 1 ký tự (TC-REG-105) vi phạm cùng lúc độ dài và 3 điều kiện loại ký tự, vậy khi bị từ chối sao biết lỗi vì điều kiện nào? Bạn đang nhắm tới lỗi nào khác không?
+3. Vì sao cần thêm mật khẩu 20 ký tự (TC-REG-109) khi đã có 9 ký tự? Tôi hiểu hai giá trị này nằm cùng một lớp.
+4. Khớp chuỗi là phép so sánh bằng, không có thứ tự, trong khi mục 1 của bản S4 ghi chỉ áp BVA cho phân vùng có thứ tự. Các trường hợp lệch 1 ký tự (P8) có phải BVA không? Có nên bỏ bớt không, nhất là khi chúng đều dự kiến Blocked do D01?
+5. (Điểm này do Claude ở phiên điều phối, session 305c705a, phát hiện khi soát lại; ghi đúng người phát hiện trong bảng thay đổi.) TC-REG-124 (Email là 1 dấu cách) qua giao diện có bị ảnh hưởng bởi việc ô type="email" tự cắt khoảng trắng như ghi chú 6 ở 03_tc.md không? Nếu có thì nó trùng với TC-REG-32.
+
+QUYẾT ĐỊNH
+1. (a) 1000 ký tự.
+2. [CHỌN: (b) Bỏ TC-REG-105, dùng TC-REG-106 làm giá trị nhỏ nhất chỉ vi phạm độ dài | hoặc (a) Giữ, ghi là ngoại lệ, lý do: ...]
+3. (a) Giữ TC-REG-112, TC-REG-113.
+4. (a) Giữ 2 test case API.
+5. (a) Ghi là khác giả định A05, xét ở S5 hoặc S7 trước khi coi là bug.
+6. (a) Giữ TC-REG-111.
+Bỏ TC-REG-109 (theo câu 3). Xử lý P8 và TC-REG-124 tùy câu trả lời của câu 4 và câu 5.
+```
+
+Mình đã gắn sẵn ghi chú người phát hiện vào câu 5, nên lần này phiên thiết kế sẽ ghi đúng là phiên điều phối, không phải sinh viên.
+````
+
+---
+
+### C111 | 13:57 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã đọc bản S4. Với câu hỏi: Bạn giải thích, nếu đúng là thiếu hoặc thừa thì sửa. Với quyết định: Áp vào bản review, nhớ kiểm tra xem các quyết định của tôi có bị mâu thuẫn không. Sau đó viết 04_bva.md theo WORKFLOW, ghi mọi thay đổi vào bảng "Thay đổi so với bản AI" kèm đúng loại.
+
+CÂU HỎI
+1. Họ Tên: Sao không có test case một ký tự có khoảng trắng hai bên (ví dụ ␣A␣)? Không biết hệ thống kiểm tra độ dài >= 1 trước rồi mới cắt khoảng trắng, hay cắt trước làm mất ký tự duy nhất. Lưu ý: Cuối mục 2 của 02_ec.md đã ghi biến thể này cho S4 xét.
+2. Mật khẩu 1 ký tự (TC-REG-105) vi phạm cùng lúc độ dài và 3 điều kiện loại ký tự, vậy khi bị từ chối sao biết lỗi vì điều kiện nào? Bạn đang nhắm tới lỗi nào khác không?
+3. Vì sao cần thêm mật khẩu 20 ký tự (TC-REG-109) khi đã có 9 ký tự? Tôi tưởng hai giá trị này nằm cùng một lớp.
+4. Khớp chuỗi là phép so sánh bằng, không có thứ tự, trong khi mục 1 của bản S4 ghi chỉ áp BVA cho phân vùng có thứ tự. Các trường hợp lệch 1 ký tự (P8) có phải BVA không? Có nên bỏ bớt không, nhất là khi chúng đều dự kiến Blocked do D01?
+5. (Điểm này do Claude ở phiên điều phối phát hiện khi soát lại; ghi đúng người phát hiện trong bảng thay đổi.) TC-REG-124 (Email là 1 dấu cách) qua giao diện có bị ảnh hưởng bởi việc ô type="email" tự cắt khoảng trắng như ghi chú 6 ở 03_tc.md không? Nếu có thì nó trùng với TC-REG-32.
+
+QUYẾT ĐỊNH
+1. (a)
+2. (b)
+3. (a)
+4. (a)
+5. (a)
+6. (a)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Bash: Verify BVA IDs, removed IDs, and reused references in 04_bva.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã xem 5 câu hỏi và 6 quyết định. Kiểm tra mâu thuẫn thì có **một điểm vướng nhẹ**: Câu 5 dẫn tới việc chuyển TC-REG-124 sang chạy qua API, mà quyết định 4 (a) lại chốt "giữ 2 test case biên qua API". Tôi chọn chuyển TC-REG-124 sang API (thành 3 test case API) và nêu rõ phương án thay thế ở cuối. Giờ tôi viết `04_bva.md`.
+
+Tôi đã viết xong [04_bva.md](Homeworks/HW02/features/A_FR-01_DangKy/04_bva.md). Kiểm tra bằng script: Có đúng 25 test case BVA, các mã đã bỏ không còn xuất hiện trong bảng, và mọi test case dùng lại đều có trong `03_tc.md`. Có thể duyệt rồi commit.
+
+**Trả lời 5 câu hỏi (ghi đầy đủ ở mục 9 của file):**
+1. **`␣A␣` cho Họ Tên:** Đúng là thiếu. `02_ec.md` đã ghi biến thể này cho S4 xét, nhưng bản AI bỏ qua. Bản AI lập luận rằng giá trị này không phân biệt được hệ thống cắt khoảng trắng trước hay sau khi kiểm tra độ dài, mà quên một lỗi khác: Bước cắt khoảng trắng bị cài sai làm mất luôn ký tự duy nhất. Đã thêm TC-REG-131.
+2. **TC-REG-105 (mật khẩu 1 ký tự):** Khi bị từ chối thì không biết vì điều kiện nào. Bản AI chọn giá trị này chỉ vì nó là điểm biên theo slide, không nhắm tới lỗi cụ thể nào. Đã bỏ, theo quyết định 2 (b).
+3. **TC-REG-109 (mật khẩu 20 ký tự):** Đúng, nó cùng lớp với 9 ký tự. Phân vùng hợp lệ không có cận trên nên điểm "giữa" không xác định được. Đã bỏ.
+4. **P8 (Xác nhận mật khẩu gần khớp):** Không phải BVA. So khớp chuỗi là phép so sánh bằng, không có thứ tự, nên bản AI đã tự mâu thuẫn với nguyên tắc ở mục 1 của chính nó. Thêm nữa, cả 4 test case đều sẽ bị Blocked. Đã bỏ P8 và TC-REG-125 đến 128.
+5. **TC-REG-124 (Email là 1 dấu cách) qua giao diện:** Có bị ảnh hưởng. Nếu ô dùng `type="email"`, trình duyệt cắt dấu cách thành chuỗi rỗng, nên test case này trùng TC-REG-32. Đã chuyển sang chạy qua API, và bảng thay đổi ghi đúng người phát hiện là Claude ở phiên điều phối.
+
+**Kiểm tra mâu thuẫn (mục 7):** Có một chỗ vướng.
+- Quyết định 4 (a) chốt giữ 2 test case biên qua API. Nhưng câu 5 dẫn tới việc chuyển TC-REG-124 sang API, nên nhóm này thành 3 test case.
+- Tôi đã chọn **chuyển sang API**, để giữ điểm biên nhỏ nhất (1 dấu cách) cho Email.
+- Nếu bạn muốn đúng 2 test case API thì có thể bỏ hẳn TC-REG-124, vì TC-REG-80 (3 dấu cách qua API) đã kiểm hành vi này của EShop. Báo tôi nếu bạn chọn cách đó.
+
+Các quyết định còn lại không mâu thuẫn với nhau.
+
+**Kết quả:** Còn 25 test case mới (22 qua giao diện, 3 qua API), không còn test case nào dự kiến bị Blocked. Mã của các test case đã bỏ không được dùng lại.
+
+**Bảng "Thay đổi so với bản AI" (mục 10), 15 dòng:**
+- **Thừa (4 dòng):** TC-REG-105, TC-REG-109, P8, TC-REG-124 qua giao diện.
+- **Thiếu (4 dòng):**
+  - TC-REG-131.
+  - Quy ước kiểm biên khoảng trắng của Email qua API.
+  - Nguyên tắc "mỗi điểm biên chỉ vi phạm một điều kiện" (AI bổ sung khi viết bản review, rút ra từ câu 2).
+  - Ghi chú ô Mật khẩu không bị trình duyệt cắt khoảng trắng (AI bổ sung).
+- **Quyết định của SV (7 dòng):** Phần còn lại.
+
+**Commit 2 của S4:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/04_bva.md
+git commit -m "[A-FR01][S4] Review boundary value analysis"
+```
+
+Theo WORKFLOW, S5 (review lần cuối, bổ sung test case AI bỏ sót) là phần bạn làm chính. Khi bạn cần hỗ trợ xuất Word và Excel bằng skill `test-case-writing` thì báo tôi.
+````
+
+---
+
+### C112 | 14:29 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Bỏ TC-REG-124 đi vì đã có 3 dấu cách rồi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get time and find all TC-REG-124 references
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Bash: Verify TC-REG-124 removed and count BVA test cases
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi bỏ TC-REG-124 khỏi `04_bva.md` và cập nhật các chỗ liên quan: Bảng P7, nhóm API, phần tổng hợp, truy vết, mục 7 (kiểm tra mâu thuẫn) và bảng thay đổi.
+
+Tôi đã bỏ TC-REG-124 khỏi [04_bva.md](Homeworks/HW02/features/A_FR-01_DangKy/04_bva.md). Kiểm tra lại thì bảng giá trị biên còn 24 test case và không còn chỗ nào nhắc tới TC-REG-124.
+
+**Những gì đã sửa:**
+- **Bảng P7 (mục 4.2):** Bỏ dòng Email là 1 dấu cách. Ghi chú bên dưới giải thích lý do: Qua giao diện thì trùng TC-REG-32; qua API thì TC-REG-80 (3 dấu cách) đã kiểm cùng hành vi.
+- **Nhóm biên qua API:** Còn đúng 2 test case (TC-REG-129, 130), khớp với quyết định 4 (a).
+- **Tổng hợp:** 24 test case mới, gồm 22 qua giao diện và 2 qua API.
+- **Truy vết:** FR01-R02 không còn test case BVA mới; các điểm biên của nó dùng lại TC-REG-32 và TC-REG-80.
+- **Mục 7 (kiểm tra mâu thuẫn):** Chỗ vướng ghi là "đã xử lý", theo quyết định bỏ TC-REG-124 của bạn.
+- **Mục 8, 9, 10:** Sửa theo. Dòng TC-REG-124 trong bảng thay đổi vẫn là loại **Thừa**, và ghi đủ hai nguồn: Claude ở phiên điều phối phát hiện vấn đề với ô `type="email"`, còn bạn quyết định bỏ.
+- **Mục 2:** Thêm TC-REG-124 vào danh sách mã đã bỏ, không dùng lại.
+- **Đầu file:** Thêm dòng cập nhật lần 2.
+
+**Commit:** Nếu bạn chưa commit `04_bva.md` thì dùng message của commit 2 S4:
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/04_bva.md
+git commit -m "[A-FR01][S4] Review boundary value analysis"
+```
+Nếu đã commit bản trước thì dùng `[A-FR01][S4] Remove duplicate single-space email boundary test`.
+````
+
+---
+
+### C113 | 14:37 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã review xong 04_bva. Bạn có thể kiểm tra lại xem có lỗi gì mà tôi bỏ sót không. Nếu không thì xuất log và commit message.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit design session and outline 04_bva.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\04_bva.md
+- Bash: Verify punycode label lengths and password lengths
+- Bash: Verify punycode label lengths and password lengths
+- Bash: Compute punycode length for the 64-char boundary and password lengths
+- Bash: Check formatting, update tracker and notes, export log
+
+**Output AI (nguyên văn):**
+
+````text
+Trước khi kết luận, mình tự kiểm lại phép tính punycode của TC-REG-121 và TC-REG-122, vì đây là chỗ dễ sai nhất mà mắt thường không kiểm được:
+
+Mọi giá trị đều đúng. Mình kiểm tra phần hình thức, ghi chú, cập nhật tracker và xuất log:
 ````
 
 
