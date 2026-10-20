@@ -6836,6 +6836,535 @@ Tôi cũng lưu một ghi nhớ rằng mình chịu trách nhiệm đồng bộ 
 
 ````text
 `SKILL.md` có cấu trúc tốt. Mình đọc tiếp các file tham chiếu quan trọng nhất (`rules.md`, `lessons.md`, `platforms.md`):
+
+Skill **đạt**, có thể commit:
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác của phiên thiết kế | ✅ Chỉ đọc `WORKFLOW.md` và các file của FR-01. **Không đọc thư mục FR-17**, cũng không đọc `00_exploratory.md` |
+| Bản nộp và bản chạy | ✅ `HW02/skills/domain-testing-design/` giống hệt `.claude/skills/domain-testing-design/` |
+| Script `check_step.py` | ✅ Chạy được trên FR-01, không báo lỗi sai |
+| Nội dung | ✅ Đủ quy trình S0 đến S4, có điểm dừng chờ bạn, quy tắc hộp đen, quy tắc về `ai_raw/` và `_v2`, cách nối sang S5. File `lessons.md` gắn mỗi quy tắc với lỗi thật đã gặp |
+
+Có 4 điểm nên biết **trước khi chạy skill** cho các feature còn lại:
+
+1. **FR-17 sẽ bị báo "thiếu" ở bước trước.** `00_spec.md` của FR-17 làm theo định dạng cũ: Câu hỏi đánh số Q1 đến Q8, không có bảng thay đổi có cột Loại. Skill có mục "Bắt đầu từ giữa chừng", nên nó sẽ rà và **báo cho bạn chứ không tự viết lại**. Đây là hành vi đúng. Nếu nó hỏi về các dòng "Đã thử ở S0 (E0x)" thì bạn **từ chối cung cấp** kết quả nhập thử.
+2. **`platforms.md` có gợi ý chung cho Web Admin** về trường số (số thập phân, số âm, số 0) và trường ngày. Mình đã kiểm, phiên thiết kế không đọc gì của FR-17, nên đây là kiến thức chung kết hợp với SRS. Có điều gợi ý này sẽ giúp AI ở FR-17 tìm ra một số lớp mà ở S0 bạn đã nhập thử ra. Khi phân tích gap của FR-17 ở S8 cần ghi rõ điểm này, mình đã ghi vào `_NOTES.md`.
+3. **Phiên thiết kế đã tự thêm một ghi nhớ chung** (`skill-sync-duty.md`): Mỗi lần sửa skill trong `HW02/skills/` thì phải chép sang `.claude/skills/` và so lại. Ghi nhớ này hợp lý, phiên điều phối cũng sẽ làm theo nếu có sửa skill.
+4. **Video demo:** Đề yêu cầu video chạy skill trọn một feature. Mình đề xuất quay khi chạy skill cho **FR-07** (Web, bắt đầu từ S0), vì FR-17 bắt đầu giữa chừng còn FR-04 phải chạy trên điện thoại.
+
+Ngoài ra, script của skill đã đếm sẵn số dòng theo loại trong các bảng thay đổi của FR-01: **Sai 1, Thiếu 25, Thừa 6, Mơ hồ 0, Quyết định của SV 57**. Mình đã ghi vào `_NOTES.md` để dùng cho S8.
+
+Log đã xuất. Commit (chỉ commit thư mục `skills/` trong repo; bản ở `.claude/skills/` nằm ngoài repo):
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add skills prompt_log.md
+git commit -m "[skill] Add domain-testing-design skill from FR-01 workflow"
+git push
+```
+
+Tracker đã ghi skill đã viết xong và đang chờ chạy thử. Khi bạn chạy skill cho feature tiếp theo, nhớ mở **phiên Claude mới** rồi báo mình để mình thêm session đó vào whitelist của prompt log.
+````
+
+---
+
+### C118 | 15:46 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bây giờ tôi nên làm gì, hoàn thành nốt S5 -> S8 của A hay chạy skill chon C?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current date and time
+
+**Output AI (nguyên văn):**
+
+````text
+Mình xem giờ hiện tại để tính quỹ thời gian còn lại trước khi đề xuất:
+
+Bây giờ là 15:47 thứ Ba. Hạn nộp là **12:00 ngày mai**, tức còn khoảng 20 tiếng, chưa trừ thời gian ngủ.
+
+**Mình đề xuất chạy skill cho C (FR-17) ngay**, không làm nốt S5 đến S8 của A trước. Có 3 lý do:
+
+1. **Điểm số.** A, B, C mỗi feature 25 điểm, D 15 điểm. Một feature có thiết kế đầy đủ mà chạy test ít vẫn được điểm phần lớn. Một feature không có gì thì mất trắng 25 điểm. Làm A thật hoàn chỉnh trong khi C, B, D trống là rủi ro lớn nhất.
+2. **S6 của A rất nặng.** FR-01 có 96 test case chạy tay, nếu làm hết sẽ mất cả buổi. Phần này nên làm **gộp với S6 của các feature khác** trong một đợt, khi đã biết tổng khối lượng, để ưu tiên chạy những test case quan trọng.
+3. **Có thể làm song song.** Trong lúc AI viết bản nháp cho C, bạn làm S5 của A (nhẹ, chủ yếu là duyệt lại bộ test case). Khi đọc review bản nháp của C, bạn cũng đã rõ mình cần gì.
+
+## Lịch đề xuất
+
+| Thời gian | Việc |
+|---|---|
+| **20/10, 16:00 đến 19:00** | Phiên mới, chạy skill cho **C (FR-17)** từ S1 đến S4. Review **gọn**: Chỉ hỏi những chỗ quan trọng, giả định nào chấp nhận được thì chọn kèm lý do ngắn. Xen kẽ S5 của A |
+| **19:00 đến 22:00** | Phiên mới, chạy skill cho **B (FR-07)** từ S0 đến S4, **có quay video** để nộp phần Agent Skill |
+| **22:00 đến 24:00** | Chạy skill cho **D (FR-04, Mobile)** từ S0 đến S4. S0 cần chụp ảnh trên điện thoại |
+| **21/10, 06:00 đến 09:00** | **S6 cho cả 4 feature**, chạy theo thứ tự ưu tiên (bên dưới). Sau đó là **S7**: Tạo issue cho các bug tìm được |
+| **09:00 đến 11:00** | S8 và phần chung: `report.md`, AI Critique, Audit Report, các form, README, PDF, `git_log.txt`, nén zip |
+| **11:00 đến 11:30** | Kiểm tra lần cuối, nộp. Còn 30 phút dự phòng |
+
+## Ưu tiên khi chạy S6
+
+Đề cho phép báo số test case **chưa thực thi**, nên không bắt buộc chạy hết. Thứ tự ưu tiên:
+1. Test case không hợp lệ, vì đây là chỗ dễ có bug nhất.
+2. Các điểm biên (BVA).
+3. Nhóm API.
+4. Test case hợp lệ cơ sở.
+5. Phần còn lại nếu còn thời gian. Test case nào không kịp chạy thì ghi "Not run".
+
+## Những gì phiên này làm giúp để tiết kiệm thời gian của bạn
+
+- Soạn sẵn tin nhắn gọi skill cho từng feature.
+- Bật và tắt server, chạy `adb reverse` cho mobile.
+- Soát bản nháp và bản review của skill như các bước trước.
+- Đến cuối, **dựng sẵn khung `report.md`** từ các file review đã có, viết nháp AI Critique và Audit Report từ chất liệu trong `_NOTES.md`, điền form bằng các script có sẵn. Bạn chỉ cần đọc, sửa, ký.
+
+Nếu bạn đồng ý, mình soạn ngay tin nhắn gọi skill cho FR-17. Khi gửi, bạn mở một **phiên mới** để AI bắt đầu sạch, không dính ngữ cảnh của FR-01.
+````
+
+---
+
+### C119 | 15:49 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tức là giờ ở session A: Tôi bảo tiếp tục sang bước S5.
+Ở session C: Tôi dựa vào tin nhắn bạn gợi ý ở đây và mở session mới bắt đầu?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Confirm exploratory file is outside the workspace and list FR-17 folder
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng là như vậy, chỉ cần làm rõ thêm vài chỗ:
+
+| Phiên | Việc |
+|---|---|
+| **Phiên A** (`38378bef`, phiên thiết kế cũ) | Bảo nó sang S5 |
+| **Phiên C** (mở mới) | Dán tin nhắn mình soạn bên dưới |
+| **Phiên này** (điều phối) | Xuất log, soát cả hai phiên, đưa lệnh commit, bật server |
+
+**Về S5 ở phiên A:** Theo `WORKFLOW.md`, S5 là việc **của bạn**: Review lần cuối và bổ sung những test case AI bỏ sót. AI chỉ hỗ trợ. Vì vậy khi nhắn cho phiên A, bạn nên nói rõ AI làm gì, ví dụ:
+- Gộp `03_tc.md` và `04_bva.md` thành **bộ test case cuối cùng**, trong đó mỗi test case ghi nguồn gốc (AI, AI có sinh viên sửa, hay sinh viên thêm).
+- Bạn tự nghĩ thêm test case mà AI bỏ sót, nếu có, rồi đưa nó ghi vào.
+- **Chưa cần** xuất Word/Excel bằng skill `test-case-writing` ngay. Việc này nên làm một lần cho cả 4 feature ở cuối, để tiết kiệm thời gian.
+
+`WORKFLOW.md` chưa quy định tên file cho S5, nên nhiều khả năng phiên A sẽ hỏi. Mình gợi ý tên `05_final.md`.
+
+Trước khi mở phiên C, mình kiểm tra file kết quả nhập thử của FR-17 đã nằm ngoài thư mục làm bài chưa:
+
+File kết quả nhập thử của FR-17 đã **nằm ngoài `D:\Dang\Test`**, nên an toàn. Thư mục FR-17 hiện có `00_spec.md` và ảnh chụp, còn `ai_raw/` thì trống, vì S0 của FR-17 làm theo cách cũ nên không có bản nháp AI. Điểm này cần báo cho skill biết, nếu không nó có thể tưởng S0 chưa làm.
+
+**Tin nhắn mở phiên C.** Bạn đọc và sửa tuỳ ý trước khi gửi:
+
+```text
+Tôi đang làm bài tập HW02. Dùng skill domain-testing-design để thiết kế test case cho feature C, FR-17 Quản lý mã giảm giá (Coupon CRUD) trên Web Admin (http://localhost:5174). Thư mục làm việc: Homeworks/HW02/features/C_FR-17_QuanLyCoupon/.
+
+Bối cảnh:
+- Đọc Homeworks/HW02/WORKFLOW.md trước. Những gì được đọc và không được đọc theo WORKFLOW mục 1.4. Không đọc thư mục của các feature khác.
+- S0 đã làm xong theo quy trình cũ, trước khi có skill: Có 00_spec.md và ảnh trong screenshots/, nhưng không có ai_raw/S0_khao_sat.md. Vì vậy bắt đầu từ S1. Theo mục "Bắt đầu từ giữa chừng" của skill: Rà 00_spec.md, báo cho tôi những gì thiếu so với quy trình hiện tại, không tự viết lại.
+- Ở S0 tôi đã nhập thử vài trường hợp trên giao diện (00_spec.md có ghi "Đã thử ở S0"). Kết quả được cất riêng và sẽ không cung cấp. Không hỏi và không tìm kết quả này; thiết kế như thể chưa biết.
+
+Cách làm:
+- Đi từng bước S1, S2, S3, S4 theo skill, mỗi lượt một bước, dừng chờ tôi review.
+- Thời gian gấp: Ở mục "Điểm cần sinh viên quyết định", với mỗi điểm, ghi thêm phương án bạn đề xuất kèm lý do một dòng để tôi chọn nhanh. Quyết định vẫn là của tôi.
+- Commit message theo dạng [C-FR17][S1] ..., tôi tự commit.
+
+Lượt này: Đọc WORKFLOW, skill, 00_spec.md và ảnh; rà S0; báo những gì thiếu và những câu cần hỏi trước khi viết S1. Chưa viết file.
+```
+
+Lưu ý về dòng "ghi thêm phương án bạn đề xuất": Dòng này giúp bạn chọn nhanh hơn, nhưng làm giảm mức "tự quyết" của bạn. Phần gap analysis vẫn ổn, vì bạn vẫn ghi lý do khi chọn. Nếu muốn giữ nguyên cách làm như FR-01 thì bỏ dòng đó.
+
+Khi phiên C đã chạy lượt đầu, bạn báo mình. Mình sẽ thêm session ID mới vào whitelist, rồi kiểm tra các thao tác của nó, đặc biệt là xem nó có đọc thư mục FR-01 hay đi tìm kết quả nhập thử không.
+````
+
+---
+
+### C120 | 15:53 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi tưởng chỉ cần gọi /domain-testing-design là nó sẽ tự động nạp những gì cần thiết. Mặc dù prompt của bạn rất chặt chẽ, nhưng tôi chỉ có thắc mắc là không phải trong skill sẽ ghi luôn sao, mình chỉ dặn dò thêm những gì chưa có (chủ yếu để biết skill hoạt động có tốt không). Tôi hiểu vậy có đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn hiểu **đúng**. Khi gọi `/domain-testing-design`, Claude nạp `SKILL.md`, và chính `SKILL.md` dặn đọc tiếp `WORKFLOW.md`, `rules.md`, `lessons.md` cùng hướng dẫn của bước đang làm. Phần lớn những gì mình viết trong tin nhắn trước **skill đã có sẵn**:
+
+| Nội dung trong tin nhắn trước | Skill đã có chưa |
+|---|---|
+| Đọc `WORKFLOW.md`, những gì được đọc và không được đọc, không đọc feature khác | ✅ Có (Bước 0 và `rules.md` mục 1) |
+| Mỗi lượt một bước, dừng chờ review | ✅ Có |
+| Bắt đầu giữa chừng: Rà bước trước, báo thiếu, không tự viết lại | ✅ Có (Bước 0, ý 4) |
+| Định dạng commit, bạn tự commit | ✅ Có |
+| **Feature nào, thư mục nào, nền tảng nào** | ❌ Không có, nhưng nếu thiếu thì skill sẽ hỏi |
+| **S0 làm theo cách cũ, không có `ai_raw/S0_khao_sat.md`** | ❌ Không có. Bảng xác định bước của skill có dòng "chưa có gì thì làm S0", nên có thể đoán sai |
+| **Có kết quả nhập thử nhưng không cung cấp, không được hỏi** | ⚠️ Có một nửa: Skill cấm đọc file đó, nhưng không cấm hỏi |
+| **Ghi phương án đề xuất để chọn nhanh** | ❌ Không có, và ngược với quy tắc "không chọn thay" của skill. Đây là yêu cầu riêng lần này |
+
+Vì vậy, chỉ cần gọi skill kèm **những thông tin skill không thể tự biết**. Gọi gọn như vậy còn có lợi: Bạn **đo được skill tự hoạt động đến đâu**, đúng mục đích chạy thử, và đoạn video demo cũng tự nhiên hơn.
+
+Bản rút gọn:
+
+```text
+/domain-testing-design Feature C, FR-17 Quản lý mã giảm giá trên Web Admin (http://localhost:5174), thư mục Homeworks/HW02/features/C_FR-17_QuanLyCoupon/.
+
+Lưu ý riêng cho feature này:
+- S0 đã làm theo quy trình cũ trước khi có skill: Có 00_spec.md và ảnh, nhưng không có ai_raw/S0_khao_sat.md. Bắt đầu từ S1.
+- Ở S0 tôi có nhập thử vài trường hợp; kết quả được cất riêng, không cung cấp. Không hỏi về kết quả này, thiết kế như thể chưa biết.
+- (Tuỳ chọn) Thời gian gấp: Ở mỗi điểm cần quyết định, ghi thêm phương án bạn đề xuất kèm lý do một dòng; quyết định vẫn là của tôi.
+```
+
+Sau khi chạy, nếu skill vẫn đoán sai bước hay hỏi điều không cần hỏi, đó chính là chỗ cần sửa skill. Mình sẽ ghi những điểm đó vào `_NOTES.md` để dùng cho phần Agent Skill trong báo cáo.
+````
+
+---
+
+### C121 | 15:55 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+<command-message>domain-testing-design</command-message>
+<command-name>/domain-testing-design</command-name>
+<command-args>Feature C, FR-17 Quản lý mã giảm giá trên Web Admin (http://localhost:5174), thư mục Homeworks/HW02/features/C_FR-17_QuanLyCoupon/.
+
+Lưu ý riêng cho feature này:
+- S0 đã làm theo quy trình cũ trước khi có skill: Có 00_spec.md và ảnh, nhưng không có ai_raw/S0_khao_sat.md. Bắt đầu từ S1.
+- Ở S0 tôi có nhập thử vài trường hợp; kết quả được cất riêng, không cung cấp. Không hỏi về kết quả này, thiết kế như thể chưa biết.
+- Ở mỗi điểm cần quyết định, ghi thêm phương án bạn đề xuất kèm lý do một dòng; quyết định vẫn là của tôi.</command-args>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List project, feature folder and skill files
+- Read: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\rules.md
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\lessons.md
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\step-s1.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\00_spec.md
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\assets\templates\ai_raw.md
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\example-fr01.md
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\platforms.md
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\step-s0.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_03_giao_dien_quan_ly_ma_giam_gia.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_04_form_them_coupon_khong_noi_dung.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_05_dropdown_type.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_06_chon_ngay_expired.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_07_nut_thao_tac_xoa.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_07_nut_thao_tac_tao_ma.png
+- Grep: (?i)coupon|mã giảm|400|401|403|404|409|422|error|lỗi|status
+- Grep: (?i)coupon|mã giảm|is_active|expired_at|FR-17|admin
+- Bash: Read relevant sections of API spec and SRS
+- AskUserQuestion
+- Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S1_input_output.md
+- Bash: Run format check and list used codes
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi bắt đầu bằng việc đọc quy trình dự án, tài liệu của skill và thư mục feature.
+
+Bây giờ tôi xem các ảnh chụp giao diện.
+
+Ảnh khớp với `00_spec.md`. Tôi đối chiếu thêm SRS và API spec xem có đoạn nào về coupon, mã lỗi chung hay định dạng phản hồi mà `00_spec.md` chưa trích.
+
+Tôi đã đọc xong `WORKFLOW.md`, tài liệu của skill, `00_spec.md`, 7 ảnh và các đoạn liên quan trong SRS và API spec. Ảnh khớp với `00_spec.md`. Theo skill, khi bắt đầu từ giữa chừng thì tôi phải rà S0 trước, báo chỗ thiếu và chưa viết S1.
+
+## Rà S0 ([00_spec.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/00_spec.md))
+
+| # | Điểm thiếu | Hệ quả cho S1 trở đi |
+|---|---|---|
+| 1 | Không có `ai_raw/S0_khao_sat.md`, mục "Ghi chú cho bước sau" và bảng thay đổi (anh/chị đã biết) | S1 tự rút ghi chú từ Q1 đến Q8 và mục "Điểm cần đối chiếu". S8 không có dữ liệu gap cho S0 |
+| 2 | Chưa trích một số đoạn áp cho màn hình này: **SEC-05** (Parameterized Query), **FR-24** (trang trống phải có icon và message), **FR-23** (Navbar highlight trang đang chọn), API **5.1** `POST /api/apply-coupon` | Nếu không có SEC-05, S2 không có căn cứ lập lớp chuỗi kiểu SQL cho `code`. Nếu không có FR-24, sẽ không xét được danh sách khi đã xóa hết mã |
+| 3 | Đặc tả không thống nhất về đường dẫn: FR-12 ghi `POST/PUT/DELETE /api/coupons`, còn API spec ghi `POST`, `DELETE /api/admin/coupons`. Chưa có câu hỏi mở cho điểm này | S1 phải ghi cả hai đường dẫn ở cột "Trường API" và nêu thành câu hỏi |
+| 4 | Thiếu câu hỏi mở về: Thông báo lỗi (vị trí, nhiều lỗi cùng lúc, form có giữ dữ liệu không); phản hồi API khi thành công và thất bại (API spec không nêu cho POST, DELETE); khoảng trắng của `code`; `code` có tự chuyển chữ hoa không (bảng hiện chữ hoa, nhưng mã mẫu vốn đã viết hoa); quy tắc hiện chữ "Hết hạn" (C2 ghi "trước `expired_at`", vậy đúng ngày `expired_at` thì sao); loại `fixed` có được lớn hơn `min_order_amount` không; xóa rồi tạo lại cùng `code` | Ràng buộc nào không có câu hỏi gốc thì S2 không có giả định để chia lớp |
+| 5 | Có mã gộp nhiều điều kiện: R11 (JWT, role, 3 thao tác), R14 (ngôn ngữ, màu, tiền tệ). Chưa chia nhóm chính, phụ, API, tham khảo | Ở S3, ma trận truy vết khó ghi "phủ một phần" |
+| 6 | Câu hỏi đánh mã `Q1` thay cho `Q01`; bảng quan sát không có mã `Onn`, khác biệt không có mã `Dnn` | S1 sẽ trỏ dạng "mục 4.3 dòng (1)". Giả định ở S2 lấy mã `A01` ứng với `Q1` |
+| 7 | Hai ảnh trùng số thứ tự `S0_07`. Ảnh `S0_03` thấy thanh địa chỉ nhưng không thấy tiêu đề tab | Không ảnh hưởng S1, vì FR-17 không yêu cầu gì về tiêu đề tab |
+
+Về các lần nhập thử ở S0: Tôi chỉ dùng phần giao diện như cột "Đưa vào prompt" đã ghi. Với Q1 đến Q4 và Q7, tôi coi như chưa biết kết quả.
+
+Có ba quyết định ảnh hưởng tới cấu trúc của cả bản S1. Vì `ai_raw/` không được sửa sau khi viết, tôi cần anh/chị chốt trước:
+
+Đã chốt cả 3 điểm theo phương án đề xuất. Tôi lấy thời gian để ghi vào đầu file rồi viết bản AI của S1.
+
+Tự kiểm bằng script của skill:
+
+Tôi đã viết xong bản AI của S1 tại [ai_raw/S1_input_output.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S1_input_output.md). Script kiểm định dạng báo 0 lỗi, và tôi đã đi qua checklist S1 trong `lessons.md`.
+
+## Tóm tắt
+
+- **Tiền điều kiện:** Có 2 mục. PC1 là đăng nhập admin khi chạy qua giao diện, PC2 là dữ liệu ở trạng thái mẫu. Thao tác qua API có bảng đường dẫn riêng.
+- **Input:** Có 12 biến.
+  - Thêm: IN1 đến IN6 (`code`, `type`, `discount_value`, `min_order_amount`, `expired_at`, `max_uses_per_user`).
+  - Xóa: IN7 là mã cần xóa. IN8 là lựa chọn ở hộp thoại xác nhận, chỉ là ứng viên vì chưa biết có hộp thoại hay không.
+  - Gián tiếp: IN9 là các mã đang có, IN10 là ngày chạy test, IN11 là người gọi API (chỉ dùng ở nhóm API). IN12 là múi giờ, chỉ là ứng viên.
+- **Output:**
+  - Thành công: Có 9 mục, từ OUT1 đến OUT10 trừ OUT4.
+  - OUT4 gom các thuộc tính của thông báo lỗi, ví dụ vị trí phải ở trên nút "Tạo mã".
+  - Bị từ chối: Có 15 loại lỗi theo nguyên nhân, từ ERR1 đến ERR15. Đặc tả không nêu câu chữ thông báo nào, nên bản này không ghi câu chữ.
+- **Kiểm chứng tác động:** K1 đến K8 chỉ dùng màn hình và API của FR-17. K9 gọi `POST /api/apply-coupon` nên phụ thuộc FR-09; tôi chỉ nêu làm phương án.
+- **Bổ sung cho các điểm S0 còn thiếu** (theo quyết định 1):
+  - 4 yêu cầu đề xuất: FR17-R16 (SEC-05), R17 (FR-23), R18 (FR-24), R19 (thẻ `<h1>` của FR-21).
+  - 14 câu hỏi mới, Q9 đến Q22.
+- Có bảng đối chiếu yêu cầu với biến (mục 8).
+
+## Cần anh/chị quyết định (mục 9)
+
+| # | Vấn đề | Tôi đề xuất | Lý do |
+|---|---|---|---|
+| 1 | Mức chia loại lỗi | (a) Tách "thiếu" và "vi phạm" riêng cho từng trường (ERR1 đến ERR11) | Đặc tả nêu riêng từng điều kiện; test case không hợp lệ ở S3 biết đúng nguyên nhân mong đợi |
+| 2 | Yêu cầu đề xuất R16 đến R19 | (a) Nhận cả bốn | Đều là đặc tả áp trực tiếp cho màn hình này |
+| 3 | Câu hỏi mới Q9 đến Q22 | (a) Nhận hết | Mỗi câu là một ràng buộc đặc tả không nói, ảnh hưởng tới kết quả mong đợi |
+| 4 | `is_active` (Q8) | (a) Không mô hình hóa, ghi thành rủi ro | Màn hình FR-17 không hiện trường này; kiểm qua FR-09 thì khi lỗi không biết lỗi thuộc feature nào |
+| 5 | Hộp thoại xác nhận xóa (IN8, OUT10) | (a) Giữ làm ứng viên, S2 đặt giả định | Chưa biết có hộp thoại; giữ lại thì không mất gì |
+| 6 | Múi giờ (IN12) | (a) Không phải biến, ghi lại làm điều kiện môi trường ở S6 | Đặc tả không có ràng buộc, khó thay đổi có kiểm soát |
+| 7 | Sai kiểu, sai định dạng qua API (ERR15) | (a) Giữ làm ứng viên | Ô số và ô ngày có thể chặn các giá trị này, nên chỉ API kiểm được hệ thống |
+| 8 | Cách kiểm chứng | (a) Chỉ dùng K1 đến K8 | Lỗi khoanh được trong FR-17 |
+| 9 | Nhóm checklist (R12, R14, R17, R19) | (a) Lập nhóm checklist riêng | Không kiểm thì ma trận truy vết ở S3 có yêu cầu chưa phủ |
+
+Nếu muốn hỏi thêm, anh/chị hỏi cùng lúc với khi gửi quyết định. Sau đó tôi viết bản review `01_io.md`.
+
+## Commit cho bản AI
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S1_input_output.md
+git commit -m "[C-FR17][S1] Identify input/output variables (AI draft)"
+```
+
+Theo `WORKFLOW.md`, nhờ phiên điều phối xuất prompt log trước khi commit.
+````
+
+---
+
+### C122 | 15:56 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Xong skill đúc từ S0-S4 rồi, giờ chúng ta qua S5 đi. Gộp 03_tc.md và 04_bva.md thành bộ test case cuối cùng, trong đó mỗi test case ghi nguồn gốc (AI, AI có sinh viên sửa, hay sinh viên thêm). Chưa cần xuất Word/Excel bằng skill test-case-writing ngay.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Grep: S5|05_|nguồn gốc|origin
+- AskUserQuestion
+- Bash: Extract AI-draft S3 valid TCs and changed invalid/API rows for origin comparison
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S5_final_test_cases.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S5_final_test_cases.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S5_final_test_cases.md
+- Bash: Verify merged set completeness, origin counts, and detail table consistency
+- Bash: Re-run merged set verification with UTF-8 output
+- Bash: Cross-check test data values against 03_tc.md and 04_bva.md
+- Bash: Create 05_final_tc.md identical to AI draft
+
+**Output AI (nguyên văn):**
+
+````text
+Trước khi làm, tôi đọc lại WORKFLOW xem phần S5 có được cập nhật không.
+
+WORKFLOW chưa quy định tên file và cách ghi nguồn gốc cho S5. Có 4 điểm quyết định cách viết cả file, nên tôi hỏi trước khi viết.
+
+Kết quả đối chiếu khớp với phân loại tôi dự tính. Giờ tôi viết bản gộp.
+
+Tôi đã gộp xong bộ test case cuối cùng. Hai file `ai_raw/S5_final_test_cases.md` và [05_final_tc.md](Homeworks/HW02/features/A_FR-01_DangKy/05_final_tc.md) giống hệt nhau (đã kiểm bằng `cmp`). Bạn review và bổ sung ngay trong `05_final_tc.md`.
+
+**Kết quả: 96 test case**
+
+| Nhóm | Số TC | AI | AI có SV sửa | SV thêm |
+|---|---|---|---|---|
+| TS-01 Hợp lệ qua giao diện | 18 | 2 | 16 | 0 |
+| TS-02 Không hợp lệ qua giao diện | 33 | 30 | 3 | 0 |
+| TS-03 Biên qua giao diện | 22 | 21 | 0 | 1 |
+| TS-04 API | 13 | 9 | 4 | 0 |
+| TS-05 Bảo mật | 2 | 0 | 2 | 0 |
+| TS-06 Checklist | 8 | 8 | 0 | 0 |
+| **Tổng** | **96** | **70** | **25** | **1** |
+
+Kiểm tra bằng script:
+- Đủ 96 mã từ `03_tc.md` và `04_bva.md`, không thiếu, không thừa, không trùng.
+- Bảng chi tiết nguồn gốc (mục 9.1) khớp đúng 26 test case không phải "AI".
+- Dữ liệu test khớp với file nguồn.
+- Không có dấu "—" hay "·".
+
+**Cấu trúc file:**
+- **Mục 1:** Quy tắc nguồn gốc (kèm cách ghép với trường `origin` của `test-case-writing`), bảng mã kết quả mong đợi, tiền điều kiện, quy trình chung.
+- **Mục 3 đến 8:** 6 nhóm test case. Mỗi test case có tiêu đề theo dạng Action + Function + Condition, lớp hoặc biên, yêu cầu, **đủ giá trị của cả 4 input**, kết quả mong đợi, nguồn gốc.
+- **Mục 9:**
+  - 9.1: Chi tiết 26 test case không phải "AI": Mã trong bản AI, đã đổi gì, ai phát hiện, căn cứ.
+  - 9.2: Các lớp được thêm khi review S2.
+  - 9.3: Các test case đã bỏ.
+- **Mục 10 đến 12:** Thứ tự chạy (TC-REG-79 chạy cuối, reset ngay sau), 7 giới hạn quan sát GH1 đến GH7, ma trận truy vết gộp.
+- **Mục 13:** Bảng trống để bạn thêm test case AI bỏ sót, có cột "Vì sao AI bỏ sót" để dùng cho S8, kèm các dải mã còn trống.
+
+**Một điểm cần bạn xem lại:** Theo quy tắc đã chọn, nguồn gốc xét so với bản AI của **bước sinh ra test case** (S3 hoặc S4). Vì vậy chỉ có TC-REG-131 là "SV thêm".
+- Có 13 lớp do bạn phát hiện khi review S2 (EC54 đến EC61, EC64 đến EC66, EC69, EC70). Các test case phủ những lớp này đã có sẵn trong bản AI của S3, nên một phần vẫn được tính là "AI" (ví dụ TC-REG-39, 40, 41, 58).
+- Để không mất đóng góp đó, tôi ghi riêng ở mục 9.2.
+- Nếu bạn muốn tính những test case đó là "SV thêm" thì báo tôi để đổi quy tắc.
+
+**Commit:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S5_final_test_cases.md features/A_FR-01_DangKy/05_final_tc.md
+git commit -m "[A-FR01][S5] Merge final test case set with origins (AI draft)"
+```
+Sau khi bạn review và bổ sung test case của mình thì commit tiếp, ví dụ `[A-FR01][S5] Review final test cases and add missed cases`.
+
+Có hai việc tôi chưa làm và có thể làm khi bạn cần:
+- Xuất Word và Excel bằng `test-case-writing`.
+- Bổ sung vào skill `domain-testing-design` cách làm S5 vừa chốt: Tên file, quy tắc nguồn gốc, mục bổ sung của sinh viên.
+````
+
+---
+
+### C123 | 16:10 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Những phần nào do tôi phát hiện thì nên ghi rõ.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Bash: Add "Phát hiện" column to all suite tables in 05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Bash: Append change table, verify new column counts and run checks
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn nói đúng. Ở câu hỏi trước bạn đã chọn "3 giá trị **cộng cột người phát hiện**", nhưng tôi chỉ ghi người phát hiện ở mục 9, không đưa vào các bảng test case chính. Vì vậy những phần do bạn phát hiện không thấy được ngay khi đọc bộ test.
+
+Tôi sửa trong `05_final_tc.md` (bản review). `ai_raw/S5_final_test_cases.md` giữ nguyên. Nếu bạn chưa commit bản AI vừa rồi thì nên commit trước, để lịch sử git tách được bản AI và phần sửa này.
+
+Thay đổi: Thêm cột **"Phát hiện"** vào cả 6 bảng test case, ghi rõ ai phát hiện điều gì. Cột này cũng ghi công cho cả những test case giữ nhãn "AI" nhưng phủ lớp do bạn phát hiện ở S2.
+
+Tôi đã cập nhật [05_final_tc.md](Homeworks/HW02/features/A_FR-01_DangKy/05_final_tc.md). Kiểm tra bằng script:
+- Cả 6 bảng test case đã có cột mới.
+- Số test case có phần do bạn phát hiện khớp với bảng tổng hợp: 16, 5, 1, 1, 2, tổng **25**.
+- Định dạng và bảng thay đổi đều hợp lệ.
+
+`ai_raw/S5_final_test_cases.md` giữ nguyên.
+
+**Những gì đã thay đổi:**
+- **Cột "Phát hiện" ở mọi bảng test case**, ghi ai phát hiện điều gì, kèm bước và số câu hỏi. Ví dụ:
+  - TC-REG-131: "SV: Thiếu biến thể `␣A␣` (S4, câu 1)".
+  - TC-REG-04: "SV: Lớp EC56 (review S2); tách test case (S3, câu 3)".
+  - TC-REG-11: Ghi cả phần của bạn (bước 2 và tách test case) lẫn phần của Claude phiên điều phối `305c705a` (ghi chú GH2).
+  - Phần AI tự bổ sung ghi "AI bổ sung lớp ..." (TC-REG-18, 42, 43, 48), để không lẫn với phần của bạn.
+- **Ghi công cho test case nhãn "AI":** TC-REG-39, 40, 41 và 58 vẫn mang nguồn gốc "AI" vì đã có trong bản AI của S3, nhưng cột "Phát hiện" ghi rõ lớp của chúng do bạn phát hiện khi review S2. Nguồn gốc (3 giá trị) giữ đúng quy tắc đã chọn, còn đóng góp của bạn hiện ngay trên bảng chính.
+- **Bảng tổng hợp (mục 2):** Thêm cột "Có phần do SV phát hiện".
+- **Mục 1.1:** Thêm bảng giải thích cách ghi cột "Phát hiện".
+- **Mục 14 (mới), "Thay đổi so với bản AI":** 2 dòng loại **Thiếu**, ghi "sinh viên phát hiện". Lý do: Bạn đã chọn "3 giá trị cộng cột người phát hiện" nhưng bản AI không đưa cột đó vào bảng chính.
+
+**Commit:** Nếu bạn chưa commit bản AI của S5 thì commit trước, rồi mới commit bản này:
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S5_final_test_cases.md
+git commit -m "[A-FR01][S5] Merge final test case set with origins (AI draft)"
+git add features/A_FR-01_DangKy/05_final_tc.md
+git commit -m "[A-FR01][S5] Show who found each test case change"
+```
+Nếu bạn đã commit hai file giống hệt nhau ở lượt trước thì chỉ cần lệnh commit thứ hai.
+````
+
+---
+
+### C124 | 16:12 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã mở 2 phiên chạy song song rồi. Đây chỉ là thắc mắc của tôi. Nếu bạn là AI điều phối, liệu bạn có thể kiểm soát, báo cáo tình trạng của từng session và tôi chỉ làm việc thông qua bạn không? Việc nhảy qua nhảy lại giữa các session để đọc khiến tôi khá rối, nếu bạn có thể thì giống như bạn vừa gọi tụi nó làm, trong khi cái nào chờ thì bạn đưa cho tôi những việc để tôi chốt, và bạn kiểm soát phần AI log và commit sao cho làm song song mà không lẫn lộn. Nếu không được thì thôi, tôi vẫn sẽ cố chạy cả 3 session.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- ListAgents
+- Bash: List session transcripts to identify the new session
+- Bash: Read the first prompt of the new session
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
+- Bash: Update whitelist memory and re-export log with 3 sessions
+
+**Output AI (nguyên văn):**
+
+````text
+Mình kiểm tra xem từ phiên này có liên lạc được với các phiên khác trên máy không:
+
+Phiên C có ID `1648c211`. Mình thêm phiên này vào whitelist của prompt log ngay:
+
+Mình đã thêm phiên C vào whitelist. Prompt log hiện xuất **124 lượt từ 3 phiên**, không lẫn phiên khác.
+
+Về câu hỏi của bạn: **Về kỹ thuật thì làm được.** Từ phiên này mình thấy được và gửi tin nhắn được cho 2 phiên còn lại:
+- `test-8f`: Phiên A (`38378bef`).
+- `test-71`: Phiên C (`1648c211`).
+
+Nhưng có một điểm phải cân nhắc kỹ. Mình đề xuất 2 cách:
+
+## Cách 1: Mình gửi lệnh thay bạn (điều phối hoàn toàn)
+
+Bạn chỉ nói chuyện với mình. Mình gửi quyết định của bạn sang từng phiên, rồi báo lại kết quả.
+
+- **Rủi ro lớn nhất:** Trong log của các phiên đó, **người ra lệnh sẽ là một AI khác, không phải bạn**. Đề nhấn mạnh việc chính sinh viên dẫn AI qua từng bước, và quy định chép prompt bị tính là gian lận. Nếu người chấm mở log và thấy mọi prompt đều do AI gửi, phần "AI-First" và phần Audit sẽ bị đánh giá thấp, dù mình chỉ chuyển nguyên văn quyết định của bạn.
+- Mình **chưa biết** tin nhắn gửi kiểu này được ghi vào log của phiên kia dưới dạng nào. Script xuất log có thể bỏ sót hoặc ghi sai, nên phải thử và sửa script trước.
+
+## Cách 2: Mình theo dõi, bạn chỉ dán (mình đề xuất cách này)
+
+- **Mình đọc tất cả các phiên** (việc này mình vẫn đang làm khi soát), rồi đưa bạn **một bảng tình trạng duy nhất**: Phiên nào đang chờ, chờ bạn quyết định gì, bản nháp có vấn đề gì.
+- Với mỗi phiên đang chờ, mình **soạn sẵn câu trả lời** từ quyết định bạn đưa cho mình. Bạn chỉ cần mở đúng phiên, dán, gửi. **Bạn không cần đọc bên đó.**
+- Mình lo toàn bộ phần log và commit theo thứ tự: Mỗi lần một commit, đúng feature, đúng tag, prompt log luôn có đủ các phiên. Các phiên làm trên những thư mục feature khác nhau nên không dẫm lên nhau.
+- Log vẫn cho thấy **chính bạn** gửi từng quyết định, và mình đã ghi chú trong `_NOTES.md` rằng các tin nhắn đó do phiên điều phối soạn theo ý bạn. Như vậy là trung thực và đủ cho Audit.
+
+Có thể kết hợp: Dùng cách 2 làm chính, còn các tin nhắn **thuần cơ học** như "đã commit, sang bước tiếp theo" hay "đọc lại WORKFLOW mục X" thì mình gửi thẳng nếu bạn cho phép. Những tin nhắn đó không chứa quyết định nào, nên không ảnh hưởng tới việc ai là người dẫn dắt.
+
+Bạn chọn cách nào? Nếu chọn cách 2, mình bắt đầu ngay bằng bảng tình trạng hiện tại của phiên A và phiên C.
+````
+
+---
+
+### C125 | 16:17 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi chọn cách 2.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\305c705a-d915-42fa-8501-b411992acb4b\scratchpad\sess.py
+- Bash: Read session C status
+- Bash: Read session A status and repo state
+- Bash: Read session A latest exchange text
+- Bash: Scan C's S1 draft for leaks and list new questions; compare A's S5 files
+- Bash: Update tracker and notes, export log
+
+**Output AI (nguyên văn):**
+
+````text
+Mình viết một script nhỏ (lưu trong thư mục tạm, không đưa vào bài) để đọc nhanh tình trạng mỗi phiên, rồi dùng nó lập bảng tình trạng:
+
+Đã đọc xong phiên C. Giờ đến phiên A:
+
+Danh sách thao tác của phiên A đã có. Mình đọc thêm phần trao đổi gần nhất để biết nó đang chờ gì:
 ````
 
 
