@@ -10231,6 +10231,200 @@ Phiên C: Xuất lại log đi, nãy tôi đọc ẩu nên tưởng chưa điề
 **Output AI (nguyên văn):**
 
 ````text
+Log đã xuất lại (171 lượt, đúng 3 phiên). Phiên C sửa đúng theo ý bạn, không có lỗi sai. Còn 3 điểm nhỏ bạn nên biết trước khi chạy.
+
+## Kết quả soát
+
+| Mục kiểm | Kết quả |
+|---|---|
+| Thao tác bị cấm | Không có |
+| Mục 1, Môi trường | Ngày, người chạy, hệ điều hành, Chrome giống FR-01. Có thêm múi giờ UTC+07:00 |
+| Chữ "(đề xuất)" | Đã bỏ ở các trạng thái. Chữ này chỉ còn trong dòng lịch sử ở đầu file, giữ lại là đúng |
+| Trạng thái điền từ ảnh | Pass: TC-CPN-50, 93, 94. Fail: TC-CPN-90, 91, 92. Năm dòng 50, 90, 92, 93, 94 tôi đã đối chiếu ảnh ở lượt trước, đều khớp |
+| Dấu "—" và "·" | Không có |
+
+Phiên C giải thích dòng múi giờ là hợp lý. Ở S1, bạn đã chốt ghi múi giờ làm điều kiện môi trường, để đọc đúng chữ "Hết hạn" và trường hợp ngày bị lệch 1 ngày khi lưu theo giờ UTC.
+
+## 3 điểm nên biết
+
+1. **TC-CPN-91 là Fail do AI tự quyết** vì chữ "Dashboard". Ở lượt trước nó để bạn quyết. Lúc chạy, bạn xem thêm tiêu đề tab của trang admin. Nếu tiêu đề tab cũng là tiếng Anh, như "frontend-web" của FR-01, thì Fail chắc chắn, không còn phụ thuộc vào cách hiểu chữ "Dashboard".
+2. **6 trạng thái dựa trên ảnh S0 ngày 18/10, trong khi "Ngày chạy" ghi 20/10.** Khi chạy nhóm A (ngay sau reset), bạn liếc lại trang để xác nhận. Ba test case Fail (90, 91, 92) sẽ thành bug report, nên chụp thêm ảnh `S6_TC-CPN-90.png`, `91`, `92` ngày 20/10 để làm bằng chứng cho issue. Việc này mất chưa tới 1 phút.
+3. **Câu đầu file vẫn ghi "AI chỉ chuẩn bị khung"**, nay không còn đúng vì AI đã điền một phần. Dòng lịch sử ngay bên dưới đã ghi rõ AI điền gì, nên không bắt buộc sửa. Nếu muốn sửa, đổi thành "AI chuẩn bị khung và điền sẵn phần thấy được từ ảnh S0".
+
+## Commit
+
+Bạn chưa commit khung S6, nên gộp một lần:
+
+```
+git add features/C_FR-17_QuanLyCoupon/ai_raw/S6_results_template.md features/C_FR-17_QuanLyCoupon/06_results.md prompt_log.md
+git commit -m "[C-FR17][S6] Add results template and fill S0-based results"
+```
+
+Đừng `add` các file của A (`06_results.md`, các ảnh `S6_TC-REG-*`), vì A đang làm dở.
+
+## Tình trạng
+
+| Phiên | Đang ở đâu | Việc tiếp theo |
+|---|---|---|
+| A (FR-01) | S6: Đang review nhóm B. Ảnh đã đổi tên thành `S6_TC-REG-33.png` | Chạy TC-REG-79 sau cùng rồi báo tôi để reset DB |
+| C (FR-17) | S6: Khung và phần điền từ ảnh xong | Khi bắt đầu chạy, báo tôi bật trang admin (cổng 5174) và reset DB. Nên nhận đề nghị viết script cho 30 test case API của phiên C |
+
+**Lưu ý về DB dùng chung:** A và C dùng chung một backend. Reset DB cho C sẽ xoá các tài khoản A đã tạo. Nếu A còn test case cần dữ liệu đó, bạn chạy xong A rồi mới reset.
+````
+
+---
+
+### C172 | 22:52 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Ở TC-REG-49 (S6_TC-REG-49.png), bong bóng của ô Mật khẩu đè một phần lên nút "Đăng Ký"; sinh viên xét có tính là "trên nút" không
+-> Cái này có liên quan tới TC-REG-97 không mà để ghi chú? Bạn phải hiểu là bạn điền vào bảng đó là như bạn thay tôi điền kết quả. Còn những câu mang tính câu hỏi, thì bạn có thể hỏi tôi ngoài này. Đỡ việc tôi cứ phải sửa cột cho bạn trong khi tôi chỉ cần review, sai mới sửa.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find table rows containing question or suggestion phrases
+- Bash: Show notes of TC-REG-91 and TC-REG-94
+- Bash: Remove question and suggestion phrases from result table cells
+- Edit: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\s6-group-fill-convention.md
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn nói đúng. Dòng đó là câu hỏi dành cho bạn, đáng lẽ phải hỏi ở đây chứ không ghi vào bảng. Nó cũng nằm ngoài phạm vi của TC-REG-97: Test case này chỉ xét vị trí thông báo với dữ liệu của TC-REG-30. Tôi rà toàn bộ bảng để gỡ mọi câu hỏi, lời nhắc hay đề xuất đã lỡ ghi vào ô kết quả.
+
+Tôi bổ sung quy tắc này vào ghi nhớ S6 để các nhóm sau không lặp lại.
+
+Đã sửa 12 dòng trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md). Không còn câu hỏi hay đề xuất nào trong bảng; định dạng hợp lệ, vẫn đủ 96 dòng.
+
+**Những gì đã gỡ:**
+- **TC-REG-97:** Bỏ ghi chú về TC-REG-49. Kết quả của TC-REG-97 chỉ còn những gì quan sát được với dữ liệu của TC-REG-30 và khung lỗi của trang.
+- **TC-REG-91:** Bỏ câu "Sinh viên xét bong bóng... có tính vào FR01-R14 không", giữ phần sự kiện (bong bóng của trình duyệt bằng tiếng Anh, thông báo của trang bằng tiếng Việt). Phần bạn đã tự sửa giữ nguyên.
+- **TC-REG-30:** Bỏ "xem ghi chú ở TC-REG-91", chỉ giữ "Thông báo là của trình duyệt, bằng tiếng Anh".
+- **TC-REG-31, 33 đến 39, 45:** Bỏ "Đề xuất chạy lại với dữ liệu kế hoạch. Ứng viên bug riêng: ...". Ghi chú chỉ còn sự kiện: Không quan sát được điều kiện test case nhắm tới vì `Test1234!` (hợp lệ theo FR01-R06 đến R10) bị từ chối trước, dữ liệu khác kế hoạch, mật khẩu hợp lệ bị từ chối.
+
+Tôi đã lưu quy tắc vào ghi nhớ: Ô trong bảng chỉ ghi sự kiện, như thể bạn tự điền; câu hỏi và đề xuất thì hỏi ở đây.
+
+**Hai câu hỏi trước đây tôi lỡ ghi vào bảng:**
+1. **TC-REG-91:** Bong bóng "Please fill out this field." là của trình duyệt, hiện theo ngôn ngữ của trình duyệt, không phải chữ do EShop viết. Bạn có tính nó vào FR01-R14 (giao diện tiếng Việt) không? Nếu không tính thì TC-REG-91 vẫn Fail chỉ vì tiêu đề tab.
+2. **TC-REG-49:** Bong bóng của ô Mật khẩu đè một phần lên nút "Đăng Ký". Đây chỉ là quan sát phụ, không thuộc test case nào. Bạn muốn bỏ qua, hay ghi lại để cân nhắc ở S7?
+
+**Gợi ý cho bước tiếp theo:** Nên chạy TC-REG-01 với `Abcdef1!` trước khi sang nhóm C, như đã nói ở lượt trước.
+````
+
+---
+
+### C173 | 22:56 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bây giờ phiên C đang bị block vì phiên A chưa xong (tôi vẫn đang test và chụp). Chúng ta có nên bắt đầu phiên D để gọi không? Tôi đã có điện thoại. Cần kết nối chạy ở điện thoại và chụp ảnh để gọi skill viết nhỉ? Có bị block vì phiên A đang chạy test không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Không bị block. Bạn làm được cả hai việc ngay bây giờ, không phải chờ A xong.
+
+## Phiên D có bị block vì A không?
+
+Không, miễn là D không reset DB.
+
+- **D dùng chung backend (cổng 3000) với A**, nhưng chạm vào dữ liệu khác: Hồ sơ của một tài khoản riêng, không phải các tài khoản A tạo khi test đăng ký.
+- **D nên đăng ký một tài khoản riêng trên app**, ví dụ `fr04.s0@test.com`. Tránh dùng các email A đang dùng, và tránh tài khoản mẫu, vì sửa hồ sơ sẽ làm đổi dữ liệu mẫu.
+- **Khi A chạy TC-REG-79 xong và tôi reset DB, tài khoản này sẽ mất.** Với S0 thì không sao, vì ảnh đã chụp xong. Đến S6 của D thì tạo lại.
+
+## Cần chạy app và chụp ảnh trước khi gọi skill không?
+
+Cần. Bước S0 (khảo sát giao diện) phải có ảnh do bạn chụp trên điện thoại, rồi skill mới dựa vào đó viết từ S1 trở đi. Việc của bạn chỉ khoảng 15 đến 20 phút:
+
+1. Cắm điện thoại qua USB, bật USB debugging. Tôi chạy `adb reverse` cho cổng 3000 và 8081, rồi bật Expo.
+2. Bạn mở app trong Expo Go, đăng ký tài khoản riêng, rồi chụp màn hình Hồ sơ theo từng pha của S0 (chỉ quan sát, như C).
+3. Mở một phiên Claude mới cho D, gọi skill `domain-testing-design`. Tôi thêm phiên đó vào whitelist của prompt log.
+
+Từ S1 đến S4 chủ yếu là AI viết, bạn chỉ trả lời câu hỏi và review. Nên trong lúc phiên D làm, bạn vẫn tiếp tục test A được.
+
+## Thật ra C cũng không bị block
+
+Tôi xem lại: A chỉ đụng tới tài khoản người dùng, không đụng mã giảm giá. 4 mã mẫu vẫn còn nguyên từ lần reset lúc khoảng 19:50. Vì vậy:
+
+- **Chạy được ngay:** Nhóm A đến G của C. TC-CPN-50 vẫn đúng điều kiện "dữ liệu mẫu nguyên vẹn". Mục "Reset trước đợt test" ghi mốc khoảng 19:50.
+- **Phải chờ A xong:** Nhóm H (các test case phá dữ liệu mẫu) và lần reset cuối.
+
+Có điều bạn chỉ có hai tay. Nên tôi đề xuất thứ tự:
+
+1. **Bây giờ:** Làm S0 của D (chụp ảnh trên điện thoại), rồi mở phiên D cho AI chạy từ S1 đến S4.
+2. **Song song:** Bạn tiếp tục test A trong lúc phiên D viết. Xong A thì chạy TC-REG-79 rồi báo tôi.
+3. **Sau đó:** Chạy C, nhóm A đến G trước, rồi đến nhóm H.
+
+Bạn đồng ý thì nói tôi. Tôi sẽ kiểm `adb` đã thấy điện thoại chưa, chạy `adb reverse`, bật Expo, rồi soạn tin nhắn mở đầu cho phiên D. Có cần bật luôn trang admin (cổng 5174) cho C không, bạn cũng cho tôi biết.
+````
+
+---
+
+### C174 | 23:02 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Vẫn tính
+2. Ghi lại để cân nhắc ở S7 đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Show TC-REG-91 cells and end of file
+- Bash: Update TC-REG-91 and add section for observations outside test cases
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đọc dòng TC-REG-91 hiện tại trước khi sửa, để giữ nguyên phần bạn đã viết.
+
+Đã cập nhật [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md):
+
+**1. TC-REG-91 (bong bóng của trình duyệt vẫn tính):**
+- **Kết quả thực tế:** Nay ghi đủ 2 chỗ không phải tiếng Việt: Tiêu đề tab `frontend-web`, và bong bóng "Please fill out this field." khi bỏ trống ô bắt buộc. Các chữ còn lại, kể cả khung lỗi của trang, là tiếng Việt.
+- **Ảnh:** Thêm `S6_TC-REG-30.png`.
+- **Ghi chú:** Đổi thành lý do tính: Đây là thông báo của trình duyệt, nhưng người dùng thấy nó trên trang Đăng ký. Câu đầu của bạn và câu xác nhận ngày 20/10 giữ nguyên.
+- Trạng thái vẫn **Fail**.
+
+**2. Thêm mục 6 "Quan sát ngoài test case (cân nhắc ở S7)"** ở cuối file:
+- **QS01:** Bong bóng của ô Mật khẩu đè một phần lên nút "Đăng Ký" (TC-REG-49, liên quan FR01-R21). Đây là điều bạn vừa yêu cầu.
+- **QS02:** Mật khẩu hợp lệ `Test1234!` bị từ chối (FR01-R06 đến R10). Tôi tự thêm dòng này vì nó cũng nằm ngoài kết quả mong đợi của mọi test case: Đây là giá trị bạn dùng thay cho dữ liệu kế hoạch, nhưng lại là ứng viên bug rõ nhất cho S7. Nếu bạn không muốn ghi ở đây thì báo tôi để xóa.
+
+Đầu file có thêm một dòng ghi lần cập nhật này. Định dạng hợp lệ.
+````
+
+---
+
+### C175 | 23:05 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đã review xong phần nhóm B. Xuất log, kiểm tra và báo tôi. Nếu không có gì thì commit message.
+Phiên C block là ở đây tôi test nhưng tôi đang bận chụp cho phiên A rồi, tôi sẽ rối nếu cứ nhảy qua nhảy lại 2 tab. Nên xong phiên A phần chụp test, tôi sẽ qua phiên C.
+Phiên D không bị block thì đợi tôi chụp cho nhóm C của phiên A xong, tôi sẽ qua. Nhưng bạn cần biết rằng không thể tạo tài khoản được vì mật khẩu luôn sai, chỉ có thể dùng tài khoản có sẵn (lúc test phiên A đã thấy lỗi này)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session A recent turns
+- Bash: Inspect A memory file and S6 result statuses
+- Bash: Find seed accounts used by A and password notes
+- Bash: Export prompt log and list changed files
+
+**Output AI (nguyên văn):**
+
+````text
 (Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
