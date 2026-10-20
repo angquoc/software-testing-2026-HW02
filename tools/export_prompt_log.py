@@ -29,6 +29,7 @@ SESSIONS = [
     "305c705a-d915-42fa-8501-b411992acb4b",  # 12/10/2026: đọc đề, lên kế hoạch, dựng khung HW02 (phiên điều phối)
     "38378bef-e688-4ecf-8075-2b0d74493d66",  # 19/10/2026: phiên thiết kế test case sạch, bắt đầu với A FR-01
     "1648c211-f587-4579-ac76-636b3e3e2598",  # 20/10/2026: phiên chạy skill domain-testing-design cho C FR-17
+    "709e0d24-6893-4a96-8d81-6ef43586ae51",  # 21/10/2026: phiên chạy skill domain-testing-design cho B FR-07
 ]
 
 # Ghi chú của sinh viên cho từng phiên (8 ký tự đầu của session id), hiển thị dưới tiêu đề mỗi mục
