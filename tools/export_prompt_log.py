@@ -69,7 +69,8 @@ def load_turns(path):
         if o.get("type") == "user":
             # isMeta = dòng hệ thống tự chèn (vd "[Image: original ...]" khi AI mở ảnh), không phải sinh viên gõ;
             # output AI sau đó vẫn thuộc lượt prompt thật trước đó
-            if o.get("isMeta"):
+            # isCompactSummary = bản tóm tắt hệ thống tự tạo khi phiên quá dài (compact), cũng không phải sinh viên gõ
+            if o.get("isMeta") or o.get("isCompactSummary"):
                 continue
             texts = []
             if isinstance(content, str):
