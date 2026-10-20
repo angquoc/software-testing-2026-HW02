@@ -10894,11 +10894,391 @@ Bạn sửa cho đúng trung thực đi, rồi xuất log, sau đó tôi sẽ co
 **Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
 
 - Bash: Fix role description, export log, update notes
+- Bash: Update C S6 status in tracker
 
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Tôi đã sửa phần đầu `06_results.md` của A cho đúng cách làm thực tế, đã xuất log và cập nhật `_NOTES.md`. Bạn commit được rồi.
+
+**Phần đầu file của A giờ ghi:**
+- Dòng 3: "Sinh viên chạy test, chụp ảnh và chạy script; AI chuẩn bị khung và điền kết quả theo ảnh, log và ghi chú của sinh viên; sinh viên review và sửa".
+- Dòng 4: "Bản này: AI điền theo ảnh, log của sinh viên, sinh viên review."
+- Dòng nhật ký 23:44 có thêm ý: Đã sửa mô tả vai trò cho đúng thực tế.
+
+**Log:** 185 lượt, đúng 3 phiên.
+
+**`_NOTES.md`:**
+- S6 của A: Xong (Pass 9, Fail 19, Blocked 18, Not run 50), chờ bạn commit. Việc tiếp theo là S7 (bug report và GitHub Issues).
+- S6 của C: Khung đã có, DB đã reset lúc 23:41, trang admin đang chạy, bạn sắp chạy test.
+
+**Commit:**
+
+```
+git add features/A_FR-01_DangKy/06_results.md features/A_FR-01_DangKy/logs features/A_FR-01_DangKy/screenshots/S6_TC-REG-78.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-79.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-81.png prompt_log.md
+git commit -m "[A-FR01][S6] Execute API and security groups and summarize results"
+```
+
+File `06_results.md` của C cũng còn câu "AI chỉ chuẩn bị khung" ở dòng 3. Khi bảo phiên C điền kết quả, bạn nhắc nó sửa luôn chỗ này theo cùng cách.
+````
+
+---
+
+### C186 | 23:48 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi có thắc mắc, giờ chúng ta qua C. Còn bước S7, S8 là sau khi đã làm xong hết các pool hả? 
+
+Nếu giờ để rút ngắn thời gian, tôi có thể chụp hết các ảnh TC cần test và chạy script các thứ 1 lần sau đó bảo C điền rồi tôi chỉ review 1 lần thôi không?
+
+Sau đó reset DB, hoàn thiện file và commit rồi qua D. D làm tương tự C.
+
+Còn B thì sẽ quay video, chúng ta sẽ quay như nào? Cũng gọi skill rồi làm, đọc review, điều phối như làm C hả? Như vậy có dài không?
+
+Ước tính thời gian làm hết đống này khoảng bao lâu được không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find video requirement and common-task tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Trả lời nhanh: S7 và S8 không cần chờ xong hết các feature; C chạy một lần rồi review một lần là được; nên quay video ngay khi chạy skill cho D. Thời gian còn lại không đủ để làm đầy đủ cả 4 feature, nên cần cắt bớt. Chi tiết từng câu bên dưới.
+
+## 1. S7 và S8 có phải chờ xong hết các feature không?
+
+Không. Mỗi feature chạy xong S6 là làm được S7 (bug report và GitHub Issues), rồi S8 (AI gap analysis) ngay.
+
+Tôi đề nghị **cho phiên A làm S7 ngay bây giờ, song song với lúc bạn test C**:
+- Phiên A viết nháp bug report từ `06_results.md`. Nó đã gợi ý gom các Fail theo yêu cầu, nên khoảng 6 đến 8 bug chứ không phải 19.
+- Bạn không mất thời gian lúc này; review sau, khi đang chờ phiên C điền.
+- Phần bạn phải tự làm là tạo Issues trên GitHub và đính ảnh, khoảng 30 phút.
+
+## 2. Chụp hết rồi cho C điền một lần, review một lần được không?
+
+Được, và đây là cách nhanh nhất. Bốn điều kiện:
+- **Gửi phiên C yêu cầu viết script API ngay bây giờ** (tin nhắn tôi soạn ở lượt trước), để bạn chụp xong là có script chạy luôn.
+- **Đặt tên ảnh đúng `S6_TC-CPN-NN.png`.** Những gì không có trong ảnh thì ghi ra một file ghi chú ngắn, ví dụ: Ô mã nhận tối đa bao nhiêu ký tự, có hộp thoại xác nhận khi xóa không, giờ bấm "Tạo mã" của các test case về ngày.
+- **Theo thứ tự:** Nhóm A trước (khi dữ liệu mẫu còn sạch), rồi đến các nhóm giao diện, rồi script API, rồi nhóm G. Nhóm H để cuối, chỉ chạy nếu còn thời gian.
+- **Vì làm sau 0:00, "Ngày chạy" sẽ là 21/10.**
+
+Sau đó tôi reset DB, phiên C hoàn thiện file, bạn commit, rồi chuyển sang D. D làm cùng cách.
+
+## 3. Video cho B: Có dài không?
+
+Đề yêu cầu video "show, end to end, how you used the skills on a complete feature".
+
+- Video phải cho thấy skill chạy trọn một feature, nhưng **được cắt và tua nhanh** những đoạn chờ AI viết.
+- Nếu quay riêng trên B thì bạn phải chạy skill thêm một vòng đầy đủ nữa, tốn khoảng 3 đến 4 giờ.
+
+**Tôi đề nghị quay video ngay khi chạy skill cho D**, vì đằng nào D cũng chạy skill từ S0. Quay màn hình suốt lúc chạy rồi cắt lại thành khoảng 10 đến 15 phút, không tốn thêm vòng nào. B vẫn chạy skill như C nhưng không cần quay. Kế hoạch cũ quay trên B vì lúc đó chưa có điện thoại; giờ đã có, nên không còn lý do chờ.
+
+## 4. Ước tính thời gian
+
+Bây giờ khoảng 23:50, hạn nộp 12:00, tức còn khoảng 12 giờ.
+
+| Việc | Thời gian của bạn |
+|---|---|
+| C, S6: Test khoảng 29 test case, chạy script, review một lần | 1,5 giờ |
+| A, S7: Review bug report, tạo Issues kèm ảnh | 45 phút |
+| D: S0 chụp ảnh, skill S1 đến S5 (có quay video), S6 | 4 giờ |
+| B: Như D, không quay | 3,5 đến 4 giờ |
+| S7 cho C, D, B và S8 cho cả 4 feature (AI viết nháp, bạn review) | 2,5 giờ |
+| Phần chung: Report, AI Critique, Audit, form, README, Excel và Word, PDF, `git_log.txt`, zip | 2,5 giờ |
+| Cắt và đăng video | 30 phút |
+| **Tổng** | **Khoảng 15 giờ** |
+
+Dù đã chạy song song nhiều phiên, tổng thời gian vẫn vượt 12 giờ, và đó là chưa tính thời gian ngủ. **Làm đầy đủ cả 4 feature trước 12:00 là không thực tế.** Có ba cách cắt, theo thứ tự ít ảnh hưởng điểm nhất:
+
+1. **Review nhẹ ở D và B:** Mỗi bước từ S1 đến S5 chỉ review một lượt, không sửa đi sửa lại như C. S6 chỉ chạy mức 1, khoảng 15 test case. Tiết kiệm khoảng 2 giờ.
+2. **Phần chung do AI viết nháp song song:** Tôi dựng `report.md`, README, Audit và form trong lúc bạn test; bạn chỉ review. Tiết kiệm khoảng 1 giờ.
+3. **Nếu vẫn thiếu giờ, B dừng ở S5** (có test case nhưng chưa chạy): Ghi "Not run" trung thực trong Test Summary. Đề chấm cả số lượng lẫn chất lượng, nên một feature thiếu S6 vẫn tốt hơn bốn feature làm vội.
+
+Áp dụng cả ba thì còn khoảng 11 đến 12 giờ. Vẫn sát hạn, nên bạn cần ngủ ít nhất vài tiếng ở giữa.
+
+**Hai việc cần bạn quyết:**
+- Quay video trên D thay vì B, đồng ý không?
+- Có cho phiên A bắt đầu S7 ngay không, và có cho tôi viết nháp phần chung song song không?
+
+Bạn đồng ý thì tôi soạn tin nhắn cho phiên A (S7) và phiên C (script API) để bạn dán.
+````
+
+---
+
+### C187 | 23:53 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Quay video trên D là phải quay phần test trên điện thoại à? Tôi chỉ sợ ở 2 thiết bị thì khá phức tạp. 
+2. Tôi không có thời gian để edit video thì làm sao? Chứ giờ quay cả 1 quá trình dài như vậy, sau đó lại edit cắt ngắn, tua bớt thì rất mất thời gian.
+3. Tôi sẽ để phiên A bắt đầu S7, phiên C viết script. Còn bạn đừng vội viết nháp. Phần chung đã có NOTES chứa rồi, và HW01 cũng có sườn để bạn tham khảo, tôi nghĩ sẽ nhanh thôi. Viết sửa đi sửa lại còn tốn thời gian hơn.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check bug folder, WORKFLOW issue rules, video tools
+- Bash: Find S7 file conventions in WORKFLOW
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn không cần quay điện thoại, và cũng không cần cắt ghép video. Dưới đây là cách làm, kèm hai tin nhắn để bạn dán vào phiên A và phiên C. Phần chung tôi sẽ không viết nháp trước, đợi tới lúc làm thì dựa vào `_NOTES.md` và khung của HW01.
+
+## 1. Quay video trên D có phải quay điện thoại không?
+
+Không. Skill chỉ lo phần **thiết kế** (từ S0 đến S4) và chạy trong Claude Code trên máy tính, nên video chỉ cần quay màn hình máy tính.
+
+- Ảnh điện thoại ở S0 bạn chụp trước, lúc chưa quay. Trong video chỉ cần thấy bạn đưa các ảnh đó cho skill.
+- Phần test thật (S6) không nằm trong skill, nên không cần quay.
+
+## 2. Không có thời gian cắt video thì sao?
+
+Máy bạn đã có **OBS Studio**, và OBS có nút **tạm dừng quay** (Pause). Cách làm:
+
+- Chỉ quay những đoạn đáng xem: Gọi skill, AI đưa ra kết quả từng bước, chạy `check_step.py`, bạn trả lời câu hỏi của skill.
+- Lúc chờ AI viết thì bấm tạm dừng, có kết quả thì quay tiếp.
+- Kết quả là **một file video liền mạch**, khoảng 10 đến 20 phút, tải thẳng lên YouTube (để chế độ Unlisted), không cần cắt.
+
+Trước khi quay D, tôi sẽ hướng dẫn đặt phím tắt tạm dừng trong OBS. Việc này mất khoảng 2 phút.
+
+## 3. Tin nhắn cho phiên A (bắt đầu S7)
+
+```text
+Sang S7 cho FR-01. Viết bugs/bug_report.md (file dùng chung cho cả 4 feature; FR-01 là mục đầu tiên, các feature sau sẽ thêm mục riêng) từ 06_results.md:
+- Gom các dòng Fail theo yêu cầu bị vi phạm, mỗi bug một mục, liệt kê các test case làm bằng chứng (ảnh, log). Xét thêm QS01 đến QS03 ở mục 6: Cái nào đủ căn cứ thành bug thì đưa vào, cái nào không thì ghi lý do.
+- Mỗi bug có nội dung theo template issue của repo nhóm: D:/Dang/Test/Homeworks/HW02_group/.github/ISSUE_TEMPLATE/bug_report.yml và quy ước ở mục 4 của D:/Dang/Test/Homeworks/HW02_group/README.md (tiêu đề, severity, platform, technique, pool). Viết sẵn nội dung để tôi dán vào issue, chừa chỗ ghi số issue.
+- Không tự tạo issue trên GitHub, tôi sẽ tạo. Câu hỏi thì hỏi tôi ở đây, không ghi vào file.
+Không cần đưa lệnh commit.
+```
+
+## 4. Tin nhắn cho phiên C (script API)
+
+```text
+Tôi sắp chạy S6. Hãy viết script chạy nhóm API (F) giống scripts/run_api_tests.py của FR-01: Python thư viện chuẩn, có --dry-run và --only, ghi log vào logs/. Không tự chạy script, tôi sẽ chạy. Script không được reset dữ liệu và không chạy nhóm H hay TC-CPN-56; TC-CPN-144 (tạo 100 mã) để một lệnh riêng. DB vừa được reset lúc 20/10/2026 23:41 (ghi vào mục 1); tôi chạy sau 0:00 nên Ngày chạy là 21/10/2026. Sửa luôn câu "AI chỉ chuẩn bị khung" ở dòng 3 cho đúng cách làm thực tế (AI điền theo ảnh, log, ghi chú của sinh viên; sinh viên review), như đã sửa ở FR-01.
+```
+
+Trong lúc phiên C viết script, bạn chụp nhóm A của C trước (TC-CPN-50 và các test case checklist), rồi đến các test case mức 1 trong danh sách tôi gửi trước đó. Chụp xong và chạy script xong thì báo tôi. Tôi sẽ soát rồi bạn mới cho phiên C điền.
+````
+
+---
+
+### C188 | 23:58 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi sắp chạy S6. Hãy viết script chạy nhóm API (F) giống scripts/run_api_tests.py của FR-01: Python thư viện chuẩn, có --dry-run và --only, ghi log vào logs/. Không tự chạy script, tôi sẽ chạy. Script không được reset dữ liệu và không chạy nhóm H hay TC-CPN-56; TC-CPN-144 (tạo 100 mã) để một lệnh riêng. DB vừa được reset lúc 20/10/2026 23:41 (ghi vào mục 1); tôi chạy sau 0:00 nên Ngày chạy là 21/10/2026. Sửa luôn câu "AI chỉ chuẩn bị khung" ở dòng 3 cho đúng cách làm thực tế (AI điền theo ảnh, log, ghi chú của sinh viên; sinh viên review), như đã sửa ở FR-01.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List FR-01 scripts and show header of its results file
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\scripts\run_api_tests.py
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\scripts\run_api_tests.py
+- Bash: Syntax-check script and locate lines to update
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\update_s6_2.py
+- Bash: Update 06_results.md header, environment and run commands
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đọc script mẫu của FR-01 và dòng 3 hiện tại của `06_results.md` bên FR-01 (anh/chị đã cho phép tham khảo).
+
+Script đã viết xong: [scripts/run_api_tests.py](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py). Tôi chưa chạy script, kể cả `--dry-run`. Tôi chỉ kiểm cú pháp bằng `py_compile`: Đạt, và đã xóa thư mục `__pycache__` mà lệnh này sinh ra.
+
+## Cách dùng (chạy từ thư mục feature)
+
+| Lệnh | Làm gì | Khi nào |
+|---|---|---|
+| `python scripts/run_api_tests.py --dry-run` | In mọi request, không gửi gì | Nên chạy trước để xem script |
+| `python scripts/run_api_tests.py --only 61` | TC-CPN-61: Kiểm `GET` có `id` và đủ trường không | **Đầu tiên**, trước nhóm B. Kết quả quyết định 5 test case có bị Blocked không |
+| `python scripts/run_api_tests.py` | Nhóm F: TC-CPN-60, 62 đến 81, 118, 131, 140 đến 143 | Sau nhóm E |
+| `python scripts/run_api_tests.py --only 82 --rows A,C` | Dòng dự phòng (tương tự với `--only 130`) | Chỉ khi test case giao diện bị trình duyệt chặn |
+| `python scripts/run_api_tests.py --only 144` | Tạo 100 mã `FR17TC144N001` đến `FR17TC144N100` | Sau nhóm F, rồi kiểm tay trên giao diện |
+
+## Script làm gì
+
+- **Bắt đầu:** Đăng nhập lấy token admin và token user thường. Không lấy được token thì dừng trước khi gửi request của bất kỳ test case nào.
+- **Với mỗi request:** Ghi method, đường dẫn, header (token được che), body và phản hồi. Sau đó tra `GET /api/coupons` để ghi mã có được tạo hay xóa không, so giá trị đã lưu với giá trị đã gửi, và so số lượng mã trước, sau.
+  - Số được so bằng `Decimal`, nên phân biệt được `9007199254740993` với `...992`.
+- **Dùng `http.client` thay cho `urllib`:** `urllib` tự thêm `Content-Type`, nên không gửi được dòng B của TC-CPN-69 (request thiếu `Content-Type`).
+- **Dòng "Gợi ý"** chỉ so máy móc: Nhóm mã HTTP (mọi 5xx đều đánh dấu Fail), mã có trong `GET` không, giá trị lưu có khớp không. Trạng thái do anh/chị quyết định.
+- **Phạm vi an toàn:** Không reset dữ liệu, không xóa mã mẫu, không chạy nhóm H hay TC-CPN-56. Cuối log có danh sách việc làm tay (kiểm bảng của TC-CPN-60, các bước của TC-CPN-144) và lời nhắc chạy nhóm H.
+- **Log:** Ghi vào `logs/S6_api_<ngày>_<giờ>.log`, mỗi lần chạy một file.
+
+**Lưu ý khi chạy lại:** Test case có tạo mã (ví dụ TC-CPN-60) chạy lại mà chưa reset thì sẽ gặp lỗi trùng mã. Nếu chỉ cần chạy lại một phần, dùng `--only`.
+
+## Đã sửa trong `06_results.md`
+
+- **Dòng 3, 4:** Đổi theo đúng câu của FR-01: "Sinh viên chạy test, chụp ảnh và chạy script; AI chuẩn bị khung và điền kết quả theo ảnh, log và ghi chú của sinh viên; sinh viên review và sửa".
+- **Mục 1:**
+  - Ngày chạy: **21/10/2026**.
+  - Reset trước đợt test: **23:41 20/10/2026**.
+  - File log: `logs/S6_api_<thời gian>.log`.
+- **Lệnh chạy** được ghi ngay tại TC-CPN-61 (nhóm A), đầu nhóm F và đầu nhóm G.
+- Thêm một dòng lịch sử ở đầu file.
+
+**Một điểm nên làm khi chạy:** TC-CPN-50 đang để Pass, điền theo ảnh S0 chụp ngày 18/10. DB vừa được reset, nên anh/chị nên mở trang và xem lại danh sách 4 mã mẫu trước khi chạy nhóm B.
+
+## Commit
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md
+git commit -m "[C-FR17][S6] Add API test runner script and update run info"
+```
+````
+
+---
+
+### C189 | 23:59 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Tôi có câu hỏi, liệu tôi có thể để nó tự tạo issue khi tôi đã duyệt không? Có ưu nhược điểm gì không? Có bị đề bài cấm không? Có mang theo vết là AI tạo không? Có được xem trước khi approve hẳn lên git không?
+2. Phần quay sẵn trên máy cũng có pause á. Tôi sẽ nghe theo bạn, như vậy là hợp lý. Xong C tôi sẽ quay phần D.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check assignment rules on issues and gh CLI auth
+- PowerShell: Check whether GitHub CLI is installed
+
+**Output AI (nguyên văn):**
+
+````text
+Đề không cấm AI tạo issue. Nhưng máy bạn **chưa cài GitHub CLI (`gh`)**, và kể cả khi đã cài thì AI cũng không đính ảnh vào issue được, nên phần lợi không nhiều.
+
+## Trả lời từng ý
+
+| Câu hỏi | Trả lời |
+|---|---|
+| Đề có cấm không? | Không. Đề chỉ yêu cầu báo bug ở cả file Markdown lẫn GitHub Issues, mỗi issue có ảnh, và nộp kèm ảnh chụp trang Issues. Chỉ cần khai báo trong AI Audit: "AI tạo issue bằng `gh` theo nội dung sinh viên đã duyệt" |
+| Có để lại vết là AI tạo không? | Trên GitHub thì không. `gh` dùng tài khoản của bạn, nên người tạo issue là bạn. Vết chỉ nằm trong prompt log, và như vậy là minh bạch, đúng với yêu cầu khai báo |
+| Có xem trước khi đăng không? | Có, qua hai lớp: (1) Bạn duyệt nội dung bug trong `bugs/bug_report.md` trước; (2) Claude Code hỏi bạn trước khi chạy mỗi lệnh `gh issue create`, hiện đủ tiêu đề và label. Bạn từ chối được từng issue |
+
+## Ưu và nhược điểm
+
+**Ưu điểm:**
+- Không phải tự gõ tiêu đề, dán nội dung, chọn đủ 4 nhóm label cho từng issue.
+- Ít sai quy ước đặt tiêu đề.
+- Cả 4 feature có thể tới khoảng 20 đến 25 issue, nên tiết kiệm được khoảng 15 đến 20 phút.
+
+**Nhược điểm:**
+- **Không đính ảnh được.** Bạn vẫn phải mở từng issue trên trình duyệt để kéo ảnh vào, rồi chụp trang issue (`S7_issue_NN.png`). Đằng nào cũng phải mở từng issue.
+- **Phải cài và đăng nhập trước:** `winget install GitHub.cli`, rồi `gh auth login` (đăng nhập qua trình duyệt). Mất khoảng 5 phút.
+- **Repo nhóm dùng chung:** Issue đã tạo thì không xoá được, trừ khi bạn là admin (repo của angquoc), chỉ đóng được. Tạo nhầm sẽ để lại vết, và các bạn trong nhóm nhận thông báo.
+- Template issue của nhóm là dạng form. Tạo bằng `gh` thì bỏ qua form, nên nội dung phải tự viết theo đúng các mục của form. Phiên A làm được việc này.
+
+**Đề xuất:**
+- **FR-01 (khoảng 6 đến 8 bug): Tạo tay trên trình duyệt.** Bạn đằng nào cũng phải mở từng issue để đính ảnh, và chưa phải tốn 5 phút cài đặt lúc đang gấp.
+- Đến lúc làm S7 cho C, D, B mà thấy chậm thì cài `gh` sau cũng được.
+
+Nếu bạn vẫn muốn dùng `gh` ngay từ FR-01 thì báo tôi. Tôi sẽ đưa lệnh cài cho bạn tự chạy, vì đăng nhập phải làm trên trình duyệt của bạn.
+
+## 2. Video
+
+Đã rõ: Quay D sau khi xong C, dùng chức năng tạm dừng của trình quay có sẵn trên máy. Trước khi quay, tôi sẽ nhắc bạn chuẩn bị màn hình: Đóng `_NOTES.md` và các file không liên quan, phóng chữ to cho dễ đọc.
+
+Giờ bạn cứ dán hai tin nhắn ở lượt trước vào phiên A và C, rồi bắt đầu chụp nhóm A của C.
+````
+
+---
+
+### C190 | 00:00 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S7 cho FR-01. Viết bugs/bug_report.md (file dùng chung cho cả 4 feature; FR-01 là mục đầu tiên, các feature sau sẽ thêm mục riêng) từ 06_results.md:
+- Gom các dòng Fail theo yêu cầu bị vi phạm, mỗi bug một mục, liệt kê các test case làm bằng chứng (ảnh, log). Xét thêm QS01 đến QS03 ở mục 6: Cái nào đủ căn cứ thành bug thì đưa vào, cái nào không thì ghi lý do.
+- Mỗi bug có nội dung theo template issue của repo nhóm: D:/Dang/Test/Homeworks/HW02_group/.github/ISSUE_TEMPLATE/bug_report.yml và quy ước ở mục 4 của D:/Dang/Test/Homeworks/HW02_group/README.md (tiêu đề, severity, platform, technique, pool). Viết sẵn nội dung để tôi dán vào issue, chừa chỗ ghi số issue.
+- Không tự tạo issue trên GitHub, tôi sẽ tạo. Câu hỏi thì hỏi tôi ở đây, không ghi vào file.
+Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read issue template, README section 4, and check bugs folder
+- Bash: Extract environment, Fail/Blocked rows, and section 6 from 06_results.md
+- Write: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Edit: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Bash: Verify every Fail test case is covered by a bug, and format-check
+- Bash: Re-check that every Fail test case appears in the bug summary
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đọc template issue, quy ước ở mục 4 README của repo nhóm, và các dòng Fail cùng mục 6 trong `06_results.md`.
+
+Đã viết xong [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md). Tôi không tạo issue nào trên GitHub.
+
+**Kết quả kiểm tra:** 19 dòng Fail trong `06_results.md` đều đã nằm trong một bug. Định dạng hợp lệ.
+
+**Cấu trúc file:**
+- **Phần đầu dùng chung cho cả 4 feature:** Thông tin sinh viên, SUT, repo nhóm, cách dùng, mục lục 4 feature. FR-07, FR-17 và FR-04 để "bổ sung sau".
+- **Mục FR-01:** Môi trường và tiền điều kiện chung, bảng tổng hợp 13 bug (cột Issue để `#___`), rồi từng bug viết theo đúng các trường của template: Tiêu đề, labels, MSSV, feature, nền tảng, test case, mức độ, tiền điều kiện, các bước, dữ liệu, kết quả mong đợi (trích nguyên văn README của EShop), kết quả thực tế, ảnh, môi trường, ghi chú.
+- **Cuối mục FR-01:** Bảng xét QS01 đến QS03, và bảng các test case Blocked kèm bug gây chặn.
+
+**13 bug của FR-01:**
+
+| Mức độ | Bug |
+|---|---|
+| Critical | **01:** Giao diện từ chối mật khẩu hợp lệ, không đăng ký được (TC-REG-01, 108; kèm `Test1234!` từ QS02) |
+| High | **02:** Không có trường Xác nhận mật khẩu. **03 đến 08:** API nhận dữ liệu sai, tách theo yêu cầu: Họ Tên (03), Email bắt buộc (04), Mật khẩu bắt buộc (05), định dạng Email (06), Email trùng (07, bằng chứng chính là QS03), độ mạnh mật khẩu (08) |
+| Medium | **09:** Ô Email là `type="text"` |
+| Low | **10:** Không có dấu `*`. **11:** Nút màu đỏ. **12:** Không có `<h1>`. **13:** Chữ không phải tiếng Việt |
+
+**Ba quan sát ngoài test case:**
+- **QS01:** Không thành bug. FR-22 chỉ cấm thông báo nằm **dưới** nút; bong bóng vẫn nằm trên nút, và vị trí của nó do trình duyệt vẽ.
+- **QS02:** Gộp vào BUG-01.
+- **QS03:** Gộp vào BUG-07.
+
+**Cần bạn xác nhận trước khi tạo issue:**
+1. **Mức độ.** Tôi đi theo các câu hỏi ở mục 4.3 README của repo nhóm:
+   - BUG-01 Critical, vì chặn luồng đăng ký.
+   - BUG-02 High, vì hệ thống không thể từ chối mật khẩu gõ nhầm và người dùng không có cách tránh. Nếu bạn thấy nặng quá thì hạ xuống Medium.
+   - BUG-03 đến 08 High. Riêng BUG-05 (tạo tài khoản với mật khẩu rỗng) và BUG-08 (mật khẩu yếu) có thể xem là lỗ hổng bảo mật, tức Critical. Bạn chọn High hay Critical?
+2. **Label technique cho các bug tìm bằng checklist** (02, 09 đến 13). README bắt buộc gắn `EP` hoặc `BVA`. Tôi gắn `technique: EP`, với lý do các yêu cầu này là điều kiện "must be" (phải có hay không có), đúng guideline của EP. Bạn đồng ý không?
+3. **Ảnh cho bug API.** Template bắt buộc có ảnh, nhưng BUG-03 đến 08 hiện chỉ có log. Bạn cần chụp đoạn log tương ứng (ví dụ mở file log trong VS Code rồi chụp), mỗi bug một ảnh. Gợi ý tên: `S6_TC-REG-71_log.png`. Bạn chụp xong thì tôi cập nhật đường dẫn ảnh vào file.
+4. **BUG-13** gộp 2 chỗ (tiêu đề tab và bong bóng tiếng Anh) vì cùng một yêu cầu FR01-R14 và cùng test case TC-REG-91. Giữ một issue hay tách thành hai?
+5. **Dòng "Related":** Các bug API đang để chỗ trống trong ngoặc. Bạn tạo issue xong, báo tôi các số issue, tôi điền đồng loạt vào cột Issue, dòng "Issue" và các dòng Related.
+````
+
+---
+
+### C191 | 00:05 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Cả phiên A và C đều xong rồi. Xuất log, kiểm tra và báo tôi đi. Tôi chưa review gì đâu nên cần bạn xem trước và báo lại tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session A latest turn (S7)
+- Bash: Read session C latest turn and git state
+- Bash: Check C script for destructive calls and credentials
+- Bash: Inspect delete targets in C script
+- Bash: Read group issue conventions and check dashes
+- Read: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Bash: Scan bug headings, labels, tail tables
+- Bash: Export prompt log and update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên A đã viết xong bug report. Tôi xem tiếp phiên C.
+
+Tôi đọc script của C và bug report của A.
+
+Script của C an toàn: chỉ xoá các mã do chính nó tạo, không đụng mã mẫu, không reset. Giờ tôi đọc bug report của A.
 ````
 
 
