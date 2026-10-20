@@ -9250,6 +9250,266 @@ Phiên C: Đã viết xong, chờ bạn xuất log, sau đó kiểm tra và báo
 
 ````text
 Mình xuất log và ghi các phát hiện vào `_NOTES.md`:
+
+## Phiên C: S4 review xong (`04_bva.md`), FR-17 đã đủ S0 đến S4
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác | ✅ Không vi phạm; `ai_raw/` nguyên vẹn |
+| Script | ✅ 0 lỗi; **110 test case**, cả 123 lớp đều có test case |
+| Câu hỏi của phiên điều phối (`2^53+1`) | ✅ Xử lý hợp lý: Thêm **TC-CPN-131** (qua API, luôn chạy), và thêm hẳn mục **"Giới hạn quan sát"** mà bản nháp còn thiếu. Người phát hiện **ghi đúng** là phiên điều phối, bạn chuyển sang |
+
+**Phiên C hỏi bạn một điểm:** TC-CPN-131 luôn chạy qua API, nên là **ngoại lệ** so với quyết định "API chỉ dùng dự phòng" bạn chọn trước khi viết S4. Lý do của ngoại lệ hợp lý: Ô số không chặn giá trị này, nên dù kết quả qua giao diện thế nào cũng không biết chỗ nào làm tròn. Mình đề xuất **chấp nhận ngoại lệ**, không cần nhắn gì thêm cho phiên C.
+
+**Commit:**
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/04_bva.md prompt_log.md
+git commit -m "[C-FR17][S4] Review boundary values"
+git push
+```
+
+**Bước tiếp theo của phiên C là S5** (review lần cuối, gộp bộ test case). Ở bước này bạn có việc riêng cần làm, đã ghi trong `_NOTES.md`: **Thêm test case qua API** cho mã chữ thường (EC07, EC18 và điểm biên `j`), nguồn gốc ghi "SV thêm", lý do "biết từ lần nhập thử ở S0 rằng ô mã tự chuyển chữ hoa". Khi tới S5, mình sẽ soạn sẵn tin nhắn cho bạn.
+
+## Phiên A: Nhóm checklist (nhóm A trong bảng kết quả) đã điền xong
+
+Kết quả: **6 Fail, 1 Pass**. Có 2 ứng viên bug mới so với S0:
+- **TC-REG-93:** Trang Đăng ký **không có thẻ `<h1>` nào** (FR-21 yêu cầu đúng 1 thẻ).
+- **TC-REG-96:** **Ô Email là `type="text"`**, không phải `type="email"` như FR-22 yêu cầu. Ô Mật khẩu thì đạt.
+
+**Kết quả TC-REG-96 kéo theo một hệ quả cho các test case sau** (mình đã ghi vào `_NOTES.md`): Vì ô Email là `text`, trình duyệt **không tự cắt khoảng trắng và không tự kiểm định dạng**. Các test case về email qua giao diện (TC-REG-11, 33, 48, 34 đến 44) sẽ **kiểm thẳng EShop**. Mối lo ở S3 về việc trình duyệt cắt khoảng trắng hoá ra không xảy ra trên hệ thống thật; các test case API bổ sung lúc đó vẫn có ích để đối chiếu.
+
+**Về phần AI gap analysis mà phiên A nhắc tới:** Mình đã ghi lại. Kết quả mong đợi của TC-REG-94 (thứ tự Tab) do AI thiết kế **chỉ tính phần form**, hẹp hơn FR-21 (yêu cầu cả trang). Bạn đã bổ sung phần navbar khi điền kết quả.
+
+**Việc tiếp theo cho phiên A:**
+1. Điền nốt thứ tự Tab ở navbar (TC-REG-94) và phiên bản Chrome ở mục Môi trường.
+2. Sang **nhóm B** (test case không hợp lệ). Ở nhóm này, nhớ **chụp ảnh mọi test case Fail**.
+
+**Commit tạm cho S6:** Nếu muốn lưu tiến độ, bạn có thể commit phần đã làm:
+
+```bat
+git add features/A_FR-01_DangKy/06_results.md features/A_FR-01_DangKy/screenshots prompt_log.md
+git commit -m "[A-FR01][S6] Execute checklist group and record results (part 1)"
+git push
+```
+````
+
+---
+
+### C156 | 21:26 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Nhiều TC quá, có những TC đã có kết quả lúc viết hoặc có thể AI có thể làm. Liệu tôi có thể bảo AI điền những TC có thể thấy, có thể kiểm rồi tôi review lại không? Còn những cái không có thì tôi tự làm. Với lại nếu không làm hết tất cả thì tôi nên làm những TC nào? Và chỉ chụp ảnh những cái fail thôi hả?
+Phiên C: Đã viết xong rồi, xuất log, kiểm tra và nói tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C latest (S5) and list files
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên C **không có thay đổi mới** kể từ lần trước: Bản review S4 bạn đã commit (`4406f82`), và phiên đó đang chờ lệnh sang S5. Bên dưới là tin nhắn cho S5.
+
+## Phiên A: Có nhờ AI điền kết quả các test case "có thể thấy" được không?
+
+**Chỉ được với những gì đã được quan sát thật.** Ở nhóm checklist, AI điền được vì bạn đã quan sát và chụp ảnh từ S0. Còn với các nhóm B, C, D (phải nhập dữ liệu rồi xem hệ thống phản hồi), **chưa ai chạy thì chưa có kết quả**. Nếu AI điền những nhóm đó thì là **bịa kết quả**: Vi phạm đúng điều đề cấm, và rất dễ lộ khi bị gọi vấn đáp.
+
+AI **giúp được** bạn theo 3 cách hợp lệ:
+1. **Nhóm API (15 test case):** Bạn chạy `python run_api_tests.py` (khoảng 5 phút), rồi nhờ AI **đọc file log và điền** bảng.
+2. **Các test case giao diện:** Bạn chạy và chụp ảnh **màn hình kết quả**, rồi nhờ AI **đọc ảnh và viết** cột "Kết quả thực tế". Bạn chỉ cần kiểm lại. Cách này giống lúc làm TC-REG-94, giúp bạn không phải gõ.
+3. Test case nào không chạy thì AI ghi `Not run`.
+
+**Nên chạy những test case nào?** Theo mức 1 mà phiên A đã đề xuất, trừ nhóm A đã xong, còn khoảng 29 test case:
+
+| Nhóm | Test case | Ghi chú |
+|---|---|---|
+| B (không hợp lệ) | TC-REG-30, 97, 32, 34, 45, 49, 50, 56, 59 | Mỗi loại lỗi ERR1 đến ERR7 một test case; TC-REG-97 dùng chung dữ liệu với TC-REG-30 |
+| C (hợp lệ) | TC-REG-01 | Trường hợp cơ sở |
+| D (biên) | TC-REG-101, 104, 107, 108 | Họ Tên 1 ký tự, Họ Tên 1 dấu cách, mật khẩu 7 và 8 ký tự |
+| E (API) | Cả 14 | Chạy script |
+| F | TC-REG-79 | **Cuối cùng**, xong báo mình reset DB |
+
+Ước tính **30 đến 40 phút**. Còn sức thì chạy thêm phần còn lại của nhóm B (dễ ra bug nhất).
+
+**Ảnh chụp:**
+- **Fail:** Chụp **tất cả**, vì đây là ảnh cho bug report và GitHub Issues.
+- **Blocked:** Chụp 1 ảnh (TC-REG-59: Form không có ô Xác nhận mật khẩu). Các test case Blocked khác cùng lý do thì trỏ về ảnh này.
+- **Pass:** Chỉ vài ảnh tiêu biểu, ví dụ TC-REG-01 (chuyển sang `/login`) và TC-REG-30 (thông báo lỗi), để chứng minh có chạy thật.
+- **API:** Không cần ảnh, file log là bằng chứng.
+- Nếu bạn muốn AI đọc ảnh để viết kết quả thì **chụp cả những test case Pass** bạn đã chạy. Cách này tốn thêm vài giây mỗi test case nhưng tiết kiệm công gõ.
+
+## Phiên C: Tin nhắn sang S5
+
+S5 là bước bạn bổ sung test case mà AI bỏ sót. Đây là lúc đưa vào các test case **mã chữ thường qua API**, dựa trên điều bạn biết từ lần nhập thử ở S0. Thiết kế từ S1 đến S4 đã xong, nên nói ra bây giờ không ảnh hưởng tới việc đánh giá AI.
+
+```text
+Sang S5. Gộp 03_tc.md và 04_bva.md thành bộ test case cuối cùng 05_final_tc.md (bản AI lưu ở ai_raw/S5_final_test_cases.md giống hệt lúc đầu). Mỗi test case ghi nguồn gốc: AI, AI có SV sửa, SV thêm; thêm cột "Phát hiện" ghi rõ ai phát hiện điều gì (SV, AI tự bổ sung, hay Claude ở phiên điều phối). Chưa cần xuất Word/Excel.
+
+Tôi bổ sung (nguồn gốc "SV thêm"): Ở S0 tôi đã nhập thử và biết ô Mã coupon trên giao diện tự chuyển chữ thường thành chữ hoa ngay khi gõ. Vì vậy các test case nhập chữ thường qua giao diện (TC-CPN-06 cho EC07, TC-CPN-34 cho EC18, và điểm biên mã 1 ký tự chữ thường "j" ở S4) chỉ kiểm hành vi của giao diện, không kiểm được EShop. Thêm test case qua API cho từng lớp/điểm đó, kết quả mong đợi theo giả định đã chốt; ghi chú lý do ở cột "Vì sao AI bỏ sót": Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế.
+
+Nếu cần quyết định gì trước khi viết thì hỏi tôi.
+```
+````
+
+---
+
+### C157 | 21:28 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S5. Gộp 03_tc.md và 04_bva.md thành bộ test case cuối cùng 05_final_tc.md (bản AI lưu ở ai_raw/S5_final_test_cases.md giống hệt lúc đầu). Mỗi test case ghi nguồn gốc: AI, AI có SV sửa, SV thêm; thêm cột "Phát hiện" ghi rõ ai phát hiện điều gì (SV, AI tự bổ sung, hay Claude ở phiên điều phối). Chưa cần xuất Word/Excel.
+
+Tôi bổ sung (nguồn gốc "SV thêm"): Ở S0 tôi đã nhập thử và biết ô Mã coupon trên giao diện tự chuyển chữ thường thành chữ hoa ngay khi gõ. Vì vậy các test case nhập chữ thường qua giao diện (TC-CPN-06 cho EC07, TC-CPN-34 cho EC18, và điểm biên mã 1 ký tự chữ thường "j" ở S4) chỉ kiểm hành vi của giao diện, không kiểm được EShop. Thêm test case qua API cho từng lớp/điểm đó, kết quả mong đợi theo giả định đã chốt; ghi chú lý do ở cột "Vì sao AI bỏ sót": Thông tin này chỉ có từ lần nhập thử ở S0 và không được cung cấp cho AI khi thiết kế.
+
+Nếu cần quyết định gì trước khi viết thì hỏi tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- AskUserQuestion
+- Bash: List features and check FR-01 final file exists
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- AskUserQuestion
+- Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\05_final_tc.md
+- Bash: Copy to ai_raw, verify identical, run checks and count origins
+- Bash: Add sequence column to section 9.1 table
+- Bash: Recopy, verify identical, rerun checks and count origins
+- Bash: Count origins and student findings per suite
+
+**Output AI (nguyên văn):**
+
+````text
+Trước khi viết `05_final_tc.md`, tôi đã đối chiếu thông tin mới của anh/chị ("ô Mã coupon tự chuyển chữ thường thành chữ hoa ngay khi gõ") với toàn bộ test case qua giao diện:
+
+- Ba test case anh/chị nêu (TC-CPN-06, TC-CPN-34, TC-CPN-123) đúng là bị ảnh hưởng. Mỗi test case sẽ có một test case API tương ứng, đánh mã TC-CPN-140 đến TC-CPN-142.
+- **Còn một test case nữa bị ảnh hưởng:** TC-CPN-10 dùng `<b>FR17TC10</b>`. Khi gõ, chuỗi này sẽ thành `<B>FR17TC10</B>`, nên kết quả mong đợi "hiện nguyên chuỗi `<b>...`" không còn đúng. Thẻ HTML không phân biệt hoa thường, nên test case vẫn kiểm được việc escape; chỉ cần sửa kết quả mong đợi cho nhận dạng chữ hoa. Tôi sẽ ghi đây là AI phát hiện, nhờ thông tin của anh/chị.
+
+Có bốn điểm về cách ghi nguồn gốc và cấu trúc file mà tôi cần anh/chị chốt trước:
+
+Anh/chị cho phép tham khảo `05_final_tc.md` của A_FR-01_DangKy để đồng nhất cấu trúc. Tôi chỉ mở đúng file đó.
+
+Bộ test case cuối cùng đã xong: [05_final_tc.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/05_final_tc.md). File [ai_raw/S5_final_test_cases.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S5_final_test_cases.md) giống hệt (đã kiểm bằng `cmp`). Cấu trúc theo `05_final_tc.md` của FR-01; ngoài file đó tôi không mở file nào khác của FR-01.
+
+**Kiểm tra:**
+- Script kiểm phủ lớp: Có 113 test case, không mã nào trùng, mọi lớp đều được nhắc tới. Script có cảnh báo vì EC77 được nhắc dù không còn trong `02_ec.md`; đó là lớp đã bỏ ở S2, chỉ nhắc trong phần giải thích.
+- Script kiểm định dạng báo 0 lỗi.
+- Số đếm theo nguồn gốc ở mục 2 khớp với kết quả đếm bằng script.
+
+Trước khi giao, script bắt được một lỗi và tôi đã sửa: Bảng 9.1 ("Test case không phải AI") có ô đầu là mã test case nên bị hiểu là định nghĩa lại test case. Tôi thêm cột "#" ở đầu bảng; các cột khác giữ thứ tự như FR-01.
+
+## Tóm tắt: 113 test case
+
+| Nhóm | Số TC | AI | AI có SV sửa | SV thêm | Có phần do SV phát hiện |
+|---|---|---|---|---|---|
+| TS-01 Thêm hợp lệ qua giao diện | 25 | 20 | 5 | 0 | 2 |
+| TS-02 Thêm không hợp lệ qua giao diện | 17 | 13 | 4 | 0 | 1 |
+| TS-03 Xem, Xóa qua giao diện | 7 | 6 | 1 | 0 | 2 |
+| TS-04 Giá trị biên qua giao diện | 29 | 25 | 4 | 0 | 1 |
+| TS-05 API | 29 | 22 | 4 | 3 | 8 |
+| TS-06 Checklist | 6 | 6 | 0 | 0 | 0 |
+| **Tổng** | **113** | **92** | **18** | **3** | **14** |
+
+- **Cột "Phát hiện"** có bốn loại người phát hiện: Sinh viên (ghi bước và số câu hỏi), AI tự bổ sung khi review, Claude ở phiên điều phối (`305c705a`, cho TC-CPN-111, 114, 119, 131), hoặc "AI".
+- **Câu hỏi của anh/chị ở S1 dẫn tới các lớp mới:** Có 6 test case vẫn mang nguồn gốc "AI" nhưng phủ các lớp đó (TC-CPN-53, 55, 69, 70, 71, 73). Tôi ghi riêng ở mục 9.2, giống mục 9.2 của FR-01.
+- **Quy ước chung:** Bảng quy ước ở mục 1.2 có cột Nguồn gốc và Phát hiện riêng. Ví dụ dòng KQ-KH-GD ghi: SV chọn chỉ dùng K3; AI bổ sung yêu cầu thông báo bằng tiếng Việt.
+
+## Phần anh/chị bổ sung (mục 13)
+
+- **TC-CPN-140, 141, 142** (SV thêm, qua API): Bản API cho lớp chữ thường EC07, lớp trùng khác hoa thường EC18 và điểm biên "1 chữ thường". Kết quả mong đợi theo A10 và A04. Cột "Vì sao AI bỏ sót" ghi đúng câu anh/chị đưa.
+- **TC-CPN-06, 34, 123** giữ nguyên, thêm giới hạn GH9 (chỉ kiểm hành vi giao diện).
+- **TC-CPN-10** (AI phát hiện từ thông tin của anh/chị): Kết quả mong đợi chấp nhận thêm `<B>FR17TC10</B>`. Thẻ HTML không phân biệt hoa thường nên test case vẫn kiểm được escape.
+- **TC-CPN-142 dùng `"m"` thay cho `"j"`:** Nếu TC-CPN-123 chạy trước, giao diện đã tạo mã `J`, và `"j"` sẽ bị coi là trùng (A04).
+
+**Một điểm anh/chị nên xem:** Tôi gắn "Giới hạn GH8" (`10^16` chỉ kiểm độ lớn, không kiểm độ chính xác) vào TC-CPN-18, 21, 25 mà vẫn để nguồn gốc là "AI". Lý do: Nhận xét này đã có sẵn trong bản AI của S4, theo cách FR-01 xử lý TC-REG-103. Nếu anh/chị muốn tính đây là sửa thì đổi ba test case này sang "AI có SV sửa".
+
+Mục 13 còn một bảng trống để anh/chị bổ sung khi review.
+
+## Commit cho bản AI
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S5_final_test_cases.md Homeworks/HW02/features/C_FR-17_QuanLyCoupon/05_final_tc.md
+git commit -m "[C-FR17][S5] Merge final test case set (AI draft)"
+```
+
+Nhớ nhờ phiên điều phối xuất prompt log trước khi commit. Khi anh/chị review xong, mọi thay đổi sẽ ghi vào `05_final_tc.md` kèm dòng "Cập nhật lần N" và bảng "Thay đổi so với bản AI", như FR-01.
+````
+
+---
+
+### C158 | 21:28 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Vậy tôi sẽ ưu tiên test và chụp các TC mà phiên A đề xuất, sau đó bảo phiên A điền và tôi đọc review lại. Như vậy được chứ?
+Phiên C: Đã gửi và đang làm.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+**Được**, cách đó hợp lệ và tiết kiệm thời gian. Chỉ cần giữ vài điều để kết quả đáng tin:
+
+1. **Ảnh phải chụp đủ để AI đọc được kết quả:**
+   - Thấy **giá trị đã nhập** trong các ô.
+   - Thấy **kết quả**: Thông báo lỗi và vị trí của nó, hoặc trang đã chuyển sang.
+   - Thấy **thanh địa chỉ** (`/register` hay `/login`).
+
+   Có những điều ảnh không thể hiện được, ví dụ "bấm xong không có gì xảy ra" hay "trang nhấp nháy rồi quay lại". Những điều đó bạn ghi tay một dòng ngắn vào cột Ghi chú, hoặc gõ vào tin nhắn cho phiên A.
+2. **Trạng thái Pass hoặc Fail do bạn chốt.** Phiên A chỉ **đề xuất**, giống lúc làm nhóm checklist. Khi đọc lại, bạn kiểm 2 cột "Kết quả thực tế" và "Trạng thái" so với những gì chính bạn đã thấy.
+3. **Đặt tên ảnh theo mã test case** (`S6_TC-REG-30.png`, `S6_TC-REG-11_1.png`…), để AI ghép đúng ảnh với dòng.
+4. **Không sửa `06_results.md` cùng lúc với phiên A.** Lúc phiên A đang điền thì bạn đừng mở file chỉnh sửa, để tránh ghi đè lên nhau.
+5. **Nhóm API:** Chạy script trước, rồi nhờ phiên A đọc file trong thư mục `logs/` và điền.
+
+Phần này sẽ được khai báo trong Audit: "AI chép kết quả từ ảnh chụp và file log do sinh viên chạy; sinh viên xác nhận trạng thái".
+
+Nhớ: **TC-REG-79 chạy sau cùng**, xong thì báo mình reset DB.
+
+**Phiên C:** Đã ghi nhận, đang làm S5. Khi xong, mình soát và báo bạn.
+````
+
+---
+
+### C159 | 21:41 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đang test và chụp ảnh.
+Phiên C: Đã xong, xuất log, kiểm tra và báo tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C S5 output and check files
+- Bash: Run check script and inspect student-added test cases
+- Bash: Export prompt log and verify session whitelist
+- Bash: Show where the excluded session id is mentioned
+- Bash: Find compaction summary entries in transcript and log
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
+- Bash: Re-export log and confirm summary is gone
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên C không có thao tác nghi vấn, `ai_raw` cũ còn nguyên, và `05_final_tc.md` giống hệt `ai_raw/S5`. Giờ tôi kiểm nội dung và chạy script.
+
+Nội dung đạt. Giờ tôi xuất prompt log và kiểm chỉ có 3 phiên.
+
+`8298971a` xuất hiện 3 lần, nên tôi kiểm xem đó chỉ là chỗ nhắc tên hay có nội dung của phiên đó lọt vào.
 ````
 
 
