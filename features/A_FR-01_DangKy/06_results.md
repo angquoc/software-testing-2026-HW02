@@ -1,7 +1,7 @@
 # S6: Kết quả chạy test (FR-01 Đăng ký tài khoản)
 
-- Bước: S6 (Chạy test thật, ghi kết quả thực tế và trạng thái, chụp ảnh). Sinh viên chạy test và điền file này; AI chỉ chuẩn bị khung
-- Bản này: Sinh viên điền. Bản gốc của AI: `ai_raw/S6_results_template.md`
+- Bước: S6 (Chạy test thật, ghi kết quả thực tế và trạng thái, chụp ảnh). Sinh viên chạy test, chụp ảnh và chạy script; AI chuẩn bị khung và điền kết quả theo ảnh, log và ghi chú của sinh viên; sinh viên review và sửa
+- Bản này: AI điền theo ảnh, log của sinh viên, sinh viên review. Bản gốc của AI: `ai_raw/S6_results_template.md`
 - Thời gian tạo khung: 2026-10-20 16:57 (+07:00)
 - 2026-10-20 20:20 (+07:00): AI điền sẵn TC-REG-90, 91, 92, 95 bằng cách đối chiếu ảnh S0 (chụp 19/10/2026, SUT không đổi commit `85af3ba`), sửa tên hệ điều hành và trình duyệt ở mục 1. Sinh viên xác nhận trên trang hiện tại. TC-REG-93, 94, 96, 97 và mọi test case cần nhập dữ liệu hay gọi API do sinh viên tự chạy và điền
 - 2026-10-20 21:01 (+07:00): AI điền TC-REG-93 từ ảnh sinh viên chụp (`S6_TC-REG-93.png`); kiểm các dòng sinh viên đã điền ở nhóm A bằng ảnh S6; điền 2 dòng loại ô ở mục 1 theo `S6_TC-REG-96_1.png`; thêm ghi chú hệ quả của TC-REG-96 vào TC-REG-11, 14, 33, 48, 121, 122
@@ -11,6 +11,9 @@
 - 2026-10-20 23:02 (+07:00): Cập nhật TC-REG-91 (bong bóng của trình duyệt được tính vào FR01-R14, theo quyết định của sinh viên); thêm mục 6 ghi quan sát ngoài test case cho S7
 - 2026-10-20 23:17 (+07:00): AI điền nhóm C, D theo 5 ảnh sinh viên chụp (TC-REG-01, 101, 104, 107, 108) và ghi chú của sinh viên; các dòng còn lại của hai nhóm ghi Not run; bổ sung vào nhóm B và QS02 sự kiện mật khẩu kế hoạch `Abcdef1!` cũng bị từ chối
 - 2026-10-20 23:31 (+07:00): Thêm ghi chú "mật khẩu hợp lệ cũng nhận cùng thông báo" cho TC-REG-50, 56 (đồng nhất với TC-REG-107)
+- 2026-10-20 23:35 (+07:00): AI điền nhóm E theo log `logs/S6_api_20261020_233042.log` và 2 ảnh bước tay (TC-REG-78, 81); thêm QS03
+- 2026-10-20 23:39 (+07:00): AI điền nhóm F theo log `logs/S6_tc79_20261020_233746.log` và ảnh bước tay (`S6_TC-REG-79.png`)
+- 2026-10-20 23:44 (+07:00): Sinh viên review toàn bộ bảng. Claude (phiên điều phối) soát lại: Sửa giờ dòng nhật ký nhóm E (23:45 thành 23:35, theo thời điểm điền thật), điền thời điểm reset sau TC-REG-79 ở mục 1, đếm trạng thái ở mục 5, sửa mô tả vai trò ở đầu file cho đúng cách làm thực tế
 - Căn cứ: `05_final_tc.md` (96 test case, thứ tự chạy ở mục 10, giới hạn quan sát ở mục 11)
 
 ---
@@ -29,8 +32,8 @@
 | Reset dữ liệu mẫu trước đợt test (thời điểm) | 19:52 20/10/2026 |
 | Ô Email có dùng `type="email"` không (điền sau TC-REG-96) | Không. Ô Email khai báo `type="text"` (TC-REG-96, ảnh `S6_TC-REG-96_1.png`) |
 | Ô Mật khẩu có dùng `type="password"` không (điền sau TC-REG-96) | Có. Ô Mật khẩu khai báo `type="password"`, ký tự gõ vào bị che (TC-REG-96, ảnh `S6_TC-REG-96_1.png`, `S6_TC-REG-96_2.png`) |
-| File log API | `logs/S6_api_<thời gian>.log`, `logs/S6_tc79_<thời gian>.log` |
-| Reset dữ liệu sau TC-REG-79 (thời điểm) | |
+| File log API | `logs/S6_api_20261020_233042.log` (nhóm E); `logs/S6_tc79_20261020_233746.log` (nhóm F) |
+| Reset dữ liệu sau TC-REG-79 (thời điểm) | 23:41 20/10/2026 (khởi động lại backend, dữ liệu mẫu được tạo lại) |
 
 ## 2. Cách điền
 
@@ -166,39 +169,40 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; chạy nhóm
 
 | # | Mã | Tiêu đề ngắn | Giá trị nhập chính | Kết quả mong đợi | Kết quả thực tế | Trạng thái | Ảnh | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
-| 82 | TC-REG-70 | API đăng ký thành công với dữ liệu hợp lệ | `email`: `"tc70@domain.com"` | OUT3. Body phản hồi không chứa mật khẩu ở bất kỳ dạng nào. Giới hạn GH5 |  |  |  | Bằng chứng: log API |
-| 83 | TC-REG-71 | API từ chối khi `name` rỗng | `name`: `""`; `email`: `"tc71@domain.com"` | OUT4; kiểm chứng không tạo tài khoản |  |  |  | Bằng chứng: log API |
-| 84 | TC-REG-72 | API từ chối khi `name` chỉ gồm 3 dấu cách | `name`: `"␣␣␣"`; `email`: `"tc72@domain.com"` | OUT4; kiểm chứng không tạo tài khoản |  |  |  | Bằng chứng: log API |
-| 85 | TC-REG-73 | API từ chối khi `email` rỗng | `email`: `""` | OUT4 |  |  |  | Bằng chứng: log API |
-| 86 | TC-REG-74 | API từ chối khi `email` thiếu `@` | `email`: `"tc74domain.com"` | OUT4 |  |  |  | Bằng chứng: log API |
-| 87 | TC-REG-75 | API từ chối khi `password` rỗng | `email`: `"tc75@domain.com"`; `password`: `""` | OUT4; kiểm chứng không tạo tài khoản |  |  |  | Bằng chứng: log API |
-| 88 | TC-REG-76 | API từ chối khi `password` có 6 ký tự | `email`: `"tc76@domain.com"`; `password`: `"Abcd1!"` | OUT4; kiểm chứng không tạo tài khoản |  |  |  | Bằng chứng: log API |
-| 89 | TC-REG-77 | API từ chối khi `password` không có ký tự đặc biệt | `email`: `"tc77@domain.com"`; `password`: `"Abcdefg1"` | OUT4; kiểm chứng không tạo tài khoản |  |  |  | Bằng chứng: log API |
-| 90 | TC-REG-78 | Email chứa chuỗi SQL được lưu và so sánh nguyên văn | `email`: `"tc78'or'1'='1@domain.com"` | Bước 1: OUT3, không xuất hiện lỗi hệ thống. Bước 2: OUT2, ERR4 |  |  |  | Script API in bước 1; bước 2 làm tay qua giao diện |
-| 91 | TC-REG-80 | API từ chối khi `email` chỉ gồm 3 dấu cách | `email`: `"␣␣␣"` | OUT4 |  |  |  | Bằng chứng: log API |
-| 92 | TC-REG-81 | API lưu email đã cắt dấu cách đầu cuối | `email`: `"␣tc81@domain.com␣"` | Bước 1: OUT3. Bước 2: Qua giao diện, đăng ký `tc81@domain.com` với Họ Tên `Tran Thi B`, mật khẩu `Abcdef1!`; mong đợi OUT2, ERR4 |  |  |  | Script API in bước 1; bước 2 làm tay qua giao diện |
-| 93 | TC-REG-82 | API từ chối email trùng sau khi cắt dấu cách đầu cuối | `email`: `"␣test@eshop.com␣"` | OUT4. Nếu OUT3 thì EShop không cắt dấu cách khi so trùng |  |  |  | Bằng chứng: log API |
-| 94 | TC-REG-129 | API từ chối khi `password` dài 7 ký tự | `email`: `"tc129@domain.com"`; `password`: `"Abcde1!"` | OUT4; kiểm chứng không tạo tài khoản |  |  |  | Bằng chứng: log API |
-| 95 | TC-REG-130 | API từ chối khi nhãn tên miền dài 64 ký tự | `email`: `"tc130@` + 64 chữ `a` + `.com"` | OUT4 |  |  |  | Bằng chứng: log API |
+| 82 | TC-REG-70 | API đăng ký thành công với dữ liệu hợp lệ | `email`: `"tc70@domain.com"` | OUT3. Body phản hồi không chứa mật khẩu ở bất kỳ dạng nào. Giới hạn GH5 | HTTP 200, body `{"message": "User registered successfully", "id": 3}` (OUT3). Body phản hồi chỉ có `message` và `id`, không chứa mật khẩu hay trường giống mật khẩu | Pass | `logs/S6_api_20261020_233042.log` | API chấp nhận mật khẩu `Abcdef1!`, trong khi giao diện báo "Mật khẩu quá yếu!" với cùng mật khẩu (TC-REG-01) |
+| 83 | TC-REG-71 | API từ chối khi `name` rỗng | `name`: `""`; `email`: `"tc71@domain.com"` | OUT4; kiểm chứng không tạo tài khoản | HTTP 200, body `{"message": "User registered successfully", "id": 4}` (OUT3), không phải OUT4. Bước kiểm chứng (gửi lại cùng email với dữ liệu hợp lệ) cũng trả HTTP 200, id 5: Cùng một email được tạo 2 lần | Fail | `logs/S6_api_20261020_233042.log` | API nhận `name` rỗng (FR01-R01); cùng email được tạo 2 lần (FR01-R05) |
+| 84 | TC-REG-72 | API từ chối khi `name` chỉ gồm 3 dấu cách | `name`: `"␣␣␣"`; `email`: `"tc72@domain.com"` | OUT4; kiểm chứng không tạo tài khoản | HTTP 200, body `{"message": "User registered successfully", "id": 6}` (OUT3), không phải OUT4. Bước kiểm chứng (gửi lại cùng email với dữ liệu hợp lệ) cũng trả HTTP 200, id 7: Cùng một email được tạo 2 lần | Fail | `logs/S6_api_20261020_233042.log` | API nhận `name` chỉ gồm dấu cách (FR01-R01); cùng email được tạo 2 lần (FR01-R05) |
+| 85 | TC-REG-73 | API từ chối khi `email` rỗng | `email`: `""` | OUT4 | HTTP 200, body `{"message": "User registered successfully", "id": 8}` (OUT3), không phải OUT4 | Fail | `logs/S6_api_20261020_233042.log` | API nhận `email` rỗng (FR01-R02) |
+| 86 | TC-REG-74 | API từ chối khi `email` thiếu `@` | `email`: `"tc74domain.com"` | OUT4 | HTTP 200, body `{"message": "User registered successfully", "id": 9}` (OUT3), không phải OUT4 | Fail | `logs/S6_api_20261020_233042.log` | API nhận email thiếu `@` (FR01-R04) |
+| 87 | TC-REG-75 | API từ chối khi `password` rỗng | `email`: `"tc75@domain.com"`; `password`: `""` | OUT4; kiểm chứng không tạo tài khoản | HTTP 200, body `{"message": "User registered successfully", "id": 10}` (OUT3), không phải OUT4. Bước kiểm chứng (gửi lại cùng email với dữ liệu hợp lệ) cũng trả HTTP 200, id 11: Cùng một email được tạo 2 lần | Fail | `logs/S6_api_20261020_233042.log` | API nhận `password` rỗng (FR01-R03); cùng email được tạo 2 lần (FR01-R05) |
+| 88 | TC-REG-76 | API từ chối khi `password` có 6 ký tự | `email`: `"tc76@domain.com"`; `password`: `"Abcd1!"` | OUT4; kiểm chứng không tạo tài khoản | HTTP 200, body `{"message": "User registered successfully", "id": 12}` (OUT3), không phải OUT4. Bước kiểm chứng (gửi lại cùng email với dữ liệu hợp lệ) cũng trả HTTP 200, id 13: Cùng một email được tạo 2 lần | Fail | `logs/S6_api_20261020_233042.log` | API nhận mật khẩu 6 ký tự (FR01-R06); cùng email được tạo 2 lần (FR01-R05) |
+| 89 | TC-REG-77 | API từ chối khi `password` không có ký tự đặc biệt | `email`: `"tc77@domain.com"`; `password`: `"Abcdefg1"` | OUT4; kiểm chứng không tạo tài khoản | HTTP 200, body `{"message": "User registered successfully", "id": 14}` (OUT3), không phải OUT4. Bước kiểm chứng (gửi lại cùng email với dữ liệu hợp lệ) cũng trả HTTP 200, id 15: Cùng một email được tạo 2 lần | Fail | `logs/S6_api_20261020_233042.log` | API nhận mật khẩu không có ký tự đặc biệt (FR01-R10); cùng email được tạo 2 lần (FR01-R05) |
+| 90 | TC-REG-78 | Email chứa chuỗi SQL được lưu và so sánh nguyên văn | `email`: `"tc78'or'1'='1@domain.com"` | Bước 1: OUT3, không xuất hiện lỗi hệ thống. Bước 2: OUT2, ERR4 | Bước 1 (API): HTTP 200, body `{"message": "User registered successfully", "id": 16}` (OUT3), không xuất hiện lỗi hệ thống. Bước 2 (giao diện, Họ Tên `Tran Thi B`, email `tc78'or'1'='1@domain.com`, mật khẩu `Abcdef1!`): Khung đỏ "Mật khẩu quá yếu! Phải dài tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và KÝ TỰ ĐẶC BIỆT." (ERR6), không phải ERR4 | Blocked | `logs/S6_api_20261020_233042.log`, `S6_TC-REG-78.png` (bước 2) | Bước 2 không quan sát được việc so trùng email vì mật khẩu hợp lệ `Abcdef1!` bị giao diện từ chối trước (TC-REG-01) |
+| 91 | TC-REG-80 | API từ chối khi `email` chỉ gồm 3 dấu cách | `email`: `"␣␣␣"` | OUT4 | HTTP 200, body `{"message": "User registered successfully", "id": 17}` (OUT3), không phải OUT4 | Fail | `logs/S6_api_20261020_233042.log` | API nhận `email` chỉ gồm dấu cách (FR01-R02) |
+| 92 | TC-REG-81 | API lưu email đã cắt dấu cách đầu cuối | `email`: `"␣tc81@domain.com␣"` | Bước 1: OUT3. Bước 2: Qua giao diện, đăng ký `tc81@domain.com` với Họ Tên `Tran Thi B`, mật khẩu `Abcdef1!`; mong đợi OUT2, ERR4 | Bước 1 (API): HTTP 200, body `{"message": "User registered successfully", "id": 18}` (OUT3). Bước 2 (giao diện, Họ Tên `Tran Thi B`, email `tc81@domain.com`, mật khẩu `Abcdef1!`): Khung đỏ "Mật khẩu quá yếu! Phải dài tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và KÝ TỰ ĐẶC BIỆT." (ERR6), không phải ERR4 | Blocked | `logs/S6_api_20261020_233042.log`, `S6_TC-REG-81.png` (bước 2) | Bước 2 không quan sát được email được lưu ở dạng nào vì mật khẩu hợp lệ `Abcdef1!` bị giao diện từ chối trước (TC-REG-01) |
+| 93 | TC-REG-82 | API từ chối email trùng sau khi cắt dấu cách đầu cuối | `email`: `"␣test@eshop.com␣"` | OUT4. Nếu OUT3 thì EShop không cắt dấu cách khi so trùng | HTTP 200, body `{"message": "User registered successfully", "id": 19}` (OUT3), không phải OUT4 | Fail | `logs/S6_api_20261020_233042.log` | API nhận ` test@eshop.com ` (có dấu cách đầu cuối) dù `test@eshop.com` đã có trong dữ liệu mẫu (FR01-R05) |
+| 94 | TC-REG-129 | API từ chối khi `password` dài 7 ký tự | `email`: `"tc129@domain.com"`; `password`: `"Abcde1!"` | OUT4; kiểm chứng không tạo tài khoản | HTTP 200, body `{"message": "User registered successfully", "id": 20}` (OUT3), không phải OUT4. Bước kiểm chứng (gửi lại cùng email với dữ liệu hợp lệ) cũng trả HTTP 200, id 21: Cùng một email được tạo 2 lần | Fail | `logs/S6_api_20261020_233042.log` | API nhận mật khẩu 7 ký tự (FR01-R06); cùng email được tạo 2 lần (FR01-R05) |
+| 95 | TC-REG-130 | API từ chối khi nhãn tên miền dài 64 ký tự | `email`: `"tc130@` + 64 chữ `a` + `.com"` | OUT4 | HTTP 200, body `{"message": "User registered successfully", "id": 22}` (OUT3), không phải OUT4 | Fail | `logs/S6_api_20261020_233042.log` | API nhận email có nhãn tên miền 64 ký tự (FR01-R04) |
 
 ### F. Bảo mật, chạy cuối cùng (script `scripts/run_tc79.py`)
 
 | # | Mã | Tiêu đề ngắn | Giá trị nhập chính | Kết quả mong đợi | Kết quả thực tế | Trạng thái | Ảnh | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
-| 96 | TC-REG-79 | Họ Tên chứa lệnh `DROP TABLE` không làm hỏng dữ liệu người dùng | `name`: `"Robert'); DROP TABLE users;--"` | Bước 1: OUT3, không xuất hiện lỗi hệ thống. Bước 2: OUT2, ERR4 (dữ liệu có sẵn vẫn còn nguyên) |  |  |  | Script riêng, chạy cuối cùng; bước 2 làm tay; reset ngay sau |
+| 96 | TC-REG-79 | Họ Tên chứa lệnh `DROP TABLE` không làm hỏng dữ liệu người dùng | `name`: `"Robert'); DROP TABLE users;--"` | Bước 1: OUT3, không xuất hiện lỗi hệ thống. Bước 2: OUT2, ERR4 (dữ liệu có sẵn vẫn còn nguyên) | Bước 1 (API, `name` `"Robert'); DROP TABLE users;--"`, email `tc79@domain.com`): HTTP 200, body `{"message": "User registered successfully", "id": 23}` (OUT3), không xuất hiện lỗi hệ thống. Bước 2 (giao diện, Họ Tên `Nguyen Van A`, email `test@eshop.com`, mật khẩu `Abcdef1!`): Khung đỏ "Mật khẩu quá yếu! Phải dài tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và KÝ TỰ ĐẶC BIỆT." (ERR6), không phải ERR4 | Blocked | `logs/S6_tc79_20261020_233746.log`, `S6_TC-REG-79.png` (bước 2) | Chạy cuối cùng. Bước 2 không quan sát được dữ liệu người dùng có sẵn còn nguyên hay không, vì mật khẩu hợp lệ `Abcdef1!` bị giao diện từ chối trước (TC-REG-01) |
+
 ## 5. Tổng hợp
 
-Điền sau khi chạy xong (có thể nhờ AI đếm lại từ bảng ở mục 4).
+Đếm từ bảng ở mục 4 sau khi sinh viên review xong (23:44 20/10/2026).
 
 | Nhóm | Số TC | Pass | Fail | Blocked | Not run |
 |---|---|---|---|---|---|
-| A. Checklist giao diện | 7 | | | | |
-| B. Không hợp lệ qua giao diện | 34 | | | | |
-| C. Hợp lệ qua giao diện | 18 | | | | |
-| D. Giá trị biên qua giao diện | 22 | | | | |
-| E. API | 14 | | | | |
-| F. Bảo mật, chạy cuối cùng | 1 | | | | |
-| **Tổng** | **96** | | | | |
+| A. Checklist giao diện | 7 | 1 | 6 | 0 | 0 |
+| B. Không hợp lệ qua giao diện | 34 | 6 | 0 | 13 | 15 |
+| C. Hợp lệ qua giao diện | 18 | 0 | 1 | 0 | 17 |
+| D. Giá trị biên qua giao diện | 22 | 1 | 1 | 2 | 18 |
+| E. API | 14 | 1 | 11 | 2 | 0 |
+| F. Bảo mật, chạy cuối cùng | 1 | 0 | 0 | 1 | 0 |
+| **Tổng** | **96** | **9** | **19** | **18** | **50** |
 
 ## 6. Quan sát ngoài test case (cân nhắc ở S7)
 
@@ -208,4 +212,4 @@ Những điều nhìn thấy trong lúc chạy test nhưng không thuộc kết 
 |---|---|---|---|---|
 | QS01 | Bong bóng "Please fill out this field." của ô Mật khẩu đè một phần lên nút "Đăng Ký" | TC-REG-49 | `S6_TC-REG-49.png` | FR01-R21 (thông báo lỗi nằm trên nút submit) |
 | QS02 | Mật khẩu `Test1234!` (9 ký tự, có chữ hoa, chữ thường, chữ số và `!`) bị từ chối với thông báo "Mật khẩu quá yếu! Phải dài tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và KÝ TỰ ĐẶC BIỆT.". Đây cũng là mật khẩu của tài khoản mẫu `test@eshop.com` trong SRS. Mật khẩu `Abcdef1!` của kế hoạch cũng bị từ chối với cùng thông báo | TC-REG-31, 33 đến 39, 45 (sinh viên dùng `Test1234!` để thử mật khẩu của dữ liệu mẫu); TC-REG-01, 101, 104, 108 (`Abcdef1!`, `Abcdefg1!`) | `S6_TC-REG-31.png`, `S6_TC-REG-01.png`, `S6_TC-REG-108.png` | FR01-R06 đến FR01-R10 |
-
+| QS03 | Qua API, gửi 2 lần cùng một email (dữ liệu hợp lệ ở lần 2) đều nhận HTTP 200 "User registered successfully" với 2 `id` khác nhau: Cùng email được tạo 2 lần | Bước kiểm chứng của TC-REG-71, 72, 75, 76, 77, 129 | `logs/S6_api_20261020_233042.log` | FR01-R05 |

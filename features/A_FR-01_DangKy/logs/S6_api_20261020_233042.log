@@ -1,0 +1,312 @@
+S6, FR-01: Nhóm test case API
+Thời gian bắt đầu: 2026-10-20 23:30:42
+Base URL: http://localhost:3000
+Chế độ: gửi thật
+Số test case: 14
+
+==============================================================================
+TC-REG-70: API đăng ký thành công với dữ liệu hợp lệ
+Mong đợi: OUT3. Body không chứa mật khẩu ở bất kỳ dạng nào
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc70@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 3
+    }
+  Gợi ý (request chính): Khớp OUT3
+  Gợi ý FR01-R23: Không thấy mật khẩu hay trường giống mật khẩu
+
+==============================================================================
+TC-REG-71: API từ chối khi name rỗng
+Mong đợi: OUT4; kiểm chứng không tạo tài khoản
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "", "email": "tc71@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 0 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 4
+    }
+  Gợi ý (request chính): Khớp OUT3
+  Kiểm chứng không tạo tài khoản: Gửi lại cùng email với dữ liệu hợp lệ; mong đợi OUT3
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc71@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 5
+    }
+  Gợi ý (kiểm chứng): Khớp OUT3
+
+==============================================================================
+TC-REG-72: API từ chối khi name chỉ gồm 3 dấu cách
+Mong đợi: OUT4; kiểm chứng không tạo tài khoản
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "   ", "email": "tc72@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 3 ký tự (có dấu cách đầu hoặc cuối, chỉ gồm dấu cách); email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 6
+    }
+  Gợi ý (request chính): Khớp OUT3
+  Kiểm chứng không tạo tài khoản: Gửi lại cùng email với dữ liệu hợp lệ; mong đợi OUT3
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc72@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 7
+    }
+  Gợi ý (kiểm chứng): Khớp OUT3
+
+==============================================================================
+TC-REG-73: API từ chối khi email rỗng
+Mong đợi: OUT4
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 0 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 8
+    }
+  Gợi ý (request chính): Khớp OUT3
+
+==============================================================================
+TC-REG-74: API từ chối khi email thiếu @
+Mong đợi: OUT4
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc74domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 14 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 9
+    }
+  Gợi ý (request chính): Khớp OUT3
+
+==============================================================================
+TC-REG-75: API từ chối khi password rỗng
+Mong đợi: OUT4; kiểm chứng không tạo tài khoản
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc75@domain.com", "password": ""}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 0 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 10
+    }
+  Gợi ý (request chính): Khớp OUT3
+  Kiểm chứng không tạo tài khoản: Gửi lại cùng email với dữ liệu hợp lệ; mong đợi OUT3
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc75@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 11
+    }
+  Gợi ý (kiểm chứng): Khớp OUT3
+
+==============================================================================
+TC-REG-76: API từ chối khi password có 6 ký tự
+Mong đợi: OUT4; kiểm chứng không tạo tài khoản
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc76@domain.com", "password": "Abcd1!"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 6 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 12
+    }
+  Gợi ý (request chính): Khớp OUT3
+  Kiểm chứng không tạo tài khoản: Gửi lại cùng email với dữ liệu hợp lệ; mong đợi OUT3
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc76@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 13
+    }
+  Gợi ý (kiểm chứng): Khớp OUT3
+
+==============================================================================
+TC-REG-77: API từ chối khi password không có ký tự đặc biệt
+Mong đợi: OUT4; kiểm chứng không tạo tài khoản
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc77@domain.com", "password": "Abcdefg1"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 14
+    }
+  Gợi ý (request chính): Khớp OUT3
+  Kiểm chứng không tạo tài khoản: Gửi lại cùng email với dữ liệu hợp lệ; mong đợi OUT3
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc77@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 15 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 15
+    }
+  Gợi ý (kiểm chứng): Khớp OUT3
+
+==============================================================================
+TC-REG-78: Email chứa chuỗi SQL được lưu và so sánh nguyên văn (bước 1)
+Mong đợi: Bước 1: OUT3, không xuất hiện lỗi hệ thống
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc78'or'1'='1@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 24 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 16
+    }
+  Gợi ý (request chính): Khớp OUT3
+  >>> VIỆC LÀM TAY: Bước 2 (làm tay qua giao diện): Đăng ký lại đúng email tc78'or'1'='1@domain.com, Họ Tên Tran Thi B, mật khẩu Abcdef1!. Mong đợi OUT2, ERR4
+
+==============================================================================
+TC-REG-80: API từ chối khi email chỉ gồm 3 dấu cách
+Mong đợi: OUT4
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "   ", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 3 ký tự (có dấu cách đầu hoặc cuối, chỉ gồm dấu cách); password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 17
+    }
+  Gợi ý (request chính): Khớp OUT3
+
+==============================================================================
+TC-REG-81: API lưu email đã cắt dấu cách đầu cuối (bước 1)
+Mong đợi: Bước 1: OUT3
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": " tc81@domain.com ", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 17 ký tự (có dấu cách đầu hoặc cuối); password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 18
+    }
+  Gợi ý (request chính): Khớp OUT3
+  >>> VIỆC LÀM TAY: Bước 2 (làm tay qua giao diện): Đăng ký tc81@domain.com (không có dấu cách), Họ Tên Tran Thi B, mật khẩu Abcdef1!. Mong đợi OUT2, ERR4
+
+==============================================================================
+TC-REG-82: API từ chối email trùng sau khi cắt dấu cách đầu cuối
+Mong đợi: OUT4. Nếu OUT3 thì EShop không cắt dấu cách khi so trùng
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": " test@eshop.com ", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 16 ký tự (có dấu cách đầu hoặc cuối); password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 19
+    }
+  Gợi ý (request chính): Khớp OUT3
+
+==============================================================================
+TC-REG-129: API từ chối khi password dài 7 ký tự
+Mong đợi: OUT4; kiểm chứng không tạo tài khoản
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc129@domain.com", "password": "Abcde1!"}
+  Ghi chú body: name: 12 ký tự; email: 16 ký tự; password: 7 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 20
+    }
+  Gợi ý (request chính): Khớp OUT3
+  Kiểm chứng không tạo tài khoản: Gửi lại cùng email với dữ liệu hợp lệ; mong đợi OUT3
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc129@domain.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 16 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 21
+    }
+  Gợi ý (kiểm chứng): Khớp OUT3
+
+==============================================================================
+TC-REG-130: API từ chối khi nhãn tên miền dài 64 ký tự
+Mong đợi: OUT4
+------------------------------------------------------------------------------
+  Request: POST http://localhost:3000/api/register
+  Header: Content-Type: application/json; charset=utf-8
+  Body: {"name": "Nguyen Van A", "email": "tc130@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com", "password": "Abcdef1!"}
+  Ghi chú body: name: 12 ký tự; email: 74 ký tự; password: 8 ký tự
+  Response: HTTP 200
+  Body phản hồi:
+    {
+      "message": "User registered successfully",
+      "id": 22
+    }
+  Gợi ý (request chính): Khớp OUT3
+
+==============================================================================
+Kết thúc: 2026-10-20 23:30:43
+Việc làm tay qua giao diện còn lại:
+  - TC-REG-78: Bước 2 (làm tay qua giao diện): Đăng ký lại đúng email tc78'or'1'='1@domain.com, Họ Tên Tran Thi B, mật khẩu Abcdef1!. Mong đợi OUT2, ERR4
+  - TC-REG-81: Bước 2 (làm tay qua giao diện): Đăng ký tc81@domain.com (không có dấu cách), Họ Tên Tran Thi B, mật khẩu Abcdef1!. Mong đợi OUT2, ERR4
+Nhắc: TC-REG-79 chạy riêng bằng run_tc79.py, sau cùng, rồi reset dữ liệu.
+Log: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\logs\S6_api_20261020_233042.log

@@ -10689,6 +10689,211 @@ Phiên A đã xong nhóm C và D. Xuất log, kiểm tra và báo tôi. Nếu kh
 - Bash: Read session A recent turns
 - Bash: Inspect A's API script usage and git status
 - Bash: Check A results format and export log
+- Bash: Record A groups C and D in notes
+
+**Output AI (nguyên văn):**
+
+````text
+Nhóm C và D của phiên A không có lỗi. Log đã xuất (181 lượt, đúng 3 phiên). Về script nhóm E: tôi chạy giúp được, nhưng tôi đề nghị bạn tự chạy, lý do ở dưới.
+
+## Kết quả soát nhóm C và D
+
+| Nhóm | Kết quả |
+|---|---|
+| C (18 test case) | TC-REG-01 **Fail**: `Abcdef1!` hợp lệ nhưng bị báo "Mật khẩu quá yếu!". 17 test case còn lại Not run |
+| D (22 test case) | 101, 104 Blocked (lỗi mật khẩu chặn trước khi kiểm ô Họ Tên); 107 Pass; 108 **Fail** (`Abcdefg1!` hợp lệ bị từ chối); 18 Not run |
+
+- **Bảng đủ 96 dòng**, không có dấu "—" hay "·", không còn câu hỏi nào trong ô kết quả.
+- **9 dòng Blocked của nhóm B giờ đã có căn cứ:** Bạn đã thử `Abcdef1!` (mật khẩu theo kế hoạch) và cũng bị từ chối. Đây là điểm tôi lo ở lượt trước, nay đã rõ.
+- **Câu hỏi của bạn về Pass ở 50, 56, 107:** Phiên A trả lời đúng. Mỗi test case được xét theo kết quả mong đợi của riêng nó; bug đã có TC-REG-01 và 108 bắt, không nên đếm một lỗi nhiều lần. Tôi đã ghi vào `_NOTES.md` làm chất liệu cho S8 và AI Critique: Pass không chứng minh luật được cài đúng.
+
+## Commit
+
+```
+git add features/A_FR-01_DangKy/06_results.md features/A_FR-01_DangKy/screenshots/S6_TC-REG-01.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-101.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-104.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-107.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-108.png prompt_log.md
+git commit -m "[A-FR01][S6] Execute valid and boundary groups and record results (part 3)"
+```
+
+## Script nhóm E: Ai chạy?
+
+Tôi chạy được, vì script không hỏi gì giữa chừng. Nhưng **tôi đề nghị bạn tự chạy**:
+
+- Đầu script ghi "Sinh viên tự chạy script này", và WORKFLOW ghi S6 là việc của sinh viên. Nếu tôi chạy thì phải khai báo thêm một dòng trong AI Audit, và thao tác đó nằm trong prompt log dưới tên AI.
+- Bạn chỉ mất một lệnh, chạy khoảng 10 giây:
+
+```
+python features/A_FR-01_DangKy/scripts/run_api_tests.py
+```
+
+- Script tạo file log trong `features/A_FR-01_DangKy/logs/`.
+- Cuối log có lời nhắc 2 bước làm tay ở giao diện cho TC-REG-78 và 81. Bạn làm và chụp ảnh, rồi gửi phiên A tên file log và các ảnh để điền.
+
+Nếu bạn vẫn muốn tôi chạy thì nói một tiếng. Tôi sẽ chạy và tự ghi vào phần khai báo Audit.
+
+## Lưu ý về TC-REG-79 và reset
+
+TC-REG-79 (`run_tc79.py`, chuỗi DROP TABLE) vẫn chạy sau cùng. Nhưng **chưa reset DB ngay sau đó**, vì C đang chạy nhóm giao diện, và reset sẽ xoá các mã bạn vừa tạo cho C. Thứ tự sẽ là:
+
+1. A: Nhóm E, rồi TC-REG-79.
+2. C: Xong các nhóm A đến G.
+3. Tôi reset một lần.
+4. C: Nhóm H (nếu còn thời gian), rồi reset lần cuối.
+````
+
+---
+
+### C182 | 23:34 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã chạy script, có file log đã được tạo ra (S6_api_20261020_233042.log). Và tôi cũng đã làm tay 2 bước, chụp ảnh lại rồi. Dựa vào đó, bạn hãy điền nhóm E cho tôi đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List API logs/screenshots and read the API log
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-78.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-81.png
+- Bash: Fill group E from API log and step-2 screenshots, add QS03
+
+**Output AI (nguyên văn):**
+
+````text
+Đã điền nhóm E (14 test case) trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md) theo log `logs/S6_api_20261020_233042.log` và hai ảnh bước tay. Định dạng hợp lệ, vẫn 96 dòng.
+
+| Trạng thái | Test case | Ghi chú |
+|---|---|---|
+| **Pass** | TC-REG-70 | OUT3; body phản hồi chỉ có `message` và `id`, không có mật khẩu (FR01-R23 phần kiểm được) |
+| **Fail** | TC-REG-71, 72, 73, 74, 75, 76, 77, 80, 82, 129, 130 | API trả HTTP 200 "User registered successfully" cho **mọi** dữ liệu không hợp lệ: Họ Tên rỗng hoặc chỉ dấu cách, email rỗng, email thiếu `@`, email chỉ dấu cách, mật khẩu rỗng, mật khẩu 6 hoặc 7 ký tự, mật khẩu không có ký tự đặc biệt, nhãn tên miền 64 ký tự, email trùng `test@eshop.com` có dấu cách |
+| **Blocked** | TC-REG-78, 81 | Bước 1 qua API đạt OUT3. Bước 2 qua giao diện bị "Mật khẩu quá yếu!" chặn, nên không quan sát được việc so trùng email |
+
+Ngoài ra:
+- **Mục 1:** Điền tên file log của nhóm E.
+- **Mục 6, thêm QS03:** Qua API, cùng một email được tạo 2 lần với 2 id khác nhau. Thấy ở bước kiểm chứng của TC-REG-71, 72, 75, 76, 77, 129 (FR01-R05).
+
+**Bức tranh chung cho S7 (tôi chỉ ghi ở đây, không ghi vào bảng):**
+- **Giao diện và API lỗi theo hai hướng ngược nhau.** Giao diện từ chối cả mật khẩu hợp lệ (TC-REG-01, 108). Còn API thì nhận cùng mật khẩu `Abcdef1!` (TC-REG-70) và nhận luôn mọi dữ liệu sai. Như vậy lỗi "mật khẩu hợp lệ bị từ chối" nằm ở phía giao diện, còn phía hệ thống thì không kiểm tra gì (Q22 đã có câu trả lời).
+- **Tài khoản hợp lệ đầu tiên qua API được cấp `id` 3.** Dữ liệu mẫu có 2 tài khoản, nên nếu `id` được cấp tăng dần thì mọi lần đăng ký qua giao diện trước đó đều không tạo được tài khoản. Điều này khớp với việc giao diện từ chối mọi mật khẩu. Tuy nhiên đây là suy luận về cách cấp `id`, nên tôi không ghi vào bảng.
+- **Gợi ý gom bug:** Nhiều dòng Fail của nhóm E có cùng một nguyên nhân là "API không kiểm tra dữ liệu đầu vào". Khi viết bug report, bạn có thể gom thành vài bug theo yêu cầu (bắt buộc cung cấp, định dạng email, độ mạnh mật khẩu, email duy nhất), mỗi bug liệt kê các test case làm bằng chứng, thay vì 11 bug riêng lẻ.
+
+**Bước tiếp theo:** Nhóm F. Bạn chạy `python scripts/run_tc79.py` (gõ `CHAY` để xác nhận), làm bước 2 qua giao diện theo lời nhắc, **rồi reset dữ liệu ngay**. Lưu ý: Bước 2 dùng mật khẩu `Abcdef1!` qua giao diện, nên nhiều khả năng sẽ lại bị "Mật khẩu quá yếu!" chặn như TC-REG-78 và 81. Khi đó TC-REG-79 cũng sẽ là Blocked ở bước 2. Dù vậy bước 1 (gửi chuỗi `DROP TABLE`) vẫn cho biết hệ thống có báo lỗi hay không.
+````
+
+---
+
+### C183 | 23:39 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã chạy script, có file log được xuất là S6_tc79_20261020_233746.log. Và tôi cũng đã chụp màn hình ảnh test tay. Cập nhật vào nhóm đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read TC-79 log and list its screenshots
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-79.png
+- Bash: Fill group F row from TC-79 log and screenshot; check for empty statuses
+
+**Output AI (nguyên văn):**
+
+````text
+Đã điền nhóm F trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md):
+
+**TC-REG-79: Blocked**
+- **Bước 1 (API):** Gửi `name` là chuỗi `DROP TABLE`, nhận HTTP 200 với id 23, không có lỗi hệ thống. Đạt OUT3.
+- **Bước 2 (giao diện):** Đăng ký `test@eshop.com` với mật khẩu `Abcdef1!` bị khung đỏ "Mật khẩu quá yếu!" chặn, nên không quan sát được dữ liệu có sẵn còn nguyên hay không.
+- **Ảnh:** Log `logs/S6_tc79_20261020_233746.log` và `S6_TC-REG-79.png`.
+
+Mục 1 đã điền tên file log của nhóm F. Giờ cả 96 dòng đều đã có trạng thái.
+
+**Hai việc còn lại của S6:**
+1. **Reset dữ liệu.** Nếu bạn chưa reset sau TC-REG-79 thì làm ngay. Sau đó cho tôi biết thời điểm reset để điền vào dòng "Reset dữ liệu sau TC-REG-79" ở mục 1 (dòng này đang trống).
+2. **Mục 5 (tổng hợp):** Khi bạn review xong toàn bộ bảng, báo tôi để đếm Pass, Fail, Blocked, Not run theo từng nhóm. Tôi chờ bạn review xong mới đếm, vì nếu bạn sửa trạng thái nào thì số đếm phải cập nhật lại.
+````
+
+---
+
+### C184 | 23:41 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Nếu vậy thì chờ A xong rồi tôi mới làm C, tôi chưa làm gì C cả. A đã điền xong rồi, reset DB đi. Tôi cũng review thấy ok rồi. Bạn review lại đi, tiện thì có thể điền thời điểm review và tổng kết sau khi bạn review xong (nếu không thấy lỗi gì). Còn nếu như bạn không tiện điền thì tôi bảo phiên con điền cũng được.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check session A completion and files
+- ToolSearch
+- TaskStop
+- Bash: Restart EShop backend to reseed DB
+- Bash: Confirm backend reseeded and note time
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+- Bash: Count statuses per group in A results
+- Bash: Fill review line, reset time, summary counts
+- Bash: Retry filling summary with corrected match
+- Bash: Export log, update tracker, show status
+
+**Output AI (nguyên văn):**
+
+````text
+A đã chạy xong cả nhóm E và F. Tôi reset DB trước (khởi động lại backend), rồi review toàn bộ bảng.
+
+Đã reset lúc 23:41. Giờ tôi đọc toàn bộ `06_results.md` của A.
+
+Tôi đã đọc hết 96 dòng. Giờ tôi đếm trạng thái theo nhóm để điền mục 5.
+
+S6 của A đã xong. Tôi reset DB lúc **23:41**, review hết 96 dòng và điền phần tổng kết. Không có lỗi nội dung, chỉ có một lỗi giờ nhỏ tôi đã sửa.
+
+## Review `06_results.md` của A
+
+**Nội dung đạt:** Trạng thái khớp với ảnh và log; Blocked và Fail được dùng nhất quán; không còn câu hỏi trong ô kết quả; không có dấu "—" hay "·". Log API không chứa token.
+
+**Đã sửa và điền:**
+
+| Chỗ | Nội dung |
+|---|---|
+| Dòng nhật ký nhóm E | Phiên A ghi giờ 23:45, nhưng thật ra nó điền lúc 23:35. Giờ 23:45 còn sau cả lúc reset, nên sẽ làm người đọc khó hiểu. Đã sửa thành 23:35 |
+| Mục 1 | "Reset dữ liệu sau TC-REG-79": 23:41 20/10/2026 |
+| Mục 5, Tổng hợp | Pass 9, Fail 19, Blocked 18, Not run 50, chia đủ theo 6 nhóm |
+| Nhật ký đầu file | Thêm dòng 23:44: Sinh viên review xong; Claude (phiên điều phối) soát lại, sửa giờ, điền mốc reset và mục 5 |
+| Định dạng | Thêm dòng trống trước "## 5", để bảng không dính vào tiêu đề khi xuất PDF |
+
+**Một chỗ tôi không sửa, bạn tự quyết:** Dòng 3 vẫn ghi "AI chỉ chuẩn bị khung", trong khi thực tế AI đã điền theo ảnh và log của bạn. Nếu muốn sửa, đổi thành "AI chuẩn bị khung và điền theo ảnh, log, ghi chú của sinh viên; sinh viên review".
+
+## Commit
+
+```
+git add features/A_FR-01_DangKy/06_results.md features/A_FR-01_DangKy/logs features/A_FR-01_DangKy/screenshots/S6_TC-REG-78.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-79.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-81.png prompt_log.md
+git commit -m "[A-FR01][S6] Execute API and security groups and summarize results"
+```
+
+Log đã xuất (184 lượt, đúng 3 phiên). Tracker S6 của A đã đánh dấu xong.
+
+## Chuyển sang C: Lưu ý về ngày
+
+- **DB vừa reset lúc 23:41, nên C đang có dữ liệu mẫu sạch.** Ô "Reset dữ liệu mẫu trước đợt test" ở mục 1 của C sẽ ghi là `20/10/2026 23:41`, không phải 19:53 như tôi nói trước đó.
+- **Giờ đã gần 0:00, nên phần lớn test của C sẽ chạy vào ngày 21/10.** Bảo phiên C sửa "Ngày chạy" thành `20/10/2026 đến 21/10/2026`, hoặc `21/10/2026` nếu bạn bắt đầu sau 0:00.
+- Với TC-CPN-22, 127, 128, "hôm nay" là ngày bạn bấm "Tạo mã", tức 21/10 nếu chạy sau nửa đêm.
+- Trang admin (cổng 5174) và backend đang chạy. Bạn bắt đầu được ngay với nhóm A của C (TC-CPN-50 trước).
+````
+
+---
+
+### C185 | 23:44 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bạn sửa cho đúng trung thực đi, rồi xuất log, sau đó tôi sẽ commit. Nhớ cập nhật trạng thái trong _NOTES
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Fix role description, export log, update notes
 
 **Output AI (nguyên văn):**
 

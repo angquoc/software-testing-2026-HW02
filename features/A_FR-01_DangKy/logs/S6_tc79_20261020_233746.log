@@ -1,0 +1,19 @@
+S6, FR-01: TC-REG-79, Họ Tên chứa lệnh DROP TABLE (chạy cuối cùng)
+Thời gian: 2026-10-20 23:37:46
+Chế độ: gửi thật
+Mong đợi bước 1: OUT3, không xuất hiện lỗi hệ thống
+------------------------------------------------------------------------------
+Request: POST http://localhost:3000/api/register
+Header: Content-Type: application/json; charset=utf-8
+Body: {"name": "Robert'); DROP TABLE users;--", "email": "tc79@domain.com", "password": "Abcdef1!"}
+Response: HTTP 200
+  {
+    "message": "User registered successfully",
+    "id": 23
+  }
+Gợi ý: Khớp OUT3
+
+>>> VIỆC LÀM TAY: Bước 2 (làm tay qua giao diện): Đăng ký test@eshop.com, Họ Tên Nguyen Van A, mật khẩu Abcdef1!. Mong đợi OUT2, ERR4 (dữ liệu có sẵn vẫn còn nguyên)
+>>> Nếu bước 2 KHÔNG cho ERR4: Ghi kết quả, rồi reset trước khi chạy lại bất kỳ test case nào.
+>>> Sau đó: Reset dữ liệu EShop ngay, ghi thời điểm reset vào 06_results.md mục 1.
+Log: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\logs\S6_tc79_20261020_233746.log
