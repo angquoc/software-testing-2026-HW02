@@ -5993,6 +5993,127 @@ Mình sửa `03_tc.md` theo cách (a) mà mình đã đề xuất: Thêm 3 test 
 Mình kiểm tra các thao tác phiên thiết kế vừa làm khi sửa file, rồi kiểm lại số lượng test case:
 
 Mọi thứ khớp: 72 test case, phiên thiết kế chỉ sửa `03_tc.md`, `ai_raw/` nguyên vẹn. Giờ mình ghi các chất liệu vào `_NOTES.md`, cập nhật tracker và xuất log:
+
+Đã xong. Bạn nói đúng: Phiên thiết kế đã sửa file từ trước, nên mình **chỉ sửa phần ghi người phát hiện**. Script mình chạy lúc đầu dừng ở bước kiểm tra, chưa ghi gì vào file. Lần sửa của phiên thiết kế không bị đụng tới.
+
+**Các chỗ đã sửa trong `03_tc.md`:**
+- **Dòng "Cập nhật lần 2" ở đầu file:** Thêm câu ghi 2 điểm này do Claude ở phiên điều phối (session `305c705a`) phát hiện.
+- **Mục 10.2:** Thêm câu dẫn: "Hai câu dưới đây do Claude ở phiên điều phối… nêu khi soát lại bản review; sinh viên chuyển sang phiên này."
+- **Bảng thay đổi (mục 12), 2 dòng loại "Thiếu":** Đổi "Sinh viên phát hiện" thành "Claude ở phiên điều phối phát hiện khi soát lại bản review; sinh viên chuyển sang".
+
+**Đã kiểm tra lại:**
+- Phiên thiết kế chỉ sửa `03_tc.md`, không đọc file bị cấm.
+- `ai_raw/` nguyên vẹn.
+- Có đúng **72 test case**, khớp với câu tổng ở mục 7.
+- Hình thức đạt.
+
+**Đã ghi vào `_NOTES.md`:**
+- **Bằng chứng S3 cho S8 và Audit:** AI ghi quá căn cứ về API; AI gộp nhiều lớp bất thường vào một test case; những chỗ thiếu mà bạn hỏi ra; 2 điểm phiên điều phối phát hiện (kèm việc phiên thiết kế ghi nhầm người phát hiện).
+- **Chất liệu Critique:** Hai thiếu sót về thực thi lọt qua cả bản AI lẫn lần review đầu, chỉ lộ ra khi một phiên AI khác soát độc lập. Bài học là một lượt review không đủ, và phải nghĩ tới môi trường chạy test (trình duyệt), không chỉ đặc tả.
+- **Những việc phải nhớ ở S6:**
+  - Chạy TC-REG-79 cuối cùng rồi reset DB.
+  - Ghi lại ô Email có phải `type="email"` không.
+  - Ghi phiên bản Chrome.
+  - TC-REG-59 đến 62 dự kiến Blocked.
+  - Bạn tự gọi API bằng Postman hoặc curl.
+
+Tracker đã đánh dấu S3 của FR-01 là xong. Log đã xuất. Commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/03_tc.md prompt_log.md
+git commit -m "[A-FR01][S3] Review domain test cases"
+git push
+```
+
+Tiếp theo là **S4 (BVA)**, bước cuối trước khi đúc kết skill.
+````
+
+---
+
+### C108 | 13:12 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã commit rồi. Bây giờ chúng ta sang S4 đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Grep: S4|BVA|biên
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Bash: Compute punycode lengths for IDN label boundaries
+- Bash: Verify punycode length for 62, 63, 64 character labels
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S4_bva.md
+- Bash: Verify new BVA test case IDs and reused references
+
+**Output AI (nguyên văn):**
+
+````text
+03_tc.md vừa thay đổi trên đĩa, có thể do bạn sửa. Tôi đọc lại cả file đó và WORKFLOW trước khi bắt đầu S4.
+
+Tôi kiểm tra bằng script rằng mỗi mã từ TC-REG-101 đến 130 xuất hiện đúng một lần ở cột Test case, và mọi test case "đã có" đều tồn tại trong `03_tc.md`.
+
+S4 đã xong, tôi dừng ở đây để bạn review. File output là [ai_raw/S4_bva.md](Homeworks/HW02/features/A_FR-01_DangKy/ai_raw/S4_bva.md). Kiểm tra bằng script: 30 mã mới (TC-REG-101 đến 130) mỗi mã xuất hiện đúng một lần, và mọi test case "đã có" được dùng lại đều tồn tại trong `03_tc.md`.
+
+**Cách làm:** Chỉ áp BVA cho 8 phân vùng có thứ tự (độ dài và số lượng). Các lớp về định dạng, tập ký tự và tính duy nhất không có thứ tự nên không xét biên. Điểm nào trùng với test case đã có ở S3 thì dùng lại mã đó.
+
+**Các phân vùng và điểm biên:**
+
+| Phân vùng | Biên chính | Test case mới |
+|---|---|---|
+| P1 Độ dài Họ Tên | 0, 1, 2, giữa 12, thăm dò 1000 ký tự | 101 đến 103 |
+| P7 Chỉ gồm khoảng trắng | 1 dấu cách, cho Họ Tên và Email | 104, 124 |
+| P2 Độ dài Mật khẩu | 0, 1, 4, 7, 8, 9, giữa 20, thăm dò 1000; dấu cách ở đầu và ở cuối | 105 đến 111 |
+| P3 Số ký tự mỗi loại | Đúng 1 chữ thường; đúng 2 mỗi loại | 112, 113 |
+| P4 Phần trước `@` | 1 và 2 ký tự | 114, 115 |
+| P5 Nhãn tên miền | 1, 2, 62, 63, 64; dạng punycode 63 và 64 | 116 đến 122 |
+| P6 Tổng độ dài Email | Thăm dò khoảng 1000 ký tự | 123 |
+| P8 Xác nhận mật khẩu "gần khớp" | Thiếu hoặc thừa 1 ký tự, khác ký tự đầu hoặc cuối (dự kiến Blocked do D01) | 125 đến 128 |
+| Biên qua API | Mật khẩu 7 ký tự, nhãn 64 ký tự | 129, 130 |
+
+**Ba điểm đáng chú ý:**
+- **Biên punycode:** Nhãn `tên` + 54 chữ `a` chỉ có 57 ký tự ở dạng có dấu, nhưng thành 64 ký tự ở dạng punycode. Nếu hệ thống đếm theo dạng có dấu thì sẽ nhận nhầm (TC-REG-122).
+- **Chưa biết "giá trị lớn nhất giao diện cho nhập":** Không được dùng DevTools nên chưa biết giá trị này. Tôi dùng chuỗi khoảng 1000 ký tự để thăm dò (TC-REG-103, 110, 123). Nếu ở S6 thấy ô chỉ nhận tối đa N ký tự thì ở S5 bổ sung các điểm N-1, N, N+1.
+- **TC-REG-123 (email rất dài):** Nếu hệ thống từ chối thì đó là **khác với giả định A05**, chưa chắc là lỗi so với đặc tả. Lý do: Chuẩn RFC giới hạn phần trước `@` 64 ký tự, nhưng giả định ta đã chọn là HTML5, không có giới hạn đó.
+
+**Bạn cần quyết định 6 điểm ở mục 7 của file:**
+1. Độ dài thăm dò có giữ 1000 ký tự không.
+2. Có giữ TC-REG-105 (mật khẩu 1 ký tự, vi phạm nhiều điều kiện cùng lúc) không.
+3. Có giữ phân vùng P3 không.
+4. Hai biên qua API đã đủ chưa.
+5. Nếu TC-REG-123 bị từ chối thì xử lý thế nào.
+6. Có giữ TC-REG-111 (dấu cách ở đầu mật khẩu) không.
+
+**Commit 1 của S4:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S4_bva.md
+git commit -m "[A-FR01][S4] Add boundary value analysis (AI draft)"
+```
+````
+
+---
+
+### C109 | 13:31 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+S4 đã có ai_raw, xuất log và đưa tôi commit message. Sau đó tôi sẽ review.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit S4 draft creation and check ai_raw
+- Bash: Export log and mark FR-01 S4 in progress
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
