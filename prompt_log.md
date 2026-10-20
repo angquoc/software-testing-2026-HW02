@@ -12196,7 +12196,887 @@ Bạn sửa đi, sửa xong xuất log rồi báo tôi commit.
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Tôi đã sửa xong 3 chỗ trong `06_results.md` của C, đã xuất log (207 lượt, đúng 3 phiên) và cập nhật `_NOTES.md`. Bạn commit được rồi.
+
+**Đã sửa (không đổi trạng thái hay số đếm nào):**
+- **Giờ ở nhật ký đầu file:** Ba dòng trước ghi "sau 00:56", "sau 01:18" hoặc không có giờ, nay ghi đúng giờ AI ghi file: 01:14, 01:21, 01:25. Thêm một dòng 01:30 ghi rằng Claude (phiên điều phối) sửa theo yêu cầu của bạn.
+- **Mục 1, 4 ô:**
+  - Hai ô về ô số và độ dài mã: "Không xác định: ... Not run, không có bằng chứng".
+  - Hai ô reset quanh TC-CPN-56: "Không reset (nhóm H Not run)".
+- **69 dòng Not run:** Cột Kết quả thực tế ghi "Không chạy", giống FR-01. Không còn dòng nào để trống.
+
+**Commit:**
+
+```
+git add features/C_FR-17_QuanLyCoupon/06_results.md features/C_FR-17_QuanLyCoupon/logs features/C_FR-17_QuanLyCoupon/screenshots/S6_*.png prompt_log.md
+git commit -m "[C-FR17][S6] Execute reduced test set and record results"
+```
+
+Đừng `add` file `bugs/bug_report.md` (thay đổi S7 của A, chưa xong).
+
+Commit xong thì dán tin nhắn S7 cho phiên C mà tôi soạn ở lượt trước.
+
+**Còn mấy việc nữa:**
+- **S7 của A:** Chụp 11 ảnh log rồi tạo issue qua trang HTML của phiên A.
+- **S7 của C:** Chờ phiên C viết bug report và trang HTML.
+- **D:** Có thể bắt đầu S0 (chụp ảnh trên điện thoại) và quay video trong lúc phiên C viết S7. Khi bạn sẵn sàng, báo tôi để chạy `adb reverse` và bật Expo.
+````
+
+---
+
+### C208 | 01:35 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S7 cho FR-17. Thêm mục FR-17 vào bugs/bug_report.md (file dùng chung; mục FR-01 đã có, giữ nguyên), theo đúng cấu trúc của mục FR-01:
+- Gom các dòng Fail theo yêu cầu bị vi phạm, mỗi bug một mục, có test case làm bằng chứng (ảnh, log). Nội dung theo template issue và quy ước mục 4 README repo nhóm (D:/Dang/Test/Homeworks/HW02_group/.github/ISSUE_TEMPLATE/bug_report.yml, D:/Dang/Test/Homeworks/HW02_group/README.md). Severity theo lưu đồ mục 4.3; platform: admin; pool: C.
+- 6 dòng Khác giả định và các quan sát ở mục 6: Đừng tự quyết, liệt kê cho tôi kèm đề xuất (thành bug hay không, vì sao), tôi chọn.
+- Bug nào bằng chứng chỉ là log thì ghi tên ảnh log cần chụp, như FR-01.
+- Tạo trang HTML có link tạo issue điền sẵn giống phiên A đã làm cho FR-01; tham khảo script C:/Users/Lenovo/AppData/Local/Temp/claude/d--Dang-Test/38378bef-e688-4ecf-8075-2b0d74493d66/scratchpad/s7/make_issue_links.py. Không tự tạo issue. Câu hỏi hỏi tôi ở đây. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List bug files and reference script folder
+- Read: D:\Dang\Test\Homeworks\HW02_group\README.md
+- Read: D:\Dang\Test\Homeworks\HW02_group\.github\ISSUE_TEMPLATE\bug_report.yml
+- Read: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\make_issue_links.py
+- Bash: Inspect FR-01 issue links page text and log screenshots
+- Edit: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Edit: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\s7\make_issue_links_fr17.py
+- Bash: Generate FR-17 issue links page and verify references
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đọc các tài liệu nguồn: `bugs/bug_report.md` (mục FR-01), template issue, mục 4 README của repo nhóm, và script tạo link của phiên A.
+
+Mục FR-17 đã thêm vào [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md). Mục FR-01 giữ nguyên; tôi chỉ sửa ô "(bổ sung sau)" của FR-17 trong mục lục thành link. Tôi không tạo issue nào.
+
+**Kiểm tra:** Script kiểm định dạng báo 0 lỗi. Mọi ảnh được nhắc tới đều có trong `screenshots/`. Link dài nhất 4.711 ký tự, còn xa giới hạn khoảng 8.000 ký tự của GitHub.
+
+## 9 bug (13 dòng Fail, gom theo yêu cầu bị vi phạm)
+
+| Bug | Nội dung | Severity | Test case | Bằng chứng |
+|---|---|---|---|---|
+| 01 | User thường tạo và xóa được mã qua API Admin (FR-12, SEC-03) | Critical (vượt quyền) | TC-CPN-75, 79 | Log |
+| 02 | API tạo được mã khi thiếu trường bắt buộc, kể cả body `{}` | High | TC-CPN-66, 70, 65 dòng A | Log |
+| 03 | API nhận `type` là `"free"` | High | TC-CPN-65 dòng B | Log |
+| 04 | Nhận giá trị giảm 0% (giao diện) và `"abc"` ở 3 trường số (API) | High | TC-CPN-38, 67 | Ảnh và log |
+| 05 | `9007199254740993` bị lưu thành `...992` | High, BVA | TC-CPN-131 | Log |
+| 06 | Request không phải JSON gây lỗi 500, lộ stack trace và đường dẫn tệp | Medium | TC-CPN-69 | Log |
+| 07 | Chữ không phải tiếng Việt: Tiêu đề tab, mục "Dashboard", bong bóng, lỗi SQLite, lịch chọn ngày | Low | TC-CPN-91, 32 | Ảnh |
+| 08 | Nút "Tạo mã" màu cam | Low | TC-CPN-92 | Ảnh |
+| 09 | Không có dấu `*` | Low | TC-CPN-90 | Ảnh |
+
+**Ảnh log cần chụp trước khi tạo issue:** `S6_TC-CPN-65_log.png`, `66_log`, `67_log`, `69_log`, `70_log`, `75_log`, `79_log`, `131_log`. Trang HTML có ghi cách chụp như trang của FR-01.
+
+**Trang link tạo issue:**
+`C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\s7\FR17_issue_links.html`
+
+Script tạo trang nằm cùng thư mục: `C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\s7\make_issue_links_fr17.py`.
+
+## Chờ anh/chị chọn: 6 dòng Khác giả định và 3 quan sát
+
+Bảng này cũng có ở cuối mục FR-17, với cột "Quyết định" để trống.
+
+| Mã | Hành vi | Đề xuất | Lý do |
+|---|---|---|---|
+| KG01 | TC-CPN-37: Tạo được mã giảm `150%` | **Bug riêng, Medium** | Theo công thức của FR-09, giảm hơn 100% làm số tiền phải trả bị âm |
+| KG02 | TC-CPN-68: API lưu nguyên `12/31/2027`, `2027-02-30`, `...T10:00:00Z` | **Bug riêng, Medium** | `2027-02-30` không phải ngày có thật, nên không dùng được cho điều kiện hạn dùng (FR-09 C2) |
+| KG03 | TC-CPN-77: User thường xem được toàn bộ danh sách mã | **Gộp vào BUG-01** | Cùng nguyên nhân: Không kiểm tra `role`. Căn cứ là nhãn "(Dành cho Admin)" ở API spec 5.2 |
+| KG04 | TC-CPN-140, 141: Mã chỉ khác hoa thường cùng tồn tại | **Không thành bug** | Đặc tả không nói so trùng có phân biệt hoa thường không |
+| KG05 | TC-CPN-143: Dấu cách đầu cuối được lưu nguyên; mã chỉ gồm dấu cách tạo được | **Dòng C gộp vào BUG-02; dòng A, B, D không thành bug** | Mã chỉ gồm dấu cách tương đương không có mã; việc cắt dấu cách đầu cuối chỉ là giả định A09 |
+| QS01 | Placeholder ô "Giá trị" đổi theo loại | Không thành bug | Hành vi hợp lý, không trái đặc tả |
+| QS02 | F5 luôn về Dashboard, URL không đổi | Không thành bug của FR-17 | Thuộc điều hướng chung của Web Admin |
+| QS03 | Trang đăng nhập admin dùng tiếng Anh | Không báo trong FR-17 | Ngoài phạm vi FR-17 |
+
+## Câu hỏi
+
+1. **Severity của BUG-05 (High).** Tôi đi theo lưu đồ: Hệ thống lưu sai giá trị và người dùng không có cách nào lưu đúng giá trị đó. Nhưng con số này hiếm gặp trong thực tế; anh/chị muốn hạ xuống Medium không?
+2. **BUG-06 (Medium).** Mong đợi "4xx, không 5xx" dựa trên giả định A20, A23 chứ không có trong đặc tả; tôi đã ghi rõ ở ghi chú. Anh/chị có giữ thành bug không? Nếu giữ, có nâng lên Critical không, vì nó lộ stack trace và đường dẫn tệp trên máy chủ?
+3. **BUG-04 gom hai trường hợp:** 0% qua giao diện và `"abc"` qua API, vì cùng vi phạm ràng buộc giá trị của FR-17. Anh/chị muốn tách thành 2 issue không?
+
+Khi anh/chị chọn xong các dòng KG và QS, tôi cập nhật `bug_report.md` và tạo lại trang HTML.
+````
+
+---
+
+### C209 | 01:48 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đang tạo nốt các issue sau khi đã chụp thêm bằng chứng
+Phiên C: Đã xong rồi kìa, xuất log, kiểm tra và báo cáo cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C S7 turn and git state
+- Bash: Check bug_report structure and FR-01 section changes
+- Bash: Check dash, pending table, stray log file
+- Bash: Export log and record C S7 notes
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên C đã viết xong bản nháp S7 cho FR-17 và không có lỗi. Log đã xuất (209 lượt, đúng 3 phiên). Còn chờ bạn chọn cho 9 dòng (6 "Khác giả định", 3 quan sát) và 3 câu hỏi. Ngoài ra có 2 việc cần biết trước khi commit.
+
+## Kết quả soát S7 của C
+
+- **Bug report:** 9 bug gom từ 13 dòng Fail, mục FR-01 không bị đụng.
+  - Mức độ: 1 Critical (user thường tạo và xóa được mã, TC-CPN-75, 79), 4 High, 1 Medium, 3 Low.
+  - Mọi ảnh được nhắc tới đều tồn tại. Chỉ có 1 dấu "—", nằm trong đoạn trích nguyên văn README của EShop ở mục FR-01.
+- **Trang HTML tạo issue:** `C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\s7\FR17_issue_links.html`
+- **Cần chụp 8 ảnh log trước khi tạo issue:** `S6_TC-CPN-65_log.png`, `66`, `67`, `69`, `70`, `75`, `79`, `131`.
+
+## Hai việc cần biết
+
+1. **Phiên A và C đang cùng sửa `bugs/bug_report.md`.** A điền số issue (đã có `#42`), C thêm mục FR-17. Nếu hai phiên ghi vào file cùng lúc, bên ghi sau có thể đè mất phần của bên kia. Bạn cho từng phiên làm lần lượt, đừng gửi lệnh cho cả hai cùng lúc.
+2. **Có một file lạc: `bugs/S6_api_20261020_233042.log`.** Đây là bản sao giống hệt log của A, có lẽ bạn lỡ lưu vào đó lúc chụp ảnh log. Bạn tự xoá, hoặc báo tôi xoá. Đừng commit file này.
+
+## Đề xuất cho các lựa chọn của C
+
+| Mục | Phiên C đề xuất | Tôi đề xuất | Lý do |
+|---|---|---|---|
+| KG01: Tạo được mã giảm 150% | Bug, Medium | Đồng ý | Theo công thức của FR-09, giảm hơn 100% làm số tiền phải trả bị âm |
+| KG02: Lưu ngày không có thật `2027-02-30` | Bug, Medium | Đồng ý | |
+| KG03: User thường xem được danh sách mã | Gộp vào BUG-01 | **Chỉ ghi "Related" trong ghi chú của BUG-01, không gộp làm bằng chứng** | BUG-01 là bug Critical có căn cứ thẳng từ đặc tả. KG03 dựa trên giả định A28 (nhãn "(Dành cho Admin)"). Gộp vào làm bug Critical bị lẫn phần suy đoán |
+| KG04, KG05, QS01 đến QS03 | Như bảng của C | Đồng ý | |
+| Câu 1: BUG-05 (lưu sai số 2^53+1) giữ High? | | **Giữ High** | Đi đúng lưu đồ ở mục 4.3 README nhóm, nhất quán với FR-01 |
+| Câu 2: BUG-06 (lỗi 500 lộ stack trace) | Medium | **Giữ là bug, Medium** | Câu 1 của lưu đồ hỏi về lộ *dữ liệu* (của người dùng), còn đây là lộ thông tin máy chủ. Ghi rõ rủi ro bảo mật trong phần ghi chú |
+| Câu 3: Tách BUG-04? | | **Tách thành 2 issue** | 0% là lỗi qua giao diện, vi phạm quy tắc "giá trị dương". `"abc"` là lỗi qua API, vi phạm kiểu dữ liệu. Hai lỗi có bước tái hiện khác nhau |
+
+Như vậy FR-17 sẽ có 12 bug: 9 bug hiện tại, tách BUG-04 thành 2, thêm KG01 và KG02.
+
+Nếu đồng ý, bạn dán vào phiên C **sau khi phiên A điền xong số issue**:
+
+```text
+Quyết định:
+- KG01, KG02: Thành bug riêng, Medium.
+- KG03: Không gộp làm bằng chứng của BUG-FR17-01; chỉ ghi trong Ghi chú của BUG-01 là hành vi liên quan, dựa trên giả định A28.
+- KG04, KG05, QS01 đến QS03: Theo đề xuất của bạn.
+- BUG-05: Giữ High. BUG-06: Giữ là bug, Medium, ghi rõ rủi ro lộ thông tin máy chủ trong Ghi chú.
+- BUG-04: Tách thành 2 bug (0% qua giao diện; giá trị không phải số qua API).
+Điền cột Quyết định, đánh số lại bug nếu cần, cập nhật bảng tổng hợp và tạo lại trang HTML. Chỉ sửa mục FR-17 của bugs/bug_report.md. Không cần đưa lệnh commit.
+```
+
+## Commit
+
+`bugs/bug_report.md` đang chứa cả phần của A lẫn C. Chờ A điền xong số issue và C cập nhật xong, rồi commit một lần:
+
+```
+git add bugs/bug_report.md features/A_FR-01_DangKy/screenshots/S6_TC-REG-*_log.png prompt_log.md
+git commit -m "[bugs][S7] Link FR-01 issues and draft FR-17 bug reports"
+```
+
+Lúc đó báo tôi để xuất lại log trước khi commit.
+````
+
+---
+
+### C210 | 01:51 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Xóa giúp tôi bugs/S6_api_20261020_233042.log
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Delete stray duplicate log after confirming identical
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã xoá `bugs/S6_api_20261020_233042.log`. Trước khi xoá, tôi so lại thì file này giống hệt bản gốc trong `features/A_FR-01_DangKy/logs/`, nên không mất gì. Thư mục `bugs/` giờ chỉ còn `bug_report.md`.
+````
+
+---
+
+### C211 | 01:51 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Quyết định:
+- KG01, KG02: Thành bug riêng, Medium.
+- KG03: Không gộp làm bằng chứng của BUG-FR17-01; chỉ ghi trong Ghi chú của BUG-01 là hành vi liên quan, dựa trên giả định A28.
+- KG04, KG05, QS01 đến QS03: Theo đề xuất của bạn.
+- BUG-05: Giữ High. BUG-06: Giữ là bug, Medium, ghi rõ rủi ro lộ thông tin máy chủ trong Ghi chú.
+- BUG-04: Tách thành 2 bug (0% qua giao diện; giá trị không phải số qua API).
+Điền cột Quyết định, đánh số lại bug nếu cần, cập nhật bảng tổng hợp và tạo lại trang HTML. Chỉ sửa mục FR-17 của bugs/bug_report.md. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\s7\fr17_section.md
+- Bash: Replace FR-17 section, verify FR-01 untouched, regenerate HTML
+- Edit: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Edit: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+- Bash: Regenerate HTML and recheck after edits
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi sẽ viết lại toàn bộ mục FR-17 để đánh số lại nhất quán, theo thứ tự severity. Cách đánh số mới:
+
+| Mới | Cũ hoặc nguồn | Nội dung |
+|---|---|---|
+| 01 | 01 | Quyền; thêm ghi chú về KG03 |
+| 02 | 02 | Thiếu trường bắt buộc; thêm TC-CPN-143 dòng C (KG05) |
+| 03 | 03 | `type` ngoài tập |
+| 04 | 04 (phần giao diện) | Tạo được mã giảm 0% |
+| 05 | 04 (phần API) | Giá trị không phải số |
+| 06 | 05 | Số lớn bị lưu sai |
+| 07 | 06 | Lỗi 500, lộ thông tin máy chủ |
+| 08 | KG01 | Giảm 150% |
+| 09 | KG02 | Ngày không hợp lệ |
+| 10 đến 12 | 07 đến 09 | Ngôn ngữ, màu nút, dấu `*` |
+
+Mục FR-17 của [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md) đã cập nhật theo các quyết định của anh/chị, và trang link tạo issue đã được tạo lại.
+
+**Kiểm tra:**
+- Phần trước mục FR-17, gồm mục lục và toàn bộ mục FR-01, giống hệt bản trước khi sửa (đã so bằng script).
+- Script kiểm định dạng báo 0 lỗi.
+- Link dài nhất 5.435 ký tự, vẫn dưới giới hạn khoảng 8.000 ký tự của GitHub.
+- Ảnh của bug mới BUG-08 (`S6_TC-CPN-37_1.png`, `_2.png`) đều có trong `screenshots/`.
+
+## 12 bug sau khi đánh số lại
+
+| Bug | Nội dung | Severity | Thay đổi so với bản trước |
+|---|---|---|---|
+| 01 | User thường tạo, xóa được mã | Critical | Ghi chú thêm TC-CPN-77 là hành vi liên quan, dựa trên A28, không tính là bằng chứng (KG03) |
+| 02 | Thiếu trường bắt buộc vẫn tạo được mã | High | Thêm TC-CPN-143 dòng C: Mã chỉ gồm 3 dấu cách (KG05) |
+| 03 | `type` là `"free"` được nhận | High | Không đổi |
+| 04 | Giao diện tạo được mã giảm 0% | High | Tách từ BUG-04 cũ |
+| 05 | API nhận `"abc"` ở trường số | High | Tách từ BUG-04 cũ |
+| 06 | `2^53 + 1` bị lưu thành `...992` | High | Là BUG-05 cũ, giữ High |
+| 07 | Lỗi 500, lộ stack trace | Medium | Là BUG-06 cũ. Ghi chú nêu rõ rủi ro lộ thư mục cài đặt, tên tệp, số dòng, thư viện |
+| 08 | Giao diện tạo được mã giảm 150% | Medium | Mới (KG01). Mong đợi suy ra từ công thức FR-09, ghi rõ là giả định A01 |
+| 09 | API lưu `expired_at` không phải ngày hợp lệ | Medium | Mới (KG02). Gộp 3 dòng của TC-CPN-68 |
+| 10 đến 12 | Ngôn ngữ, màu nút, dấu `*` | Low | Là BUG-07 đến 09 cũ |
+
+Các dòng "Related" giữa các bug đã cập nhật theo số mới. Cột "Quyết định" của bảng KG, QS đã điền đủ 8 dòng.
+
+## Trước khi tạo issue
+
+Có 9 ảnh log cần chụp. Trang HTML liệt kê từng ảnh ở bug tương ứng, kèm cách chụp:
+
+`S6_TC-CPN-65_log.png`, `66_log`, `67_log`, `68_log`, `69_log`, `70_log`, `75_log`, `79_log`, `131_log`, `143_log`.
+
+Trong đó có 2 ảnh mới so với lần trước: `68_log` (cho BUG-09) và `143_log` (cho BUG-02).
+
+**Trang link tạo issue (đã tạo lại):**
+`C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\s7\FR17_issue_links.html`
+
+**Lưu ý với BUG-07:** Lần chạy chỉ gửi request có token admin, nên ghi chú có thêm câu "chưa kiểm request không có token có trả về cùng thông tin không". Tôi đã bỏ câu cũ ngụ ý rằng chỉ cần token admin là thấy được thông tin này.
+````
+
+---
+
+### C212 | 01:57 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Sao tôi không thể kéo ảnh qua được nữa nhỉ? Khi tôi cố kéo ảnh từ VS code qua thì nó chỉ hiện phóng to ảnh.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Nguyên nhân là **kéo từ VS Code**. Khi kéo file từ khung Explorer của VS Code sang trình duyệt, VS Code chỉ chuyển đường dẫn của file, không chuyển chính file. Chrome nhận đường dẫn đó nên mở ảnh ra xem (thấy ảnh phóng to), thay vì tải lên GitHub. Có ba cách làm được:
+
+**Cách 1, kéo từ File Explorer của Windows:**
+1. Trong VS Code, nhấp chuột phải vào thư mục `screenshots`, chọn **Reveal in File Explorer**.
+2. Kéo ảnh từ cửa sổ File Explorer đó, thả **vào bên trong** ô "Ảnh chụp" (khi rê vào, khung ô sẽ đổi màu hoặc hiện viền).
+
+**Cách 2, chọn file bằng hộp thoại (chắc ăn nhất):** Ngay dưới ô "Ảnh chụp" có dòng chữ nhỏ dạng "Paste, drop, or click to add files". Bấm vào chữ đó, cửa sổ chọn file hiện ra, bạn tìm tới `features/A_FR-01_DangKy/screenshots/` và chọn ảnh. Giữ Ctrl để chọn nhiều ảnh một lúc.
+
+**Cách 3, dán ảnh:** Mở ảnh, chọn copy ảnh vào clipboard, rồi bấm vào ô "Ảnh chụp" và nhấn Ctrl+V. Với ảnh log mới chụp bằng Win+Shift+S, ảnh đã sẵn trong clipboard ngay sau khi chụp, nên chỉ cần Ctrl+V vào ô, không cần mở file. Tuy vậy vẫn nên lưu ảnh thành file `S6_TC-REG-<số>_log.png` để nộp kèm bài.
+
+Ảnh tải lên thành công khi trong ô xuất hiện dòng dạng `![tên ảnh](https://github.com/user-attachments/...)`. Đợi dòng đó hiện ra rồi mới Submit.
+````
+
+---
+
+### C213 | 01:58 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Trong lúc chờ tạo issue cho A và C thì tôi sẽ làm pool B và review 1 lần cho từng bước thôi hả? (Vì đang làm dở 2 pool kia nên đâu thể quay video)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read C session's opening prompt and folder naming
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng vậy, làm B lúc này là hợp lý. Trong lúc làm B, bạn vẫn xen kẽ việc tạo issue cho A và C được, vì tạo issue không cần server.
+
+## Vì sao làm B lúc này được
+
+- **Không quay video B là đúng.** Màn hình đang có nhiều phiên và trang tạo issue mở song song. Ta vẫn để quay video ở D, khi A và C đã xong và màn hình gọn.
+- **B không ảnh hưởng dữ liệu của A và C.** B (Giỏ hàng, trang web ở cổng 5173) chỉ thay đổi giỏ hàng của tài khoản đang đăng nhập. A và C đã chạy xong S6, nên không cần reset. Backend và trang web đang chạy.
+- **Mỗi bước review một lượt:** AI hỏi gom mọi điểm cần quyết định trong một lần, kèm phương án đề xuất. Bạn trả lời một lần, AI sửa xong thì commit. Mỗi bước vẫn 2 commit (bản AI và bản review) theo WORKFLOW. Nếu bạn không sửa gì thì commit review chỉ cần ghi "không thay đổi".
+
+## Thứ tự
+
+1. **Mở một phiên Claude mới**, dán lệnh dưới đây. Phiên này bắt đầu từ S0 và sẽ hướng dẫn bạn chụp ảnh trang Giỏ hàng.
+2. **Báo tôi ngay khi phiên B đã chạy.** Tôi thêm mã phiên vào whitelist của prompt log; nếu không, log sẽ thiếu phiên B.
+3. Bạn chụp ảnh S0. Rồi AI làm từ S1 tới S5, mỗi bước bạn review một lượt. Xen giữa các bước, bạn tạo issue cho A và C.
+4. Mỗi bước xong thì báo tôi soát và xuất log, như với C.
+
+## Lệnh mở phiên B
+
+```text
+/domain-testing-design Feature B, FR-07 Giỏ hàng trên Web (http://localhost:5173), thư mục Homeworks/HW02/features/B_FR-07_GioHang/.
+
+Lưu ý:
+- Bắt đầu từ S0. Tài khoản dùng để khảo sát: test@eshop.com (mật khẩu theo SRS). Không dùng chức năng đăng ký.
+- Vì thiếu thời gian, mỗi bước tôi chỉ review một lượt: Gom mọi điểm cần quyết định vào một lần hỏi, mỗi điểm ghi kèm phương án bạn đề xuất và lý do một dòng; quyết định vẫn là của tôi.
+- Tuân thủ WORKFLOW.md: Hộp đen, không đọc mã nguồn EShop, không đọc file của feature khác trừ khi tôi cho phép.
+```
+
+**Lưu ý:** Ở S0 có thể bạn phải thêm sản phẩm vào giỏ để thấy giao diện giỏ hàng. Việc đó đúng là thao tác trên trang, nhưng ở mức quan sát, giống cách ta đã làm với C. Cứ làm theo hướng dẫn của skill.
+````
+
+---
+
+### C214 | 02:06 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Các mã issue nè:
+
+
+[23120061][FR-01][Web] Trang Đăng ký: Tiêu đề tab "frontend-web" và thông báo bắt buộc nhập bằng tiếng Anh
+bug
+
+platform: web
+
+pool: A
+
+severity: low
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#54
+· Filter by authorangquoc opened 1m ago
+[23120061][FR-01][Web] Trang Đăng ký: Không có thẻ h1
+bug
+
+platform: web
+
+pool: A
+
+severity: low
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#53
+· Filter by authorangquoc opened 1m ago
+[23120061][FR-01][Web] Form Đăng ký: Nút "Đăng Ký" màu đỏ thay vì xanh dương
+bug
+
+platform: web
+
+pool: A
+
+severity: low
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#52
+· Filter by authorangquoc opened 1m ago
+[23120061][FR-01][Web] Form Đăng ký: Nhãn trường bắt buộc không có dấu *
+bug
+
+platform: web
+
+pool: A
+
+severity: low
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#51
+· Filter by authorangquoc opened 2m ago
+[23120061][FR-01][Web] Form Đăng ký: Ô Email dùng type="text" thay vì type="email"
+bug
+
+platform: web
+
+pool: A
+
+severity: medium
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#50
+· Filter by authorangquoc opened 2m ago
+[23120061][FR-01][Web] API đăng ký: Tạo tài khoản với mật khẩu ngắn hơn 8 ký tự hoặc không có ký tự đặc biệt
+bug
+
+platform: web
+
+pool: A
+
+severity: high
+
+technique: BVA
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#49
+· Filter by authorangquoc opened 3m ago
+[23120061][FR-01][Web] API đăng ký: Tạo được nhiều tài khoản trùng Email
+bug
+
+platform: web
+
+pool: A
+
+severity: high
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#48
+· Filter by authorangquoc opened 4m ago
+[23120061][FR-01][Web] API đăng ký: Tạo tài khoản với Email sai định dạng
+bug
+
+platform: web
+
+pool: A
+
+severity: high
+
+technique: BVA
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#47
+· Filter by authorangquoc opened 5m ago
+[23120061][FR-01][Web] API đăng ký: Tạo tài khoản khi Mật khẩu rỗng
+bug
+
+platform: web
+
+pool: A
+
+severity: high
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#46
+· Filter by authorangquoc opened 6m ago
+[23120061][FR-01][Web] API đăng ký: Tạo tài khoản khi Email rỗng hoặc chỉ có dấu cách
+bug
+
+platform: web
+
+pool: A
+
+severity: high
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#45
+· Filter by authorangquoc opened 16m ago
+[23120061][FR-01][Web] API đăng ký: Tạo tài khoản khi Họ Tên rỗng hoặc chỉ có dấu cách
+bug
+
+platform: web
+
+pool: A
+
+severity: high
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#44
+· Filter by authorangquoc opened 32m ago
+[23120061][FR-01][Web] Form Đăng ký: Không có trường Xác nhận mật khẩu
+bug
+
+platform: web
+
+pool: A
+
+severity: high
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#43
+· Filter by authorangquoc opened 44m ago
+[23120061][FR-01][Web] Đăng ký với mật khẩu hợp lệ: Báo "Mật khẩu quá yếu" và không tạo được tài khoản
+bug
+
+platform: web
+
+pool: A
+
+severity: critical
+
+technique: BVA
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#42
+· Filter by authorangquoc opened 1h ago
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check log/issue screenshots and current Related lines and titles
+- Bash: Fill issue numbers, Related links, and log image paths in the FR-01 section only
+- Bash: Spot-check summary table and log image lines
+- Edit: D:\Dang\Test\Homeworks\HW02\bugs\bug_report.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đối chiếu 13 số issue với tiêu đề từng bug, và xem trong thư mục ảnh đã có ảnh log và ảnh trang issue chưa.
+
+Tôi xem nhanh bảng tổng hợp và hai dòng ảnh vừa cập nhật để chắc định dạng đúng.
+
+Dòng ảnh của BUG-FR01-07 đặt chú thích "gồm cả bước kiểm chứng" sau ảnh TC-REG-82, trong khi chú thích này nói về ảnh TC-REG-71. Tôi sửa lại cho đúng chỗ.
+
+Đã điền số issue cho cả 13 bug FR-01 trong [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md). Tôi chỉ sửa trong mục FR-01. Kiểm tra lại: Không còn `#___` hay "(số issue của...)" nào trong mục này, định dạng hợp lệ.
+
+**Những gì đã cập nhật:**
+- **Bảng tổng hợp:** Cột Issue từ #42 (BUG-01) tới #54 (BUG-13).
+- **Dòng "Issue" của từng bug:** Ghi số issue kèm đường dẫn ảnh trang issue `features/A_FR-01_DangKy/screenshots/S7_issue_<số>.png`. Đường dẫn của #42 cũng được sửa cho đủ, trước đây thiếu phần `features/A_FR-01_DangKy/`.
+- **Các dòng Related:**
+
+  | Bug | Related |
+  |---|---|
+  | BUG-03 | #45, #46, #47, #48, #49 |
+  | BUG-04, 05, 07 | #44 |
+  | BUG-06 | #44, #50 |
+  | BUG-08 | #42, #44 |
+  | BUG-09 | #47 |
+
+- **Ảnh chụp của BUG-03 đến 08:** Thay chỗ chỉ trỏ tới log bằng đường dẫn 11 ảnh `S6_TC-REG-<số>_log.png` bạn đã chụp, vẫn giữ đường dẫn tới log đầy đủ. Ở BUG-07, chú thích "gồm cả bước kiểm chứng, id 4 và 5" gắn đúng vào ảnh TC-REG-71.
+
+**Còn lại cho bạn:**
+1. **Chụp 13 trang issue,** lưu thành `S7_issue_42.png` đến `S7_issue_54.png` trong `features/A_FR-01_DangKy/screenshots/`. Hiện chưa có ảnh nào, nhưng đường dẫn đã ghi sẵn trong file.
+2. **Mục FR-17 (phiên khác viết) có 2 chỗ chờ số issue của FR-01.** Ghi chú của một bug về màu nút đang ghi "Related: (số issue của BUG-FR01-11)", tức là **#52**. Ghi chú của bug về dấu `*` đang ghi "(số issue của BUG-FR01-10)", tức là **#51**. Tôi không sửa mục FR-17 vì nằm ngoài phạm vi FR-01. Bạn điền giúp, hoặc nhờ phiên đang làm FR-17 điền.
+````
+
+---
+
+### C215 | 02:08 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Chụp 13 trang issue là chỉ chụp phần đầu mở ra thôi hay chụp hết vậy?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Nên chụp **cả issue**, ít nhất phải thấy rõ các phần sau:
+- **Tiêu đề và số issue** (ví dụ `#42`).
+- **Cột bên phải:** Labels (severity, platform, technique, pool) và Assignees.
+- **Phần nội dung:** Đặc biệt là mục "Ảnh chụp" có ảnh đã tải lên.
+
+Đề bài yêu cầu nộp "Bug report, with screenshots of the bugs on the GitHub Issues page". Ảnh này là bằng chứng issue đã được tạo đúng quy ước, nên nếu chỉ chụp phần đầu thì thiếu phần ảnh minh họa và nội dung.
+
+**Cách chụp nhanh cả trang dài, chọn một trong hai:**
+1. **Thu nhỏ trang:** Nhấn Ctrl và phím trừ để zoom về khoảng 50% đến 67%, tới khi cả issue nằm gọn trong màn hình. Chụp bằng Win+Shift+S, rồi nhấn Ctrl+0 để trả zoom về bình thường.
+2. **Chụp toàn trang bằng Chrome:** Trên trang issue, nhấn F12, rồi Ctrl+Shift+P, gõ `full size`, chọn **Capture full size screenshot**. Chrome tự lưu một ảnh PNG chứa toàn bộ trang vào thư mục Downloads; bạn đổi tên thành `S7_issue_<số>.png` và chuyển vào `features/A_FR-01_DangKy/screenshots/`. Dùng DevTools trên trang GitHub là bình thường; quy định không dùng DevTools chỉ áp cho trang EShop ở các bước thiết kế.
+
+Cách 2 cho ảnh sắc nét và đầy đủ hơn. Cách 1 nhanh hơn nếu issue không quá dài. Các issue có nhiều ảnh (BUG-01, 07, 08) nên dùng cách 2.
+````
+
+---
+
+### C216 | 02:09 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Tôi sẽ không chụp ảnh trước rồi mới gọi skill à? Hay là gọi skill và skill sẽ hướng dẫn tôi bổ sung cho nó?
+Phiên A: Có cần đợi bổ sung ảnh chụp của issue rồi mới commit không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read skill S0 instructions
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đọc lại hướng dẫn S0 của skill để trả lời chính xác câu về phiên B.
+
+Cả hai câu đều không phải chờ. Phiên B gọi skill trước rồi mới chụp ảnh. Phiên A commit được ngay khi điền xong số issue, không cần đợi ảnh chụp trang issue.
+
+## Phiên B: Gọi skill trước, chụp ảnh sau
+
+Skill chia S0 làm 3 pha:
+
+1. **Pha 1 (AI):** Trích đặc tả FR-07, lập bảng quan sát còn trống, kèm **danh sách ảnh cần chụp**: tên file, nội dung từng ảnh, các trạng thái màn hình (giỏ trống, giỏ có hàng...). Rồi AI dừng.
+2. **Pha 2 (bạn):** Chụp đúng các ảnh trong danh sách, điền bảng quan sát trong `00_spec.md`.
+3. **Pha 3 (AI):** Kiểm ảnh đủ chưa. Thiếu thì AI báo cần chụp thêm ảnh nào; đủ thì đối chiếu từng ô và viết bản review.
+
+Nếu chụp trước, bạn có thể chụp thừa hoặc thiếu, rồi phải chụp lại theo danh sách. Hai lưu ý:
+- Skill nhắc chụp **cả cửa sổ trình duyệt**, để thấy tiêu đề tab và thanh địa chỉ. Bài học từ C là `S0_03` thiếu tiêu đề tab.
+- S0 có 3 commit, mỗi pha một commit, theo WORKFLOW.
+
+## Phiên A: Không cần đợi ảnh chụp trang issue
+
+- Đề yêu cầu mỗi issue trên GitHub có đính ảnh bug. Việc đó bạn đã làm khi tạo issue.
+- Ảnh chụp trang issue (`S7_issue_NN.png`) chỉ là bằng chứng thêm cho report, không bắt buộc.
+- **Cách gọn nhất:** Chụp **1 ảnh trang danh sách Issues** của repo nhóm, lọc theo tiêu đề có `[23120061]`, đặt tên `S7_issues_list.png`. Ảnh này thay cho 13 ảnh riêng. Chụp sau cũng được, rồi commit riêng.
+
+Vậy khi phiên A điền xong số cho cả 13 issue, bạn báo tôi xuất log rồi commit luôn. Commit đó sẽ kèm phần nháp FR-17 hiện có trong cùng file:
+
+```
+git add bugs/bug_report.md features/A_FR-01_DangKy/screenshots/S6_TC-REG-*_log.png prompt_log.md
+git commit -m "[bugs][S7] Link FR-01 issues and draft FR-17 bug reports"
+```
+
+Phần sửa của C theo các quyết định của bạn sẽ là một commit sau.
+
+**Thứ tự gợi ý:** Mở phiên B và dán lệnh gọi skill. Trong lúc phiên B làm pha 1, bạn tạo nốt issue cho A. Mở phiên B xong thì báo tôi để tôi thêm phiên đó vào whitelist.
+````
+
+---
+
+### C217 | 02:13 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi up ảnh theo cách 2 rồi. Bạn giúp tôi sửa tên và kiểm tra đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- PowerShell: List recent screenshots and downloaded PNGs
+- PowerShell: Rename issue screenshots to S7_issue_N.png
+- Bash: Get image dimensions and check Pillow
+- Bash: Extract expected issue fields and crop screenshots
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_42_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_42_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_42_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_42_p4.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_43_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_43_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_43_p3.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-31.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_44_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_44_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_44_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_45_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_45_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_45_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_46_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_46_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_46_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_47_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_47_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_47_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_48_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_48_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_48_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_49_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_49_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_49_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_49_p4.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_50_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_50_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_50_p3.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_51_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_51_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_52_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_52_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_53_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_53_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_54_p1.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_54_p2.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s7\crops\S7_issue_54_p3.png
+- Bash: Check assignee requirement, bugs folder, TC-30 data
+
+**Output AI (nguyên văn):**
+
+````text
+Đã xem xong #42 đến #48. Còn #49 đến #54.
+
+Đã xem hết 13 ảnh. Tôi kiểm tra thêm vài chi tiết trong file trước khi báo.
+
+Đã đổi tên xong 13 ảnh thành `S7_issue_42.png` đến `S7_issue_54.png` (trong `features/A_FR-01_DangKy/screenshots/`), khớp với đường dẫn ghi trong bug_report.md. Ảnh nào cũng chụp đủ trang.
+
+**Khớp với bug_report.md ở cả 13 issue:**
+- Tiêu đề, số issue, nhãn severity/platform/technique/pool.
+- Các trường của form và ảnh đính kèm (đủ số ảnh, ảnh đúng TC).
+
+**Cần bạn quyết định:**
+1. **Assignees của cả 13 issue đều là "No one".** Trang link tôi soạn có nhắc tự gán cho mình, nhưng tôi không tìm thấy quy định này trong các file .md của HW02. Nếu nhóm yêu cầu gán người: Bấm "Assign yourself" ở từng issue rồi chụp lại cả 13 ảnh.
+2. **#42, ảnh đặt sai chỗ chú thích.** Thứ tự ảnh hiện tại là TC-01, TC-31, TC-108, rồi mới đến dòng "(với Test1234!)". Dòng này lại nằm ngay dưới ảnh TC-108, trong khi ảnh dùng `Test1234!` là ảnh ở giữa (TC-31, email `tcreg30@domain.com`). Cách sửa: Edit issue, chuyển dòng "(với Test1234!)" xuống ngay dưới ảnh TC-31, rồi chụp lại #42.
+3. **#42, Ghi chú thiếu dòng "Mã trong báo cáo cá nhân: BUG-FR01-01."** Các issue #43 đến #54 đều có dòng này. Nếu sửa mục 2 thì thêm dòng này luôn.
+
+**Lỗi nhỏ, không bắt buộc sửa:**
+- **#44 đến #50:** Dòng "Related" ghi mã bug nội bộ (ví dụ "BUG-FR01-04 đến 08"), không ghi số issue, nên GitHub không tạo liên kết. Muốn có liên kết thì sửa thành số issue, ví dụ "#45 đến #49", rồi chụp lại các issue đã sửa.
+- **#54:** Bước 2 ghi Email `tc30@domain.com`, Mật khẩu `Abcdef1!`. Ảnh thật lại dùng `tcreg30@domain.com` và mật khẩu 14 ký tự (06_results.md đã ghi chênh lệch này ở TC-REG-30). Lỗi vẫn tái hiện được, vì bong bóng báo lỗi không phụ thuộc vào dữ liệu này.
+- **#45:** Ảnh log đầu tiên có lẫn đoạn TC-REG-74, đoạn này thuộc #47.
+- **#45 đến #49:** Thanh đường dẫn của VS Code trong ảnh log ghi `HW02 > bugs > S6_api_...log`. Hiện file log thật chỉ có trong `features/A_FR-01_DangKy/logs/`. Nội dung log vẫn đúng.
+
+Bạn cho tôi biết sửa những mục nào. Nếu có issue phải chụp lại, cứ để ảnh vào thư mục screenshots là tôi đổi tên và kiểm tra lại như lần này.
+````
+
+---
+
+### C218 | 02:14 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+/domain-testing-design Feature B, FR-07 Giỏ hàng trên Web (http://localhost:5173), thư mục Homeworks/HW02/features/B_FR-07_GioHang/.
+
+Lưu ý:
+- Bắt đầu từ S0. Tài khoản dùng để khảo sát: test@eshop.com (mật khẩu theo SRS). Không dùng chức năng đăng ký.
+- Vì thiếu thời gian, mỗi bước tôi chỉ review một lượt: Gom mọi điểm cần quyết định vào một lần hỏi, mỗi điểm ghi kèm phương án bạn đề xuất và lý do một dòng; quyết định vẫn là của tôi.
+- Tuân thủ WORKFLOW.md: Hộp đen, không đọc mã nguồn EShop, không đọc file của feature khác trừ khi tôi cho phép.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Skill
+- Bash: List project and feature folders
+- Bash: Read workflow and notes
+- Bash: Read full WORKFLOW.md
+- Bash: Read skill rules, lessons, S0 guide
+- Bash: Read template, platforms, list SUT folder
+- Bash: Read FR-01 example
+- Bash: Outline SRS headings
+- Bash: Read full SRS
+- Bash: Read API spec
+- Bash: Read HW02 README and assignment pool info
+- Bash: Inspect format check logic
+- Bash: Get current time with timezone
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S0_khao_sat.md
+- Bash: Renumber open questions sequentially
+- Bash: Fix list order, copy to 00_spec, run format check
+
+**Output AI (nguyên văn):**
+
+````text
+Đã đọc WORKFLOW.md và quy tắc của skill; giờ đọc template, platforms và đặc tả EShop để trích FR-07.
+
+Đã đọc xong SRS và API spec. Kiểm tra cách script nhận diện phần trích nguyên văn trước khi viết bản S0.
+
+Viết bản S0 (pha 1) vào `ai_raw/S0_khao_sat.md`.
+
+Tự kiểm: mã Q đang không liên tục theo thứ tự bảng; đánh lại mã theo thứ tự xuất hiện (chưa giao nên được sửa), rồi tạo `00_spec.md` và chạy script.
+
+Xong S0 pha 1. Giờ đến lượt bạn chụp ảnh và điền bảng quan sát; mình chưa mở trang web nào.
+
+**Đã tạo:**
+- [ai_raw/S0_khao_sat.md](Homeworks/HW02/features/B_FR-07_GioHang/ai_raw/S0_khao_sat.md) là bản gốc của AI, không sửa nữa.
+- [00_spec.md](Homeworks/HW02/features/B_FR-07_GioHang/00_spec.md) giống hệt bản gốc (đã so bằng `cmp`). `check_step.py format` không báo lỗi nào.
+
+**Nội dung:**
+- **Trích nguyên văn:** FR-07, cộng các phần áp cho trang Giỏ hàng từ FR-06, FR-08, FR-21 đến FR-24, API giỏ hàng và SEC-02/04/05.
+- **32 yêu cầu `FR07-R01` đến `FR07-R32`, chia 5 nhóm:** Chính (R01 đến R16), phụ (R17 đến R26), liên quan FR-06 (R27), API (R28 đến R30), tham khảo bảo mật (R31, R32). Các yêu cầu không áp dụng được ghi riêng, kèm lý do.
+- **27 câu hỏi mở `Q01` đến `Q27`:** Ví dụ Thành tiền và Tổng cộng tính thế nào, nút `-` ở số lượng 1 làm gì, thêm lại sản phẩm thì tăng 1 hay tăng theo số lượng chọn, badge đếm gì, `POST /api/cart` dùng giá client gửi hay giá trong CSDL, đặc tả không có API đổi số lượng và xóa.
+- **34 ô quan sát `O01` đến `O34` và 6 ảnh `S0_01` đến `S0_06`:** Danh sách ảnh ở mục 5.3, chụp cả cửa sổ trình duyệt.
+
+**Các điểm cần bạn quyết định** (mục 6 trong file; đề xuất là ý kiến của mình, bạn chọn):
+
+| # | Vấn đề | Đề xuất | Lý do |
+|---|---|---|---|
+| 1 | Phạm vi yêu cầu | (a) Giữ cả 5 nhóm | Badge, breadcrumb và ký hiệu ₫ là yêu cầu SRS nêu đích danh trang Giỏ hàng; ở S1 bỏ bớt dễ hơn thêm lại |
+| 2 | Cách đưa sản phẩm vào giỏ ở S0 | (a) Thêm 2 sản phẩm khác nhau, mỗi sản phẩm 1 lần, giữ số lượng mặc định | Không chạy trước các hành vi sẽ test (`+`, `-`, thêm trùng sản phẩm) mà vẫn thấy đủ các cột |
+| 3 | Dialog xác nhận xóa | (a) Để S6, không chụp ở S0 | Bấm Xóa chính là chạy test FR07-R11; WORKFLOW giới hạn S0 ở việc quan sát |
+| 4 | Lấy ảnh giỏ trống khi giỏ ban đầu đã có hàng | (a) Nhờ phiên điều phối reset dữ liệu mẫu | Không phải dùng nút Xóa, tức chức năng đang test |
+
+Nếu bạn chọn 3(a) thì để trống O33, O34 và bỏ ảnh `S0_06`.
+
+**Bạn làm tiếp:**
+1. Đăng nhập bằng `test@eshop.com` / `Test1234!`. Mở giỏ hàng trước khi thêm gì và ghi trạng thái ban đầu vào O01.
+2. Chụp ảnh vào `screenshots/`, điền bảng quan sát ngay trong `00_spec.md`.
+3. Commit bản AI trước khi điền:
+   ```
+   git add Homeworks/HW02/features/B_FR-07_GioHang/ai_raw/S0_khao_sat.md Homeworks/HW02/features/B_FR-07_GioHang/00_spec.md
+   git commit -m "[B-FR07][S0] Add spec extract and requirement list (AI draft)"
+   ```
+4. Điền xong thì commit riêng: `[B-FR07][S0] Record UI exploration and screenshots`. Sau đó gọi mình làm S0 pha 3 và gửi kèm 4 lựa chọn ở trên.
+
+Theo WORKFLOW.md, phiên thiết kế không được đọc `_NOTES.md`, nên mình không đánh dấu mục nào trong TRACKER; phần đó bạn hoặc phiên điều phối cập nhật giúp.
+````
+
+---
+
+### C219 | 02:21 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đã có thêm ảnh cho tất cả, nhưng lúc chụp quên assign, tuy nhiên tôi đã bổ sung rồi. Giờ phải chụp lại hết hả?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Không cần chụp lại.
+
+- **Ảnh là bằng chứng issue đã được tạo với đủ nội dung:** Tiêu đề, label, mô tả, ảnh bug. Ô "Assignee" không phải nội dung bug, nên ảnh thiếu nó vẫn hợp lệ.
+- **Issue trên GitHub giờ đã có assignee.** Ai mở link issue cũng thấy, kèm dòng lịch sử "assigned" ghi giờ bạn gán. Đây là bằng chứng thật, không có gì phải che.
+- **Chỉ một trường hợp nên chụp lại:** Nếu bạn có ảnh trang **danh sách Issues** (cột bên phải hiện avatar người được gán) và ảnh đó chụp trước khi gán, thì chụp lại riêng ảnh đó. Chỉ mất vài giây.
+
+Phiên A điền xong số issue thì báo tôi xuất log để bạn commit.
+````
+
+---
+
+### C220 | 02:22 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Không có, chỉ có ảnh cụ thể từng issue chưa assign cho ai thôi. Tôi đã tự assign bản thân rồi.
+Xuất log để commit đi, nãy giờ tôi chưa commit gì.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check uncommitted files, issue numbers, new sessions
+- Bash: Confirm new session is B and check FR-01 placeholders
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
+- Bash: Audit session B actions and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Đã có một phiên mới (`709e0d24`), có vẻ là phiên B. Tôi xác nhận rồi thêm vào whitelist, đồng thời kiểm mục FR-01 còn chỗ nào chưa điền số issue.
+
+Phiên mới đúng là phiên B, và mục FR-01 đã đủ số issue (#42 đến #54). Tôi thêm phiên B vào whitelist, soát xem phiên B có đọc file bị cấm không, rồi xuất log.
 ````
 
 
