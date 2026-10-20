@@ -5615,11 +5615,384 @@ S3 đã viết xong, xuất log và đưa commit message cho tôi.
 **Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
 
 - Bash: Audit S3 draft creation, check files, export log
+- Bash: Mark FR-01 S3 in progress in tracker
 
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Log đã xuất xong, chỉ có 2 phiên HW02. Phiên thiết kế **không vi phạm gì**: Nó đọc `WORKFLOW.md`, hỏi bạn 3 câu, rồi ghi `ai_raw/S3_test_cases.md`. Các file `ai_raw/` cũ của S0 đến S2 không bị đụng.
+
+Bạn cần biết một điểm nhỏ: Nó **sửa file S3 một lần ngay sau khi tạo**, trong cùng một lượt trả lời, trước khi đưa cho bạn xem. Ở S2 nó cũng làm vậy. Việc này **không vi phạm** quy tắc "không sửa `ai_raw/`", vì quy tắc nhằm giữ nguyên bản mà bạn **nhận được** để review. Lúc nó sửa thì bạn chưa nhận bản nào.
+
+Commit bản nháp S3:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/ai_raw/S3_test_cases.md prompt_log.md
+git commit -m "[A-FR01][S3] Design domain test cases (AI draft)"
+git push
+```
+
+Tracker đã chuyển S3 của FR-01 sang trạng thái đang review. Khi review S3, bạn nên kiểm tra theo đúng 2 quy tắc chọn test case của slide S04:
+- **Mỗi test case hợp lệ** phủ càng nhiều lớp hợp lệ càng tốt.
+- **Mỗi test case không hợp lệ chỉ phủ đúng một lớp không hợp lệ.** Các giá trị khác trong test case đó phải hợp lệ, để khi test fail thì biết chắc nguyên nhân. Riêng EC69 là ngoại lệ đã ghi từ S2.
+
+Ngoài ra, bảng phủ lớp phải cho thấy **cả 70 lớp đều có test case**, và các test case Xác nhận mật khẩu được ghi là dự kiến Blocked.
+````
+
+---
+
+### C103 | 11:15 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi có vài câu hỏi, cần bạn confirm nhưng nhớ vẫn đừng đọc code. Bám theo WORKFLOW:
+1. ghi chú dự kiến bị chặn (Blocked) ở S6 do giao diện và API đều không có trường này -> Làm sao bạn biết API không có trường này? Căn cứ vào đâu?
+2. Việc có khoảng trắng đầu cuối và có két quả mang đợi là OUT1, chúng ta vẫn không biết hệ thống có thực sự cắt khoảng trắng hay giữ nguyên khoảng trắng trong pass không, và nếu người dùng đăng nhập có thể không vào được. Chúng ta nên ghi chú rõ.
+3. TC-REG-07 sao lại cùng 1 lúc chứa 3 điều có khả năng có lỗi vậy, chúng ta nên tách ra ngay từ đầu để tách bạch, rõ ràng. Thay vì cứ gộp chung rồi có lỗi mới tách, thiết kế vậy đâu chuẩn, đúng không?
+4. Phần email test các tc đều là tc mà sao TC_REG-09 lại là o'? Không thể là tc sao? Tôi hỏi về mặt hình thức và đồng nhất.
+5. Tôi chưa thấy có phủ yêu cầu FR01-R22, FR01-R23 trong Checklist giao diện thì phải. Kiểm tra lại cho tôi.
+
+Điểm cần sinh viên quyết định khi review:
+1. a
+2. a
+3. a
+4. b. Chúng ta vẫn nên test thêm về phần bảo mật.
+5. a
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi trả lời từng câu. Chưa viết `03_tc.md`, vì câu 3 và quyết định 4 (b) làm thay đổi khá lớn cấu trúc bộ test, nên tôi muốn bạn duyệt phương án trước.
+
+**1. Căn cứ nói "API không có trường này"**
+
+Căn cứ duy nhất là `api_specification.md` mục 1.1: Body mẫu chỉ có `name`, `email`, `password` (đã ghi thành Q15 ở `00_spec.md`). Tôi không đọc code. Tuy vậy, câu tôi viết **nói quá mức căn cứ**:
+- Đặc tả API chỉ **không mô tả** trường xác nhận mật khẩu.
+- Theo kiểm thử hộp đen, ta không biết API thật có nhận một trường như vậy hay không.
+
+Câu đúng nên là: "Đặc tả API không mô tả trường xác nhận mật khẩu, nên không có tên trường để gửi. Tự đoán một tên (ví dụ `confirmPassword`) là tự đặt quy tắc." Kết luận "không test IN4 qua API" vẫn giữ, chỉ đổi lý do. Tôi sẽ ghi dòng này vào bảng thay đổi với loại **Thừa** (bản AI khẳng định điều đặc tả không nói).
+
+**2. Khoảng trắng đầu cuối: OUT1 chỉ chứng minh hệ thống chấp nhận, không chứng minh giá trị được lưu đúng**
+
+Bạn nói đúng. Kết quả OUT1 không cho biết hệ thống đã cắt hay giữ nguyên khoảng trắng khi lưu. Tôi sẽ ghi rõ ở từng test case liên quan:
+
+| Trường | Kiểm chứng được trong FR-01 không | Đề xuất |
+|---|---|---|
+| Email (EC19) | **Được một phần** | Thêm bước 2: Đăng ký lại bằng email đã bỏ khoảng trắng (`tc06@domain.com`), mong đợi ERR4. Nếu thành công nghĩa là email đã được lưu kèm khoảng trắng |
+| Mật khẩu (EC68, EC39) | Không | Chỉ kiểm được bằng đăng nhập (FR-02), mà cách này đã loại theo quyết định 4 ở S1. Ghi thành giới hạn: Nếu hệ thống cắt khoảng trắng khi lưu nhưng không cắt khi đăng nhập (hoặc ngược lại), người dùng có thể không đăng nhập được. Chuyển cho S8 hoặc feature FR-02 |
+| Họ Tên (EC54, EC70) | Không | Ghi thành giới hạn quan sát, như mục 8 của `02_ec.md` |
+
+**3. TC-REG-07 gộp 3 lớp có khả năng lỗi: Đúng, nên tách**
+
+- Quy tắc của slide ("phủ càng nhiều lớp hợp lệ càng tốt") nhằm tìm **số test case tối thiểu**, nên về kỹ thuật thì gộp không sai.
+- Nhưng gộp các lớp **bất thường** (không phải giá trị cơ sở) vào một test case vi phạm tiêu chí "không quá phức tạp" của Kaner trong skill: Khi test case thất bại thì không biết lớp nào gây lỗi. Cách tôi viết, "lỗi rồi mới tách", là đẩy việc thiết kế sang lúc chạy, không chuẩn.
+
+Phương án sửa:
+- Chỉ TC-REG-01 gộp tất cả lớp **cơ sở** (happy path).
+- Mỗi lớp hợp lệ bất thường có **một test case riêng**, các input còn lại lấy giá trị cơ sở. Áp dụng cả cho 6 ký tự đặc biệt còn lại của mật khẩu (`! ` đã nằm trong TC-REG-01).
+- Số test case hợp lệ tăng từ 9 lên **24**: 1 cơ sở, 7 lớp Họ Tên, 7 lớp Email, 3 lớp Mật khẩu, 6 ký tự đặc biệt.
+
+**4. `o'brien@domain.com` không theo mẫu `tc...`: Đúng, nên đồng nhất**
+
+Không có lý do gì phải khác. Tôi sẽ đổi thành `tc'09@domain.com`; dấu `'` vẫn nằm ở phần trước `@` nên vẫn đúng lớp EC66. Rà lại thì còn 2 chỗ lệch mẫu:
+- `an.nguyen@mail.domain.com` đổi thành `tc.02@mail.domain.com`.
+- `nguyễn24@domain.com` đổi thành `tcđ24@domain.com`.
+
+Các email `test@eshop.com`, `Test@Eshop.com` và `@domain.com` giữ nguyên, vì bản thân giá trị đó là đối tượng của test case.
+
+**5. FR01-R22 và FR01-R23 không có trong checklist**
+
+- **R22** (phản hồi của API) không phải yêu cầu giao diện nên không thuộc checklist. Nó được phủ bởi TC-REG-50 (nhóm API).
+- **R23** (mật khẩu không lưu plaintext) **không được phủ**. Đây là chủ ý từ `01_io.md` mục 4, vì không quan sát được qua giao diện. Nhưng bản S3 không ghi điều này ra, nên bạn không thấy được. Đó là thiếu sót về truy vết.
+
+Tôi đề xuất thêm một **ma trận truy vết** (yêu cầu R01 đến R25 tương ứng với test case nào, kèm danh sách yêu cầu chưa phủ và lý do), như skill `test-case-writing` yêu cầu. Với quyết định 4 (b), R23 có thể được phủ **một phần**: Phản hồi của API không được chứa mật khẩu dưới bất kỳ dạng nào. Đây là điều quan sát được từ bên ngoài, và đặc tả mô tả phản hồi chỉ gồm `message` và `id`.
+
+**Quyết định 4 (b), thêm test bảo mật qua API. Đề xuất:**
+
+| Đề xuất | Lớp hoặc yêu cầu | Cách kiểm chứng trong phạm vi FR-01 |
+|---|---|---|
+| Họ Tên `<b>O'Brien</b>` gửi thẳng qua API | EC07, R24, R25 | Mong đợi OUT3, không có lỗi hệ thống. Gửi qua API để không bị giao diện lọc trước |
+| Email `tc'or'1'='1@domain.com` (vẫn đúng định dạng HTML5) | EC66, R25 | Mong đợi OUT3. Sau đó đăng ký lại đúng email đó, mong đợi lỗi trùng email. Điều này chứng minh chuỗi được lưu nguyên văn, không bị hiểu thành lệnh |
+| Họ Tên `Robert'); DROP TABLE users;--` | EC07, R25 | Mong đợi OUT3. Sau đó đăng ký `test@eshop.com`, mong đợi lỗi trùng email. Điều này chứng minh bảng người dùng vẫn còn nguyên |
+| Bổ sung vào TC-REG-50 | R23 (một phần) | Body phản hồi không chứa mật khẩu, kể cả dạng đã mã hóa |
+| **Không** thêm: Gửi kèm `"role": "admin"` (Q23) | | Muốn biết role có bị nhận hay không thì phải đăng nhập hoặc vào trang admin (FR-02, FR-12), đã loại theo quyết định 4 ở S1. Chỉ ghi chú |
+
+**Đánh số lại trong `03_tc.md`:** Nhóm hợp lệ giờ có 24 test case, không vừa dải 01 đến 09 nữa. Tôi đề xuất các dải mới, kèm bảng đổi mã cũ sang mã mới để truy vết về `ai_raw`:
+
+| Nhóm | Dải mã |
+|---|---|
+| Hợp lệ qua giao diện | 01 đến 29 |
+| Không hợp lệ qua giao diện | 30 đến 69 |
+| API | 70 đến 89 |
+| Checklist | 90 đến 99 |
+
+Bạn đồng ý với các phương án trên (tách test case hợp lệ, 3 test case bảo mật qua API cộng phần bổ sung cho TC-REG-50, bước 2 cho EC19, ma trận truy vết, đánh số lại) thì tôi viết `03_tc.md`, ghi đủ mọi thay đổi vào bảng "Thay đổi so với bản AI".
+````
+
+---
+
+### C104 | 11:49 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đồng ý với bạn, nhưng có vài chỗ cần tinh chỉnh:
+- Không nên tách 6 ký tự đặc biệt thành 6 TC độc lập. Chúng ta chỉ nên tách riêng các lớp hợp lệ có rủi ro cao dễ bị fail. Chúng ta có thể xoay vòng 6 ký tự gắn vào luôn các test case hợp lệ thay vì tách riêng.
+- Giữ TC Email tc'or'1'='1@domain.com (kiểm chứng bằng đăng ký lại) và TC Họ Tên Robert'); DROP TABLE users;-- (kiểm chứng bằng test@eshop.com). Bỏ TC API <b>O'Brien</b> để tránh trùng lặp lớp EC07 trên API (hoặc gộp luôn <b> vào chuỗi Họ Tên)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Bash: Verify TC definitions, references, and coverage in 03_tc.md
+- Bash: Re-check references excluding the code mapping section
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi sẽ viết `03_tc.md` theo hai điểm tinh chỉnh của bạn:
+- 6 ký tự đặc biệt còn lại xoay vòng vào các test case hợp lệ của Họ Tên. Test case rủi ro cao như EC07 vẫn giữ mật khẩu cơ sở để tách bạch.
+- Nhóm bảo mật qua API chỉ giữ 2 test case: Email chứa chuỗi SQL, và Họ Tên chứa `DROP TABLE`. Bỏ test case `<b>O'Brien</b>` qua API.
+
+Bước kiểm chứng thứ 2 của hai test case này chạy qua giao diện. Lý do: Giao diện hiển thị được nguyên nhân lỗi (ERR4), còn API thì đặc tả không nêu nội dung lỗi.
+
+Dòng cuối của bảng đổi mã ghi sai: Mã cũ 60 đến 67 cộng 30 sẽ thành 90 đến 97, không phải 91 đến 97. Tôi sửa rồi kiểm tra cả file bằng script.
+
+Các mã "chưa định nghĩa" có thể đến từ bảng đổi mã ở mục 11, nơi ghi các mã cũ. Tôi chạy lại phép kiểm tra, bỏ mục 11 ra ngoài.
+
+Tôi đã viết xong [03_tc.md](Homeworks/HW02/features/A_FR-01_DangKy/03_tc.md). Kiểm tra bằng script cho kết quả:
+- Có 69 test case, không trùng mã.
+- Cả 70 lớp đều có test case phủ.
+- Ngoài bảng đổi mã ở mục 11 (nơi ghi mã cũ), không có chỗ nào nhắc tới một mã test case không tồn tại.
+
+**Số test case theo nhóm:**
+
+| Nhóm | Mã | Số TC |
+|---|---|---|
+| Hợp lệ, qua giao diện | 01 đến 18 | 18 |
+| Không hợp lệ, qua giao diện | 30 đến 62 | 33 |
+| API | 70 đến 79 | 10 |
+| Checklist giao diện | 90 đến 97 | 8 |
+
+**Áp theo hai điểm tinh chỉnh của bạn:**
+- **Test case hợp lệ:** TC-REG-01 gộp các lớp cơ sở. 17 lớp hợp lệ bất thường mỗi lớp một test case (02 đến 18).
+- **Ký tự đặc biệt:** 6 ký tự `@ $ % * ? &` xoay vòng vào các test case của Họ Tên (02 đến 07). TC-REG-08 (EC07, rủi ro cao) giữ mật khẩu cơ sở để tách bạch.
+- **Bảo mật:** Giữ TC-REG-78 (email `tc78'or'1'='1@domain.com`) và TC-REG-79 (`Robert'); DROP TABLE users;--`). Bước kiểm chứng của hai test case này chạy qua giao diện, vì giao diện hiển thị được nguyên nhân lỗi (ERR4). Bỏ test case `<b>O'Brien</b>` qua API.
+
+**Áp theo 5 câu trả lời trước:**
+1. Sửa câu nói về API thành "đặc tả API không mô tả trường xác nhận mật khẩu".
+2. TC-REG-11 có thêm bước 2 (đăng ký lại email đã cắt khoảng trắng, mong đợi ERR4). Mục 5.1 có ghi chú 1 đến 3 về giới hạn quan sát; ghi chú 3 nêu rủi ro mật khẩu có khoảng trắng không đăng nhập được.
+3. Tách các lớp hợp lệ bất thường, như ở trên.
+4. Đồng nhất email theo mẫu `tcNN`.
+5. Thêm ma trận truy vết (mục 6). R23, R24, R25 được đánh dấu "phủ một phần", kèm lý do.
+
+**Bảng "Thay đổi so với bản AI" (mục 12), 14 dòng:**
+- **Thừa (1 dòng):** Câu khẳng định API không có trường xác nhận mật khẩu.
+- **Thiếu (3 dòng):** Bước 2 của TC-REG-11, ghi chú giới hạn quan sát, ma trận truy vết.
+- **Quyết định của SV (10 dòng):** Phần còn lại.
+
+**Một chỗ cần bạn xem lại:** Tôi xếp việc tách test case hợp lệ vào loại **Quyết định của SV**, kèm lý do là bản AI vi phạm tiêu chí "không quá phức tạp" của Kaner. Không loại nào trong 5 loại khớp hoàn toàn: Thiết kế cũ không trái đặc tả nên không phải "Sai", nhưng đây là lỗi phương pháp của AI và có ích cho S8. Nếu bạn muốn ghi khác thì báo tôi.
+
+**Lưu ý cho S4:** Các biên đã hẹn xử lý ở S4 gồm:
+- Họ Tên: 0, 1, 2 ký tự.
+- Mật khẩu: 7, 8, 9 ký tự, kể cả trường hợp có khoảng trắng.
+- Nhãn tên miền: 63 và 64 ký tự, tính trên dạng punycode.
+- Giá trị lớn nhất mà giao diện cho nhập.
+
+**Commit 2 của S3:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/03_tc.md
+git commit -m "[A-FR01][S3] Review test case selection"
+```
+````
+
+---
+
+### C105 | 11:59 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã review xong, bản 03_tc tôi thấy ok rồi, nhưng vẫn cần bạn xem lại lần nữa. Nếu không có gì thì xuất log và đưa commit message.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit tool calls, check ai_raw, outline 03_tc.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Bash: Check formatting, coverage counts, TC count
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã xem lại toàn bộ `03_tc.md`. Phần lớn đều đạt, nhưng có **2 điểm nên sửa trước khi commit**.
+
+**Những gì đã đạt:**
+- Thao tác của phiên thiết kế không vi phạm gì, và `ai_raw/` nguyên vẹn.
+- Bảng phủ lớp có đủ 62 lớp Input và 8 lớp Output. Có đúng 69 test case, khớp với con số tổng ở mục 7.
+- Mỗi test case không hợp lệ chỉ phủ đúng một lớp không hợp lệ, trừ ngoại lệ TC-REG-58 đã được ghi từ S2.
+- Có ma trận truy vết, bảng đổi mã test case và bảng thay đổi có cột Loại.
+- Hình thức đạt.
+
+## 2 điểm cần xem
+
+### 1. TC-REG-79 có thể phá hỏng dữ liệu của mọi test case chạy sau nó
+
+TC-REG-79 gửi chuỗi `Robert'); DROP TABLE users;--`. Nếu EShop **thật sự bị lỗi SQL injection** thì bảng người dùng có thể bị xoá. Khi đó mọi test case chạy sau sẽ cho kết quả sai, và bạn sẽ ghi nhận những bug không có thật.
+
+Mục 8 ("Thứ tự chạy") hiện chỉ nói chạy bước 2 trên dữ liệu chưa bị sửa. Nên thêm: **TC-REG-79 phải chạy cuối cùng trong đợt, và reset DB ngay sau khi chạy xong.**
+
+### 2. Ba test case khoảng trắng của Email có thể đang kiểm tra trình duyệt chứ không phải EShop
+
+Theo chuẩn HTML (chính là quy tắc bạn chọn ở A04 (b)), ô nhập `type="email"` **tự cắt khoảng trắng ở đầu và cuối** trước khi gửi form. Nghĩa là nếu ô Email đúng là `type="email"` thì:
+
+| Test case | Giá trị nhập | Thực tế gửi lên EShop | Hệ quả |
+|---|---|---|---|
+| TC-REG-11 (EC19) | `␣tc11@domain.com␣` | `tc11@domain.com` | Pass dù EShop không hề cắt khoảng trắng |
+| TC-REG-33 (EC10) | `␣␣␣` | Chuỗi rỗng | Thực ra đang kiểm tra lại trường hợp email rỗng |
+| TC-REG-48 (EC67) | `␣test@eshop.com␣` | `test@eshop.com` | Trùng với TC-REG-45 |
+
+Ba test case này vẫn nên giữ, vì chúng kiểm tra hành vi người dùng thật sự gặp. Nhưng muốn biết **EShop** có tự cắt khoảng trắng hay không thì phải gửi qua API. Có 2 cách sửa:
+- **(a)** Thêm 2 hoặc 3 test case API cho EC19, EC67 (và EC10 nếu muốn) vào nhóm kiểm tra phía hệ thống (Q22). Cách này khớp đúng mục đích của nhóm API bạn đã chọn.
+- **(b)** Chỉ thêm ghi chú giới hạn vào 3 test case trên, giống ghi chú 1 đến 3 ở mục 5.1.
+
+Mình nghiêng về (a), vì chỉ thêm vài dòng mà đúng là chỗ dễ có bug.
+
+Điểm 2 này **cả bản nháp AI lẫn lần review đều chưa thấy**, và người phát hiện là phiên điều phối (phiên này). Khi ghi vào bảng thay đổi, nên ghi loại **"Thiếu"**, lý do "phiên điều phối phát hiện khi soát lại", để phần S8 phân biệt rõ ai tìm ra.
+
+Bạn chuyển 2 điểm này cho phiên thiết kế sửa. Xong thì báo mình, mình xuất log và đưa lệnh:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/03_tc.md prompt_log.md
+git commit -m "[A-FR01][S3] Review domain test cases"
+git push
+```
+
+Nếu bạn muốn commit ngay rồi sửa sau thì cũng được: Commit bây giờ, rồi thêm một commit sửa, ví dụ `[A-FR01][S3] Add API cases for email whitespace trimming`.
+````
+
+---
+
+### C106 | 12:03 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+- TC-REG-79 gửi chuỗi Robert'); DROP TABLE users;--. Nếu EShop thật sự bị lỗi SQL injection thì bảng người dùng có thể bị xoá. Khi đó mọi test case chạy sau sẽ cho kết quả sai, và bạn sẽ ghi nhận những bug không có thật. Nên cần chạy cuối và reset DB ngay khi chạy xong.
+- Ba test case khoảng trắng của Email có thể đang kiểm tra trình duyệt chứ không phải EShop. hêm 2 hoặc 3 test case API cho EC19, EC67 (và EC10 nếu muốn) vào nhóm kiểm tra phía hệ thống (Q22)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local time
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\03_tc.md
+- Bash: Verify TC count and references after update
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn đúng ở cả hai điểm.
+- **TC-REG-79:** Nếu EShop thật sự bị lỗi SQL injection, dữ liệu bị hỏng sẽ làm sai kết quả của mọi test case chạy sau.
+- **Email có khoảng trắng:** Theo chuẩn HTML, khi ô nhập dùng `type="email"`, trình duyệt tự cắt khoảng trắng đầu cuối của giá trị trước khi gửi. Như vậy TC-REG-33, TC-REG-48 và bước 1 của TC-REG-11 có thể chỉ đang kiểm tra trình duyệt. Hiện ta chưa biết ô Email có thật sự dùng `type="email"` không; điều đó sẽ biết ở S6, nên tôi ghi theo điều kiện. Ô Họ Tên và ô Mật khẩu không bị ảnh hưởng: Trình duyệt không cắt khoảng trắng ở ô văn bản thường, còn ô mật khẩu chỉ bị bỏ ký tự xuống dòng.
+
+Tôi cập nhật `03_tc.md`.
+
+Tôi kiểm tra lại số test case và các tham chiếu sau khi sửa.
+
+Tôi đã cập nhật [03_tc.md](Homeworks/HW02/features/A_FR-01_DangKy/03_tc.md). Hiện có 72 test case, không trùng mã, và mọi chỗ nhắc tới mã test case đều trỏ đúng test case có thật.
+
+**1. TC-REG-79 chạy cuối, reset dữ liệu ngay sau đó**
+- Ghi chú ở mục 5.3 nêu rõ: Nếu EShop bị lỗi SQL injection, chuỗi này có thể xóa hoặc làm hỏng dữ liệu, làm sai kết quả của mọi test case chạy sau. Nếu bước 2 không cho ERR4 thì ghi kết quả rồi reset trước khi chạy lại bất kỳ test case nào.
+- Mục 8 viết lại thứ tự chạy thành 4 bước:
+  1. Reset dữ liệu.
+  2. Chạy mọi test case trừ TC-REG-79.
+  3. Chạy TC-REG-79.
+  4. Reset ngay sau đó.
+
+**2. Thêm 3 test case API cho email có khoảng trắng (nhóm Q22):**
+
+| TC | Lớp | Nội dung | Kết quả mong đợi |
+|---|---|---|---|
+| TC-REG-80 | EC10 | Email chỉ gồm 3 dấu cách | OUT4 |
+| TC-REG-81 | EC19 | Email có khoảng trắng đầu cuối gửi qua API | OUT3. Sau đó đăng ký `tc81@domain.com` qua giao diện, mong đợi ERR4. Bước này chứng minh EShop lưu email đã cắt khoảng trắng |
+| TC-REG-82 | EC67 | ` test@eshop.com ` (có khoảng trắng đầu cuối) gửi qua API | OUT4. Nếu nhận OUT3 thì EShop không cắt khoảng trắng khi so trùng |
+
+TC-REG-11, TC-REG-33 và TC-REG-48 (qua giao diện) có thêm ghi chú: Nếu ô Email dùng `type="email"` thì kết quả phản ánh hành vi chung của trình duyệt và EShop. Ô này có dùng `type="email"` hay không sẽ biết ở TC-REG-96 (S6). Ô Họ Tên và ô Mật khẩu không bị ảnh hưởng, vì trình duyệt không tự cắt khoảng trắng ở hai loại ô đó.
+
+**Các phần khác đã đồng bộ:**
+- Bảng phủ lớp, ma trận truy vết (R02, R04, R05) và tổng số test case.
+- Mục 9, quyết định 4.
+- Mục 10.2 (mới): Ghi lại hai câu hỏi này và câu trả lời.
+- Mục 12: Thêm 3 dòng loại **Thiếu**, đều ghi "sinh viên phát hiện".
+
+**Commit:** Nếu bạn chưa commit `03_tc.md` thì dùng message của commit 2 S3:
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/03_tc.md
+git commit -m "[A-FR01][S3] Review test case selection"
+```
+Nếu đã commit bản trước thì dùng `[A-FR01][S3] Add API whitespace email tests and isolate destructive SQL test`.
+
+Khi bạn duyệt xong thì báo tôi để sang S4 (BVA).
+````
+
+---
+
+### C107 | 12:45 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Vì phiên con không biết có phiên điều hướng, nên ở phần này, bạn chỉnh lại giúp tôi nhé. Ngoài ra, nhớ ghi các chất liệu vào _NOTES nếu có kẻo quên.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current time for the revision note
+- Bash: Apply the two fixes to 03_tc.md with coordinator attribution
+- Bash: Inspect the design session's revision and attribution lines
+- Bash: Show the Q&A and change-table rows to re-attribute
+- Bash: Correct finder attribution in 03_tc.md
+- Bash: Audit latest design-session actions and recount test cases
+- Bash: Record S3 evidence and critique material, export log
+
+**Output AI (nguyên văn):**
+
+````text
+Mình sửa `03_tc.md` theo cách (a) mà mình đã đề xuất: Thêm 3 test case API cho phần khoảng trắng của Email, cùng ghi chú về việc trình duyệt tự cắt khoảng trắng. Mình cũng thêm quy tắc chạy TC-REG-79 cuối cùng rồi reset DB. Trong bảng thay đổi, mình ghi rõ người phát hiện là phiên điều phối. File chưa commit, nên nếu bạn muốn làm theo cách (b) thì vẫn đổi lại được.
+
+Mình kiểm tra các thao tác phiên thiết kế vừa làm khi sửa file, rồi kiểm lại số lượng test case:
+
+Mọi thứ khớp: 72 test case, phiên thiết kế chỉ sửa `03_tc.md`, `ai_raw/` nguyên vẹn. Giờ mình ghi các chất liệu vào `_NOTES.md`, cập nhật tracker và xuất log:
 ````
 
 
