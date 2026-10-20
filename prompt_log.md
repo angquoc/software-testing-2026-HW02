@@ -7710,6 +7710,251 @@ Phiên C: Chạy xong rồi kìa. Tổng hợp lại và đưa cho tôi đ�
 
 ````text
 Mình xuất log cho commit của phiên C:
+
+## Phiên C: S1 đã có bản review (`01_io.md`)
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác | ✅ Không vi phạm. Có đọc lại API spec để tìm mã HTTP, việc này hợp lệ |
+| `ai_raw/` | ✅ Nguyên vẹn |
+| 9 quyết định | ✅ Áp đủ, theo phương án (a) |
+| Bảng thay đổi | ✅ Thiếu 10, Mơ hồ 1, Quyết định của SV 9. Script của skill báo 0 lỗi |
+
+**3 câu hỏi của bạn đều tìm ra chỗ AI thiếu:**
+1. **Xoá:** Thêm **IN13**, là trạng thái của chính mã cần xoá: Đã được dùng trong đơn hàng chưa, còn hạn hay đã hết hạn, hay đã bị xoá ở tab khác. Trường hợp cuối là cách duy nhất để gặp lỗi "xoá mã không tồn tại" qua giao diện, điểm mà bản nháp bỏ sót.
+2. **Request API hỏng:** Thêm **IN14** và **ERR16** cho các trường hợp không có body, JSON sai cú pháp, thiếu `Content-Type`; thêm trường hợp thiếu hoặc sai header `Authorization`.
+3. **Mã HTTP:** AI trả lời đúng, **không tự đặt mã cụ thể** (201, 400...) vì đặc tả không nêu. Nó đề xuất giả định **A20**: Chỉ kiểm theo nhóm mã (thành công là 2xx, bị từ chối là 4xx, không được là 5xx, theo chuẩn HTTP RFC 9110). Đây là cách làm có căn cứ.
+
+**Có một điểm AI hỏi lại bạn:** Dòng loại "Thiếu" cho câu hỏi 3 (lý do: Bản nháp không dẫn căn cứ "200 OK" ở mục 1.1 của API spec). Mình thấy dòng này **nên bỏ** hoặc đổi sang "Quyết định của SV". Bản nháp không sai cũng không thiếu yêu cầu nào; xếp vào "Thiếu" sẽ làm số liệu ở S8 bị thổi phồng.
+
+**Lưu ý cho S2 của C:** Sau S1, FR-17 có **14 biến Input và hơn 16 loại lỗi**, nên S2 sẽ rất lớn. Khi bản nháp S2 ra, bạn nên **giới hạn phạm vi**: Ưu tiên form Thêm và thao tác Xoá; nhóm lỗi request API hỏng (IN14) chỉ giữ vài lớp đại diện.
+
+**Commit** (nếu bạn đồng ý giữ nguyên dòng "Thiếu" đó; nếu muốn bỏ thì nhắn phiên C sửa trước):
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/01_io.md prompt_log.md
+git commit -m "[C-FR17][S1] Review input/output variables"
+git push
+```
+
+Sau đó nhắn phiên C: "Đã commit, sang S2."
+
+## Phiên A: Có phải chạy hết 96 test case không?
+
+**Không bắt buộc.** README chỉ cần báo đủ các con số: số test case đã thiết kế, đã chạy, pass, fail, **chưa chạy**. Với thời gian còn lại (cả C, D, B chưa xong S2 đến S6), mình đề xuất **khoảng 1 giờ** cho S6 của FR-01:
+
+| Ưu tiên | Nhóm | Số test case | Cách chạy |
+|---|---|---|---|
+| 1 | API (gồm bảo mật) | 15 | Chạy script, khoảng 5 phút |
+| 2 | Không hợp lệ qua giao diện | 33 | Mỗi test case khoảng 1 phút; nhóm dễ ra bug nhất |
+| 3 | Checklist | 8 | Quan sát, dùng DevTools cho TC-REG-93 và 96 |
+| 4 | Biên quan trọng | Khoảng 10 | P1 (Họ Tên 0/1/`␣A␣`), P2 (mật khẩu 7/8/9), P5 (nhãn 63/64) |
+| 5 | TC-REG-01 (trường hợp cơ sở) và một vài test case hợp lệ | Khoảng 5 | |
+| | Phần còn lại | Khoảng 25 | Ghi **"Not run"** |
+
+Tin nhắn mình soạn cho phiên A đã có ý 4 (nhờ nó đề xuất thứ tự ưu tiên). Bạn có thể ghi luôn vào tin nhắn: "Ưu tiên theo bảng: API, không hợp lệ, checklist, biên quan trọng, TC-REG-01; phần còn lại Not run".
+````
+
+---
+
+### C132 | 16:54 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Dòng thiếu nên bỏ hoặc đổi sang "Quyết định của SV".
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local date and time
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\01_io.md
+- Bash: Recheck format and change table
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã đổi dòng đó sang "Quyết định của SV" trong [01_io.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/01_io.md), không bỏ hẳn. Lý do: Nội dung của dòng (đoạn "Mã trạng thái HTTP" và 3 phương án cho A20) vẫn còn trong bản review, mà quy tắc yêu cầu ghi mọi thay đổi về nội dung. Đổi loại thì vẫn đúng quy tắc mà không xếp bản AI vào lỗi.
+
+- **Dòng đã sửa:** Ghi rõ bản AI không sai. Anh/chị hỏi ở câu hỏi 3 và chốt không ghi mã cụ thể ở S1, để S2 đặt giả định A20. Căn cứ "200 OK" là do tôi bổ sung. Cuối dòng ghi "Cập nhật lần 1: Đổi loại từ Thiếu".
+- **Đầu file:** Thêm dòng "Cập nhật lần 1" (16:54) kèm tóm tắt.
+- **Bảng thay đổi giờ có:** 9 Thiếu, 1 Mơ hồ, 10 Quyết định của SV. Hai lệnh kiểm của skill đều báo 0 lỗi.
+
+Nếu anh/chị chưa commit bản review:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/01_io.md
+git commit -m "[C-FR17][S1] Review input/output variables"
+```
+
+Nếu đã commit rồi:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/01_io.md
+git commit -m "[C-FR17][S1] Reclassify HTTP status change as student decision"
+```
+````
+
+---
+
+### C133 | 16:54 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Bắt đầu S6. Server đã chạy: backend http://localhost:3000, web http://localhost:5173, dữ liệu vừa reset về dữ liệu mẫu. Tôi là người chạy test; bạn chuẩn bị giúp, không tự chạy test, không gọi API, không mở trang.
+
+1. File ghi kết quả 06_results.md:
+   - Đầu file: Môi trường (ngày chạy, hệ điều hành, trình duyệt và phiên bản để tôi điền, commit SUT 85af3ba, ô Email có dùng type="email" không: điền sau khi chạy TC-REG-96).
+   - Bảng xếp theo thứ tự chạy ở mục 10 của 05_final_tc.md, mỗi test case một dòng: Mã, tiêu đề ngắn, giá trị nhập chính, kết quả mong đợi; các cột để tôi điền: Kết quả thực tế, Trạng thái (Pass, Fail, Blocked, Not run), Ảnh, Ghi chú. Với test case dự kiến Blocked, ghi sẵn lý do nhưng để trống cột Trạng thái cho tôi xác nhận.
+   - Cuối file: Bảng tổng hợp số Pass, Fail, Blocked, Not run (tôi sẽ nhờ bạn đếm lại sau khi điền).
+2. Script cho nhóm API (TC-REG-70 đến TC-REG-82, TC-REG-129, TC-REG-130), để tôi tự chạy: Mỗi test case in ra request và response (mã HTTP, body) và ghi vào một file log. TC-REG-79 tách thành script riêng, chạy cuối cùng như mục 10. Với test case có bước 2 qua giao diện, script in lời nhắc để tôi làm tay.
+3. Ảnh chụp: Đề xuất chỉ chụp test case Fail, Blocked và một vài test case Pass tiêu biểu, đặt tên S6_<mã>.png.
+4. Nếu không đủ thời gian chạy hết: Đề xuất thứ tự ưu tiên để tôi chọn.
+
+Nếu cần quyết định gì trước khi viết (tên file, có lưu bản trong ai_raw không...), hỏi tôi trước.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- AskUserQuestion
+- Bash: Prepare scratch folder and check feature folder
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\38378bef-e688-4ecf-8075-2b0d74493d66\scratchpad\s6\gen_rows.py
+- Bash: Generate result table rows from 05_final_tc.md and spot-check
+- Bash: Assemble 06_results template and verify row count and format
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\scripts\run_api_tests.py
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\scripts\run_tc79.py
+- Bash: Dry-run both scripts to validate without sending requests
+- Bash: Place results template in ai_raw and as 06_results.md, verify identical
+
+**Output AI (nguyên văn):**
+
+````text
+Có vài điểm sẽ quyết định cách viết file, nên tôi hỏi trước. Những điểm còn lại tôi tự chọn theo hướng đơn giản và sẽ nêu rõ khi giao.
+
+Bảng sinh ra đủ 96 dòng, không thiếu, không trùng; các dòng tôi soát thử đều đúng. Giờ tôi ghép thành file `06_results.md`.
+
+Khung kết quả có đủ 96 dòng, định dạng hợp lệ. Giờ tôi viết hai script API.
+
+Tôi đã chuẩn bị xong S6. Tôi không chạy test, không gọi API, không mở trang; hai script chỉ được thử ở chế độ `--dry-run` (in request ra màn hình, không gửi).
+
+## 1. File ghi kết quả
+
+[06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md) giống hệt `ai_raw/S6_results_template.md` (đã kiểm bằng `cmp`). Bạn điền trong `06_results.md`.
+
+- **Mục 1, Môi trường:** Các ô để trống cho bạn điền: Ngày chạy, người chạy, hệ điều hành, trình duyệt và phiên bản, thời điểm reset trước đợt test và sau TC-REG-79, ô Email và ô Mật khẩu có dùng `type="email"`, `type="password"` không (điền sau TC-REG-96). Đã ghi sẵn commit SUT `85af3ba` và đường dẫn file log.
+- **Mục 2, 3:** Cách điền từng cột, ý nghĩa 4 trạng thái, quy ước tên ảnh, bảng mã kết quả mong đợi, giá trị cơ sở.
+- **Mục 4, bảng kết quả:** 96 dòng, sinh trực tiếp từ `05_final_tc.md` để tránh chép sai. Cột "Giá trị nhập chính" chỉ ghi các input khác giá trị cơ sở. Thứ tự chạy, nằm trong khuôn khổ mục 10 của `05_final_tc.md`:
+
+  | Nhóm | Nội dung | Số TC |
+  |---|---|---|
+  | A | Checklist giao diện | 7 |
+  | B | Không hợp lệ qua giao diện (TC-REG-97 đặt ngay sau TC-REG-30 vì dùng cùng dữ liệu) | 34 |
+  | C | Hợp lệ qua giao diện | 18 |
+  | D | Biên qua giao diện | 22 |
+  | E | API | 14 |
+  | F | TC-REG-79, chạy cuối | 1 |
+
+  Nhóm A chạy trước, vì TC-REG-96 cho biết ô Email có dùng `type="email"` không, và điều đó cần để đọc kết quả của các test case có dấu cách trong Email.
+
+  TC-REG-59 đến 62 có ghi chú sẵn "Dự kiến Blocked (D01)", cột Trạng thái để trống cho bạn xác nhận.
+- **Mục 5, Tổng hợp:** Bảng đếm Pass, Fail, Blocked, Not run theo từng nhóm, để trống. Điền xong bạn nhờ tôi đếm lại.
+
+## 2. Script API
+
+Script nằm trong `features/A_FR-01_DangKy/scripts/`, chỉ dùng thư viện chuẩn của Python. Log ghi vào `features/A_FR-01_DangKy/logs/`, tên file có thời gian chạy.
+
+```
+cd "D:/Dang/Test/Homeworks/HW02/features/A_FR-01_DangKy/scripts"
+python run_api_tests.py      # 14 test case: TC-REG-70 đến 78, 80 đến 82, 129, 130
+python run_tc79.py           # CHẠY CUỐI CÙNG, phải gõ "CHAY" để xác nhận; xong thì reset dữ liệu ngay
+```
+
+- Mỗi test case in request (kèm độ dài từng trường và có dấu cách đầu cuối hay không), response (mã HTTP, body), và một dòng gợi ý so với OUT3. Gợi ý chỉ là so sánh máy móc; Pass hay Fail do bạn quyết định.
+- **Kiểm chứng "không tạo tài khoản":** Script tự gửi request kiểm chứng cho TC-REG-71, 72, 75, 76, 77, 129, đúng như mô tả trong test case.
+- **TC-REG-70:** Có thêm gợi ý kiểm FR01-R23 (body phản hồi có chứa mật khẩu hay trường giống mật khẩu không).
+- **Việc làm tay:** TC-REG-78, 81 và 79 có bước 2 qua giao diện. Script in lời nhắc ngay lúc chạy và liệt kê lại ở cuối log.
+- **Tùy chọn khác:** `--only 70,81` để chạy lại vài test case; `--dry-run` để xem request mà không gửi.
+
+## 3. Ảnh chụp (đề xuất)
+
+| Loại | Chụp |
+|---|---|
+| Fail | Mọi test case Fail, đủ để thấy giá trị đã nhập và kết quả. Đây cũng là ảnh cho bug report ở S7 |
+| Blocked | `S6_TC-REG-59.png` (form không có trường Xác nhận mật khẩu); TC-REG-60 đến 62 ghi trỏ về ảnh này vì cùng lý do |
+| Pass tiêu biểu | TC-REG-01 (đã chuyển sang `/login`); TC-REG-30 (thông báo lỗi, đồng thời là bằng chứng cho TC-REG-97 về vị trí thông báo); TC-REG-11 (2 ảnh cho 2 bước); TC-REG-14 (tên miền có dấu); TC-REG-93 và 96 (DevTools) |
+| Bước làm tay của API | `S6_TC-REG-78_2.png`, `S6_TC-REG-81_2.png`, `S6_TC-REG-79_2.png` |
+| API | Log là bằng chứng chính, không cần ảnh |
+
+## 4. Thứ tự ưu tiên nếu không đủ thời gian (để bạn chọn)
+
+| Mức | Test case | Số TC | Lý do |
+|---|---|---|---|
+| 1 | A (90 đến 96); B: 30, 97, 32, 34, 45, 49, 50, 56, 59; C: 01; D: 101, 104, 107, 108; toàn bộ E (script chạy trong vài phút); F: 79 | 36 | Xác nhận các khác biệt D01 đến D04 đã thấy ở S0; mỗi loại lỗi ERR1 đến ERR6 có một test case; biên chính 7 và 8 ký tự; kiểm tra lại phía hệ thống qua API; bảo mật |
+| 2 | Phần còn lại của B | 25 | Đủ các lớp không hợp lệ, gồm các luật định dạng email và điều kiện mật khẩu |
+| 3 | Phần còn lại của C và D | 35 | Lớp hợp lệ bất thường, giá trị dài, punycode. Nhóm này dễ phụ thuộc trình duyệt và tốn công nhập |
+
+Test case không chạy thì ghi Not run.
+
+## Commit trước khi chạy
+
+Commit này giữ bản gốc của khung và script do AI viết:
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S6_results_template.md features/A_FR-01_DangKy/06_results.md features/A_FR-01_DangKy/scripts/
+git commit -m "[A-FR01][S6] Add results template and API test scripts (AI draft)"
+```
+Chạy xong thì commit `06_results.md`, `logs/` và `screenshots/S6_*` với message `[A-FR01][S6] Execute tests and record results`.
+````
+
+---
+
+### C134 | 16:55 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Đã commit, sang S2.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\step-s2.md
+- AskUserQuestion
+- Bash: Inspect check_step.py parsing rules
+- Bash: Read classes command implementation
+- Bash: Get current local date and time
+
+**Output AI (nguyên văn):**
+
+````text
+Đã chốt cả ba điểm. Trước khi viết, tôi xem script kiểm đọc bảng lớp theo định dạng nào.
+
+Đã chốt cả ba nguyên tắc. Tôi bắt đầu viết bản AI của S2.
+````
+
+---
+
+### C135 | 17:02 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã gửi câu hỏi cho phiên A và chạy xong rồi, phiên C thì đang chạy S2. Gom, xuất log, tiếp tục điều phối đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session A S6 prep output and repo state
+- Bash: Read session C latest S2 status
+- Bash: Export log, verify S6 files, update tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên C đang viết bản nháp S2. Bạn đã trả lời 3 câu hỏi trước khi viết của nó, và thao tác của nó vẫn sạch. Mình xuất log cho commit của phiên A:
 ````
 
 
