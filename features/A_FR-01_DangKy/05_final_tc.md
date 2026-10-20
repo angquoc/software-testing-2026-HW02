@@ -4,6 +4,7 @@
 - Thời gian tạo: 2026-10-20 16:02 (+07:00)
 - Bản này: Bản review của S5. Bản gốc của AI: `ai_raw/S5_final_test_cases.md`
 - Cập nhật lần 1: 2026-10-20 16:10 (+07:00). Thêm cột "Phát hiện" vào mọi bảng test case, ghi rõ phần do sinh viên phát hiện (mục 14)
+- Cập nhật lần 2: 2026-10-20 16:43 (+07:00). Sinh viên không bổ sung test case nào; chốt S5 (mục 13)
 - Căn cứ: `03_tc.md` (bản review S3, 72 test case), `04_bva.md` (bản review S4, 24 test case), `ai_raw/S3_test_cases.md` và `ai_raw/S4_bva.md` (để xác định nguồn gốc), `02_ec.md` (lớp), `00_spec.md` (yêu cầu)
 
 ---
@@ -342,11 +343,11 @@ Các test case hợp lệ gộp nhiều lớp trong `ai_raw/S3_test_cases.md` kh
 
 ## 13. Phần sinh viên bổ sung ở S5
 
-Sinh viên ghi test case AI bỏ sót vào bảng dưới đây (trong `05_final_tc.md`), nguồn gốc là "SV thêm". Dùng mã trong các dải còn trống: 19 đến 29 (hợp lệ qua giao diện), 63 đến 69 (không hợp lệ qua giao diện), 83 đến 89 (API), 98, 99 (checklist), 132 trở đi (biên). Mỗi test case nên ghi lớp hoặc biên mà nó nhắm tới; nếu nó cho thấy một lớp mới, ghi lại để đưa vào gap analysis ở S8.
+Sinh viên không bổ sung test case nào ở S5. Sinh viên đã review bộ test case và xác nhận bộ này đã ổn.
 
-| TC | Tiêu đề | Lớp hoặc biên | Yêu cầu | Họ Tên | Email | Mật khẩu | Xác nhận mật khẩu | Kết quả mong đợi | Nguồn gốc | Vì sao AI bỏ sót |
-|---|---|---|---|---|---|---|---|---|---|---|
-| | | | | | | | | | SV thêm | |
+Bộ test case cuối cùng của FR-01 gồm 96 test case như mục 2. Các test case do sinh viên phát hiện đã được đưa vào trong quá trình review S2 đến S4 (cột "Phát hiện").
+
+S5 đã chốt ngày 2026-10-20.
 
 ---
 
@@ -356,3 +357,4 @@ Sinh viên ghi test case AI bỏ sót vào bảng dưới đây (trong `05_final
 |---|---|---|---|
 | Mục 3 đến 8 (mọi bảng test case), mục 1.1 | Thêm cột "Phát hiện" ghi ai phát hiện điều gì dẫn tới từng test case, kể cả test case nguồn gốc "AI" nhưng phủ lớp do sinh viên phát hiện ở S2; thêm bảng giải thích cách ghi | Thiếu | Sinh viên đã chọn "3 giá trị nguồn gốc cộng cột người phát hiện", nhưng bản AI chỉ ghi người phát hiện ở mục 9, bảng chính không thể hiện. Sinh viên phát hiện |
 | Mục 2 | Thêm cột "Có phần do SV phát hiện" vào bảng tổng hợp, ghi rõ 4 test case "AI" có lớp do sinh viên phát hiện | Thiếu | Như dòng trên |
+| Mục 13 | Thay bảng trống dành cho test case sinh viên bổ sung bằng ghi nhận: Sinh viên không bổ sung test case nào ở S5, xác nhận bộ test case đã ổn; chốt S5 | Quyết định của SV | Sinh viên review bộ test case cuối cùng |

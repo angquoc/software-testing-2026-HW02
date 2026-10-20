@@ -7365,6 +7365,199 @@ Mình viết một script nhỏ (lưu trong thư mục tạm, không đưa vào 
 Đã đọc xong phiên C. Giờ đến phiên A:
 
 Danh sách thao tác của phiên A đã có. Mình đọc thêm phần trao đổi gần nhất để biết nó đang chờ gì:
+
+## Bảng tình trạng (16:2x)
+
+| Phiên | Feature | Đang ở bước | Đang chờ bạn |
+|---|---|---|---|
+| **A** (`38378bef`) | FR-01 | **S5:** AI đã gộp 96 test case vào `05_final_tc.md`. Theo yêu cầu của bạn, nó đã thêm cột "Phát hiện" ghi rõ phần nào do bạn phát hiện | (1) Commit. (2) Thêm test case AI bỏ sót vào **mục 13** của `05_final_tc.md`, nếu có |
+| **C** (`1648c211`) | FR-17 | **S1:** Skill đã rà S0 cũ và báo 7 điểm thiếu, đúng thiết kế (chỉ báo, không tự viết lại). 3 câu hỏi trước khi viết bạn đã trả lời. **Bản nháp S1 đã xong** | **9 quyết định** (bên dưới) |
+
+Kết quả soát cả hai phiên: **Không phiên nào đọc file bị cấm.** Phiên C không dùng kết quả nhập thử, và chỉ đọc ví dụ FR-01 trong thư mục skill, không đọc thư mục FR-01.
+
+## Commit ngay (theo thứ tự)
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add tools/export_prompt_log.py
+git commit -m "[setup] Add FR-17 skill session to prompt log whitelist"
+git add features/A_FR-01_DangKy/ai_raw/S5_final_test_cases.md
+git commit -m "[A-FR01][S5] Merge final test case set with origins (AI draft)"
+git add features/A_FR-01_DangKy/05_final_tc.md
+git commit -m "[A-FR01][S5] Show who found each test case change"
+git add features/C_FR-17_QuanLyCoupon/ai_raw/S1_input_output.md prompt_log.md
+git commit -m "[C-FR17][S1] Identify input/output variables (AI draft)"
+git push
+```
+
+## Việc 1: Phiên C, 9 quyết định cho S1
+
+| # | Vấn đề | AI đề xuất | Nhận xét của mình |
+|---|---|---|---|
+| 1 | Mức chia loại lỗi | (a) Tách "thiếu" và "vi phạm" riêng cho từng trường | Hợp lý. Ở S3 sẽ biết chính xác nguyên nhân mong đợi của mỗi test case |
+| 2 | Thêm yêu cầu R16 đến R19 (SEC-05, FR-23, FR-24, thẻ `<h1>`) | (a) Nhận cả 4 | Hợp lý. Đều là đặc tả áp cho màn hình này |
+| 3 | Thêm câu hỏi Q9 đến Q22 | (a) Nhận hết | Hợp lý. Lưu ý là S2 sẽ phải chốt giả định cho các câu này, tốn thêm thời gian |
+| 4 | `is_active` | (a) Không mô hình hoá, ghi thành rủi ro | Hợp lý. Màn hình FR-17 không có trường này |
+| 5 | Hộp thoại xác nhận khi xoá | (a) Giữ làm ứng viên, S2 đặt giả định | Hợp lý |
+| 6 | Múi giờ | (a) Không phải biến, ghi lại ở S6 | Hợp lý |
+| 7 | Sai kiểu, sai định dạng qua API | (a) Giữ làm ứng viên | Hợp lý. Ô số và ô ngày có thể chặn từ trình duyệt, nên chỉ API kiểm được EShop |
+| 8 | Cách kiểm chứng tác động | (a) Chỉ dùng K1 đến K8 (trong FR-17) | Hợp lý. Không phụ thuộc feature khác |
+| 9 | Nhóm checklist | (a) Lập riêng | Hợp lý |
+
+Cả 9 đề xuất đều ổn. Bạn cho mình biết lựa chọn, ví dụ "theo đề xuất cả 9", hoặc nêu điểm muốn khác kèm câu hỏi nếu có. Mình sẽ soạn tin nhắn để bạn dán sang phiên C.
+
+## Việc 2: Phiên A, S5
+
+S5 là phần **của bạn**: Bạn tự nghĩ những test case AI còn bỏ sót. Có 2 khả năng:
+- **Có test case muốn thêm:** Bạn kể cho mình (hoặc ghi thẳng vào mục 13 của `05_final_tc.md`). Mình soạn tin nhắn nhờ phiên A viết lại cho đúng định dạng, ghi nguồn gốc là "SV thêm".
+- **Không có:** Gõ vào phiên A câu "Tôi không thêm test case nào ở S5", để nó ghi lại và chốt S5.
+
+Mình đề xuất bạn **không mất quá 10 phút** cho việc này. 96 test case đã rất đầy đủ, nên dồn thời gian cho FR-17, FR-07 và FR-04.
+````
+
+---
+
+### C126 | 16:41 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên C: Cả 9 quyết định đều theo đề xuất. Ngoài ra, tôi còn có 1 số câu hỏi:
+- Không có biến Input gián tiếp nào cho thao tác xóa sao?
+- Phần lỗi kỹ thuật API có tính các lỗi gửi Body rỗng, chuỗi JSON sai cú pháp hay thiếu header không?
+- Các chỉ số HTTP như 200, 201 gì đó bên đặc tả có không và có nên thêm không?
+
+Phiên A: Tôi không có bổ sung TC nào nữa, trước đó đã bổ sung cũng bao quát hết rồi. Tôi thấy bộ TC này ok rồi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check sessions and repo state
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên điều phối vừa được mở lại. Trước tiên mình kiểm tra xem có phiên mới nào xuất hiện cần thêm vào whitelist không:
+
+Không có phiên mới. 4 commit lần trước đã lên đủ, và hiện không còn thay đổi nào chờ commit.
+
+## Tin nhắn dán vào phiên C
+
+```text
+Cả 9 điểm theo phương án đề xuất (a). Trước khi viết 01_io.md, trả lời giúp tôi 3 câu hỏi, nếu đúng là thiếu thì bổ sung vào bản review và ghi vào bảng "Thay đổi so với bản AI":
+1. Thao tác Xóa không có biến Input gián tiếp nào sao?
+2. Phần lỗi kỹ thuật khi gọi API có tính các trường hợp gửi body rỗng, chuỗi JSON sai cú pháp, hoặc thiếu header (ví dụ Content-Type) không?
+3. Đặc tả có nêu mã trạng thái HTTP (200, 201, 400...) cho các API của mã giảm giá không? Có nên thêm vào kết quả mong đợi không?
+```
+
+Nhận xét nhanh về 3 câu hỏi, để bạn biết trước khi đọc câu trả lời của phiên C:
+1. **Biến gián tiếp cho thao tác Xoá:** Câu hỏi đáng hỏi. Bản nháp có IN9 (các mã đang có) nhưng chủ yếu dùng cho kiểm tra trùng mã. Những yếu tố như mã cần xoá có tồn tại không, hay đã được dùng trong đơn hàng chưa (bản nháp có hỏi ở Q16), là ứng viên cho biến gián tiếp của thao tác Xoá. Xem AI trả lời ra sao.
+2. **Lỗi kỹ thuật của API:** Đặc tả không nói gì về body rỗng hay JSON sai cú pháp. Nếu thêm thì đây là kiểm tra độ bền ngoài đặc tả, và kết quả mong đợi chỉ ghi được là "không tạo mã, không lỗi hệ thống". Hợp lý nếu chỉ thêm ít test case, đặt trong nhóm API.
+3. **Mã HTTP:** Theo những gì mình đã đọc, API spec **không nêu** mã trạng thái cho các API mã giảm giá. Bản nháp cũng đã có câu Q20 về điểm này. Nếu AI tự thêm "mong đợi 201" thì đó là **bịa quy tắc**, nên kết quả mong đợi chỉ ghi được "thành công" hoặc "thất bại", còn mã thực tế ghi lại ở S6. Bạn để ý xem AI có trả lời như vậy không. Nếu nó tự đặt mã thì đó là chất liệu tốt cho S8.
+
+## Tin nhắn dán vào phiên A
+
+```text
+Tôi không thêm test case nào ở S5. Bộ test case này đã ổn. Ghi nhận vào 05_final_tc.md (mục 13: Sinh viên không bổ sung test case nào ở S5) và chốt S5, đưa tôi commit message.
+```
+
+## Việc tiếp theo
+
+Sau khi phiên A chốt S5, FR-01 chỉ còn S6 đến S8, và mấy bước này để dành chạy chung vào sáng mai. Trong lúc chờ phiên C, mình đề xuất **mở thêm phiên B cho FR-07 (Giỏ hàng) ngay bây giờ, vừa chạy vừa quay video** để nộp phần Agent Skill. Bạn có muốn mình:
+1. Bật server web (`localhost:5173`) để bạn chụp ảnh S0 cho FR-07?
+2. Soạn tin nhắn gọi skill cho FR-07?
+````
+
+---
+
+### C127 | 16:42 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi không thêm test case nào ở S5. Bộ test case này đã ổn. Ghi nhận vào 05_final_tc.md (mục 13: Sinh viên không bổ sung test case nào ở S5) và chốt S5.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Show current section 13 and header of 05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Bash: Add change-table row, run checks, show file tail
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi xem lại mục 13 hiện có trong file trước khi sửa.
+
+S5 đã chốt. Trong [05_final_tc.md](Homeworks/HW02/features/A_FR-01_DangKy/05_final_tc.md):
+- **Mục 13:** Bỏ bảng trống, thay bằng ghi nhận rằng bạn không bổ sung test case nào ở S5 và xác nhận bộ test đã ổn. Bộ cuối cùng gồm 96 test case; các phần bạn phát hiện đã được đưa vào trong lúc review S2 đến S4 và hiện ở cột "Phát hiện". Ghi ngày chốt 2026-10-20.
+- **Đầu file:** Thêm dòng "Cập nhật lần 2".
+- **Bảng thay đổi (mục 14):** Thêm 1 dòng loại **Quyết định của SV**.
+
+Chạy `check_step.py` không báo lỗi.
+
+**Commit:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/05_final_tc.md
+git commit -m "[A-FR01][S5] Finalize test case set with no student additions"
+```
+
+Bước tiếp theo là S6 (chạy test thật), do bạn làm. Nếu muốn có file Excel để ghi kết quả thực tế và trạng thái của từng test case khi chạy, tôi có thể xuất bộ này bằng `test-case-writing`. File Excel của skill đó có sẵn cột trạng thái dạng dropdown và bộ đếm tự động.
+````
+
+---
+
+### C128 | 16:43 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Cả 9 điểm theo phương án đề xuất (a). Trước khi viết 01_io.md, trả lời giúp tôi 3 câu hỏi, nếu đúng là thiếu thì bổ sung vào bản review và ghi vào bảng "Thay đổi so với bản AI":
+1. Thao tác Xóa không có biến Input gián tiếp nào sao?
+2. Phần lỗi kỹ thuật khi gọi API có tính các trường hợp gửi body rỗng, chuỗi JSON sai cú pháp, hoặc thiếu header (ví dụ Content-Type) không?
+3. Đặc tả có nêu mã trạng thái HTTP (200, 201, 400...) cho các API của mã giảm giá không? Có nên thêm vào kết quả mong đợi không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: d:\Dang\Test\.claude\skills\domain-testing-design\assets\templates\review.md
+- Grep: (?i)\b[1-5]\d\d\b|OK|status|header|Content-Type|JSON
+- Bash: Get current local date and time
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đọc mẫu bản review và kiểm lại API spec xem có chỗ nào nêu mã trạng thái HTTP không.
+````
+
+---
+
+### C129 | 16:44 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Chỉ khi nào xong C và D thì tôi mới quay video cho B. Vì giờ đang làm song song, mà mở thêm phiên B để quay video thì video sẽ rất rối. Chưa kể chưa có tiền đề xem thử skill có tốt không hay phải sửa ở bước nào.
+2. Xuất log đi. A đã sửa xong rồi. Đưa tôi commit message cho đúng.
+3. Phiên C đang làm việc dựa trên câu hỏi rồi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit session A's S5 close-out and check files
+- Bash: Recreate session reader and audit session A
+- Bash: Tick FR-01 S5 and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn nói đúng về video: Quay khi skill đã chạy thử xong trên C và D, đã sửa những chỗ cần sửa, thì video sẽ gọn và cho thấy được bản skill tốt nhất. Mình đổi thứ tự: **C, rồi D, rồi B (có quay video)**.
+
+Giờ mình soát phiên A và xuất log:
+
+Thư mục tạm của phiên này bị xoá sau lần phiên khởi động lại, nên script đọc phiên cũng mất theo. Mình tạo lại script rồi soát thao tác của phiên A:
 ````
 
 
