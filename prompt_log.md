@@ -9825,6 +9825,413 @@ Xuất log đi, tiện thể hình như có tư liệu AI ảo giác vì AI tj s
 
 ````text
 Tôi đã tự kiểm lại, kết quả khớp với kết luận của phiên C. Giờ tôi xuất log và ghi chú.
+
+Log đã xuất xong (164 lượt, đúng 3 phiên). Bạn không vô tình sửa gì cả: Thay đổi lạ trong `05_final_tc.md` là do chính phiên C gây ra.
+
+## Kiểm tra lại
+
+- Phiên C sửa file lần 1 bằng một script Python chạy qua lệnh, lần 2 bằng công cụ sửa file. Công cụ sửa file không biết có lần sửa bằng lệnh, nên báo "file bị thay đổi từ bên ngoài".
+- Khi bạn hỏi lại, phiên C dựng lại file từ bản gốc trong `ai_raw` cộng hai lần sửa. Bản dựng lại giống hệt file hiện tại đến từng byte.
+- Tôi cũng tự kiểm độc lập:
+  - Các file trong `ai_raw` còn nguyên.
+  - `check_step.py` báo 0 lỗi.
+  - Không có dấu "—" hay "·".
+  - Bảng thay đổi đã đúng: 1 Sai, 2 Thiếu, 1 Mơ hồ.
+  - Dòng "Cập nhật lần 2" có ở đầu file.
+
+## Về chuyện "AI ảo giác"
+
+Đây là tư liệu tốt cho phần AI Critique, nhưng nên gọi đúng tên. AI không bịa dữ liệu, mà **quy sai nguyên nhân khi chưa kiểm chứng**:
+
+- Nó thấy cảnh báo và nói "có thể là anh/chị sửa tay", mà không xem lại thao tác của chính mình trước.
+- Hậu quả có thể xảy ra: Bạn nghi ngờ chính mình, hoặc hoàn tác một thay đổi đúng.
+- Điểm cộng: Khi bị hỏi lại, nó kiểm chứng đàng hoàng và nhận lỗi.
+
+Nếu viết "AI quy sai nguyên nhân cho người dùng" thì chính xác hơn và khó bị bắt bẻ hơn "ảo giác". Tôi đã ghi vào mục "Chất liệu cho AI Critique" trong `_NOTES.md`. Tôi cũng ghi cho phần AI Audit rằng 2 chỗ phân loại sai ở mục 14 do phiên điều phối phát hiện.
+
+## Commit
+
+```
+git add features/C_FR-17_QuanLyCoupon/05_final_tc.md prompt_log.md
+git commit -m "[C-FR17][S5] Review final test cases"
+```
+
+## Tình trạng
+
+| Phiên | Đang ở đâu | Việc tiếp theo |
+|---|---|---|
+| A (FR-01) | S6: Đang thêm ảnh | Xem lại ảnh `S0_TC-REG-33.png` (có lẽ phải là `S6_`). Chạy TC-REG-79 sau cùng rồi báo tôi để reset DB |
+| C (FR-17) | S5 xong, chờ commit | Sang S6. Báo tôi bật trang admin (cổng 5174) khi bạn sẵn sàng |
+````
+
+---
+
+### C165 | 22:32 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi test, chụp ảnh và bạn xem ảnh để điền bảng. Tôi sẽ người review lại cho nhanh. Đầu tiên là phần B trước. Tiện thể những chỗ nào có test Xác nhận mật khẩu thì cũng điền luôn đi, vì vốn dĩ bị block mà đúng không?
+
+Có vấn đề gì trong lúc test mà ảnh không thể hiện, tôi sẽ ghi cho bạn:
+TC-REG-31 + TC-REG-33 + TC-REG-34 + TC-REG-35 + TC-REG-36 + TC-REG-37 + TC-REG-38 + TC-REG-39 + TC-REG-45: Mật khẩu dù đặt Test1234! (hợp lệ) nhưng vẫn không được và bị báo lỗi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List group B screenshots and current group B rows
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-30.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-31.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-32.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-33.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-34.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-35.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-36.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-37.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-38.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-39.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-45.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-49.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-50.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-56.png
+- Bash: Fill group B rows from screenshots and mark blocked confirm-password cases
+- Bash: Fix image reference for blocked rows and add header log line
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi xem danh sách ảnh của nhóm B trước.
+
+Có 14 ảnh: TC-REG-30 đến 39, 45, 49, 50, 56. Các test case khác trong nhóm B chưa có ảnh nên tôi sẽ không điền những dòng đó. Tôi xem từng ảnh.
+
+Tôi đã điền nhóm B trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md) theo 14 ảnh và ghi chú của bạn. Trạng thái đều ghi "(đề xuất)", trừ 4 dòng Blocked do D01. File vẫn đủ 96 dòng, định dạng hợp lệ.
+
+## Kết quả đã điền
+
+| TC | Thấy trong ảnh | Đề xuất |
+|---|---|---|
+| 30 | Trình duyệt chặn, bong bóng "Please fill out this field." ở ô Họ Tên | Pass |
+| 97 | Thông báo luôn nằm trên nút "Đăng Ký": Bong bóng ngay dưới ô bị lỗi, hoặc khung đỏ ở đầu form | Pass |
+| 32 | Trình duyệt chặn, bong bóng ở ô Email | Pass |
+| 49 | Trình duyệt chặn, bong bóng ở ô Mật khẩu | Pass |
+| 50 | Khung đỏ "Mật khẩu quá yếu!..." (mật khẩu 6 ký tự) | Pass |
+| 56 | Khung đỏ "Mật khẩu quá yếu!..." (mật khẩu 8 ký tự, không có ký tự đặc biệt) | Pass |
+| 31, 33 đến 39, 45 | Khung đỏ "Mật khẩu quá yếu!..." **thay vì** lỗi Họ Tên, Email hay email trùng | **Blocked** |
+| 59 đến 62 | Không có trường Xác nhận mật khẩu | **Blocked** (D01) |
+
+**Đúng như bạn nói, TC-REG-59 đến 62 bị chặn.** Tôi ghi Blocked không kèm "(đề xuất)", lý do D01, trỏ về TC-REG-90.
+
+## Phát hiện quan trọng: Mật khẩu hợp lệ `Test1234!` bị từ chối
+
+- `Test1234!` thỏa đủ điều kiện của FR-01: 9 ký tự, có chữ hoa, chữ thường, chữ số, và `!` thuộc tập ký tự đặc biệt cho phép. Nó còn là mật khẩu của tài khoản mẫu `test@eshop.com` trong SRS. Vậy mà trang vẫn báo "Mật khẩu quá yếu".
+- **Vì sao tôi đề xuất Blocked chứ không phải Fail cho 9 test case này:** Mật khẩu bị từ chối trước, nên các test case đó chưa kiểm được điều chúng nhắm tới (Họ Tên chỉ có dấu cách, các luật định dạng email, email trùng). Ngoài ra dữ liệu đã khác kế hoạch (kế hoạch dùng `Abcdef1!`). Lỗi thật ở đây là "mật khẩu hợp lệ bị từ chối"; nên ghi nó thành **một bug riêng** cho S7, không tính thành 9 lần Fail.
+
+**Tôi đề xuất làm tiếp như sau:**
+1. Chạy **TC-REG-01** (`Abcdef1!`, dữ liệu cơ sở) để biết mật khẩu hợp lệ theo kế hoạch có được chấp nhận không.
+2. Nếu `Abcdef1!` được chấp nhận: Chạy lại 31, 33 đến 39, 45 **đúng dữ liệu kế hoạch** (mật khẩu `Abcdef1!`, email `tcNN@domain.com`), chụp đè ảnh. Khi đó mới biết EShop kiểm Họ Tên và Email thế nào.
+3. Nếu `Abcdef1!` cũng bị từ chối: Mọi test case hợp lệ sẽ Fail và nhiều test case không hợp lệ sẽ Blocked vì cùng một bug. Báo tôi để cùng xem cách ghi.
+
+## Những điều khác đáng chú ý
+
+- **Trình duyệt chặn ô trống, nhưng không chặn ô chỉ có dấu cách hay email sai định dạng.** Điều này khớp với kết quả TC-REG-96 (ô Email là `type="text"`): Các lỗi định dạng email sẽ do chính EShop xử lý.
+- **TC-REG-91 (ngôn ngữ):** Tôi ghi bổ sung rằng bong bóng của trình duyệt là tiếng Anh ("Please fill out this field."), còn thông báo của trang là tiếng Việt. Bạn xét có tính bong bóng của trình duyệt vào FR01-R14 không.
+- **TC-REG-97:** Ở `S6_TC-REG-49.png`, bong bóng đè một phần lên nút "Đăng Ký". Tôi vẫn đề xuất Pass vì bong bóng nằm phía trên; bạn quyết.
+- **Dữ liệu khác kế hoạch ở TC-REG-30, 31:** Email `tcreg30@domain.com` (cả hai test case dùng chung), mật khẩu 14 ký tự ở TC-REG-30. TC-REG-30 không bị ảnh hưởng vì đã bị chặn ở Họ Tên; TC-REG-31 thì nên chạy lại như mục 2.
+
+**Các dòng nhóm B chưa có ảnh nên để trống:** TC-REG-40 đến 44, 46 đến 48, 51 đến 55, 57, 58.
+````
+
+---
+
+### C166 | 22:34 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Bây giờ sang S6. Bạn có thể tham khảo phần 06_results.md để dựng khung cho đúng, có thể điền những kết quả đã biết dựa trên ảnh tôi cung cấp, những điều tôi trao đổi với bạn trong quá trình dựng các TC. Tôi sẽ là người review lại.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check FR-01 results file size and screenshot lists
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_02_menu_admin.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_01_dang_nhap_admin.png
+- Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S6_results_template.md
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\prefill_s6.py
+- Bash: Create prefilled 06_results.md and verify coverage vs final set
+- Edit: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\prefill_s6.py
+- Bash: Rerun prefill and verify rows and columns
+
+**Output AI (nguyên văn):**
+
+````text
+Trước khi dựng khung, tôi đọc `06_results.md` của FR-01 để theo đúng cấu trúc (anh/chị đã cho phép tham khảo).
+
+Tôi xem lại hai ảnh S0 còn lại để biết phần nào điền sẵn được: Menu ở trang khác để so cách highlight, và đầu trang để xem có thấy thanh tab không.
+
+Script dừng ở bước kiểm tra, chưa ghi file nào: Các ô trống (`| |`) làm cách tách cột theo `' | '` đếm sai số cột. Tôi đổi sang tách theo `|` rồi chạy lại.
+
+Khung S6 đã xong, gồm hai file:
+
+- [ai_raw/S6_results_template.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S6_results_template.md): Khung trống do AI viết, giữ nguyên.
+- [06_results.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md): Chép từ khung, đã điền sẵn một số dòng. Đầu file có dòng ghi thời điểm và nguồn của phần điền sẵn, giống FR-01.
+
+**Kiểm tra:** 115 dòng khớp đúng 115 test case của `05_final_tc.md`, không thiếu, không thừa; mọi dòng đủ 9 cột; 0 lỗi định dạng.
+
+## Cấu trúc (theo FR-01)
+
+- **Mục 1, Môi trường:** Thêm 4 dòng "điền sau khi chạy", vì chúng quyết định cách chạy các test case sau:
+  - Ô số có chặn số lẻ, số âm không: Quyết định có chạy dòng dự phòng của TC-CPN-82, 130 hay không.
+  - Ô `code` nhận tối đa bao nhiêu ký tự.
+  - Có hộp thoại xác nhận khi xóa không: Quyết định TC-CPN-52.
+  - `GET /api/coupons` có trả `id` không: Quyết định 5 test case API có bị Blocked không.
+- **Mục 2, Trạng thái:** Ngoài Pass, Fail, Blocked, Not run như FR-01, thêm hai trạng thái theo các quyết định đã chốt:
+  - **Khác giả định (Ann)**, theo S4 quyết định 7.
+  - **Không áp dụng**, dùng cho TC-CPN-52 khi không có hộp thoại (A07).
+- **Mục 4:** Tám nhóm theo đúng thứ tự chạy ở mục 10 của `05_final_tc.md`, từ A (cần dữ liệu mẫu nguyên vẹn) đến H (phá dữ liệu, chạy cuối).
+- **Mục 5 (mới):** Bảng ghi kết quả theo từng dòng của 11 test case API dạng bảng, gồm 45 dòng. FR-01 không cần mục này.
+- **Mục 6, 7:** Phần quan sát không có Pass hay Fail (placeholder ô "Giá trị"), và bảng tổng hợp.
+
+## Đã điền sẵn từ ảnh S0 (chụp 18/10/2026), chờ anh/chị xác nhận
+
+| Test case | Kết quả đề xuất | Căn cứ |
+|---|---|---|
+| TC-CPN-50 Danh sách 4 mã mẫu | Pass (đề xuất) | `S0_03`: 4 dòng, đủ 7 cột, khớp bảng mã mẫu FR-09; `EXPIRED` hiện "Hết hạn" |
+| TC-CPN-90 Dấu `*` | Fail (đề xuất) | Form không có nhãn, không có `*` |
+| TC-CPN-92 Màu nút | Fail (đề xuất) | Nút "Tạo mã" màu cam (cần xanh dương); nút "Xóa" màu đỏ đạt |
+| TC-CPN-93 Định dạng tiền | Pass (đề xuất) | Có `₫` và dấu phẩy phân cách hàng nghìn |
+| TC-CPN-94 Highlight menu | Pass (đề xuất) | So `S0_03` với `S0_02`: Highlight đổi theo trang đang mở |
+| TC-CPN-91 Ngôn ngữ | **Để trống trạng thái**, chỉ ghi quan sát | Có mục menu "Dashboard" và lịch chọn ngày bằng tiếng Anh (lịch là của trình duyệt). Chưa xét được tiêu đề tab và thông báo lỗi. Anh/chị quyết định "Dashboard" có tính là thuật ngữ kỹ thuật chuẩn không |
+
+Ngoài ra:
+- Mục 1 ghi "Ô Mã coupon tự chuyển chữ hoa: Có", theo thông tin anh/chị đưa ở S5; xác nhận lại khi chạy TC-CPN-06.
+- Mục 6 ghi thêm một quan sát ngoài phạm vi: Trang đăng nhập admin dùng tiếng Anh ("Admin Login", "Password", "Login").
+
+Tôi không điền kết quả nhập thử ở S0, vì anh/chị chưa đưa kết quả đó. Mọi test case cần nhập dữ liệu hay gọi API đều đang để trống.
+
+Nhóm API có 30 test case. Nếu cần, tôi viết script chạy nhóm này và ghi log, như `scripts/run_api_tests.py` của FR-01.
+
+## Commit
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S6_results_template.md Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md
+git commit -m "[C-FR17][S6] Add test results template with S0-based prefill"
+```
+````
+
+---
+
+### C167 | 22:36 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Các dòng nhóm B không có ảnh tôi sẽ không chạy vì không đủ thời gian. Khi tôi bảo bạn viết một nhóm tức là tôi đã chạy các TC cần thiết cho nhóm đó, các phần còn lại là tôi không chạy. Điền vào bảng cho nhóm B đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Mark untested group B cases Not run and count group B statuses
+- Write: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\s6-group-fill-convention.md
+- Bash: Add memory index pointer
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi điền Not run cho 15 test case chưa chạy của nhóm B, kèm lý do không đủ thời gian.
+
+Nhóm B đã điền xong trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md). 15 test case không chạy (TC-REG-40 đến 44, 46 đến 48, 51 đến 55, 57, 58) được ghi **Not run**, kèm ghi chú "Sinh viên không chạy do không đủ thời gian (mức ưu tiên 2)". Đầu file có thêm một dòng ghi lần cập nhật này.
+
+**Nhóm B, 34 test case:**
+
+| Trạng thái | Số TC | Test case |
+|---|---|---|
+| Pass (đề xuất) | 6 | TC-REG-30, 32, 49, 50, 56, 97 |
+| Blocked (đề xuất) | 9 | TC-REG-31, 33 đến 39, 45 (mật khẩu hợp lệ `Test1234!` bị từ chối trước) |
+| Blocked | 4 | TC-REG-59 đến 62 (D01) |
+| Not run | 15 | Các test case không chạy |
+
+Bạn review các dòng "(đề xuất)", rồi bỏ chữ đó ở những dòng đồng ý.
+
+Tôi đã lưu ghi nhớ: Khi bạn bảo điền một nhóm, các test case trong nhóm không có ảnh hay ghi chú là bạn không chạy, nên tôi ghi Not run luôn, không hỏi lại.
+
+Gợi ý cho nhóm C: Nên chạy **TC-REG-01** đầu tiên, đúng mật khẩu `Abcdef1!`, để biết lỗi "mật khẩu hợp lệ bị từ chối" có xảy ra với mật khẩu theo kế hoạch hay không. Kết quả này quyết định cách đọc toàn bộ nhóm C và D.
+````
+
+---
+
+### C168 | 22:41 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Bỏ các (đề xuất) đi, tôi đỡ phải xóa tay, khi tôi đọc review, tôi thấy ok thì để đó, sai thì tôi tự sửa luôn mà.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find all occurrences of "đề xuất" in 06_results.md
+- Bash: Remove "(đề xuất)" from status cells and adjust header note
+- Edit: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\s6-group-fill-convention.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi bỏ chữ "(đề xuất)" ở cột Trạng thái trên toàn file. Trước tiên tôi xem chữ này còn xuất hiện ở đâu.
+
+Tôi sửa luôn ghi nhớ đã lưu, để các lần điền sau không thêm chữ "(đề xuất)" nữa.
+
+Đã bỏ chữ "(đề xuất)" ở cả 15 dòng nhóm B trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md). Cột Trạng thái giờ chỉ còn Pass, Blocked hoặc Not run; định dạng file vẫn hợp lệ. Dòng nhật ký ở đầu file cũng sửa thành "trạng thái do AI đề xuất, sinh viên review và sửa nếu cần"; đây là chỗ duy nhất trong file còn chữ "đề xuất".
+
+Từ nhóm C trở đi, tôi ghi trạng thái thẳng, không thêm chữ đó. Ghi nhớ đã lưu ở lượt trước cũng được sửa theo.
+````
+
+---
+
+### C169 | 22:45 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Đang review nhóm B
+Phiên C: Tôi chưa chạy, tôi đang bảo viết khung file 06_results dựa trên tham khảo của pool A. Xuất log, kiểm tra và báo tôi. Sau khi commit sườn xong nếu không có gì sai, thì tôi mới bắt đầu cho AI fill bảng dựa trên những gì đã thể hiện ở trên những ảnh có sẵn.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C latest turn and git state
+- Bash: Diff template vs results and view checklist expectations
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_03_giao_dien_quan_ly_ma_giam_gia.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_07_nut_thao_tac_tao_ma.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S0_02_menu_admin.png
+- Bash: Check spec rules for currency, colors, seed coupons
+- Bash: Export prompt log and inspect S6 tracker row
+- Bash: Update tracker for C S6 template
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi xem trực tiếp các ảnh để đối chiếu những dòng phiên C điền sẵn.
+
+Ảnh khớp với các dòng điền sẵn. Giờ tôi xuất log và cập nhật tracker.
+
+Khung `06_results.md` của phiên C đúng, không có gì sai, bạn commit được. Lưu ý là phần điền từ ảnh có sẵn phiên C đã làm luôn rồi, nên sau commit không còn gì để AI điền tiếp cho đến khi bạn chạy test.
+
+## Kết quả soát phiên C (khung S6)
+
+| Mục kiểm | Kết quả |
+|---|---|
+| Thao tác bị cấm | Không có. Phiên C đọc `06_results.md` của FR-01 (bạn đã cho phép) và 2 ảnh S0 của chính FR-17 |
+| Số dòng | 115 dòng, khớp 115 test case. Thêm 45 dòng để ghi kết quả từng dòng của các test case API dạng bảng |
+| `ai_raw/S6_results_template.md` | Là khung trống. Phần điền sẵn chỉ có trong `06_results.md`, và đầu file có dòng ghi rõ AI điền gì, lúc nào |
+| Dấu "—" và "·" | Không có |
+
+## Phần AI điền sẵn từ ảnh: Tôi đã mở ảnh đối chiếu lại
+
+| Test case | AI đề xuất | Đối chiếu ảnh |
+|---|---|---|
+| TC-CPN-50: 4 mã mẫu | Pass | Đúng. 4 dòng khớp từng giá trị với bảng mã mẫu trong đặc tả FR-09; `EXPIRED` hiện "Hết hạn" màu đỏ |
+| TC-CPN-90: Dấu `*` | Fail | Đúng. Form chỉ có placeholder, không có nhãn, không có `*` |
+| TC-CPN-92: Màu nút | Fail | Đúng. Nút "Tạo mã" màu cam, đặc tả FR-21 yêu cầu xanh dương; nút "Xóa" màu đỏ |
+| TC-CPN-93: Định dạng tiền | Pass | Đúng. Hiện dạng `300,000 ₫`, giống cách đặc tả ghi |
+| TC-CPN-94: Highlight menu | Pass | Đúng. Ở trang Dashboard thì mục "Dashboard" xanh; ở trang Mã Giảm Giá thì mục "Mã Giảm Giá" xanh |
+| TC-CPN-91: Ngôn ngữ | Để trống trạng thái | Hợp lý. Bạn quyết "Dashboard" có tính là thuật ngữ kỹ thuật chuẩn không. Thông báo lỗi chỉ thấy được khi chạy nhóm C |
+
+Khi chạy, bạn chỉ cần mở trang hiện tại xác nhận lại, rồi bỏ chữ "(đề xuất)". Ảnh S0 chụp ngày 18/10 và mã nguồn EShop không đổi, nhưng TC-CPN-50 yêu cầu chạy ngay sau khi reset dữ liệu.
+
+## Nên commit kiểu nào
+
+Bạn định commit khung trống trước rồi mới cho AI điền. Nhưng `06_results.md` đã có phần điền sẵn, nên tôi đề nghị **commit luôn như hiện tại**, vì:
+
+- Khung trống vẫn được giữ trong `ai_raw/S6_results_template.md`. Ai muốn biết AI điền những gì thì so hai file là thấy.
+- Ảnh có sẵn chỉ có 8 tấm ảnh S0, và phiên C đã dùng hết. Muốn điền thêm thì phải có ảnh mới từ lúc bạn chạy test.
+
+```
+git add features/C_FR-17_QuanLyCoupon/ai_raw/S6_results_template.md features/C_FR-17_QuanLyCoupon/06_results.md prompt_log.md
+git commit -m "[C-FR17][S6] Add test results template with S0-based prefill"
+```
+
+Log đã xuất (169 lượt, đúng 3 phiên). Như lần trước, đừng dùng lệnh commit phiên C đưa, vì đường dẫn của nó bắt đầu bằng `Homeworks/HW02/`.
+
+## Tình trạng
+
+| Phiên | Đang ở đâu | Việc tiếp theo |
+|---|---|---|
+| A (FR-01) | S6: Đang review nhóm B | Xem lại ảnh `S0_TC-REG-33.png` (có lẽ phải là `S6_`). Chạy TC-REG-79 sau cùng rồi báo tôi để reset DB |
+| C (FR-17) | S6: Khung xong, chưa chạy | Khi bạn bắt đầu chạy, báo tôi bật trang admin (cổng 5174) và reset DB để TC-CPN-50 đúng điều kiện. Phiên C đề nghị viết script cho 30 test case API, giống FR-01; tôi thấy nên nhận |
+````
+
+---
+
+### C170 | 22:47 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Điền luôn ngày chạy, người chạy, hệ điều hành và phiên bản đi. Nó giống bên file kia. mà sao có thêm múi giờ của máy vậy, để test phần hết hạn voucher sao?
+Những chỗ nào nhìn thấy qua ảnh quan sát là có kết quả thì cứ điền đi, tôi sẽ đọc và review mà. Phần (đề xuất) cũng bỏ đi, sai thì tôi tự sửa luôn, đúng thì tôi giữ nguyên, đỡ phải xóa nhiều lần.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\1648c211-f587-4579-ac76-636b3e3e2598\scratchpad\update_s6.py
+- Bash: Apply S6 updates and verify results
+- Bash: Remove duplicated note in TC-CPN-91 row
+
+**Output AI (nguyên văn):**
+
+````text
+Về múi giờ: Đúng, nó dùng cho phần hạn dùng. Có hai lý do:
+- **Chữ "Hết hạn" trong bảng** (A18) được so với "hôm nay" của máy. Các test case hôm qua, hôm nay, ngày mai (TC-CPN-22, 127, 128) phụ thuộc vào ngày đó.
+- **Ngày lưu có thể lệch một ngày.** Nếu hệ thống đổi `12/31/2099` sang giờ UTC khi lưu, ở UTC+7 ngày đó có thể thành `2099-12-30`. Ở S1, anh/chị đã chốt (quyết định 6) ghi múi giờ làm điều kiện môi trường ở S6, chính là để đọc đúng các trường hợp này.
+
+FR-01 không có trường ngày nên không cần dòng này. Máy đang chạy ở UTC+07:00, nên tôi điền luôn.
+
+Tôi đã cập nhật xong [06_results.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md). Script kiểm định dạng báo 0 lỗi.
+
+**Mục 1, Môi trường:**
+- Ngày chạy, người chạy, hệ điều hành, trình duyệt điền giống `A_FR-01_DangKy/06_results.md`: 20/10/2026, Nguyễn Thị Ánh Ngọc, Windows 11 Home Single Language 10.0.26200, Chrome 155.0.8059.85.
+- Múi giờ: UTC+07:00, kèm ghi chú các test case cần dùng thông tin này.
+
+**Trạng thái:**
+- Đã bỏ chữ "(đề xuất)" ở cả 5 dòng: TC-CPN-50, 93, 94 là Pass; TC-CPN-90, 92 là Fail.
+- TC-CPN-91 điền **Fail**, vì mục menu "Dashboard" không phải tiếng Việt. Nếu anh/chị coi "Dashboard" là thuật ngữ kỹ thuật chuẩn thì đổi thành Pass. Ghi chú vẫn giữ hai lưu ý:
+  - Lịch chọn ngày là của trình duyệt, nên theo ngôn ngữ trình duyệt.
+  - Tiêu đề tab chưa xét được, vì ảnh S0 không thấy thanh tab.
+
+**Không điền thêm được gì khác từ ảnh.** Các ảnh S0 chỉ cho thấy giao diện trước khi nhập. Không ảnh nào cho thấy placeholder khi chọn "Số tiền cố định (₫)", hộp thoại khi xóa, hay thẻ `<h1>`.
+
+Đầu file có thêm một dòng lịch sử ghi lần cập nhật này. Nếu anh/chị đã commit bản khung, commit tiếp như sau:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/06_results.md
+git commit -m "[C-FR17][S6] Fill environment and S0-based results"
+```
+````
+
+---
+
+### C171 | 22:49 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đã sửa ảnh đó rồi.
+Phiên C: Xuất lại log đi, nãy tôi đọc ẩu nên tưởng chưa điền, nếu đã điền rồi thì tôi cũng bảo AI sửa đổi vài ý theo mong muốn của toi. Kiểm tra xem có lỗi gì không, báo tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C latest turns and git state
+- Bash: Inspect header, environment, prefilled rows, summary
+- Bash: Export prompt log and record notes
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
