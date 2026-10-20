@@ -5413,11 +5413,213 @@ Tôi đã review xong bản 02_ec. Bạn xuất log, kiểm tra lại lần 
 - Bash: Audit design session and check ai_raw integrity
 - Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\02_ec.md
 - Bash: Check formatting, class numbering, export log
+- Bash: Confirm no class row still has type GĐ
+- Bash: Tick FR-01 S2 and record audit evidence in notes
 
 **Output AI (nguyên văn):**
 
 ````text
 Nội dung `02_ec.md` đầy đủ và nhất quán. Mình kiểm tra thêm phần hình thức rồi xuất log:
+
+`02_ec.md` **đạt**, không có gì chặn commit:
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác của phiên thiết kế | ✅ Chỉ ghi và sửa `02_ec.md`; `ai_raw/` nguyên vẹn, không tạo `_v2` thừa |
+| Các câu hỏi của bạn | ✅ Đủ 9 câu ban đầu và 3 câu bổ sung, mỗi câu có trả lời và ghi rõ đã thay đổi gì |
+| Giả định | ✅ Đủ 14 giả định (A01 đến A15, không có A12), mỗi giả định có lý do. **Không còn lớp nào phụ thuộc giả định** |
+| Số lớp | ✅ 70 lớp, đánh số liên tục từ EC01 đến EC70, khớp với con số ở mục 9 (30 hợp lệ, 32 không hợp lệ, 8 Output) |
+| Bảng thay đổi | ✅ Có cột Loại; ghi đúng 1 chỗ **"Sai"** (lập luận về email ở mục 8); cột Lý do ghi rõ ai phát hiện |
+| Hình thức | ✅ Đạt |
+
+Bảng thay đổi lần này là **dữ liệu rất tốt cho S8**. Có 3 nhóm rõ ràng: AI sai và bạn phát hiện, AI thiếu và bạn hỏi ra, AI tự bổ sung khi review. Mình đã tóm tắt cả 3 nhóm vào `_NOTES.md`, kèm ghi chú khai báo rằng một số giả định bạn chốt theo gợi ý của phiên này.
+
+Log đã xuất, tracker đã đánh dấu S2 của FR-01 là xong. Commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/02_ec.md prompt_log.md
+git commit -m "[A-FR01][S2] Review equivalence classes"
+git push
+```
+
+## ⚠️ Cảnh báo về thời gian
+
+Hôm nay là 20/10, hạn nộp là **12:00 ngày 21/10**. Có 2 điều cần tính trước:
+
+1. **FR-01 có 70 lớp.** Theo quy tắc của slide, mỗi lớp không hợp lệ cần một test case riêng. Vì vậy S3 sẽ ra khoảng **35 đến 40 test case**, S4 thêm nhiều giá trị biên, và S6 phải chạy tay toàn bộ.
+2. **Còn lại:** FR-01 từ S3 đến S8; 3 feature khác (FR-17, FR-07, FR-04 Mobile); skill; video; report; các form; nén zip.
+
+Với tốc độ hiện tại, làm hết như FR-01 là **không kịp**. Mình đề xuất:
+- Làm nhanh S3 và S4 của FR-01, rồi **đúc kết thành skill ngay**. Khi đó skill đã có đủ quy trình từ S0 đến S4.
+- 3 feature còn lại chạy bằng skill, **giữ phạm vi gọn hơn**. Ví dụ, chỉ đặt câu hỏi review ở những chỗ quan trọng, và chấp nhận phần lớn giả định mà AI đề xuất (miễn là bạn đọc và ghi lý do).
+- Ở S6, ưu tiên chạy các test case có khả năng phát hiện lỗi cao nhất. Test case nào chưa chạy thì ghi "Not run", vì đề cho phép báo cáo số test case chưa thực thi.
+
+Bạn có muốn mình lập một kế hoạch theo giờ cho đến 12:00 ngày 21/10 không?
+````
+
+---
+
+### C99 | 10:36 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi tính FR-01 là làm theo từng bước, sau đó 3 feature còn lại là chạy skill. Tôi chỉ review, bổ sung những sai sót thôi. Như vậy có được không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Được, và đó cũng là cách hợp lý nhất. Nó khớp với đề:
+- **FR-01** cho thấy bạn dẫn AI qua từng bước của kỹ thuật (yêu cầu "AI-First" ở mục 2 của đề).
+- **Skill** đúc kết từ FR-01 chính là phần Agent Skill (mục 7 của đề, 10 điểm), và dùng skill cho 3 feature còn lại cũng là cách đề khuyến khích.
+
+Có vài điều cần giữ để cách này không bị mất điểm:
+
+1. **Skill phải chạy từng bước, không chạy một lèo.** Skill làm S0, dừng để bạn review, rồi mới sang S1, cứ thế đến S4. Nếu skill gom cả 4 bước vào một prompt thì vi phạm đúng điều đề cấm ("không phải một prompt chung chung"). Vì vậy skill chính là các prompt từng bước của FR-01, được viết lại thành dạng dùng lại được.
+2. **Review của bạn vẫn phải để lại dấu vết.** Mỗi bước vẫn có bản nháp AI trong `ai_raw/`, bản review, và bảng "Thay đổi so với bản AI". Bảng có thể ngắn, nhưng **không được bỏ**, vì phần gap analysis (S8) của từng feature cần nó. Nếu bạn duyệt mà không sửa gì thì ghi "Không có thay đổi" cũng là dữ liệu.
+3. **Commit vẫn theo từng bước**, mỗi bước 2 commit (bản nháp và bản review), kể cả khi chạy bằng skill.
+4. **Skill chỉ thay cho S0 đến S4.** Với mỗi feature, bạn vẫn phải tự làm S5 (bổ sung test case), S6 (chạy test thật), S7 (bug, issue) và S8 (gap analysis). Đây mới là phần tốn thời gian nhất.
+5. **Video demo skill:** Quay luôn lúc chạy skill cho một trong 3 feature, ví dụ FR-07. Như vậy vừa có video nộp, vừa không mất thêm thời gian.
+6. **Hai trường hợp đặc biệt:**
+   - **FR-17:** S0 đã xong từ trước, nên skill bắt đầu từ S1. File `00_exploratory.md` phải nằm ngoài thư mục làm bài, và mình sẽ kiểm tra phiên chạy skill không đọc nó.
+   - **FR-04 (Mobile):** Ảnh S0 và việc chạy test S6 đều làm trên điện thoại, cần `adb reverse` như lần trước.
+
+Thứ tự đề xuất:
+1. FR-01: Làm S3 và S4.
+2. **Viết skill** ngay sau S4, khi đã có đủ các prompt từ S0 đến S4.
+3. Chạy skill cho FR-17, FR-07 và FR-04. Trong lúc đó, xen kẽ S6 của FR-01 vì cần chạy server.
+4. S5 đến S8 cho cả 4 feature.
+5. Phần chung: Critique, Audit, các form, README, PDF, zip.
+
+Bạn cứ làm S3 của FR-01. Khi bản nháp xong, bạn báo mình như các lần trước.
+````
+
+---
+
+### C100 | 10:37 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã commit xong. Bây giờ chúng ta sẽ qua S3.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- AskUserQuestion
+- Bash: Get current local time
+- Write: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S3_test_cases.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\ai_raw\S3_test_cases.md
+- Bash: Verify coverage table, TC count, and valid class coverage
+
+**Output AI (nguyên văn):**
+
+````text
+S3 đã xong, tôi dừng ở đây để bạn review. File output là [ai_raw/S3_test_cases.md](Homeworks/HW02/features/A_FR-01_DangKy/ai_raw/S3_test_cases.md). Script xác nhận cả 62 lớp Input đều có test case phủ, có 58 test case và không trùng mã.
+
+**Số test case theo nhóm:**
+
+| Nhóm | Mã | Số TC | Ghi chú |
+|---|---|---|---|
+| Hợp lệ, qua giao diện | TC-REG-01 đến 09 | 9 | Phủ 29 lớp hợp lệ. Mỗi test case ghép một lớp đặc biệt của Họ Tên, Email và Mật khẩu. Ký tự đặc biệt của mật khẩu xoay vòng để đủ 7 ký tự `@ $ ! % * ? &` (quyết định 1 ở S2). Hai lớp rủi ro SQL, HTML (EC07, EC66) tách riêng, ghép với giá trị cơ sở |
+| Không hợp lệ, qua giao diện | TC-REG-10 đến 42 | 33 | Mỗi test case phủ đúng 1 lớp không hợp lệ |
+| Qua API | TC-REG-50 đến 57 | 8 | Bắt buộc cung cấp, định dạng email, độ mạnh mật khẩu |
+| Checklist giao diện | TC-REG-60 đến 67 | 8 | FR01-R11, R14 đến R21 |
+
+**Các điểm đặc biệt trong nhóm không hợp lệ:**
+- TC-REG-38 (EC69) là ngoại lệ đã ghi ở S2.
+- TC-REG-26 (EC22) tự đăng ký 2 lần, nên không phụ thuộc test case khác.
+- TC-REG-39 đến 42 (Xác nhận mật khẩu) ghi chú dự kiến Blocked do giao diện không có trường này (D01).
+
+**Nhóm API:** Kết quả mong đợi khi bị từ chối chỉ ghi "không trả về phản hồi thành công", vì đặc tả không nêu mã lỗi (Q21). Mỗi lần bị từ chối có bước gửi lại cùng email để kiểm chứng tài khoản chưa được tạo.
+
+**Ký hiệu `␣`:** Tôi dùng `␣` cho dấu cách ở đầu, ở cuối và các dấu cách liền nhau. Lý do: Markdown tự xóa một dấu cách ở mỗi đầu đoạn code khi cả hai đầu đều có dấu cách, nên `` ` Nguyen Van A ` `` sẽ hiển thị thành `Nguyen Van A`.
+
+**Lỗi hiển thị này đang có trong `02_ec.md`:** Các đại diện của EC54, EC19 và EC67 bị mất dấu cách khi xem bằng chế độ hiển thị Markdown. Nội dung file vẫn đúng, chỉ sai khi hiển thị. Nếu bạn muốn sửa thì có thể làm cùng lúc với bản review S3.
+
+**Một lưu ý quan trọng (mục 7 của file):** Mọi test case hợp lệ đều ghi Xác nhận mật khẩu giống Mật khẩu, nhưng khi chạy thật thì bước này bị bỏ qua vì giao diện không có trường đó. Vì vậy các test case hợp lệ có thể Pass mà FR01-R11 và R12 vẫn chưa được kiểm chứng. Kết luận về hai yêu cầu này dựa vào TC-REG-39 đến 42 và TC-REG-60.
+
+**Bạn cần quyết định 5 điểm ở mục 8 của file:**
+1. Có giữ cách ghép lớp trong các test case hợp lệ không.
+2. Mỗi lớp chỉ chọn 1 giá trị đại diện, hay thêm test case cho các đại diện còn lại ở S5.
+3. Bước "đăng ký lại cùng email để kiểm chứng" chỉ áp cho nhóm API, hay áp cả cho test case qua giao diện.
+4. Nhóm API 8 test case đã đủ chưa.
+5. Để checklist giao diện ở S3 hay chuyển sang S5.
+
+**Commit 1 của S3:**
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add features/A_FR-01_DangKy/ai_raw/S3_test_cases.md
+git commit -m "[A-FR01][S3] Select test cases for partitions (AI draft)"
+```
+````
+
+---
+
+### C101 | 10:41 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Trước khi viết file ai_raw/S3_test_cases.md (vốn không được sửa sau khi tạo)
+-> Tôi muốn hỏi bạn, tức là S3 này của AI sẽ không cần tôi review sửa à?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read the design session's latest exchange
+- Bash: Show the question the design session asked
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đọc tin nhắn mới nhất của phiên thiết kế để xem câu đó nằm trong ngữ cảnh nào:
+
+Không phải vậy. **S3 vẫn được review như S1 và S2.** Câu "vốn không được sửa sau khi tạo" chỉ nói về **file nháp trong `ai_raw/`**:
+
+| File | Có bị sửa không |
+|---|---|
+| `ai_raw/S3_test_cases.md` (bản nháp AI) | Không bao giờ sửa, giữ nguyên làm bằng chứng |
+| `03_tc.md` (bản review) | Bạn review, hỏi, quyết định; AI viết lại theo quyết định của bạn, kèm bảng thay đổi |
+
+Phiên thiết kế hỏi trước khi viết vì 3 câu hỏi của nó quyết định **cấu trúc của cả bản nháp**. Nếu viết xong rồi bạn mới chọn khác thì bản nháp trong `ai_raw/` sẽ lệch hẳn với bản review. Hỏi trước là cách làm hợp lý.
+
+Góp ý nhanh cho 3 câu, có tính tới thời gian còn lại:
+
+| Câu | Phương án nó đề xuất | Nhận xét |
+|---|---|---|
+| Có test qua API không | Giao diện, cộng thêm một nhóm API nhỏ | **Hợp lý.** Chỉ vài test case, nhưng trả lời được câu Q22 (hệ thống có tự kiểm tra lại không, hay chỉ trình duyệt chặn). Đây là chỗ hay tìm ra bug. Lưu ý: Ở S6, **bạn** là người gọi API (bằng Postman hoặc curl), không phải AI |
+| Xác nhận mật khẩu (EC41 đến EC45) | Viết đủ test case, ghi là dự kiến Blocked | **Đúng** với quyết định Q26 bạn đã chốt ở S0 |
+| Khi nào dùng skill `test-case-writing` | Viết Markdown ở S3 và S4, dùng skill ở S5 | **Hợp lý.** Bộ test case chỉ cố định sau S5. Dùng skill sớm thì phải sửa file JSON nhiều lần |
+
+Cả 3 phương án nó đề xuất đều ổn, bạn có thể chọn theo. Nếu muốn tiết kiệm thời gian thì câu 1 có thể chọn "Chỉ giao diện". Đổi lại, bạn sẽ không biết được hệ thống có tự kiểm tra hay không khi trình duyệt đã chặn trước.
+````
+
+---
+
+### C102 | 10:51 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+S3 đã viết xong, xuất log và đưa commit message cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit S3 draft creation, check files, export log
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
