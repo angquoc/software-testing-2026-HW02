@@ -1,10 +1,11 @@
 # S6: Kết quả chạy test (FR-17 Quản lý mã giảm giá)
 
-- Bước: S6 (Chạy test thật, ghi kết quả thực tế và trạng thái, chụp ảnh). Sinh viên chạy test và điền file này; AI chỉ chuẩn bị khung
-- Bản này: Sinh viên điền. Bản gốc của AI: `ai_raw/S6_results_template.md`
+- Bước: S6 (Chạy test thật, ghi kết quả thực tế và trạng thái, chụp ảnh). Sinh viên chạy test, chụp ảnh và chạy script; AI chuẩn bị khung và điền kết quả theo ảnh, log và ghi chú của sinh viên; sinh viên review và sửa
+- Bản này: AI điền theo ảnh, log của sinh viên, sinh viên review. Bản gốc của AI: `ai_raw/S6_results_template.md`
 - Thời gian tạo khung: 2026-10-20 22:35 (UTC+07:00)
 - 2026-10-20 22:35 (UTC+07:00): AI điền sẵn TC-CPN-50, TC-CPN-90, TC-CPN-92, TC-CPN-93, TC-CPN-94 và phần quan sát của TC-CPN-91 bằng cách đối chiếu ảnh S0 (chụp 18/10/2026); trạng thái ghi "(đề xuất)", sinh viên xác nhận trên trang hiện tại. Điền dòng "Ô Mã coupon có tự chuyển chữ hoa" ở mục 1 theo thông tin sinh viên cung cấp ở S5; thêm một quan sát ngoài phạm vi ở mục 6. Mọi test case cần nhập dữ liệu hay gọi API do sinh viên chạy và điền
 - 2026-10-20 22:50 (UTC+07:00): Theo yêu cầu của sinh viên, AI điền ngày chạy, người chạy, hệ điều hành, trình duyệt (giống `A_FR-01_DangKy/06_results.md`) và múi giờ ở mục 1; bỏ chữ "(đề xuất)" ở các trạng thái; điền trạng thái TC-CPN-91. Sinh viên review và tự sửa nếu sai
+- 2026-10-21 00:01 (UTC+07:00): AI viết script `scripts/run_api_tests.py` cho nhóm F (và TC-CPN-61, 82, 130, 144 chạy bằng `--only`); sửa dòng "Bước", "Bản này" cho đúng cách làm thực tế; điền ngày chạy 21/10/2026, thời điểm reset 23:41 20/10/2026, đường dẫn log ở mục 1; ghi lệnh chạy ở nhóm A, F, G
 - Căn cứ: `05_final_tc.md` (115 test case, thứ tự chạy ở mục 10, giới hạn quan sát ở mục 11); cấu trúc theo `A_FR-01_DangKy/06_results.md` (sinh viên cho phép tham khảo)
 
 ---
@@ -13,7 +14,7 @@
 
 | Mục | Giá trị |
 |---|---|
-| Ngày chạy | 20/10/2026 |
+| Ngày chạy | 21/10/2026 |
 | Người chạy | Nguyễn Thị Ánh Ngọc |
 | Hệ điều hành | Windows 11 (Windows 11 Home Single Language, bản 10.0.26200) |
 | Trình duyệt và phiên bản | Google Chrome, phiên bản: 155.0.8059.85 |
@@ -21,13 +22,13 @@
 | SUT | EShop, commit `85af3ba` (theo `00_spec.md`; sinh viên xác nhận commit lúc chạy) |
 | Backend | `http://localhost:3000` |
 | Web Admin | `http://localhost:5174` |
-| Reset dữ liệu mẫu trước đợt test (thời điểm) | |
+| Reset dữ liệu mẫu trước đợt test (thời điểm) | 23:41 20/10/2026 |
 | Ô Mã coupon có tự chuyển chữ hoa khi gõ không (GH9) | Có, theo quan sát của sinh viên khi nhập thử ở S0 (cung cấp ở S5); xác nhận lại khi chạy TC-CPN-06 |
 | Ô số có chặn hoặc sửa số thập phân, số âm không (điền sau TC-CPN-15, TC-CPN-41; quyết định chạy dòng dự phòng của TC-CPN-82, TC-CPN-130) | |
 | Ô `code` nhận tối đa bao nhiêu ký tự (điền sau TC-CPN-12, TC-CPN-125; GH10) | |
 | Có hộp thoại xác nhận khi bấm "Xóa" không (điền sau TC-CPN-51; quyết định TC-CPN-52) | |
 | `GET /api/coupons` có trả `id` và đủ 6 trường không (điền sau TC-CPN-61; quyết định Blocked cho TC-CPN-62, 71, 78, 79, 81 và cách kiểm GH11) | |
-| File log API | |
+| File log API | `logs/S6_api_<thời gian>.log` (mỗi lần chạy script một file) |
 | Reset dữ liệu trước TC-CPN-56 (thời điểm) | |
 | Reset dữ liệu sau TC-CPN-56 (thời điểm) | |
 
@@ -73,7 +74,7 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; nhóm A (c�
 | # | Mã | Tiêu đề ngắn | Giá trị nhập chính | Kết quả mong đợi | Kết quả thực tế | Trạng thái | Ảnh | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
 | 1 | TC-CPN-50 | Danh sách hiển thị đúng 4 mã mẫu | Không nhập (ngay sau reset) | OUT5: 4 dòng `SAVE10`, `BIGBUY`, `VIP100`, `EXPIRED`, đủ 7 cột, khớp bảng mã mẫu FR-09; `SAVE10` hiện `2099-12-31`; `EXPIRED` hiện chữ "Hết hạn" | 4 dòng, đủ 7 cột "Mã", "Loại", "Giá trị", "Đơn tối thiểu", "Hết hạn", "Giới hạn/người", "Hành động": `SAVE10` (Phần trăm, `10%`, `300,000 ₫`, `2099-12-31`, `1 lần`); `BIGBUY` (Cố định, `50,000 ₫`, `500,000 ₫`, `2099-12-31`, `1 lần`); `VIP100` (Cố định, `100,000 ₫`, `300,000 ₫`, `2099-12-31`, `2 lần`); `EXPIRED` (Phần trăm, `20%`, `100,000 ₫`, chữ "Hết hạn" màu đỏ, `1 lần`); mỗi dòng có nút "Xóa" | Pass | `S0_03_giao_dien_quan_ly_ma_giam_gia.png` (chụp 18/10/2026) | Khớp bảng mã mẫu của FR-09; `EXPIRED` hiện "Hết hạn" đúng A18. Ảnh S0 không chắc chụp ngay sau reset, sinh viên xác nhận sau khi reset ngày chạy. AI đối chiếu ảnh S0 (SUT commit `85af3ba` theo `00_spec.md`); sinh viên xác nhận trên trang hiện tại |
-| 2 | TC-CPN-61 | API trả danh sách mã đủ trường | `GET /api/coupons`, token admin | OUT7 | | | | Điền dòng "`GET` có trả `id`..." ở mục 1 |
+| 2 | TC-CPN-61 | API trả danh sách mã đủ trường | `GET /api/coupons`, token admin | OUT7 | | | | Chạy bằng `python scripts/run_api_tests.py --only 61`, trước nhóm B. Điền dòng "`GET` có trả `id`..." ở mục 1 |
 | 3 | TC-CPN-90 | Dấu `*` cạnh trường bắt buộc | Không nhập | 6 ô có `*` cạnh nhãn | Không ô nào có dấu `*`; form không có nhãn, chỉ có placeholder | Fail | `S0_03_giao_dien_quan_ly_ma_giam_gia.png`, `S0_04_form_them_coupon_khong_noi_dung.png` (chụp 18/10/2026) | Ứng với điểm đối chiếu ở `00_spec.md` mục 4.4 (FR-22). AI đối chiếu ảnh S0 (SUT commit `85af3ba` theo `00_spec.md`); sinh viên xác nhận trên trang hiện tại |
 | 4 | TC-CPN-91 | Ngôn ngữ của trang | Không nhập | Tiếng Việt, trừ thuật ngữ kỹ thuật chuẩn | Chữ không phải tiếng Việt nhìn thấy trên trang: Mục menu "Dashboard"; lịch chọn ngày ("October 2026", "Su" đến "Sa", "Clear", "Today") và chữ gợi ý `mm/dd/yyyy` trong ô ngày. Các tiêu đề, cột, nút, placeholder còn lại bằng tiếng Việt | Fail | `S0_03_giao_dien_quan_ly_ma_giam_gia.png`, `S0_06_chon_ngay_expired.png` (chụp 18/10/2026) | Bổ sung ngôn ngữ thông báo lỗi khi chạy nhóm C. Fail vì mục menu "Dashboard" không phải tiếng Việt (FR-21); nếu sinh viên coi "Dashboard" là thuật ngữ kỹ thuật chuẩn thì đổi thành Pass. Lưu ý thêm: (1) lịch và `mm/dd/yyyy` là thành phần của trình duyệt, theo ngôn ngữ trình duyệt; (2) ảnh S0 không thấy thanh tab nên chưa xét tiêu đề tab. AI đối chiếu ảnh S0 (SUT commit `85af3ba` theo `00_spec.md`); sinh viên xác nhận trên trang hiện tại |
 | 5 | TC-CPN-92 | Màu nút "Tạo mã" và "Xóa" | Không nhập | "Tạo mã" xanh dương; "Xóa" đỏ | Nút "Tạo mã" nền cam, chữ trắng; nút "Xóa" nền đỏ, chữ trắng | Fail | `S0_07_nut_thao_tac_tao_ma.png`, `S0_07_nut_thao_tac_xoa.png` (chụp 18/10/2026) | Fail vì nút "Tạo mã" (hành động tích cực) không phải màu xanh dương (FR-21); nút "Xóa" đạt. Ứng với điểm đối chiếu ở `00_spec.md` mục 4.4. AI đối chiếu ảnh S0 (SUT commit `85af3ba` theo `00_spec.md`); sinh viên xác nhận trên trang hiện tại |
@@ -175,7 +176,9 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; nhóm A (c�
 | 81 | TC-CPN-52 | Hủy ở hộp thoại xác nhận xóa | Tạo `FR17TC52`, bấm "Xóa", chọn hủy | OUT10. Không có hộp thoại: Không áp dụng | | | | |
 | 82 | TC-CPN-53 | Xóa mã đã bị xóa ở tab khác | `FR17TC53`, 2 tab | Báo lỗi hoặc tự cập nhật; mã khác không đổi | | | | 4 bước |
 
-### F. API
+### F. API (script `scripts/run_api_tests.py`)
+
+Chạy nhóm F: `python scripts/run_api_tests.py` (từ thư mục feature). Dòng dự phòng: `python scripts/run_api_tests.py --only 82 --rows A,C` (thay số và dòng theo test case giao diện bị chặn); tương tự với `--only 130`. Bằng chứng là file log trong `logs/`; ảnh chỉ cần cho bước làm tay.
 
 | # | Mã | Tiêu đề ngắn | Giá trị nhập chính | Kết quả mong đợi | Kết quả thực tế | Trạng thái | Ảnh | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
@@ -210,6 +213,8 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; nhóm A (c�
 | 111 | TC-CPN-143 | API cắt dấu cách đầu cuối của Mã | 4 dòng | Theo dòng (mục 5) | | | | Dạng bảng |
 
 ### G. Danh sách rất dài (sau nhóm API)
+
+Tạo 100 mã: `python scripts/run_api_tests.py --only 144`, rồi kiểm trên giao diện và chụp ảnh.
 
 | # | Mã | Tiêu đề ngắn | Giá trị nhập chính | Kết quả mong đợi | Kết quả thực tế | Trạng thái | Ảnh | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
