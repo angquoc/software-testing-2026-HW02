@@ -1,0 +1,139 @@
+# S2: Chia lớp tương đương (FR-07 Giỏ hàng, Web)
+
+- Bước: S2 (Chia lớp tương đương, theo Step 2 của slide S04)
+- Thời gian tạo: 2026-10-21 06:27 (UTC+07:00)
+- Căn cứ: `00_spec.md` (review S0), `01_io.md` (review S1, cập nhật lần 1)
+
+---
+
+## 1. Cách làm
+
+- Theo guideline của slide: Khoảng giá trị (IN2), tập giá trị (IN3, IN5, IN8, IN10, IN16), điều kiện "must be" (IN1 tồn tại). Chỉ tách lớp khi có lý do tin kết quả khác nhau (cột cuối).
+- Theo yêu cầu của sinh viên (thời gian gấp, mục tiêu cả bộ 35 đến 45 test case): Chia ở mức đủ cho kết quả khác nhau. Giả định không làm đổi cấu trúc thì **áp luôn phương án AI đề xuất**, ghi ở mục 2 để sinh viên xem lại một lượt khi review. Vì vậy bảng lớp không còn lớp GĐ; lớp phụ thuộc giả định ghi mã `Ann` ở cột ghi chú.
+- Loại: H (hợp lệ), KH (không hợp lệ). Kết quả mong đợi dùng mã Output của `01_io.md`.
+- Tiền điều kiện chung theo `01_io.md` mục 2. Nhóm checklist (`01_io.md` mục 6) không chia lớp.
+
+## 2. Giả định (đã áp phương án đề xuất, chờ sinh viên xem lại)
+
+| Mã | Câu hỏi gốc | Phương án | Đã áp | Lớp bị ảnh hưởng | Chữ đặc tả |
+|---|---|---|---|---|---|
+| A01 | Thành tiền tính thế nào | (a) Đơn giá × Số lượng; (b) Chỉ kiểm có hiển thị | (a) | EC25, EC26, EC29 | Không có |
+| A02 | Tổng cộng tính thế nào | (a) Tổng Thành tiền mọi dòng, không cộng phí, không trừ giảm giá; (b) Chỉ kiểm có hiển thị | (a) | EC25, EC26, EC29 | Không có |
+| A04 | Bấm giảm khi số lượng là 1 | (a) Đạt nếu số lượng không xuống dưới 1, hoặc dòng bị xóa nhưng có dialog xác nhận; không đạt nếu số lượng thành 0 hoặc dòng bị xóa không qua dialog; (b) Chỉ chấp nhận số lượng giữ 1 | (a) | EC13 | FR-06: Tối thiểu là 1; FR-07: Xóa phải có dialog |
+| A05 | Giới hạn trên của số lượng | (a) Không có cận trên, không lập lớp trên; (b) Có cận trên chưa biết, thăm dò ở S6 | (a) | EC03 | Không có |
+| A06 | Số lượng trong giỏ gõ trực tiếp được không | (a) Không; chỉ chỉnh bằng nút (O18); (b) Có, lập thêm lớp gõ | (a) | Không lập lớp gõ | Chỉ nêu nút +/- |
+| A07 | Bước của nút +/- | (a) 1 đơn vị; (b) Không giả định | (a) | EC11, EC12 | Không có |
+| A08 | Thêm trùng tăng bao nhiêu | (a) Tăng đúng số lượng thêm (trang chi tiết: Giá trị ô "Số lượng:"; trang chủ: 1; API: `quantity`); (b) Luôn tăng 1 | (a) | EC28 | "Tăng số lượng" |
+| A09 | "Cùng sản phẩm" xác định theo gì | (a) Theo mã sản phẩm (`id`); (b) Theo tên | (a) | EC27, EC28 | Không có |
+| A10 | Hủy hoặc đóng dialog xóa | (a) Dòng và Số lượng giữ nguyên; (b) Không giả định | (a) | EC15 | "Xác nhận trước khi thực hiện" |
+| A11 | Xóa dòng cuối cùng | (a) Hiện trạng thái giỏ trống ngay; (b) Phải tải lại mới hiện | (a) | EC25 (khi xóa) | Không có |
+| A16 | Giỏ tách theo người dùng | (a) Token người khác không thấy dòng của `test@eshop.com`; (b) Không xét | (a) | EC32 | SEC-02 chỉ nói token hợp lệ |
+| A17 | Badge đếm gì | (a) Tổng số lượng; (b) Số dòng | (a) | EC26, EC28 | "Badge số lượng sản phẩm trong giỏ" |
+| A18 | Badge khi giỏ trống | (a) Ẩn hoặc hiện 0 đều đạt; (b) Phải hiện 0 | (a) | EC24 | Không có |
+| A20 | Tiêu chí giỏ trống | (a) Hình minh họa: Có ảnh hoặc biểu tượng, không chỉ có chữ; thông báo: Nói rõ giỏ đang trống; (b) Tiêu chí khác | (a) | EC24 | "Rõ ràng", "thân thiện" |
+| A22 | Nút nào tích cực, nút nào nguy hiểm | (a) "Tiến hành thanh toán" là tích cực (tương đương "Mua hàng"); "Xóa" và nút xác nhận xóa là nguy hiểm; nút hủy trong dialog và "Tiếp tục mua sắm" không xét màu; (b) Thêm nút hủy trong dialog vào nhóm màu đỏ theo chữ "hủy bỏ" | (a) | Checklist | "Submit, Mua hàng" xanh dương; "nguy hiểm/hủy bỏ" đỏ |
+| A24 | API dùng `price`, `name` client gửi hay CSDL; `id` không tồn tại | (a) Đơn giá trong giỏ là giá trong CSDL theo `id`, không theo `price` gửi lên; tên hiển thị không render HTML dù lấy từ đâu; `id` không tồn tại bị từ chối (ERR3); (b) Chấp nhận giá client gửi | (a) | EC02, EC17, EC18, EC20 | FR-08: Backend không chấp nhận tổng tiền do client gửi |
+| A25 | API khi dữ liệu không hợp lệ | (a) Bị từ chối, giỏ không đổi (kiểm bằng `GET /api/cart`); không xét mã lỗi, câu chữ; `quantity` theo ràng buộc của FR-06 (số nguyên, tối thiểu 1); (b) Không giả định | (a) | EC04 đến EC07, EC22, EC23 | FR-06: Số nguyên dương, tối thiểu 1 |
+| A30 | Liên kết có tính là nút | (a) Có; (b) Không | (a) | Checklist | "Có nút Tiếp tục mua sắm" |
+| A31 | Thêm bị từ chối có được hiện phản hồi thành công không (mới, từ `01_io.md` mục 11) | (a) Không được hiện toast thành công, badge không đổi; (b) Không xét | (a) | EC04 (qua giao diện) | FR-24: Phản hồi "sau khi bấm Thêm vào giỏ" |
+
+Không đặt giả định: Q14, Q15 (đã loại ở S1); Q26, Q27 (cách thực thi: Không có API đổi số lượng và xóa, nên IN4, IN5 chỉ qua giao diện); Q29 (kiểm ở S6).
+
+## 3. Lớp tương đương của Input
+
+| Mã | Điều kiện | Lớp | Loại | Đại diện | Kết quả mong đợi | Yêu cầu | Lý do tách hoặc ghi chú |
+|---|---|---|---|---|---|---|---|
+| EC01 | IN1 sản phẩm tồn tại | Sản phẩm có trong dữ liệu mẫu | H | iPhone 15 Pro Max | OUT2 hoặc OUT3 | FR07-R08, FR07-R29 | |
+| EC02 | IN1 sản phẩm tồn tại | `id` không tồn tại (chỉ qua API) | KH | `id` = 9999 | ERR3 | FR07-R29 | A24 |
+| EC03 | IN2 số lượng thêm | Số nguyên từ 1 | H | 1; 3 | OUT2 hoặc OUT3 | FR07-R27, FR07-R29 | A05: Không có cận trên |
+| EC04 | IN2 số lượng thêm | Số nguyên nhỏ hơn 1 | KH | 0 | ERR2 | FR07-R27, FR07-R29 | Dưới khoảng. A25, A31 |
+| EC05 | IN2 số lượng thêm | Số thập phân | KH | 1.5 | ERR2 | FR07-R27, FR07-R29 | Kiểm "số nguyên" là luật riêng với kiểm khoảng. A25 |
+| EC06 | IN2 số lượng thêm | Không phải số (chỉ qua API) | KH | `"abc"` | ERR2 | FR07-R29 | Kiểm kiểu là luật riêng. Trên giao diện ô có thể chặn ký tự (`platforms.md`). A25 |
+| EC07 | Body `POST /api/cart` | Thiếu trường `quantity` | KH | Body chỉ có `id`, `name`, `price` | ERR3 | FR07-R29 | Thiếu trường khác nhánh với giá trị sai. A25 |
+| EC08 | IN3 đường thêm | Trang chủ, nút "Thêm vào giỏ" | H | Samsung Galaxy S24 Ultra | OUT2 hoặc OUT3, OUT15 | FR07-R08, FR07-R33 | Không có ô số lượng, số thêm là 1 (A08) |
+| EC09 | IN3 đường thêm | Trang chi tiết, nút "Thêm vào giỏ hàng" | H | iPhone 15 Pro Max, số lượng 1 | OUT2 hoặc OUT3, OUT15 | FR07-R08, FR07-R27, FR07-R33 | Có ô số lượng |
+| EC10 | IN3 đường thêm | API `POST /api/cart` | H | Body hợp lệ | OUT14 | FR07-R29 | Không có OUT15 |
+| EC11 | IN4 chỉnh số lượng | Bấm tăng | H | Số lượng 1 thành 2 | OUT4, OUT5, OUT6 | FR07-R04 | A07. Dự kiến không thực hiện được (D02) |
+| EC12 | IN4 chỉnh số lượng | Bấm giảm khi số lượng từ 2 | H | 2 thành 1 | OUT4, OUT5, OUT6 | FR07-R05 | A07. Dự kiến không thực hiện được (D02) |
+| EC13 | IN4 chỉnh số lượng | Bấm giảm khi số lượng là 1 | H | Số lượng 1 | OUT4 theo A04 | FR07-R05, FR07-R11 | Tách khỏi EC12 vì ở cận dưới, kết quả khác. A04. Dự kiến không thực hiện được (D02) |
+| EC14 | IN5 dialog xóa | Xác nhận | H | Xóa 1 trong 2 dòng | OUT7, OUT8 (xóa) | FR07-R11 | |
+| EC15 | IN5 dialog xóa | Hủy hoặc đóng | H | | OUT7, OUT8 (giữ nguyên) | FR07-R11 | A10 |
+| EC16 | IN6 `name` | Tên khớp CSDL | H | `"iPhone 15 Pro Max"` | OUT14 | FR07-R29 | |
+| EC17 | IN6 `name` | Có thẻ HTML | H | `<b>X</b>` | OUT12 | FR07-R31 | Rủi ro bảo mật (SEC-04). A24 |
+| EC18 | IN6 `name` | Có ký tự SQL | H | `X' OR '1'='1` | OUT14; giỏ vẫn đúng, không lỗi hệ thống | FR07-R32 | Rủi ro bảo mật (SEC-05); chỉ quan sát gián tiếp |
+| EC19 | IN7 `price` | Bằng giá CSDL | H | 30000000 | OUT14 | FR07-R29 | |
+| EC20 | IN7 `price` | Khác giá CSDL | H | 1 | OUT14, Đơn giá trong giỏ là giá CSDL | FR07-R29 | A24. Không lập lớp giá 0, giá âm: Theo A24 `price` không được dùng nên cùng kết quả với lớp này |
+| EC21 | IN8 token | Token hợp lệ | H | Token của `test@eshop.com` | OUT13, OUT14 | FR07-R28, FR07-R30 | |
+| EC22 | IN8 token | Thiếu header `Authorization` | KH | Không gửi header | ERR1 | FR07-R30 | |
+| EC23 | IN8 token | Token sai | KH | Token bị sửa một ký tự | ERR1 | FR07-R30 | Thiếu header và token sai là hai bước kiểm khác nhau |
+| EC24 | IN9 số dòng | 0 (giỏ trống) | H | Giỏ sau reset | OUT9, OUT10 | FR07-R12, FR07-R13, FR07-R15, FR07-R16 | A18, A20 |
+| EC25 | IN9 số dòng | 1 dòng | H | iPhone 15 Pro Max × 1 | OUT1, OUT5, OUT6, OUT10; xóa dòng này thì OUT9 | FR07-R12, FR07-R13, FR07-R14 | A01, A02, A11 |
+| EC26 | IN9 số dòng | Từ 2 dòng | H | 2 dòng như O02 | OUT1, OUT6 (cộng nhiều dòng), OUT11 | FR07-R14, FR07-R24 | Tổng nhiều dòng khác nhánh với 1 dòng. A02, A17 |
+| EC27 | IN10 sản phẩm đích | Chưa có trong giỏ | H | | OUT2 | FR07-R08 | A09 |
+| EC28 | IN10 sản phẩm đích | Đã có trong giỏ | H | Thêm lại iPhone 15 Pro Max | OUT3, OUT11 | FR07-R08, FR07-R09 | A08, A09, A17 |
+| EC29 | IN12 độ lớn giá trị tiền | Từ 1,000,000 đến dưới 1,000,000,000 | H | 30,000,000 | OUT5, OUT6 đúng định dạng | FR07-R20 | Dữ liệu mẫu đều ở khoảng này. Giá dưới 1,000,000 cần admin sửa giá, không lập lớp |
+| EC30 | IN12 độ lớn giá trị tiền | Tổng cộng từ 1,000,000,000 | H | MacBook Pro M3 × 23 = 1,035,000,000 | OUT5, OUT6 đúng định dạng, đúng giá trị | FR07-R14, FR07-R20 | Thêm một nhóm phân cách, số lớn có thể bị tràn hoặc định dạng khác |
+| EC31 | IN16 người sở hữu | Token của `test@eshop.com` | H | | OUT13 có dòng đã thêm | FR07-R28 | |
+| EC32 | IN16 người sở hữu | Token của `admin@eshop.com` | H | | OUT13 không có dòng của `test@eshop.com` | FR07-R28, FR07-R30 | A16 |
+
+Ghi chú: IN11 (số lượng hiện tại) không lập lớp riêng; hai lớp cần thiết (bằng 1, từ 2) đã nằm ở EC12, EC13.
+
+## 4. Lớp Output
+
+| Output | Lớp Input dẫn tới |
+|---|---|
+| OUT1 bảng 5 cột | EC25, EC26 |
+| OUT2 dòng mới | EC27 với EC08, EC09 hoặc EC10 |
+| OUT3 tăng số lượng | EC28 với EC08, EC09 hoặc EC10 |
+| OUT4 số lượng sau khi chỉnh | EC11, EC12, EC13 |
+| OUT5, OUT6 Thành tiền, Tổng cộng | EC25, EC26, EC29, EC30 |
+| OUT7, OUT8 dialog và kết quả xóa | EC14, EC15 |
+| OUT9 giỏ trống | EC24; EC25 khi xóa dòng cuối |
+| OUT10 về trang chủ | EC24, EC25 |
+| OUT11 badge | EC26, EC28 |
+| OUT12 tên không render HTML | EC17 |
+| OUT13 `GET /api/cart` | EC21, EC31, EC32 |
+| OUT14 `POST /api/cart` thành công | EC10, EC16, EC18, EC19, EC20 |
+| OUT15 phản hồi trực quan | EC08, EC09 |
+| ERR1 | EC22, EC23 |
+| ERR2 | EC04, EC05, EC06 |
+| ERR3 | EC02, EC07 |
+
+## 5. Tổng hợp
+
+| Biến | H | KH |
+|---|---|---|
+| IN1 | EC01 | EC02 |
+| IN2 | EC03 | EC04, EC05, EC06 |
+| Body API | | EC07 |
+| IN3 | EC08, EC09, EC10 | |
+| IN4 | EC11, EC12, EC13 | |
+| IN5 | EC14, EC15 | |
+| IN6 | EC16, EC17, EC18 | |
+| IN7 | EC19, EC20 | |
+| IN8 | EC21 | EC22, EC23 |
+| IN9 | EC24, EC25, EC26 | |
+| IN10 | EC27, EC28 | |
+| IN12 | EC29, EC30 | |
+| IN16 | EC31, EC32 | |
+
+Tổng: 32 lớp, gồm 25 H và 7 KH (đếm bằng `check_step.py classes`).
+
+## 6. Điểm cần sinh viên quyết định
+
+Các điểm dưới đã áp phương án AI đề xuất (theo yêu cầu của sinh viên); sinh viên xem lại một lượt khi review.
+
+| # | Vấn đề | Các lựa chọn | Đã áp |
+|---|---|---|---|
+| 1 | Giả định A01 đến A31 (mục 2) | Theo từng dòng mục 2 | (a) cho mọi giả định |
+| 2 | Lớp số lượng không hợp lệ (EC04 đến EC06) chạy qua đâu | (a) Qua API; riêng giá trị 0 chạy thêm qua ô "Số lượng:" trang chi tiết ở S4 (kiểm A31); (b) Cả giao diện và API cho mọi lớp | (a), để giữ số test case |
+| 3 | IN4 (EC11 đến EC13) dự kiến không thực hiện được | (a) Vẫn thiết kế test case, dự kiến Blocked ở S6; (b) Gộp vào một test case checklist "có nút +/-" | (a) |
+| 4 | Lớp giá dưới 1,000,000 và giá 0, giá âm qua API | (a) Không lập (cần admin, hoặc cùng kết quả theo A24); (b) Lập thêm | (a) |
+
+## 7. Ghi chú cho bước sau
+
+- Phân vùng có thứ tự cho S4: IN2 (cận dưới 1, lớp KH dưới 1, không có cận trên theo A05); IN11 khi giảm (cận 1); IN9 (0, 1, từ 2 dòng). EC29, EC30 có thứ tự theo độ lớn nhưng chỉ đạt được giá trị gần biên 1,000,000,000 (999,999,999 không tạo được từ dữ liệu mẫu).
+- Lớp không thể có đại diện chỉ vi phạm một điều kiện: Không có.
+- Thực thi: IN4, IN5 chỉ qua giao diện (không có API trong spec). IN6, IN7, IN8, IN16, EC02, EC06, EC07 chỉ qua API. Kết quả của giao diện cho ô "Số lượng:" phản ánh cả trình duyệt và hệ thống (`platforms.md`).
+- S3: Một test case đại diện cho mỗi đường thêm vào giỏ (EC08, EC09, EC10), kiểm luôn OUT15 ở EC08, EC09. Test case hợp lệ gộp nhiều lớp cơ sở; mỗi test case không hợp lệ chỉ một lớp KH. Mục tiêu cả bộ 35 đến 45 test case, gồm cả checklist.
+- Đưa giỏ về trạng thái đầu: Xóa dòng qua dialog (phụ thuộc EC14) hoặc reset dữ liệu; S3 chốt thứ tự.
