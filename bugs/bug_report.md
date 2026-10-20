@@ -569,18 +569,18 @@ Xét 3 quan sát ở mục 6 của `06_results.md`:
 
 | Bug | Tiêu đề ngắn | Severity | Technique | Test case | Issue |
 |---|---|---|---|---|---|
-| BUG-FR17-01 | User thường tạo và xóa được mã qua API Admin | Critical | EP | TC-CPN-75, TC-CPN-79 | #___ |
-| BUG-FR17-02 | API tạo được mã khi thiếu trường bắt buộc | High | EP | TC-CPN-66, TC-CPN-70, TC-CPN-65 (dòng A), TC-CPN-143 (dòng C) | #___ |
-| BUG-FR17-03 | API nhận `type` không phải `percent` hoặc `fixed` | High | EP | TC-CPN-65 (dòng B) | #___ |
-| BUG-FR17-04 | Giao diện tạo được mã giảm 0% | High | EP | TC-CPN-38 | #___ |
-| BUG-FR17-05 | API nhận giá trị không phải số ở các trường số | High | EP | TC-CPN-67 | #___ |
-| BUG-FR17-06 | Số `9007199254740993` bị lưu thành `9007199254740992` | High | BVA | TC-CPN-131 | #___ |
-| BUG-FR17-07 | Request không phải JSON gây lỗi 500, lộ đường dẫn tệp trên máy chủ | Medium | EP | TC-CPN-69 | #___ |
-| BUG-FR17-08 | Giao diện tạo được mã giảm 150% | Medium | EP | TC-CPN-37 | #___ |
-| BUG-FR17-09 | API lưu `expired_at` không phải ngày hợp lệ | Medium | EP | TC-CPN-68 | #___ |
-| BUG-FR17-10 | Có chữ không phải tiếng Việt trên trang Quản lý Mã Giảm Giá | Low | EP | TC-CPN-91, TC-CPN-32 | #___ |
-| BUG-FR17-11 | Nút "Tạo mã" màu cam thay vì xanh dương | Low | EP | TC-CPN-92 | #___ |
-| BUG-FR17-12 | Trường bắt buộc không có dấu `*` | Low | EP | TC-CPN-90 | #___ |
+| BUG-FR17-01 | User thường tạo và xóa được mã qua API Admin | Critical | EP | TC-CPN-75, TC-CPN-79 | #60 |
+| BUG-FR17-02 | API tạo được mã khi thiếu trường bắt buộc | High | EP | TC-CPN-66, TC-CPN-70, TC-CPN-65 (dòng A), TC-CPN-143 (dòng C) | #61 |
+| BUG-FR17-03 | API nhận `type` không phải `percent` hoặc `fixed` | High | EP | TC-CPN-65 (dòng B) | #62 |
+| BUG-FR17-04 | Giao diện tạo được mã giảm 0% | High | EP | TC-CPN-38 | #55 |
+| BUG-FR17-05 | API nhận giá trị không phải số ở các trường số | High | EP | TC-CPN-67 | #63 |
+| BUG-FR17-06 | Số `9007199254740993` bị lưu thành `9007199254740992` | High | BVA | TC-CPN-131 | #64 |
+| BUG-FR17-07 | Request không phải JSON gây lỗi 500, lộ đường dẫn tệp trên máy chủ | Medium | EP | TC-CPN-69 | #65 |
+| BUG-FR17-08 | Giao diện tạo được mã giảm 150% | Medium | EP | TC-CPN-37 | #56 |
+| BUG-FR17-09 | API lưu `expired_at` không phải ngày hợp lệ | Medium | EP | TC-CPN-68 | #66 |
+| BUG-FR17-10 | Có chữ không phải tiếng Việt trên trang Quản lý Mã Giảm Giá | Low | EP | TC-CPN-91, TC-CPN-32 | #57 |
+| BUG-FR17-11 | Nút "Tạo mã" màu cam thay vì xanh dương | Low | EP | TC-CPN-92 | #58 |
+| BUG-FR17-12 | Trường bắt buộc không có dấu `*` | Low | EP | TC-CPN-90 | #59 |
 
 Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: admin`, `pool: C`. Label `severity` và `technique` theo bảng trên.
 
@@ -588,7 +588,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 ### BUG-FR17-01: User thường tạo và xóa được mã qua API Admin
 
-- **Issue:** #___
+- **Issue:** #60 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_60.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] API quản lý mã giảm giá: Tài khoản user thường tạo và xóa được mã`
 - **Labels:** `bug`, `severity: critical`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -623,7 +623,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Kết quả thực tế:** Bước 2: HTTP 200 `{"message": "Coupon created", "id": 28}`; `GET /api/coupons` có mã `FR17TC75`. Bước 4: HTTP 200 `{"message": "Coupon deleted"}`; mã `FR17TC79` (id 30) không còn trong danh sách.
 
-**Ảnh chụp:** Log `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`, đoạn TC-CPN-75 và TC-CPN-79 (ảnh cần chụp: `S6_TC-CPN-75_log.png`, `S6_TC-CPN-79_log.png`)
+**Ảnh chụp:** `features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-75_log.png`, `S6_TC-CPN-79_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py`)
 
@@ -633,7 +633,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 ### BUG-FR17-02: API tạo được mã khi thiếu trường bắt buộc
 
-- **Issue:** #___
+- **Issue:** #61 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_61.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] API thêm mã giảm giá: Tạo được mã khi thiếu trường bắt buộc hoặc body rỗng`
 - **Labels:** `bug`, `severity: high`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -665,17 +665,17 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Kết quả thực tế:** Mọi request đều nhận HTTP 200 `{"message": "Coupon created", ...}`. Body `{}` tạo mã id 26 (số mã từ 24 thành 25). `GET /api/coupons` có các mã với `code` là `null` (id 14), `type` là `null` (id 11) hoặc `""` (id 15), `discount_value` là `null` (id 16), `min_order_amount` là `null` (id 17), `expired_at` là `""` (id 18); khi gửi `"max_uses_per_user": null`, mã được tạo với giá trị `1` (id 19). `code` chỉ gồm 3 dấu cách cũng tạo được mã (id 44, số mã từ 40 thành 41).
 
-**Ảnh chụp:** Log `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`, đoạn TC-CPN-65, TC-CPN-66, TC-CPN-70 và TC-CPN-143 dòng C (ảnh cần chụp: `S6_TC-CPN-65_log.png`, `S6_TC-CPN-66_log.png`, `S6_TC-CPN-70_log.png`, `S6_TC-CPN-143_log.png`)
+**Ảnh chụp:** `features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-65_log.png`, `S6_TC-CPN-66_log_1.png`, `S6_TC-CPN-66_log_2.png`, `S6_TC-CPN-70_log.png`, `S6_TC-CPN-143_log_2.png` (ảnh chụp đoạn log); log đầy đủ: `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py`)
 
-**Ghi chú:** Qua giao diện, ô Mã coupon để trống bị trình duyệt chặn (TC-CPN-30 Pass); các ô bắt buộc khác chưa chạy qua giao diện. Mã chỉ gồm dấu cách không nhìn thấy trên bảng và không nhập được khi thanh toán, nên tương đương thiếu `code`. Các bug BUG-FR17-02, 03, 05, 06, 09 cho thấy API thêm mã không kiểm tra dữ liệu đầu vào. Related: (số issue của BUG-FR17-03, BUG-FR17-05)
+**Ghi chú:** Qua giao diện, ô Mã coupon để trống bị trình duyệt chặn (TC-CPN-30 Pass); các ô bắt buộc khác chưa chạy qua giao diện. Mã chỉ gồm dấu cách không nhìn thấy trên bảng và không nhập được khi thanh toán, nên tương đương thiếu `code`. Các bug BUG-FR17-02, 03, 05, 06, 09 cho thấy API thêm mã không kiểm tra dữ liệu đầu vào. Related: #62, #63
 
 ---
 
 ### BUG-FR17-03: API nhận `type` không phải `percent` hoặc `fixed`
 
-- **Issue:** #___
+- **Issue:** #62 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_62.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] API thêm mã giảm giá: Nhận type không phải percent hoặc fixed`
 - **Labels:** `bug`, `severity: high`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -703,17 +703,17 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Kết quả thực tế:** HTTP 200 `{"message": "Coupon created", "id": 12}`; `GET /api/coupons` có mã `FR17TC65B` với `"type": "free"`.
 
-**Ảnh chụp:** Log `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`, đoạn TC-CPN-65 dòng B (ảnh cần chụp: `S6_TC-CPN-65_log.png`, dùng chung với BUG-FR17-02)
+**Ảnh chụp:** `features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-65_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py`)
 
-**Ghi chú:** Trên giao diện, dropdown chỉ có 2 lựa chọn nên lỗi chỉ tái hiện qua API. Giá trị `PERCENT` (khác hoa thường, dòng C) cũng được nhận và lưu nguyên; đặc tả không nói rõ có phân biệt hoa thường không nên không tính vào bug này. Related: (số issue của BUG-FR17-02)
+**Ghi chú:** Trên giao diện, dropdown chỉ có 2 lựa chọn nên lỗi chỉ tái hiện qua API. Giá trị `PERCENT` (khác hoa thường, dòng C) cũng được nhận và lưu nguyên; đặc tả không nói rõ có phân biệt hoa thường không nên không tính vào bug này. Related: #61
 
 ---
 
 ### BUG-FR17-04: Giao diện tạo được mã giảm 0%
 
-- **Issue:** #___
+- **Issue:** #55 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_55.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] Form Tạo mã giảm giá: Tạo được mã có giá trị giảm 0%`
 - **Labels:** `bug`, `severity: high`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -745,13 +745,13 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
 
-**Ghi chú:** Mã giảm 0% không giảm được gì cho người mua. Lỗi tái hiện ngay trên giao diện, không cần công cụ ngoài. Related: (số issue của BUG-FR17-05)
+**Ghi chú:** Mã giảm 0% không giảm được gì cho người mua. Lỗi tái hiện ngay trên giao diện, không cần công cụ ngoài. Related: #63
 
 ---
 
 ### BUG-FR17-05: API nhận giá trị không phải số ở các trường số
 
-- **Issue:** #___
+- **Issue:** #63 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_63.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] API thêm mã giảm giá: Nhận giá trị không phải số ở discount_value, min_order_amount, max_uses_per_user`
 - **Labels:** `bug`, `severity: high`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -781,17 +781,17 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Kết quả thực tế:** Cả 3 request nhận HTTP 200 `Coupon created` (id 20, 21, 22); `GET /api/coupons` lưu nguyên chuỗi `"abc"` ở trường số tương ứng.
 
-**Ảnh chụp:** Log `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`, đoạn TC-CPN-67 (ảnh cần chụp: `S6_TC-CPN-67_log.png`)
+**Ảnh chụp:** `features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-67_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py`)
 
-**Ghi chú:** Chưa chạy qua giao diện (các ô này là ô số). Related: (số issue của BUG-FR17-02, BUG-FR17-04)
+**Ghi chú:** Chưa chạy qua giao diện (các ô này là ô số). Related: #61, #55
 
 ---
 
 ### BUG-FR17-06: Số `9007199254740993` bị lưu thành `9007199254740992`
 
-- **Issue:** #___
+- **Issue:** #64 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_64.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] API thêm mã giảm giá: Giá trị 9007199254740993 bị lưu thành 9007199254740992`
 - **Labels:** `bug`, `severity: high`, `platform: admin`, `technique: BVA`, `pool: C`
 
@@ -822,7 +822,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Kết quả thực tế:** Cả 3 request nhận HTTP 200 `Coupon created` (id 33, 34, 35). `GET /api/coupons` trả `9007199254740992` ở cả 3 trường, khác giá trị đã gửi 1 đơn vị, không có thông báo nào.
 
-**Ảnh chụp:** Log `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`, đoạn TC-CPN-131 (ảnh cần chụp: `S6_TC-CPN-131_log.png`)
+**Ảnh chụp:** `features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-131_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py`)
 
@@ -832,7 +832,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 ### BUG-FR17-07: Request không phải JSON gây lỗi 500, lộ đường dẫn tệp trên máy chủ
 
-- **Issue:** #___
+- **Issue:** #65 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_65.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] API thêm mã giảm giá: Request không phải JSON gây lỗi 500 và trả về đường dẫn tệp trên máy chủ`
 - **Labels:** `bug`, `severity: medium`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -863,7 +863,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Kết quả thực tế:** Bước 1, 2, 3: HTTP 500, body là trang HTML lỗi `TypeError: Cannot destructure property 'code' of 'req.body' as it is undefined.` kèm stack trace có đường dẫn tệp trên máy chủ (`...\eshop-sut\backend\server.js:459:5`, `node_modules\router\...`). Bước 4: HTTP 400, body là trang HTML lỗi `SyntaxError: Expected double-quoted property name in JSON at position 21` cũng kèm đường dẫn tệp. Không request nào tạo mã.
 
-**Ảnh chụp:** Log `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`, đoạn TC-CPN-69 (ảnh cần chụp: `S6_TC-CPN-69_log.png`)
+**Ảnh chụp:** `features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-69_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py`)
 
@@ -873,7 +873,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 ### BUG-FR17-08: Giao diện tạo được mã giảm 150%
 
-- **Issue:** #___
+- **Issue:** #56 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_56.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] Form Tạo mã giảm giá: Tạo được mã loại phần trăm có giá trị giảm 150%`
 - **Labels:** `bug`, `severity: medium`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -914,7 +914,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 ### BUG-FR17-09: API lưu `expired_at` không phải ngày hợp lệ
 
-- **Issue:** #___
+- **Issue:** #66 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_66.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] API thêm mã giảm giá: Lưu expired_at sai định dạng hoặc không phải ngày có thật`
 - **Labels:** `bug`, `severity: medium`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -950,17 +950,17 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 **Kết quả thực tế:** Cả 3 request nhận HTTP 200 `Coupon created` (id 23, 24, 25); `GET /api/coupons` lưu nguyên `"12/31/2027"`, `"2027-02-30"`, `"2027-12-31T10:00:00Z"`.
 
-**Ảnh chụp:** Log `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`, đoạn TC-CPN-68 (ảnh cần chụp: `S6_TC-CPN-68_log.png`)
+**Ảnh chụp:** `features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-68_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/C_FR-17_QuanLyCoupon/scripts/run_api_tests.py`)
 
-**Ghi chú:** `2027-02-30` không phải ngày có thật theo bất kỳ định dạng nào. Dạng `yyyy-mm-dd` lấy theo ví dụ của API spec mục 6.4 (giả định A13 ở `features/C_FR-17_QuanLyCoupon/02_ec.md`). Ảnh hưởng tới điều kiện C2 khi áp mã ở FR-09 chưa được kiểm. Qua giao diện, ô chọn ngày chỉ cho chọn ngày có thật nên lỗi chỉ tái hiện qua API. Related: (số issue của BUG-FR17-02)
+**Ghi chú:** `2027-02-30` không phải ngày có thật theo bất kỳ định dạng nào. Dạng `yyyy-mm-dd` lấy theo ví dụ của API spec mục 6.4 (giả định A13 ở `features/C_FR-17_QuanLyCoupon/02_ec.md`). Ảnh hưởng tới điều kiện C2 khi áp mã ở FR-09 chưa được kiểm. Qua giao diện, ô chọn ngày chỉ cho chọn ngày có thật nên lỗi chỉ tái hiện qua API. Related: #61
 
 ---
 
 ### BUG-FR17-10: Có chữ không phải tiếng Việt trên trang Quản lý Mã Giảm Giá
 
-- **Issue:** #___
+- **Issue:** #57 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_57.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] Trang Quản lý Mã Giảm Giá: Tiêu đề tab, menu, thông báo lỗi và lịch chọn ngày không phải tiếng Việt`
 - **Labels:** `bug`, `severity: low`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -1000,7 +1000,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 ### BUG-FR17-11: Nút "Tạo mã" màu cam thay vì xanh dương
 
-- **Issue:** #___
+- **Issue:** #58 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_58.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] Form Tạo mã giảm giá: Nút "Tạo mã" màu cam thay vì xanh dương`
 - **Labels:** `bug`, `severity: low`, `platform: admin`, `technique: EP`, `pool: C`
 
@@ -1037,7 +1037,7 @@ Label chung cho mọi bug của FR-17: `bug` (template tự gắn), `platform: a
 
 ### BUG-FR17-12: Trường bắt buộc không có dấu `*`
 
-- **Issue:** #___
+- **Issue:** #59 (ảnh trang issue: `features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_59.png`)
 - **Tiêu đề:** `[23120061][FR-17][Admin] Form Tạo mã giảm giá: Trường bắt buộc không có dấu *`
 - **Labels:** `bug`, `severity: low`, `platform: admin`, `technique: EP`, `pool: C`
 

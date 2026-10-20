@@ -14222,6 +14222,261 @@ Xuất log, kiểm tra và báo lại cho tôi.
 
 ````text
 Bạn chưa chạy hai commit ở lượt trước (git log vẫn dừng ở `82ff22d`), nên tôi gộp lại lệnh cho phù hợp. Giờ tôi xem phiên B.
+
+Phiên A và B không có lỗi. Phiên C đang đổi tên ảnh nên chưa commit. Log đã xuất (238 lượt, đúng 4 phiên). Bạn chưa chạy hai commit ở lượt trước nên tôi đã gộp lại thành 3 commit ở cuối.
+
+## Phiên A: S8 đã chốt
+
+- Phiên A đã sửa đúng 3 quyết định của bạn. Số đếm theo nguyên nhân giờ là: Input 5, Giới hạn công cụ 14, Độ phức tạp 5.
+- `ai_raw/S8_gap_analysis.md` giữ nguyên (ghi lúc 02:48, trước khi sửa).
+- Đầu file có dòng "Cập nhật lần 1". Bảng thay đổi có 6 dòng: 1 Sai (AI tự nhận đã xếp nhầm dòng 15), 1 Mơ hồ, 4 Quyết định của SV.
+- Script kiểm định dạng và bảng thay đổi báo 0 lỗi; không có dấu "—" hay "·".
+- **Còn treo từ S7:** Ảnh `S7_issue_42.png` vẫn chưa được chụp lại sau khi sửa issue #42. Nếu bạn chưa sửa issue đó thì bỏ qua cũng được, vì đây chỉ là lỗi trình bày.
+
+## Phiên B: Bản AI của S1
+
+- `ai_raw/S1_input_output.md` không có dấu "—" hay "·". AI tự sửa 2 chỗ khẳng định quá căn cứ **trước khi** giao cho bạn, nên vẫn tính là bản AI.
+- Nội dung có:
+  - 8 biến nhập trực tiếp và 8 biến gián tiếp, cộng 4 biến "ứng viên" chờ bạn quyết.
+  - 14 kết quả khi thao tác thành công và 3 loại lỗi.
+  - Bảng nối từng yêu cầu R01 đến R32 sang biến.
+
+**9 điểm phiên B cần bạn quyết. Tôi đồng ý cả 9 phương án (a):**
+- Giữ nút `+`/`-` theo đặc tả, dù giao diện không có.
+- Đăng nhập là điều kiện chung trước khi test.
+- Xét cả 3 đường thêm vào giỏ.
+- Bỏ biến "thời điểm xem lại giỏ" và "giá đổi giữa hai lần thêm".
+- Dùng `admin@eshop.com` làm người dùng khác để kiểm giỏ tách theo người.
+- Tách 3 loại lỗi.
+- Kiểm chứng bằng tải lại trang và `GET /api/cart`.
+- Gom các yêu cầu tĩnh thành nhóm checklist riêng.
+
+Một lưu ý: Xét cả 3 đường thêm vào giỏ sẽ làm số test case tăng lên. Khi tới S3, nên chỉ chọn đại diện cho mỗi đường để kịp giờ.
+
+## Phiên C
+
+Đang đổi tên ảnh issue. Đã có `S7_issue_60` đến `66`. Xong thì báo số issue cho phiên C điền, rồi tôi soát và đưa lệnh commit cho C.
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`, theo thứ tự)
+
+```
+git add features/A_FR-01_DangKy/08_gap_analysis.md features/A_FR-01_DangKy/ai_raw/S8_gap_analysis.md
+git commit -m "[A-FR01][S8] Add AI gap analysis and review"
+
+git add features/B_FR-07_GioHang/00_spec.md features/B_FR-07_GioHang/screenshots
+git commit -m "[B-FR07][S0] Record UI exploration and review spec"
+
+git add features/B_FR-07_GioHang/ai_raw/S1_input_output.md prompt_log.md
+git commit -m "[B-FR07][S1] Identify input/output variables (AI draft)"
+```
+
+**Đừng `add`** `bugs/bug_report.md` và các ảnh trong `features/C_FR-17_QuanLyCoupon/screenshots/`. Phần đó chờ C xong.
+
+## Tin nhắn dán vào phiên B (sau khi commit)
+
+```text
+Chọn cả 9 điểm theo phương án (a). Viết bản review 01_io.md. Vì thiếu thời gian, đến S3 chỉ chọn đại diện cho mỗi đường thêm vào giỏ. Không cần đưa lệnh commit.
+```
+````
+
+---
+
+### C239 | 03:20 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+[23120061][FR-17][Admin] Form Tạo mã giảm giá: Trường bắt buộc không có dấu *
+bug
+
+platform: admin
+
+pool: C
+
+severity: low
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#59
+· Filter by authorangquoc opened 25m ago
+
+[23120061][FR-17][Admin] Form Tạo mã giảm giá: Nút "Tạo mã" màu cam thay vì xanh dương
+bug
+
+platform: admin
+
+pool: C
+
+severity: low
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#58
+· Filter by authorangquoc opened 25m ago
+
+[23120061][FR-17][Admin] Trang Quản lý Mã Giảm Giá: Tiêu đề tab, menu, thông báo lỗi và lịch chọn ngày không phải tiếng Việt
+bug
+
+platform: admin
+
+pool: C
+
+severity: low
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#57
+· Filter by authorangquoc opened 26m ago
+
+[23120061][FR-17][Admin] Form Tạo mã giảm giá: Tạo được mã loại phần trăm có giá trị giảm 150%
+bug
+
+platform: admin
+
+pool: C
+
+severity: medium
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#56
+· Filter by authorangquoc opened 27m ago
+
+[23120061][FR-17][Admin] Form Tạo mã giảm giá: Tạo được mã có giá trị giảm 0%
+bug
+
+platform: admin
+
+pool: C
+
+severity: high
+
+technique: EP
+
+angquoc/software-testing-2026-HW02-group#55
+· Filter by authorangquoc opened 27m ago
+
+
+Tôi tạo rồi, lỗi tôi sót mất. Tôi sẽ chụp ảnh bổ sung sau, bạn cũng nên cập nhật số cho issue đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Fill remaining FR-17 issue numbers and regenerate page
+
+**Output AI (nguyên văn):**
+
+````text
+Ghép tiêu đề với mã bug: BUG-FR17-04 là #55, BUG-FR17-08 là #56, BUG-FR17-10 là #57, BUG-FR17-11 là #58, BUG-FR17-12 là #59. Tôi cập nhật số issue, điền nốt dòng "Related" còn chờ ở BUG-05, rồi tạo lại trang HTML.
+
+Đã cập nhật [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md): Cả 12 bug của FR-17 đều có số issue, không còn ô `#___` hay "Related" nào để trống. Mục FR-01 giống hệt trước khi sửa; script kiểm định dạng báo 0 lỗi.
+
+| Bug | Issue | Bug | Issue |
+|---|---|---|---|
+| BUG-FR17-01 | #60 | BUG-FR17-07 | #65 |
+| BUG-FR17-02 | #61 | BUG-FR17-08 | #56 |
+| BUG-FR17-03 | #62 | BUG-FR17-09 | #66 |
+| BUG-FR17-04 | #55 | BUG-FR17-10 | #57 |
+| BUG-FR17-05 | #63 | BUG-FR17-11 | #58 |
+| BUG-FR17-06 | #64 | BUG-FR17-12 | #59 |
+
+- Dòng "Related" còn chờ ở BUG-05 giờ là `Related: #61, #55`.
+- 5 issue mới (#55 đến #59) ghi "ảnh trang issue cần chụp: `.../S7_issue_55.png`" đến `S7_issue_59.png`. Anh/chị chụp xong cứ để tên mặc định như lần trước; báo tôi để đổi tên và cập nhật dòng này.
+- Trang HTML đã đánh dấu cả 12 issue là "đã tạo, không bấm lại".
+````
+
+---
+
+### C240 | 03:20 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã bổ sung ảnh, đổi tên đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Rename new issue screenshots to S7_issue_N
+- Bash: Look for the issue 59 screenshot under other names
+- Bash: Update Issue lines for 55 to 58
+
+**Output AI (nguyên văn):**
+
+````text
+Đã đổi tên 4 ảnh (55 đến 58). Chưa thấy ảnh của issue #59. Tôi tìm thêm xem ảnh đó có nằm dưới tên khác không.
+
+Tôi đã đổi tên 4 ảnh: `github.com_..._issues_55.png` đến `..._58.png` thành `S7_issue_55.png` đến `S7_issue_58.png`. Bốn dòng "Issue" tương ứng trong [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md) đã đổi sang dạng "(ảnh trang issue: `...S7_issue_5x.png`)". Script kiểm định dạng báo 0 lỗi.
+
+**Chưa có ảnh của issue #59** (BUG-FR17-12, dấu `*`). Trong `screenshots/` không có file nào tên `github.com_..._issues_59.png`, và cả thư mục HW02 cũng không có ảnh PNG nào khác mới thêm. Có lẽ ảnh này bị sót, hoặc được lưu ở thư mục khác. Dòng của BUG-12 vẫn ghi "ảnh trang issue cần chụp: `S7_issue_59.png`". Anh/chị chụp hoặc chép ảnh vào `features/C_FR-17_QuanLyCoupon/screenshots/` rồi báo tôi để đổi tên.
+````
+
+---
+
+### C241 | 03:21 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã bổ sung cho #59, đổi tên.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Rename issue 59 screenshot
+- Bash: Update issue 59 line and verify all issue screenshots
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã đổi tên ảnh `github.com_..._issues_59.png` thành `S7_issue_59.png`. Dòng "Issue" của BUG-FR17-12 trong [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md) đã đổi sang "#59 (ảnh trang issue: `...S7_issue_59.png`)".
+
+**Kiểm tra:** Cả 12 ảnh `S7_issue_55.png` đến `S7_issue_66.png` đều có trong `screenshots/`. Mục FR-17 không còn chỗ nào ghi "cần chụp". Script kiểm định dạng báo 0 lỗi.
+
+Với FR-17, S7 đã đủ: 12 bug, 12 issue (#55 đến #66), mỗi issue có ảnh trang issue.
+````
+
+---
+
+### C242 | 03:23 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Chọn cả 9 điểm theo phương án (a). Viết bản review 01_io.md. Vì thiếu thời gian, đến S3 chỉ chọn đại diện cho mỗi đường thêm vào giỏ. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current time
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C243 | 03:23 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên C đã cung cấp đủ ảnh và tạo xong hết issue.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check session C, git state, issue numbers
+- Bash: Check log screenshot times and FR-01 untouched
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-69_log.png
+- Bash: Export log and view S7 tracker row
+
+**Output AI (nguyên văn):**
+
+````text
+Đủ 12 issue (#55 đến #66). Tôi kiểm thêm 4 ảnh log đã chụp lại chưa và mục FR-01 có bị đụng không.
 ````
 
 
