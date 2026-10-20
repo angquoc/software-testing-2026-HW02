@@ -7926,6 +7926,11 @@ Chạy xong thì commit `06_results.md`, `logs/` và `screenshots/S6_*` với me
 - Bash: Inspect check_step.py parsing rules
 - Bash: Read classes command implementation
 - Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S2_equivalence_classes.md
+- Bash: Count classes by section and type
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S2_equivalence_classes.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S2_equivalence_classes.md
+- Bash: Recheck class counts and format
 
 **Output AI (nguyên văn):**
 
@@ -7933,6 +7938,63 @@ Chạy xong thì commit `06_results.md`, `logs/` và `screenshots/S6_*` với me
 Đã chốt cả ba điểm. Trước khi viết, tôi xem script kiểm đọc bảng lớp theo định dạng nào.
 
 Đã chốt cả ba nguyên tắc. Tôi bắt đầu viết bản AI của S2.
+
+Bảng tổng hợp phải lấy số từ script chứ không đếm tay. Tôi chạy script và đếm lại theo từng mục.
+
+Bản AI của S2 đã xong: [ai_raw/S2_equivalence_classes.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S2_equivalence_classes.md). Script báo 0 lỗi định dạng, không có mã lớp trùng. Tôi đã đi qua checklist S2 trong `lessons.md` và xử lý hết mục "Ghi chú cho bước sau" của `01_io.md`, gồm IN13 ba chiều, IN14, A20, A23, A24 và ngày mẫu `2025-01-31` của API.
+
+## Tóm tắt
+
+- **130 lớp:** 95 lớp Input (27 H, 34 KH, 34 GĐ) và 35 lớp Output. Số đếm lấy từ script; bảng tổng hợp lúc đầu tôi ghi sai dòng IN1 và đã sửa trước khi giao.
+- **Cột "Đường":** Cho biết lớp nào chỉ gửi được qua API, ví dụ `type` ngoài tập, ngày sai định dạng, request JSON sai.
+- **Ba nguyên tắc vừa chốt** áp vào `code` và `expired_at`: Có lớp trùng sau khi cắt khoảng trắng (`␣SAVE10`), lớp trùng chỉ khác hoa thường (`save10`), và các lớp định dạng ngày qua API.
+- **Lớp tách theo rủi ro:** `code` toàn chữ số (`007` có thể mất số 0 ở đầu), `min_order_amount = 0` (có thể bị hiểu nhầm là thiếu), ngày 29/02 năm nhuận, số lớn hơn 2^53.
+- **Mã lỗi mới ERR17 đến ERR25:** Chỉ tồn tại nếu giả định tương ứng chọn phương án có lỗi đó.
+- **Giả định mới A25:** Giới hạn trên của `discount_value` loại `fixed`, vì Q1 chỉ hỏi cho `percent`.
+
+## Cần anh/chị quyết định
+
+**Các giả định (mục 4.2).** Mỗi giả định có phương án và nhận xét của tôi. Tóm tắt đề xuất:
+
+| Giả định | Đề xuất | Lý do một dòng |
+|---|---|---|
+| A01 `percent` tối đa | (a) Tối đa 100 | Trên 100% thì `final_amount` âm theo chính công thức FR-09 |
+| A02 thập phân `discount_value` | (a) Nhận cả hai loại | Đặc tả chỉ nói "dương" |
+| A03 `min_order_amount`, `max_uses_per_user` | (i)(a) Nhận thập phân; (ii)(a) Số lần phải nguyên; (iii)(b) Cho phép có giới hạn | "Lần" là đại lượng đếm; lỗi thật là lưu sai giá trị |
+| A04 ký tự, độ dài `code` | Ký tự (a) mọi ký tự in được; độ dài (b) | Ví dụ không phải luật; ký tự (b), (c) làm R15 không kiểm được escape |
+| A05 ngày quá khứ, hôm nay | (c) Mọi ngày hợp lệ | Đặc tả không cấm; FR-09 đã chặn mã hết hạn khi dùng |
+| A07 hộp thoại xóa | (b) Không bắt buộc | FR-24 chỉ áp cho giỏ hàng |
+| A11 `PERCENT` | (a) Không hợp lệ | Đặc tả ghi đúng hai giá trị viết thường |
+| A12 `fixed` lớn hơn `min_order_amount` | (a) Được | Không có ràng buộc giữa hai trường; nếu chọn (b) thì mã `fixed` với ngưỡng mặc định 0 luôn bị từ chối |
+| A14 kiểu dữ liệu API | (b) Dễ dãi với chuỗi chứa số | Đặc tả chỉ cho ví dụ, không quy định kiểu |
+| A15 xóa `id` không tồn tại | (b) Từ chối hoặc thành công đều được, miễn không xóa nhầm | Cả hai cách đều phổ biến |
+| A16 | (i)(c) Không lập lớp "mã đã dùng"; (ii)(a) Tạo lại được mã đã xóa | Lớp (i) cần tạo đơn hàng ở FR-09 |
+| A17 phản hồi GET | (a) Phải có `id` | Xóa qua API cần `:id` |
+| A18 chữ "Hết hạn" | (b) Khi `expired_at` không sau hôm nay | Khớp với FR-09 C2 |
+| A19 phản hồi giao diện | (a) Mong đợi tối thiểu | Đặc tả không yêu cầu nhiều hơn |
+| A20 mã HTTP | (a) Theo nhóm 2xx, 4xx | Có RFC 9110 làm căn cứ |
+| A21 bong bóng trình duyệt | (c) Tính là thông báo, vẫn xét vị trí | FR-22 chỉ quy định vị trí, không phân biệt nguồn |
+| A22 đường dẫn FR-12 | (b) Thêm vài test case theo FR-12 | FR-12 nêu đích danh đường này trong yêu cầu bảo mật |
+| A23, A24 | (a) | Kiểm chứng được mà không cần biết hệ thống phân loại lỗi thế nào |
+| A25 `fixed` tối đa | (b) | Như A03 (iii) |
+
+**Các điểm về cấu trúc (mục 7, điểm 2 đến 6):**
+- Điểm 2: Tách lớp "không dương" theo từng loại (EC33, EC36). Đề xuất (a) tách.
+- Điểm 3: Giữ lớp `min_order_amount = 0` riêng (EC45). Đề xuất (a) giữ.
+- Điểm 4: Dùng một lỗi chung ERR22 cho mọi giới hạn mà đặc tả không nêu. Đề xuất (a) dùng chung.
+- Điểm 5: Giữ body `{}` làm ngoại lệ (EC95). Đề xuất (a) giữ.
+- Điểm 6: Giữ lớp kiểu dữ liệu của `code` (EC22, EC23). Đề xuất (a) giữ.
+
+Nếu anh/chị đồng ý hết với đề xuất thì chỉ cần trả lời "theo đề xuất", kèm những chỗ muốn khác hoặc câu hỏi.
+
+## Commit cho bản AI
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S2_equivalence_classes.md
+git commit -m "[C-FR17][S2] Add equivalence classes (AI draft)"
+```
+
+Nhớ nhờ phiên điều phối xuất prompt log trước khi commit.
 ````
 
 ---
@@ -7950,11 +8012,132 @@ Tôi đã gửi câu hỏi cho phiên A và chạy xong rồi, phiên C thi�
 - Bash: Read session A S6 prep output and repo state
 - Bash: Read session C latest S2 status
 - Bash: Export log, verify S6 files, update tracker
+- Bash: Check results template row format
 
 **Output AI (nguyên văn):**
 
 ````text
 Phiên C đang viết bản nháp S2. Bạn đã trả lời 3 câu hỏi trước khi viết của nó, và thao tác của nó vẫn sạch. Mình xuất log cho commit của phiên A:
+
+## Bảng tình trạng
+
+| Phiên | Feature | Tình trạng | Việc của bạn |
+|---|---|---|---|
+| **A** | FR-01 | **S6:** Đã có khung `06_results.md` (96 dòng, xếp theo thứ tự chạy) và 2 script API. Phiên A không chạy test, không gọi API | **Commit**, rồi **bắt đầu chạy test** |
+| **C** | FR-17 | **S2:** Bạn đã chốt 3 câu hỏi trước khi viết; AI đang viết bản nháp | Chờ |
+
+## Commit cho phiên A
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/ai_raw/S6_results_template.md features/A_FR-01_DangKy/06_results.md features/A_FR-01_DangKy/scripts prompt_log.md
+git commit -m "[A-FR01][S6] Add results template and API test scripts (AI draft)"
+git push
+```
+
+## Cách chạy S6 (FR-01)
+
+Backend và web **đang chạy**, DB đã ở trạng thái mẫu. Bạn điền kết quả vào `06_results.md`, chạy theo nhóm:
+
+| Thứ tự | Nhóm | Cách làm |
+|---|---|---|
+| 1 | **A. Checklist** (TC-REG-90 đến 96) | Quan sát trang `localhost:5173/register`. TC-REG-93 và 96 **được dùng DevTools**. Kết quả TC-REG-96 (ô Email có phải `type="email"` không) điền luôn vào mục Môi trường |
+| 2 | **B. Không hợp lệ** | Nhập từng test case, ghi kết quả. Mỗi test case Fail thì **chụp ảnh**, vì đó là ảnh dùng cho bug report ở S7 |
+| 3 | **C, D. Hợp lệ, Biên** | Theo mức ưu tiên phiên A đề xuất ở mục 4. Không kịp thì ghi `Not run` |
+| 4 | **E. API** | Chạy trong terminal: `cd /d D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\scripts` rồi `python run_api_tests.py`. Script nhắc lúc nào cần làm tay bước 2 qua giao diện |
+| 5 | **F. TC-REG-79** | `python run_tc79.py`, gõ `CHAY` để xác nhận. **Chạy xong thì báo mình reset DB ngay** |
+
+Mức ưu tiên của phiên A hợp lý:
+- **Mức 1 có 36 test case**, gồm mỗi loại lỗi ERR1 đến ERR6 một test case, các biên chính, toàn bộ API và bảo mật. Mình đề xuất **chạy hết mức 1**.
+- **Mức 2** (phần còn lại của nhóm không hợp lệ) chạy nếu còn sức.
+- **Mức 3** để `Not run`.
+
+Một vài lưu ý khi chạy:
+- Mỗi test case dùng **email riêng** theo mẫu `tcNN@domain.com`, nên không cần reset DB giữa các test case.
+- Khi gặp kết quả lạ, ghi đúng những gì nhìn thấy, chưa cần kết luận là bug. Việc phân tích để dành cho S7.
+- Bạn chạy xong một nhóm thì có thể báo mình. Mình sẽ nhờ phiên A đếm và kiểm tra bảng tổng hợp, trong lúc bạn chạy nhóm tiếp theo.
+
+Trong lúc bạn chạy test, bản nháp S2 của phiên C có thể xong. Khi đó mình soát trước và chuẩn bị sẵn các quyết định, để bạn chỉ phải chọn trong một lượt.
+````
+
+---
+
+### C136 | 19:49 20/10/2026 | Tool: Claude Code (n/a) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+<task-notification>
+<task-id>br4hz5zxm</task-id>
+<task-id>bbf1b7lti</task-id>
+<task-id>__orphan_summary__:shell</task-id>
+<status>stopped</status>
+<summary>2 background shell command tasks didn't finish before the previous session ended. Task ids: br4hz5zxm, bbf1b7lti.</summary>
+<note>No completion record was found for them in the previous session. They may have been stopped (via the UI, Monitor timeout, or agent teardown — these leave no transcript marker), or they may have been running when the previous Claude Code process exited. They have been marked stopped. Task ids in this notification beginning with "__orphan_summary" are internal scan markers, not tasks.</note>
+</task-notification>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C137 | 19:52 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi mới về và khởi động lại máy nên cần bạn:
+- Khởi động lại backend và web để tôi test
+- Phiên C đã viết xong. Xem, xuất log và báo lại để điều phối nếu có.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check sessions, port usage, scratchpad
+- Bash: Start EShop backend on port 3000
+- Bash: Start EShop customer web on port 5173
+- Bash: Wait for servers and confirm single listener on 3000
+- Bash: Check S6 progress and read session C S2 result
+- Bash: Export log and record C S2 draft notes
+
+**Output AI (nguyên văn):**
+
+````text
+Máy vừa khởi động lại nên mình kiểm tra 3 việc trước khi bật server: Có phiên Claude mới không, cổng 3000 có bị chiếm lại không (`herobroker-api` có thể tự chạy khi WSL khởi động), và thư mục tạm còn script đọc phiên không:
+
+Không có phiên mới, cổng 3000 và 5173 đều trống. Mình bật backend và web:
+
+## Phiên C: Bản nháp S2 đã xong
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác | ✅ Không vi phạm. Chỉ đọc skill và ghi file `ai_raw/`. Có sửa file 2 lần ngay sau khi tạo, nhưng là trong cùng lượt và trước khi giao, nên hợp lệ |
+| Quy mô | ⚠️ **130 lớp**: 95 lớp Input (27 hợp lệ, 34 không hợp lệ, 34 phụ thuộc giả định) và 35 lớp Output. Lớn gần gấp đôi FR-01 |
+| Đang chờ bạn | Khoảng 20 giả định (A01 đến A25) và 5 điểm về cấu trúc. Mỗi điểm có phương án đề xuất kèm lý do |
+
+**Nhận xét của mình về các đề xuất:** Phần lớn đều hợp lý và bám đặc tả. Một vài điểm nên biết trước khi chọn:
+- **A01 (`percent` tối đa 100%):** Lý do AI đưa ra rất chặt: Trên 100% thì theo chính công thức của FR-09, số tiền sau giảm sẽ âm. Đây là chỗ **AI tự tìm ra**, trùng với điều bạn đã nhập thử ở S0 (E01). Đó là dữ liệu tốt cho S8.
+- **A02, A03 (số thập phân):** AI cũng tự đặt câu hỏi về số thập phân, đúng nhóm E02 đến E04. Ghi chú thêm: `platforms.md` của skill có gợi ý chung về trường số, nên phần này được ghi là "skill có gợi ý", không hoàn toàn là AI tự nghĩ ra.
+- **A05 (c), cho tạo mã với ngày trong quá khứ:** Đặc tả không cấm thật. Nhưng tạo mã đã hết hạn ngay khi vừa tạo là chuyện lạ. Nếu bạn muốn chặt hơn thì chọn phương án khác, còn không thì cứ theo đề xuất.
+- **A22 (b), thêm test case theo đường dẫn của FR-12:** Sẽ làm tăng số test case. Nếu thiếu thời gian thì có thể chọn bỏ.
+
+Với thời gian hiện tại, **chọn "theo đề xuất" là hợp lý**. Chỉ cần thêm một câu dặn về phạm vi, vì ở S3 với 130 lớp có thể ra **hơn 100 test case**:
+
+```text
+Theo đề xuất cho tất cả giả định và 5 điểm cấu trúc. Lưu ý cho S3 sau này: Thời gian gấp, ở S3 hãy đề xuất cách giới hạn số test case (ví dụ nhóm API kiểu dữ liệu và request hỏng chỉ giữ vài đại diện), để tôi chọn trước khi viết.
+```
+
+Nếu bạn muốn khác ở điểm nào (ví dụ A05 hay A22) thì thêm vào tin nhắn.
+
+**Commit bản nháp S2 của C.** Log đã xuất xong ở bước dưới:
 ````
 
 
