@@ -14786,6 +14786,198 @@ Phiên C: Xong rồi, xuất log, kiểm tra và báo tôi.
 Phiên điều phối khởi động lại nên mất thư mục tạm; tôi tạo lại công cụ đọc phiên ở chỗ khác, rồi soát phiên C trước.
 
 Các server đã tắt sau khi khởi động lại. Tôi sẽ bật lại khi B tới S6; lần bật đó cũng tạo lại dữ liệu mẫu. Giờ tôi kiểm số liệu S8 của C.
+
+S8 của C đạt, bạn commit được ngay. Về thời gian: B xong khoảng 8:30 là thực tế, 8:00 thì quá sát. D xong lúc 9:00 thì **không kịp**, dù đã rút gọn. Chi tiết và cách cắt bên dưới.
+
+## Phiên C: S8 đạt
+
+- Bản review giống hệt bản AI trong `ai_raw`. Kiểm định dạng 0 lỗi, không có dấu "—" hay "·".
+- **Số liệu đúng.** Tôi tự đếm lại các bảng thay đổi từ S1 đến S5: 72 dòng, gồm 43 Quyết định của SV, 23 Thiếu, 5 Mơ hồ, 1 Sai. Khớp với số phiên C ghi.
+- **Kết luận chính:** Bản AI gốc bắt được 10 trên 12 bug. Hai bug bị bỏ sót là:
+  - #64: Số 2^53+1 bị lưu sai. Tìm ra nhờ phiên điều phối.
+  - #65: Request không phải JSON gây lỗi 500. Tìm ra nhờ câu hỏi của bạn ở S1.
+
+**Phiên C hỏi 2 điểm. Tôi đề xuất giữ nguyên cả hai:**
+1. **TC-CPN-143 giữ nguyên nhân là "Input".** Thông tin "ô tự viết hoa" là do bạn cố ý giữ lại, không đưa cho AI, nên đúng là lỗi do input. Cách này cũng nhất quán với các test case khác cùng lý do.
+2. **Cách đếm người phát hiện ở dòng "Mục 6" của S4:** Đồng ý. Phiên C đã ghi chú cách đếm ngay dưới bảng.
+
+Vì không đổi gì, bạn commit luôn, không cần gửi lại phiên C:
+
+```
+git add features/C_FR-17_QuanLyCoupon/08_gap_analysis.md features/C_FR-17_QuanLyCoupon/ai_raw/S8_gap_analysis.md prompt_log.md
+git commit -m "[C-FR17][S8] Add AI gap analysis"
+```
+
+(Đứng ở `D:\Dang\Test\Homeworks\HW02`.) Log đã xuất: 248 lượt, đúng 4 phiên.
+
+**Phiên B đang chờ bạn quyết** có thêm kết quả "phản hồi trực quan sau khi bấm Thêm vào giỏ" vào S1 không (tin nhắn ở lượt trước). File `01_io.md` cũng chưa commit.
+
+## Ước tính thời gian (bây giờ 6:21, hạn 12:00)
+
+| Việc | Ước tính | Xong lúc |
+|---|---|---|
+| **B:** S1 chốt, S2, S3, S4 (mỗi bước AI viết khoảng 5 đến 8 phút, bạn review một lượt) | 50 phút | 7:15 |
+| **B:** S5 gộp; S6 chụp khoảng 10 test case, chạy script API, AI điền | 40 phút | 7:55 |
+| **B:** S7 (6 đến 8 issue tạo tay) và S8 | 35 phút | **khoảng 8:30** |
+| **D:** Cài điện thoại, S0 chụp ảnh, S1 đến S5 (quay video, tạm dừng lúc chờ AI) | 1 giờ 30 | 10:00 |
+| **D:** S6 khoảng 5 test case trên điện thoại, S7, S8 | 50 phút | **khoảng 10:50** |
+| **Phần chung:** Report, AI Critique, AI Audit, form, README, PDF, `git_log.txt`, zip, nộp | 1 giờ 30 nếu bắt đầu từ đầu | Quá 12:00 |
+
+**Kết luận:**
+- B xong khoảng 8:30. Muốn 8:00 thì phải bỏ hẳn S6 của B, mà như vậy thì không đáng.
+- D xong lúc 9:00 là không thể. Riêng phần thiết kế có quay video đã mất khoảng 1 giờ 30.
+- Nếu làm lần lượt như vậy, **phần chung sẽ không kịp trước 12:00.**
+
+## Đề xuất để kịp 12:00
+
+1. **Cho tôi viết nháp phần chung ngay bây giờ, song song với lúc bạn làm B và D.** Trước đây bạn không muốn tôi viết nháp. Nhưng giờ đây là cách duy nhất để tiết kiệm khoảng 1 giờ. Tôi dựng từ `_NOTES.md` và khung của HW01, gồm:
+   - `report.md` có link tới các file từng feature.
+   - README: Test Summary của A, C, sau đó B, D, và bảng tự chấm.
+   - Bảng AI Audit và phần khai báo dùng AI.
+   - Bản nháp AI Critique.
+   - Script xuất PDF.
+
+   Bạn chỉ review **một lần** khoảng 10:50, sau khi xong D.
+2. **Tận dụng lúc chờ AI viết:** Khi phiên B đang viết S2, S3, S4, bạn cắm điện thoại, tôi chạy `adb reverse` và bật Expo cho D. Như vậy D vào việc ngay khi B xong.
+3. **Bỏ xuất Word và Excel** bằng skill `test-case-writing` (mục G7). Đề không bắt buộc định dạng này, và các file MD kèm PDF đã đủ.
+4. **Phương án dự phòng cho D:** Nếu 10:15 mà D chưa xong S5, dừng D ở S5 (vẫn có video). Ghi trung thực S6 là Not run trong Test Summary.
+
+Như vậy dự kiến: B xong 8:30, D xong 10:50, bạn review phần chung 10:50 đến 11:30, nộp lúc 11:45, còn 15 phút dự phòng.
+
+**Hai việc cần bạn trả lời:**
+1. Có cho tôi bắt đầu viết nháp phần chung ngay không?
+2. Có thêm phần "phản hồi trực quan" (toast) vào S1 của B không? Chọn "có" thì tốn thêm khoảng 3 phút; "không" thì commit `01_io.md` luôn.
+````
+
+---
+
+### C249 | 06:26 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Viết nháp đi.
+2. Có. Nhưng chúng ta sẽ cố gắng đẩy nhanh tiến độ B lên, không đi quá chi tiết như pool A và C. Skill cũng đã làm tốt phần lên plan rồi mà, tiết kiệm từ S1->S4 đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List folders and read assignment deliverables section
+- Bash: Read audit requirements, HW01 and templates, README
+- Bash: Read HW01 report structure, forms, tools
+- Bash: Read HW01 report sections, form tool, PDF tooling
+- Bash: Find how HW01 produced PDFs
+- Bash: Check PDF requirements in policies and notes
+- Bash: Check form tool settings, browsers, MD file counts
+- Write: D:\Dang\Test\Homeworks\HW02\tools\md_to_pdf.py
+- Bash: Test PDF export on one file
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\08_gap_analysis.pdf
+- Bash: Render sample page to PNG to check layout
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\305c705a-d915-42fa-8501-b411992acb4b\scratchpad\t.png
+- Bash: Gather test case and class counts for A and C
+- Bash: Check A class totals and section headings
+- Bash: Read A partition summary and BVA partitions
+- Bash: Read C partitions, inputs, class summary
+- Bash: Check models used and prompt log structure
+- Write: D:\Dang\Test\Homeworks\HW02\report.md
+- Bash: Count AI Critique words and check dashes
+- Edit: D:\Dang\Test\Homeworks\HW02\report.md
+- Bash: Recount critique words
+- Bash: Fill README summary and check session B progress
+- Bash: Read B S2 response and verify S1 fix and S2 classes
+- Bash: Export log, show status, update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi soạn tin nhắn cho phiên B trước để bạn dán ngay, rồi bắt đầu viết nháp phần chung.
+
+**Tin nhắn dán vào phiên B:**
+
+```text
+1. Bổ sung vào 01_io.md: Thiếu output "phản hồi trực quan sau khi bấm Thêm vào giỏ" (toast hoặc badge cập nhật), căn cứ FR-24 ý 1 và FR-06 ý 3; FR-24 áp cho mọi nút Thêm vào giỏ, mà IN3 có cả đường trang chủ (phần badge đã có ở FR07-R24). Thêm yêu cầu FR07-R33 và một OUT; ghi bảng thay đổi loại Thiếu, người phát hiện: Claude ở phiên điều phối (305c705a). Không sửa 00_spec.md, chỉ ghi chú ở 01_io.md rằng mục 3.6 của S0 được điều chỉnh.
+
+2. Từ S2 đến S4: Thời gian rất gấp (cần xong cả FR-07 trước 8:30), làm gọn hơn FR-01 và FR-17:
+- Mục tiêu cả bộ khoảng 35 đến 45 test case. Lớp tương đương chỉ chia ở mức cần cho kết quả khác nhau; BVA chỉ cho phân vùng có thứ tự thật sự (số lượng, số dòng trong giỏ).
+- Chỉ dừng hỏi trước khi viết nếu quyết định thay đổi cấu trúc cả bản. Các điểm nhỏ thì áp luôn phương án bạn đề xuất, liệt kê trong mục quyết định để tôi xem lại một lượt khi review.
+- Văn bản ngắn gọn, không cần ví dụ dài.
+Sau khi sửa xong mục 1 thì làm luôn S2. Không cần đưa lệnh commit.
+```
+
+Tôi sẽ soát `01_io.md` khi bạn báo, và đưa lệnh commit S1 kèm bản AI của S2.
+
+PDF hiển thị tốt: tiếng Việt, bảng và mã đều đúng. Giờ tôi gom số liệu của A và C để viết `report.md`.
+
+Đã đủ số liệu. Tôi viết `report.md`.
+
+Tôi đếm số chữ của bản nháp AI Critique (đề yêu cầu 200 đến 300 từ) và kiểm định dạng.
+
+Bản nháp dài 316 từ, vượt giới hạn 300. Tôi rút gọn.
+
+Bản nháp còn 295 từ. Giờ tôi điền README, rồi xem phiên B đã tới đâu.
+
+Phiên B đã sửa S1 và viết xong bản AI của S2. Tôi đọc toàn bộ lượt trả lời và kiểm file.
+````
+
+---
+
+### C250 | 06:27 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Bổ sung vào 01_io.md: Thiếu output "phản hồi trực quan sau khi bấm Thêm vào giỏ" (toast hoặc badge cập nhật), căn cứ FR-24 ý 1 và FR-06 ý 3; FR-24 áp cho mọi nút Thêm vào giỏ, mà IN3 có cả đường trang chủ (phần badge đã có ở FR07-R24). Thêm yêu cầu FR07-R33 và một OUT; ghi bảng thay đổi loại Thiếu, người phát hiện: Claude ở phiên điều phối (305c705a). Không sửa 00_spec.md, chỉ ghi chú ở 01_io.md rằng mục 3.6 của S0 được điều chỉnh.
+
+2. Từ S2 đến S4: Thời gian rất gấp (cần xong cả FR-07 trước 8:30), làm gọn hơn FR-01 và FR-17:
+- Mục tiêu cả bộ khoảng 35 đến 45 test case. Lớp tương đương chỉ chia ở mức cần cho kết quả khác nhau; BVA chỉ cho phân vùng có thứ tự thật sự (số lượng, số dòng trong giỏ).
+- Chỉ dừng hỏi trước khi viết nếu quyết định thay đổi cấu trúc cả bản. Các điểm nhỏ thì áp luôn phương án bạn đề xuất, liệt kê trong mục quyết định để tôi xem lại một lượt khi review.
+- Văn bản ngắn gọn, không cần ví dụ dài.
+Sau khi sửa xong mục 1 thì làm luôn S2. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read S2 guide, verify item 1 present
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S2_equivalence_classes.md
+- Bash: Check format and count classes
+
+**Output AI (nguyên văn):**
+
+````text
+Mục 1 đã làm ở lượt trước (FR07-R33, OUT15, 2 dòng "Thiếu", mục 7.1 ghi điều chỉnh mục 3.6 của S0), nên không cần sửa thêm. Giờ làm S2; trước tiên đọc hướng dẫn S2.
+
+Mục 1 không cần sửa thêm: `01_io.md` đã có FR07-R33, OUT15, ghi chú điều chỉnh mục 3.6 của S0 và 2 dòng "Thiếu" ghi người phát hiện là phiên điều phối (305c705a), từ lượt trước.
+
+Mình đã viết bản AI của S2: [ai_raw/S2_equivalence_classes.md](Homeworks/HW02/features/B_FR-07_GioHang/ai_raw/S2_equivalence_classes.md). Script kiểm tra không báo lỗi định dạng và đếm được **32 lớp: 25 hợp lệ, 7 không hợp lệ**. Không có điểm nào làm đổi cấu trúc cả bản, nên mình không dừng lại hỏi trước khi viết.
+
+**Cách chia cho gọn:**
+- **Lớp không hợp lệ (7):** Số lượng nhỏ hơn 1, số lượng thập phân, số lượng không phải số, thiếu trường `quantity`, `id` không tồn tại, thiếu token, token sai.
+- **Không lập lớp riêng:** Số lượng hiện tại của dòng (đã nằm trong lớp bấm giảm ở số lượng 1 và từ 2); giá dưới 1,000,000 (phải nhờ admin sửa giá); `price` bằng 0 hoặc âm (theo A24 hệ thống không dùng `price` client gửi, nên kết quả giống lớp "giá khác CSDL").
+- **Lớp Output:** Gom thành bảng "Output và các lớp Input dẫn tới", không đánh mã EC riêng.
+
+**Các phương án mình đã áp luôn**, để bạn duyệt một lượt khi review (mục 2 và mục 6 trong file):
+
+| Mã | Đã áp |
+|---|---|
+| A01, A02 | Thành tiền = Đơn giá × Số lượng; Tổng cộng = tổng Thành tiền, không cộng phí, không trừ giảm giá |
+| A04 | Bấm giảm ở số lượng 1: Đạt nếu số lượng không xuống dưới 1, hoặc dòng bị xóa nhưng có hiện dialog xác nhận |
+| A05, A06, A07 | Số lượng không có cận trên; trong giỏ không gõ trực tiếp được; nút +/- đổi 1 đơn vị |
+| A08, A09 | Thêm trùng thì tăng đúng số lượng thêm (từ trang chủ là 1); "cùng sản phẩm" xét theo `id` |
+| A10, A11 | Hủy dialog thì giỏ giữ nguyên; xóa dòng cuối thì hiện ngay trạng thái giỏ trống |
+| A16, A17, A18 | Giỏ tách theo người dùng; badge đếm tổng số lượng; khi giỏ trống badge ẩn hoặc hiện 0 đều đạt |
+| A20, A22, A30 | Tiêu chí giỏ trống; nút nào tính màu xanh, nút nào màu đỏ; liên kết "Tiếp tục mua sắm" được tính là nút |
+| A24, A25 | Qua API, giỏ dùng giá trong CSDL chứ không dùng `price` client gửi; dữ liệu sai thì bị từ chối và giỏ không đổi (không xét mã lỗi hay câu chữ) |
+| A31 (mới) | Thêm vào giỏ bị từ chối thì không hiện toast thành công |
+| Quyết định 2 | Số lượng không hợp lệ kiểm qua API; riêng giá trị 0 kiểm thêm qua ô "Số lượng:" ở trang chi tiết (dời sang S4) |
+| Quyết định 3 | Vẫn thiết kế test case cho nút +/-, dự kiến Blocked ở S6 vì giao diện không có nút |
+| Quyết định 4 | Không lập lớp giá dưới 1,000,000, giá 0, giá âm |
+
+**Ghi chú cho S3 và S4:**
+- **Phân vùng có thứ tự để làm BVA:** Số lượng thêm (cận dưới 1, không có cận trên), số lượng khi bấm giảm (cận 1), số dòng trong giỏ (0, 1, từ 2).
+- **Biên 1,000,000,000 của định dạng tiền:** Chỉ lấy được giá trị gần biên, ví dụ MacBook Pro M3 × 23 = 1,035,000,000; không tạo được đúng 999,999,999 từ dữ liệu mẫu.
+- **S3:** Mỗi đường thêm vào giỏ một test case đại diện, theo quyết định 10 ở S1.
+
+Bạn review S2 thì gửi luôn các điểm muốn đổi trong một lần, mình viết `02_ec.md` rồi làm tiếp S3.
 ````
 
 

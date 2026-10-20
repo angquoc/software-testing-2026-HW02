@@ -29,13 +29,13 @@ SUT: [EShop](https://github.com/ttbhanh/eshop-sut) (commit `85af3ba`)
 
 ## Test Summary Report
 
-_(Điền khi thực thi xong)_
+Số feature: 4. "Đã chạy" gồm cả test case Blocked, Khác giả định, Không áp dụng; trạng thái chi tiết ở `06_results.md` của từng feature. Bug: Số issue trên GitHub của nhóm.
 
 | Feature | TC thiết kế | Đã chạy | Pass | Fail | Chưa chạy | Bug |
 |---|---|---|---|---|---|---|
-| A: FR-01 | | | | | | |
+| A: FR-01 | 96 | 46 | 9 | 19 | 50 | 13 (#42 đến #54) |
 | B: FR-07 | | | | | | |
-| C: FR-17 | | | | | | |
+| C: FR-17 | 115 | 46 | 26 | 13 | 69 | 12 (#55 đến #66) |
 | D: FR-04 (Mobile) | | | | | | |
 | **Tổng** | | | | | | |
 
