@@ -1,0 +1,461 @@
+# S3: Chọn test case (FR-17 Quản lý mã giảm giá)
+
+- Bước: S3 (Chọn test case: Bảng phủ lớp, Minimum Set, ma trận truy vết, theo Step 3 của slide S04)
+- Thời gian tạo: 2026-10-20 20:18 (UTC+07:00)
+- Căn cứ: `00_spec.md` (mục 2, 4); `01_io.md` (mục 2 đến 8); `02_ec.md` (toàn bộ, kể cả cập nhật lần 1); `Homeworks/eshop-sut/README.md` (mục 1, FR-17); `Homeworks/eshop-sut/api_specification.md` (mục 1.2, 5.2, 6.4)
+- Quyết định sinh viên chốt trước khi viết:
+  1. Giới hạn số test case: B (gộp lớp cùng quy tắc vào test case dạng bảng, mỗi dòng một request chỉ sai một lớp), A1 (thu gọn tổ hợp người gọi API), A2 (lớp thập phân, lớp âm chạy qua giao diện, bản API là dự phòng). Không dùng C: Mọi lớp đều có test case.
+  2. Trình bày: Markdown ở S3, S4; xuất Word, Excel bằng skill `test-case-writing` ở S5.
+  3. Mã test case `TC-CPN-NN`; `code` của dữ liệu test theo mẫu `FR17TCNN` (NN là số test case).
+  4. Lớp ký tự SQL (EC13) dùng chuỗi không phá dữ liệu.
+
+---
+
+## 1. Cách làm
+
+- Theo Step 3 của slide S04: Mỗi lớp có ít nhất một test case; test case hợp lệ phủ càng nhiều lớp hợp lệ càng tốt; mỗi test case không hợp lệ chỉ phủ đúng một lớp không hợp lệ.
+- Lớp cơ sở gộp vào test case cơ sở; **mỗi lớp hợp lệ bất thường một test case riêng**, để khi thất bại biết lớp nào gây lỗi.
+- Test case dạng bảng (quyết định 1, cách B): Một test case gồm nhiều dòng; **mỗi dòng là một request riêng chỉ có một input thuộc lớp đang xét**, các input khác lấy giá trị cơ sở. Kết quả ghi theo từng dòng; test case đạt khi mọi dòng đạt. Đây là cách trình bày, không phải gộp nhiều lớp không hợp lệ vào một request.
+- Đường thực thi theo cột "Đường" của `02_ec.md`: Lớp `GD, API` chạy qua giao diện; lớp `API` chạy qua API. Ngoại lệ theo A2: Bản API dự phòng (TC-CPN-82).
+- Dải mã: 01 đến 29 hợp lệ qua giao diện; 30 đến 49 không hợp lệ qua giao diện; 50 đến 59 Xem, Xóa qua giao diện; 60 đến 89 API; 90 đến 99 checklist; 100 trở đi để dành cho S4.
+- `␣` là một dấu cách. Mã yêu cầu viết tắt `Rnn` thay cho `FR17-Rnn`.
+
+## 2. Quy ước chung
+
+### 2.1 Tiền điều kiện và môi trường
+
+- PC1 (giao diện): Đăng nhập Web Admin `http://localhost:5174` bằng `admin@eshop.com` / `Admin123!`, mở menu "Mã Giảm Giá".
+- PC2: Reset dữ liệu mẫu trước đợt test (4 mã `SAVE10`, `BIGBUY`, `VIP100`, `EXPIRED`).
+- API: Lấy token bằng `POST /api/login` (API spec mục 1.2). Token admin dùng `admin@eshop.com`; token user thường dùng `test@eshop.com` / `Test1234!` (README mục 1). Base URL `http://localhost:3000`.
+- Ghi lại ở S6: Ngày chạy, múi giờ, trình duyệt và phiên bản.
+
+### 2.2 Giá trị cơ sở
+
+Dùng cho mọi input không phải đối tượng của test case.
+
+| Input | Giao diện | API |
+|---|---|---|
+| `code` | `FR17TCNN` (NN là số test case; dòng của test case dạng bảng thêm chữ `A`, `B`, `C`...) | `"FR17TCNN"` |
+| `type` | "Phần trăm (%)" | `"percent"` |
+| `discount_value` | `15` | `15` |
+| `min_order_amount` | `300000` | `300000` |
+| `expired_at` | `12/31/2099` (ô hiển thị `mm/dd/yyyy`) | `"2099-12-31"` |
+| `max_uses_per_user` | `3` (không dùng giá trị mặc định `1`, để thấy ô thật sự được gửi) | `3` |
+
+Với `type` là "Số tiền cố định (₫)", `discount_value` cơ sở là `50000`.
+
+Body API cơ sở, `Content-Type: application/json`, `Authorization: Bearer <token admin>`:
+
+```json
+{"code": "FR17TCNN", "type": "percent", "discount_value": 15, "min_order_amount": 300000, "expired_at": "2099-12-31", "max_uses_per_user": 3}
+```
+
+### 2.3 Quy trình và kết quả mong đợi chung
+
+| Mã | Áp cho | Nội dung |
+|---|---|---|
+| QT-GD | Thêm qua giao diện | Nhập 6 ô theo dữ liệu của test case, bấm "Tạo mã" |
+| KQ-H-GD | Lớp hợp lệ qua giao diện | Bảng có thêm dòng với `code` của test case; các cột khớp giá trị đã nhập (tiền có `₫` và phân cách hàng nghìn); tải lại trang, dòng vẫn còn (K1). Thông báo thành công, form có được xóa hay không: Ghi lại, không bắt buộc (A19) |
+| KQ-KH-GD | Lớp không hợp lệ qua giao diện | Không có dòng mới, kể cả sau khi tải lại trang (K3); có thông báo chỉ ra đúng nguyên nhân (mã ERR của test case), nằm **trên** nút "Tạo mã" (OUT4, R13). Bong bóng của trình duyệt cũng tính là thông báo nhưng vẫn xét vị trí (A21). Ghi lại: Câu chữ, dữ liệu có được giữ lại không |
+| KQ-H-API | Lớp hợp lệ qua API | Phản hồi 2xx; `GET /api/coupons` có mã với đúng giá trị đã gửi |
+| KQ-KH-API | Lớp không hợp lệ qua API | Phản hồi 4xx, không phải 5xx (A20); `GET /api/coupons` không có mã của test case (hoặc số mã không đổi). Ghi lại mã trạng thái và body thực tế |
+
+Mọi phản hồi 5xx đều là "Sai", kể cả ở lớp chấp nhận nhiều kết quả.
+
+## 3. Test case hợp lệ qua giao diện (Thêm)
+
+Quy trình QT-GD; kết quả KQ-H-GD, cộng phần riêng ở cột "Kết quả mong đợi".
+
+| Mã | Lớp phủ | Dữ liệu (khác giá trị cơ sở) | Kết quả mong đợi | Kiểm chứng thêm | Yêu cầu |
+|---|---|---|---|---|---|
+| TC-CPN-01 | EC01, EC08, EC15, EC24, EC30, EC44, EC53, EC62, EC82 | Không (cơ sở, loại `percent`) | OUT1; dòng hiện `FR17TC01`, "Phần trăm", `15%`, `300,000 ₫`, `2099-12-31`, `3 lần` | | R01, R02, R04 đến R10, R14 |
+| TC-CPN-02 | EC25, EC35 (cùng các lớp cơ sở còn lại) | "Số tiền cố định (₫)", `discount_value` `50000` | OUT1; cột "Giá trị" hiện `50,000 ₫` | | R01, R06, R07, R14 |
+| TC-CPN-03 | EC04 | `code`: `␣FR17TC03` | OUT1; cột "Mã" hiện `FR17TC03`, không có khoảng trắng | K5: Tạo lại `FR17TC03`, mong đợi ERR2 | R04, R05 |
+| TC-CPN-04 | EC05 | `code`: `FR17TC04␣` | Như TC-CPN-03 với `FR17TC04` | K5: Tạo lại `FR17TC04`, mong đợi ERR2 | R04, R05 |
+| TC-CPN-05 | EC06 | `code`: `FR17␣TC05` | OUT1; cột "Mã" hiện `FR17␣TC05`, giữ khoảng trắng ở giữa | K5: Tạo `FR17TC05` (không khoảng trắng), mong đợi OUT1 vì là mã khác (A09) | R01 |
+| TC-CPN-06 | EC07 | `code`: `fr17tc06` | OUT1; cột "Mã" hiện `fr17tc06` hoặc `FR17TC06` đều đạt (A10) | K5: Tạo lại `FR17TC06`, mong đợi ERR2 (A04 so trùng) | R01, R05 |
+| TC-CPN-07 | EC09 | `code`: `0017007` | OUT1; cột "Mã" hiện đúng `0017007`, không mất số 0 ở đầu | | R01, R15 |
+| TC-CPN-08 | EC10 | `code`: `FR17-TC_08` | OUT1; cột "Mã" hiện đúng `FR17-TC_08` | | R01 |
+| TC-CPN-09 | EC11 | `code`: `TẾTFR17TC09` | OUT1; cột "Mã" hiện đúng `TẾTFR17TC09` (hoặc dạng chữ hoa của nó), không lỗi font, không thành ký tự lạ | | R01, R15 |
+| TC-CPN-10 | EC12 | `code`: `<b>FR17TC10</b>` | OUT1; cột "Mã" hiện nguyên chuỗi `<b>FR17TC10</b>` dạng chữ, chữ không in đậm (OUT3) | | R15 |
+| TC-CPN-11 | EC13 | `code`: `FR17TC11'OR'1` | OUT1; cột "Mã" hiện nguyên văn; 4 mã mẫu giữ nguyên mọi cột | K2: Tạo lại đúng chuỗi đó, mong đợi ERR2 (chuỗi được lưu nguyên văn) | R16 |
+| TC-CPN-12 | EC14 | `code`: `FR17TC12` + 247 chữ `X` (255 ký tự) | Đạt nếu: OUT1 và cột "Mã" có đủ 255 ký tự; hoặc bị từ chối với thông báo nói rõ `code` quá dài (ERR22). Sai nếu: Lưu bị cắt cụt, lỗi máy chủ | Ghi lại số ký tự ô nhận được | R01 |
+| TC-CPN-13 | EC21, EC71 | Bước 1: Tạo `FR17TC13`. Bước 2: Xóa dòng `FR17TC13`. Bước 3: Tạo lại `FR17TC13` | Bước 3: OUT1 (A16 (ii)(a)) | K8 | R03, R05 |
+| TC-CPN-14 | EC31 | `discount_value`: `100` | OUT1; cột "Giá trị" hiện `100%` | | R07 |
+| TC-CPN-15 | EC34 | `discount_value`: `12.5` | OUT1; cột "Giá trị" hiện `12.5%` | Nếu trình duyệt chặn, chạy dòng tương ứng của TC-CPN-82 | R07 |
+| TC-CPN-16 | EC37 | "Số tiền cố định (₫)", `discount_value` `1000.5` | OUT1; ghi lại cách cột "Giá trị" hiển thị | K6: `GET /api/coupons` có `discount_value` là `1000.5`. Nếu trình duyệt chặn, chạy TC-CPN-82 | R07 |
+| TC-CPN-17 | EC38 | "Số tiền cố định (₫)", `discount_value` `500000` | OUT1 (A12 (a)) | | R07, R09 |
+| TC-CPN-18 | EC39 | "Số tiền cố định (₫)", `discount_value` `10000000000000000` (`1` và 16 chữ số `0`) | Đạt nếu: OUT1 và cột "Giá trị" hiện đúng `10,000,000,000,000,000 ₫`; hoặc bị từ chối với thông báo nói rõ trường bị vượt (ERR22). Sai nếu: Hiển thị hoặc lưu giá trị khác, lỗi máy chủ | K6 | R07 |
+| TC-CPN-19 | EC45 | `min_order_amount`: `0` | OUT1; cột "Đơn tối thiểu" hiện `0 ₫` | | R09 |
+| TC-CPN-20 | EC47 | `min_order_amount`: `1000.5` | OUT1; ghi lại cách cột "Đơn tối thiểu" hiển thị | K6: `GET` có `min_order_amount` là `1000.5`. Nếu trình duyệt chặn, chạy TC-CPN-82 | R09 |
+| TC-CPN-21 | EC48 | `min_order_amount`: `10000000000000000` | Như TC-CPN-18, với cột "Đơn tối thiểu" | K6 | R09 |
+| TC-CPN-22 | EC54, EC83 | `expired_at`: Ngày chạy test | OUT1 (A05 (c)); cột "Hết hạn" hiện chữ "Hết hạn" (A18 (b)) | Ghi ngày chạy | R02, R08 |
+| TC-CPN-23 | EC55, EC84 | `expired_at`: `01/31/2025` | OUT1 (A05 (c)); cột "Hết hạn" hiện chữ "Hết hạn" | | R02, R08 |
+| TC-CPN-24 | EC57 | `expired_at`: `02/29/2028` | OUT1; cột "Hết hạn" hiện `2028-02-29` | | R08 |
+| TC-CPN-25 | EC65 | `max_uses_per_user`: `10000000000000000` | Như TC-CPN-18, với cột "Giới hạn/người" | K6 | R10 |
+
+## 4. Test case không hợp lệ qua giao diện (Thêm)
+
+Quy trình QT-GD; kết quả KQ-KH-GD với mã lỗi ở cột "Kết quả mong đợi". Mỗi test case chỉ có một input thuộc lớp không hợp lệ.
+
+| Mã | Lớp phủ | Dữ liệu (khác giá trị cơ sở) | Kết quả mong đợi | Ghi chú | Yêu cầu |
+|---|---|---|---|---|---|
+| TC-CPN-30 | EC02 | `code`: Để trống | ERR1 | | R04, R13 |
+| TC-CPN-31 | EC03 | `code`: `␣␣␣` | ERR1 | | R04, R13 |
+| TC-CPN-32 | EC16 | `code`: `SAVE10` | ERR2; dòng `SAVE10` cũ giữ nguyên giá trị | Cần dữ liệu mẫu nguyên vẹn | R05, R13 |
+| TC-CPN-33 | EC17 | Bước 1: Tạo `FR17TC33` (mong đợi OUT1). Bước 2: Tạo lại `FR17TC33` | Bước 2: ERR2; bảng chỉ có một dòng `FR17TC33` | | R05, R13 |
+| TC-CPN-34 | EC18 | `code`: `save10` | ERR2 | Cần dữ liệu mẫu nguyên vẹn | R05, R13 |
+| TC-CPN-35 | EC19 | `code`: `␣SAVE10` | ERR2 | Cần dữ liệu mẫu nguyên vẹn | R05, R13 |
+| TC-CPN-36 | EC20 | `code`: `EXPIRED` | ERR2 | Chạy trước TC-CPN-55 | R05, R13 |
+| TC-CPN-37 | EC32 | `discount_value`: `150` | ERR17 | | R07, R13 |
+| TC-CPN-38 | EC33 | `discount_value`: `0` | ERR6 | | R07, R13 |
+| TC-CPN-39 | EC36 | "Số tiền cố định (₫)", `discount_value` `0` | ERR6 | | R07, R13 |
+| TC-CPN-40 | EC40 | `discount_value`: Để trống | ERR5 | | R07, R13 |
+| TC-CPN-41 | EC46 | `min_order_amount`: `-1` | ERR9 | Nếu trình duyệt chặn, chạy dòng tương ứng của TC-CPN-82 | R09, R13 |
+| TC-CPN-42 | EC49 | `min_order_amount`: Xóa giá trị mặc định, để trống | ERR8 | | R09, R13 |
+| TC-CPN-43 | EC56 | `expired_at`: Để trống | ERR7 | | R08, R13 |
+| TC-CPN-44 | EC63 | `max_uses_per_user`: `0` | ERR11 | | R10, R13 |
+| TC-CPN-45 | EC64 | `max_uses_per_user`: `1.5` | ERR20 | Nếu trình duyệt chặn, chạy TC-CPN-82 | R10, R13 |
+| TC-CPN-46 | EC66 | `max_uses_per_user`: Xóa giá trị mặc định, để trống | ERR10 | | R10, R13 |
+
+## 5. Xem và Xóa qua giao diện
+
+| Mã | Lớp phủ | Bước | Kết quả mong đợi | Kiểm chứng | Yêu cầu |
+|---|---|---|---|---|---|
+| TC-CPN-50 | EC80, EC82, EC84 | Ngay sau khi reset, mở trang "Mã Giảm Giá" | OUT5: Có 4 dòng `SAVE10`, `BIGBUY`, `VIP100`, `EXPIRED`, đủ 7 cột; giá trị khớp bảng mã mẫu của FR-09; tiền có `₫` và phân cách hàng nghìn; `SAVE10` hiện `2099-12-31`; `EXPIRED` hiện chữ "Hết hạn" (A18) | | R02, R14 |
+| TC-CPN-51 | EC71, EC78 | Bước 1: Tạo `FR17TC51`. Bước 2: Bấm "Xóa" trên dòng `FR17TC51`; nếu có hộp thoại thì chọn đồng ý | OUT8: Dòng biến mất; các dòng khác giữ nguyên | K7: Tải lại trang, dòng không còn. K8: Tạo lại `FR17TC51`, mong đợi OUT1 | R03 |
+| TC-CPN-52 | EC79 | Bước 1: Tạo `FR17TC52`. Bước 2: Bấm "Xóa" trên dòng đó, chọn hủy ở hộp thoại | OUT10: Dòng `FR17TC52` còn nguyên sau khi tải lại trang. **Không áp dụng** nếu không có hộp thoại (A07 (b)) | | R03 |
+| TC-CPN-53 | EC76 | Bước 1: Tạo `FR17TC53`. Bước 2: Mở trang ở tab thứ hai. Bước 3: Ở tab 1, xóa `FR17TC53`. Bước 4: Ở tab 2 (chưa tải lại), bấm "Xóa" trên dòng `FR17TC53` | Bước 4: Giao diện báo lỗi (ERR14) hoặc tự cập nhật danh sách, cả hai đều đạt (A24); số dòng của các mã khác không đổi sau khi tải lại | | R03 |
+| TC-CPN-54 | EC70 | Bấm "Xóa" trên dòng `BIGBUY` | OUT8; tải lại trang, `BIGBUY` không còn; 3 mã mẫu còn lại giữ nguyên | **Phá dữ liệu mẫu**: Chạy ở nhóm cuối (mục 9) | R03 |
+| TC-CPN-55 | EC72 | Bấm "Xóa" trên dòng `EXPIRED` | OUT8; tải lại trang, `EXPIRED` không còn | **Phá dữ liệu mẫu**: Chạy sau TC-CPN-36, TC-CPN-50 | R03 |
+| TC-CPN-56 | EC81 | Xóa lần lượt mọi mã đang có | OUT6: Trang hiện trạng thái trống có icon hoặc hình minh họa và message thân thiện (FR-24); `GET /api/coupons` trả về danh sách rỗng (OUT7) | **Chạy cuối cùng**, reset dữ liệu ngay sau đó | R02, R18 |
+
+## 6. Nhóm API
+
+Kết quả KQ-H-API hoặc KQ-KH-API, cộng phần riêng ở cột "Kết quả mong đợi". Test case dạng bảng có bảng chi tiết ở mục 6.2.
+
+### 6.1 Danh sách test case API
+
+| Mã | Lớp phủ | Thao tác | Dữ liệu | Kết quả mong đợi | Yêu cầu |
+|---|---|---|---|---|---|
+| TC-CPN-60 | EC85, EC90 (cùng các lớp cơ sở) | `POST /api/admin/coupons` | Body cơ sở, `code` `FR17TC60` | OUT2: 2xx; `FR17TC60` có trong `GET` và trong bảng trên giao diện với đúng giá trị | R01, R11 |
+| TC-CPN-61 | EC80, EC85 | `GET /api/coupons` | Token admin, ngay sau reset | OUT7: 2xx; danh sách có 4 mã mẫu; mỗi mã có đủ 6 trường đã nhập và `id` (A17). Thiếu `id` thì ghi lại; TC-CPN-62, TC-CPN-71, TC-CPN-78, TC-CPN-79, TC-CPN-81 ghi Blocked | R02, R11 |
+| TC-CPN-62 | EC71, EC85 | Bước 1: Tạo `FR17TC62` bằng API. Bước 2: Lấy `id` từ `GET`. Bước 3: `DELETE /api/admin/coupons/<id>` | OUT9: 2xx; `FR17TC62` không còn trong `GET` (K7) | R03, R11 |
+| TC-CPN-63 | EC23 | `POST` | `"code": 2026` (số JSON) | 2xx; `GET` có mã `2026` (A14 (b)) | R04 |
+| TC-CPN-64 | EC42, EC51, EC68 | `POST` | Dạng bảng, 3 dòng (mục 6.2) | Mỗi dòng: 2xx; `GET` có giá trị dạng số đúng (A14 (b)) | R07, R09, R10 |
+| TC-CPN-65 | EC26, EC27, EC28 | `POST` | Dạng bảng, 3 dòng | Mỗi dòng: 4xx (ERR3 hoặc ERR4); mã không được tạo | R06 |
+| TC-CPN-66 | EC22, EC29, EC43, EC52, EC61, EC69 | `POST` | Dạng bảng, 6 dòng | Mỗi dòng: 4xx, lỗi thiếu của đúng trường (A14); mã không được tạo | R04, R06 đến R10 |
+| TC-CPN-67 | EC41, EC50, EC67 | `POST` | Dạng bảng, 3 dòng | Mỗi dòng: 4xx (ERR15); mã không được tạo | R07, R09, R10 |
+| TC-CPN-68 | EC58, EC59, EC60 | `POST` | Dạng bảng, 3 dòng | Mỗi dòng: 4xx (ERR15); mã không được tạo | R08 |
+| TC-CPN-69 | EC91, EC92, EC93, EC94 | `POST` | Dạng bảng, 4 dòng | Mỗi dòng: 4xx (ERR16; với dòng 2 đến 4, lỗi "thiếu mọi trường" cũng đạt) (A23); mã không được tạo; không 5xx | R01 |
+| TC-CPN-70 | EC95 | `POST` | Body `{}` | 4xx; số mã trong `GET` không đổi. Ghi lại thông báo liệt kê đủ 6 trường thiếu hay chỉ một. **Ngoại lệ:** Vi phạm 6 lớp không hợp lệ cùng lúc (ERR1, ERR3, ERR5, ERR7, ERR8, ERR10); mục đích duy nhất là kiểm hệ thống từ chối an toàn | R04, R06 đến R10 |
+| TC-CPN-71 | EC73, EC74, EC75 | `DELETE /api/admin/coupons/<id>` | Dạng bảng, 3 dòng | Mỗi dòng: 2xx hoặc 4xx đều đạt, không 5xx (A15 (b)); số mã trong `GET` không đổi (trừ mã dòng 3 tự xóa ở bước chuẩn bị) | R03 |
+| TC-CPN-72 | EC86 | `POST` | Không có header `Authorization`; `code` `FR17TC72` | ERR12: 4xx; `FR17TC72` không có trong `GET` (dùng token admin để xem) | R11 |
+| TC-CPN-73 | EC87 | `POST` | `Authorization: <token admin>` (thiếu `Bearer`); `code` `FR17TC73` | ERR12: 4xx; mã không được tạo | R11 |
+| TC-CPN-74 | EC88 | `POST` | `Authorization: Bearer abc.def.ghi`; `code` `FR17TC74` | ERR12: 4xx; mã không được tạo | R11 |
+| TC-CPN-75 | EC89 | `POST` | Token user thường; `code` `FR17TC75` | ERR13: 4xx; mã không được tạo | R11 |
+| TC-CPN-76 | EC86 | `GET /api/coupons` | Không có header `Authorization` | ERR12: 4xx; không trả về danh sách mã | R11 |
+| TC-CPN-77 | EC89 | `GET /api/coupons` | Token user thường | ERR13: 4xx; không trả về danh sách mã | R11 |
+| TC-CPN-78 | EC86 | `DELETE /api/admin/coupons/<id>` | Bước 1: Tạo `FR17TC78` bằng token admin, lấy `id`. Bước 2: Xóa không có header | ERR12: 4xx; `FR17TC78` vẫn còn trong `GET` | R03, R11 |
+| TC-CPN-79 | EC89 | `DELETE /api/admin/coupons/<id>` | Như TC-CPN-78 với `FR17TC79`, bước 2 dùng token user thường | ERR13: 4xx; `FR17TC79` vẫn còn | R03, R11 |
+| TC-CPN-80 | EC86 (đường FR-12) | `POST /api/coupons` | Body cơ sở, `code` `FR17TC80`, không có header | Mã không được tạo (kiểm bằng `GET` với token admin); không 5xx. Phản hồi 404 (đường không tồn tại) cũng đạt (A22 (b)) | R11 |
+| TC-CPN-81 | EC89 (đường FR-12) | `DELETE /api/coupons/<id>` | Bước 1: Tạo `FR17TC81` bằng token admin, lấy `id`. Bước 2: Xóa bằng token user thường | `FR17TC81` vẫn còn; không 5xx. Phản hồi 404 cũng đạt | R11 |
+| TC-CPN-82 | EC34, EC37, EC47, EC64, EC46, EC63 (dự phòng A2) | `POST` | Dạng bảng, 6 dòng | Theo từng dòng (mục 6.2). **Chỉ chạy dòng nào** mà test case giao diện tương ứng bị trình duyệt chặn trước khi gửi; dòng không chạy ghi "Không chạy, giao diện đã gửi được" | R07, R09, R10 |
+
+### 6.2 Chi tiết test case dạng bảng
+
+Mỗi dòng là một request riêng với body cơ sở, chỉ thay đúng trường ghi ở cột "Thay đổi".
+
+**TC-CPN-64: Chuỗi chứa số (hợp lệ, A14 (b))**
+
+| Dòng | Lớp | `code` | Thay đổi | Kết quả mong đợi |
+|---|---|---|---|---|
+| A | EC42 | `FR17TC64A` | `"discount_value": "15"` | 2xx; `GET` có `discount_value` 15 |
+| B | EC51 | `FR17TC64B` | `"min_order_amount": "300000"` | 2xx; `GET` có `min_order_amount` 300000 |
+| C | EC68 | `FR17TC64C` | `"max_uses_per_user": "3"` | 2xx; `GET` có `max_uses_per_user` 3 |
+
+**TC-CPN-65: `type` không hợp lệ**
+
+| Dòng | Lớp | `code` | Thay đổi | Kết quả mong đợi |
+|---|---|---|---|---|
+| A | EC26 | `FR17TC65A` | Bỏ trường `type` | 4xx (ERR3); mã không được tạo |
+| B | EC27 | `FR17TC65B` | `"type": "free"` | 4xx (ERR4); mã không được tạo |
+| C | EC28 | `FR17TC65C` | `"type": "PERCENT"` | 4xx (ERR4, A11 (a)); mã không được tạo |
+
+**TC-CPN-66: `null` hoặc chuỗi rỗng (A14)**
+
+| Dòng | Lớp | `code` | Thay đổi | Kết quả mong đợi |
+|---|---|---|---|---|
+| A | EC22 | (đối tượng) | `"code": null` | 4xx (ERR1); số mã trong `GET` không đổi |
+| B | EC29 | `FR17TC66B` | `"type": ""` | 4xx (ERR3); mã không được tạo |
+| C | EC43 | `FR17TC66C` | `"discount_value": null` | 4xx (ERR5); mã không được tạo |
+| D | EC52 | `FR17TC66D` | `"min_order_amount": null` | 4xx (ERR8); mã không được tạo |
+| E | EC61 | `FR17TC66E` | `"expired_at": ""` | 4xx (ERR7); mã không được tạo |
+| F | EC69 | `FR17TC66F` | `"max_uses_per_user": null` | 4xx (ERR10); mã không được tạo |
+
+**TC-CPN-67: Không phải số**
+
+| Dòng | Lớp | `code` | Thay đổi | Kết quả mong đợi |
+|---|---|---|---|---|
+| A | EC41 | `FR17TC67A` | `"discount_value": "abc"` | 4xx (ERR15); mã không được tạo |
+| B | EC50 | `FR17TC67B` | `"min_order_amount": "abc"` | 4xx (ERR15); mã không được tạo |
+| C | EC67 | `FR17TC67C` | `"max_uses_per_user": "abc"` | 4xx (ERR15); mã không được tạo |
+
+**TC-CPN-68: Định dạng ngày (A13)**
+
+| Dòng | Lớp | `code` | Thay đổi | Kết quả mong đợi |
+|---|---|---|---|---|
+| A | EC58 | `FR17TC68A` | `"expired_at": "12/31/2027"` | 4xx (ERR15); mã không được tạo |
+| B | EC59 | `FR17TC68B` | `"expired_at": "2027-02-30"` | 4xx (ERR15); mã không được tạo |
+| C | EC60 | `FR17TC68C` | `"expired_at": "2027-12-31T10:00:00Z"` | 4xx (ERR15); mã không được tạo |
+
+**TC-CPN-69: Request không đọc được (A23)**
+
+| Dòng | Lớp | `code` | Thay đổi | Kết quả mong đợi |
+|---|---|---|---|---|
+| A | EC91 | `FR17TC69A` | Body `{"code": "FR17TC69A",` (thiếu phần còn lại) | 4xx (ERR16); không 5xx; mã không được tạo |
+| B | EC92 | `FR17TC69B` | Body cơ sở, bỏ header `Content-Type` | 4xx (ERR16 hoặc thiếu mọi trường); không 5xx; mã không được tạo |
+| C | EC93 | `FR17TC69C` | Body cơ sở, `Content-Type: text/plain` | Như dòng B |
+| D | EC94 | (không có) | Không có body | Như dòng B; số mã trong `GET` không đổi |
+
+**TC-CPN-71: Xóa `id` không hợp lệ (A15 (b))**
+
+| Dòng | Lớp | Chuẩn bị | `id` gửi | Kết quả mong đợi |
+|---|---|---|---|---|
+| A | EC73 | Không | `999999` (kiểm trước là không có trong `GET`) | 2xx hoặc 4xx; không 5xx; số mã không đổi |
+| B | EC74 | Không | `abc` | Như dòng A |
+| C | EC75 | Tạo `FR17TC71C`, lấy `id`, xóa thành công | `id` vừa xóa | Như dòng A; các mã còn lại không đổi |
+
+**TC-CPN-82: Dự phòng qua API cho lớp thập phân, lớp âm (A2)**
+
+| Dòng | Lớp | `code` | Thay đổi | Kết quả mong đợi | Chạy khi |
+|---|---|---|---|---|---|
+| A | EC34 | `FR17TC82A` | `"discount_value": 12.5` | 2xx; `GET` có `12.5` | TC-CPN-15 bị trình duyệt chặn |
+| B | EC37 | `FR17TC82B` | `"type": "fixed"`, `"discount_value": 1000.5` | 2xx; `GET` có `1000.5` | TC-CPN-16 bị chặn |
+| C | EC47 | `FR17TC82C` | `"min_order_amount": 1000.5` | 2xx; `GET` có `1000.5` | TC-CPN-20 bị chặn |
+| D | EC64 | `FR17TC82D` | `"max_uses_per_user": 1.5` | 4xx (ERR20); mã không được tạo | TC-CPN-45 bị chặn |
+| E | EC46 | `FR17TC82E` | `"min_order_amount": -1` | 4xx (ERR9); mã không được tạo | TC-CPN-41 bị chặn |
+| F | EC63 | `FR17TC82F` | `"max_uses_per_user": -1` | 4xx (ERR11); mã không được tạo | TC-CPN-44 bị chặn với số âm ở S4, hoặc giao diện không cho gửi `0` |
+
+## 7. Checklist giao diện
+
+Không thuộc Domain Testing (quyết định 9 của S1). Mỗi dòng một điểm kiểm tra.
+
+| Mã | Điểm kiểm tra | Kết quả mong đợi | Cách kiểm tra | Yêu cầu |
+|---|---|---|---|---|
+| TC-CPN-90 | Dấu `*` của trường bắt buộc | Cả 6 ô của form có ký hiệu `*` bên cạnh nhãn (FR-22) | Quan sát form | R12 |
+| TC-CPN-91 | Ngôn ngữ | Mọi chữ trên trang là tiếng Việt, trừ thuật ngữ kỹ thuật chuẩn (FR-21) | Quan sát trang, form, bảng, thông báo. Ghi riêng chữ thuộc lịch chọn ngày của trình duyệt | R14 |
+| TC-CPN-92 | Màu nút | "Tạo mã" màu xanh dương; "Xóa" màu đỏ (FR-21) | Quan sát | R14 |
+| TC-CPN-93 | Đơn vị tiền | Cột "Giá trị" (loại cố định) và "Đơn tối thiểu" dùng `₫` và phân cách hàng nghìn (FR-21) | Quan sát bảng sau TC-CPN-50 | R14 |
+| TC-CPN-94 | Highlight menu | Mục "Mã Giảm Giá" ở menu bên trái được highlight khi đang ở trang này (FR-23) | Quan sát; so với khi ở trang khác | R17 |
+| TC-CPN-95 | Thẻ `<h1>` | Trang có đúng 1 thẻ `<h1>` mô tả nội dung trang (FR-21) | DevTools ở S6 | R19 |
+
+## 8. Giới hạn quan sát
+
+| Test case | Giới hạn | Cách xử lý |
+|---|---|---|
+| Mọi test case hợp lệ qua giao diện | K1 chỉ thấy dạng hiển thị (tiền đã định dạng), không thấy giá trị lưu thật | Với trường số có rủi ro làm tròn (TC-CPN-16, TC-CPN-18, TC-CPN-20, TC-CPN-21, TC-CPN-25), thêm K6 qua `GET` |
+| Số thập phân, số âm qua giao diện (TC-CPN-15, TC-CPN-16, TC-CPN-20, TC-CPN-41, TC-CPN-45) | Ô số của trình duyệt có thể chặn hoặc sửa giá trị trước khi gửi; khi đó kết quả phản ánh trình duyệt, không phải hệ thống | Ghi lại hành vi trình duyệt; chạy dòng tương ứng của TC-CPN-82 |
+| Không hợp lệ qua giao diện (TC-CPN-30 đến TC-CPN-46) | Thông báo có thể là bong bóng của trình duyệt | Vẫn xét vị trí theo A21; ghi rõ nguồn thông báo |
+| Ký tự SQL (TC-CPN-11) | R16 chỉ quan sát gián tiếp; không chứng minh hệ thống dùng Parameterized Query | Ghi là phủ một phần |
+| Nhiều kết quả chấp nhận được (TC-CPN-12, TC-CPN-18, TC-CPN-21, TC-CPN-25) | Hệ thống được nhận hoặc từ chối có thông báo rõ | Ghi rõ điều kiện "Sai" trong test case |
+| Phụ thuộc ngày (TC-CPN-22, TC-CPN-23, TC-CPN-50) | Kết quả phụ thuộc ngày chạy | Ghi ngày chạy |
+| Toàn bộ | Mã mới có `is_active = 1` không (FR-09 C1); xóa mã đã dùng trong đơn hàng (A16 (i)(c)); escape ở màn hình của feature khác | Không kiểm được trong FR-17; chuyển S8 |
+
+## 9. Thứ tự chạy
+
+1. Reset dữ liệu mẫu. Ghi ngày chạy, múi giờ, trình duyệt.
+2. Cần dữ liệu mẫu nguyên vẹn: TC-CPN-50, TC-CPN-61; checklist TC-CPN-90 đến TC-CPN-95 (TC-CPN-93 dùng bảng sau TC-CPN-50).
+3. Thêm qua giao diện: TC-CPN-01 đến TC-CPN-25, rồi TC-CPN-30 đến TC-CPN-46 (TC-CPN-32, TC-CPN-34, TC-CPN-35, TC-CPN-36 cần các mã mẫu còn nguyên).
+4. Xóa không phá dữ liệu mẫu: TC-CPN-51, TC-CPN-52, TC-CPN-53.
+5. API: TC-CPN-60 đến TC-CPN-81; TC-CPN-82 chỉ chạy các dòng cần thiết.
+6. Phá dữ liệu mẫu, chạy cuối: TC-CPN-54, TC-CPN-55 (sau TC-CPN-36, TC-CPN-50), rồi TC-CPN-56 cuối cùng.
+7. Reset dữ liệu ngay sau TC-CPN-56. Nếu kết quả bất thường ở bất kỳ bước nào làm hỏng dữ liệu mẫu, ghi lại rồi reset trước khi chạy tiếp.
+
+## 10. Bảng phủ lớp
+
+| Lớp | Nội dung | Test case |
+|---|---|---|
+| EC01 | `code` có ký tự | TC-CPN-01 |
+| EC02 | `code` rỗng | TC-CPN-30 |
+| EC03 | `code` chỉ khoảng trắng | TC-CPN-31 |
+| EC04 | Khoảng trắng đầu | TC-CPN-03 |
+| EC05 | Khoảng trắng cuối | TC-CPN-04 |
+| EC06 | Khoảng trắng giữa | TC-CPN-05 |
+| EC07 | Chữ thường | TC-CPN-06 |
+| EC08 | Chữ hoa và số | TC-CPN-01 |
+| EC09 | Chỉ chữ số | TC-CPN-07 |
+| EC10 | Dấu gạch | TC-CPN-08 |
+| EC11 | Unicode | TC-CPN-09 |
+| EC12 | Ký tự HTML | TC-CPN-10 |
+| EC13 | Ký tự SQL | TC-CPN-11 |
+| EC14 | `code` rất dài | TC-CPN-12 |
+| EC15 | Chưa có | TC-CPN-01 |
+| EC16 | Trùng mã mẫu | TC-CPN-32 |
+| EC17 | Trùng mã vừa tạo | TC-CPN-33 |
+| EC18 | Trùng khác hoa thường | TC-CPN-34 |
+| EC19 | Trùng sau khi cắt | TC-CPN-35 |
+| EC20 | Trùng mã hết hạn | TC-CPN-36 |
+| EC21 | Trùng mã đã xóa | TC-CPN-13 |
+| EC22 | `code` `null`, `""` | TC-CPN-66 |
+| EC23 | `code` số JSON | TC-CPN-63 |
+| EC24 | `percent` | TC-CPN-01 |
+| EC25 | `fixed` | TC-CPN-02 |
+| EC26 | Thiếu `type` | TC-CPN-65 |
+| EC27 | `type` ngoài tập | TC-CPN-65 |
+| EC28 | `type` khác hoa thường | TC-CPN-65 |
+| EC29 | `type` `null`, `""` | TC-CPN-66 |
+| EC30 | `percent` 1 đến 99 | TC-CPN-01 |
+| EC31 | `percent` 100 | TC-CPN-14 |
+| EC32 | `percent` lớn hơn 100 | TC-CPN-37 |
+| EC33 | `percent` không dương | TC-CPN-38 |
+| EC34 | `percent` thập phân | TC-CPN-15, TC-CPN-82 |
+| EC35 | `fixed` nguyên dương | TC-CPN-02 |
+| EC36 | `fixed` không dương | TC-CPN-39 |
+| EC37 | `fixed` thập phân | TC-CPN-16, TC-CPN-82 |
+| EC38 | `fixed` lớn hơn ngưỡng | TC-CPN-17 |
+| EC39 | `fixed` rất lớn | TC-CPN-18 |
+| EC40 | Thiếu `discount_value` | TC-CPN-40 |
+| EC41 | `discount_value` không phải số | TC-CPN-67 |
+| EC42 | `discount_value` chuỗi số | TC-CPN-64 |
+| EC43 | `discount_value` `null`, `""` | TC-CPN-66 |
+| EC44 | `min_order_amount` dương | TC-CPN-01 |
+| EC45 | `min_order_amount` 0 | TC-CPN-19 |
+| EC46 | `min_order_amount` âm | TC-CPN-41, TC-CPN-82 |
+| EC47 | `min_order_amount` thập phân | TC-CPN-20, TC-CPN-82 |
+| EC48 | `min_order_amount` rất lớn | TC-CPN-21 |
+| EC49 | Thiếu `min_order_amount` | TC-CPN-42 |
+| EC50 | `min_order_amount` không phải số | TC-CPN-67 |
+| EC51 | `min_order_amount` chuỗi số | TC-CPN-64 |
+| EC52 | `min_order_amount` `null`, `""` | TC-CPN-66 |
+| EC53 | Ngày sau hôm nay | TC-CPN-01 |
+| EC54 | Ngày hôm nay | TC-CPN-22 |
+| EC55 | Ngày quá khứ | TC-CPN-23 |
+| EC56 | Thiếu `expired_at` | TC-CPN-43 |
+| EC57 | 29 tháng 2 năm nhuận | TC-CPN-24 |
+| EC58 | Khác định dạng | TC-CPN-68 |
+| EC59 | Ngày không có thật | TC-CPN-68 |
+| EC60 | Có kèm giờ | TC-CPN-68 |
+| EC61 | `expired_at` `null`, `""` | TC-CPN-66 |
+| EC62 | `max_uses_per_user` từ 1 | TC-CPN-01 |
+| EC63 | `max_uses_per_user` nhỏ hơn 1 | TC-CPN-44, TC-CPN-82 |
+| EC64 | `max_uses_per_user` thập phân | TC-CPN-45, TC-CPN-82 |
+| EC65 | `max_uses_per_user` rất lớn | TC-CPN-25 |
+| EC66 | Thiếu `max_uses_per_user` | TC-CPN-46 |
+| EC67 | `max_uses_per_user` không phải số | TC-CPN-67 |
+| EC68 | `max_uses_per_user` chuỗi số | TC-CPN-64 |
+| EC69 | `max_uses_per_user` `null`, `""` | TC-CPN-66 |
+| EC70 | Xóa mã mẫu còn hạn | TC-CPN-54 |
+| EC71 | Xóa mã vừa tạo | TC-CPN-13, TC-CPN-51, TC-CPN-62 |
+| EC72 | Xóa mã hết hạn | TC-CPN-55 |
+| EC73 | `id` không tồn tại | TC-CPN-71 |
+| EC74 | `id` không phải số | TC-CPN-71 |
+| EC75 | `id` đã xóa | TC-CPN-71 |
+| EC76 | Xóa ở tab cũ | TC-CPN-53 |
+| EC78 | Đồng ý ở hộp thoại | TC-CPN-51 |
+| EC79 | Hủy ở hộp thoại | TC-CPN-52 |
+| EC80 | Có ít nhất 1 mã | TC-CPN-50, TC-CPN-61 |
+| EC81 | Không còn mã nào | TC-CPN-56 |
+| EC82 | Hạn sau hôm nay (hiển thị) | TC-CPN-01, TC-CPN-50 |
+| EC83 | Hạn hôm nay (hiển thị) | TC-CPN-22 |
+| EC84 | Hạn trước hôm nay (hiển thị) | TC-CPN-23, TC-CPN-50 |
+| EC85 | Token admin | TC-CPN-60, TC-CPN-61, TC-CPN-62 |
+| EC86 | Không có header | TC-CPN-72, TC-CPN-76, TC-CPN-78, TC-CPN-80 |
+| EC87 | Header sai dạng | TC-CPN-73 |
+| EC88 | Token không hợp lệ | TC-CPN-74 |
+| EC89 | Token user thường | TC-CPN-75, TC-CPN-77, TC-CPN-79, TC-CPN-81 |
+| EC90 | Request dạng chuẩn | TC-CPN-60 |
+| EC91 | JSON sai cú pháp | TC-CPN-69 |
+| EC92 | Thiếu `Content-Type` | TC-CPN-69 |
+| EC93 | `Content-Type` khác JSON | TC-CPN-69 |
+| EC94 | Không có body | TC-CPN-69 |
+| EC95 | Body `{}` | TC-CPN-70 |
+| EC96 | OUT1 | TC-CPN-01 đến TC-CPN-25 |
+| EC97 | OUT2 | TC-CPN-60, TC-CPN-63, TC-CPN-64 |
+| EC98 | OUT3 | TC-CPN-03 đến TC-CPN-11 |
+| EC99 | OUT4 | TC-CPN-30 đến TC-CPN-46 |
+| EC100 | OUT5 | TC-CPN-50 |
+| EC101 | OUT6 | TC-CPN-56 |
+| EC102 | OUT7 | TC-CPN-61, TC-CPN-56 |
+| EC103 | OUT8 | TC-CPN-51, TC-CPN-54, TC-CPN-55 |
+| EC104 | OUT9 | TC-CPN-62 |
+| EC105 | OUT10 | TC-CPN-52 |
+| EC106 | ERR1 | TC-CPN-30, TC-CPN-31, TC-CPN-66 |
+| EC107 | ERR2 | TC-CPN-32 đến TC-CPN-36 |
+| EC108 | ERR3 | TC-CPN-65, TC-CPN-66 |
+| EC109 | ERR4 | TC-CPN-65 |
+| EC110 | ERR5 | TC-CPN-40, TC-CPN-66 |
+| EC111 | ERR6 | TC-CPN-38, TC-CPN-39 |
+| EC112 | ERR7 | TC-CPN-43, TC-CPN-66 |
+| EC113 | ERR8 | TC-CPN-42, TC-CPN-66 |
+| EC114 | ERR9 | TC-CPN-41 |
+| EC115 | ERR10 | TC-CPN-46, TC-CPN-66 |
+| EC116 | ERR11 | TC-CPN-44 |
+| EC117 | ERR12 | TC-CPN-72, TC-CPN-73, TC-CPN-74, TC-CPN-76, TC-CPN-78 |
+| EC118 | ERR13 | TC-CPN-75, TC-CPN-77, TC-CPN-79 |
+| EC119 | ERR14 | TC-CPN-53, TC-CPN-71 |
+| EC120 | ERR15 | TC-CPN-67, TC-CPN-68 |
+| EC121 | ERR16 | TC-CPN-69 |
+| EC122 | ERR17 | TC-CPN-37 |
+| EC125 | ERR20 | TC-CPN-45 |
+| EC127 | ERR22 | TC-CPN-12, TC-CPN-18, TC-CPN-21, TC-CPN-25 (nếu hệ thống chọn từ chối) |
+
+## 11. Ma trận truy vết yêu cầu
+
+| Yêu cầu | Test case | Mức phủ |
+|---|---|---|
+| FR17-R01 | TC-CPN-01, TC-CPN-02, TC-CPN-60, TC-CPN-69 | Đủ |
+| FR17-R02 | TC-CPN-50, TC-CPN-61, TC-CPN-22, TC-CPN-23 | Đủ |
+| FR17-R03 | TC-CPN-51 đến TC-CPN-55, TC-CPN-62, TC-CPN-71 | Một phần: Không kiểm xóa mã đã dùng trong đơn hàng (A16 (i)(c)) |
+| FR17-R04 | TC-CPN-30, TC-CPN-31, TC-CPN-66 | Đủ |
+| FR17-R05 | TC-CPN-32 đến TC-CPN-36, TC-CPN-03, TC-CPN-06, TC-CPN-13 | Đủ |
+| FR17-R06 | TC-CPN-01, TC-CPN-02, TC-CPN-65, TC-CPN-66 | Đủ |
+| FR17-R07 | TC-CPN-14 đến TC-CPN-18, TC-CPN-37 đến TC-CPN-40, TC-CPN-64, TC-CPN-67 | Đủ |
+| FR17-R08 | TC-CPN-22 đến TC-CPN-24, TC-CPN-43, TC-CPN-68 | Đủ |
+| FR17-R09 | TC-CPN-19 đến TC-CPN-21, TC-CPN-41, TC-CPN-42 | Đủ |
+| FR17-R10 | TC-CPN-25, TC-CPN-44 đến TC-CPN-46 | Đủ |
+| FR17-R11 | TC-CPN-72 đến TC-CPN-81 | Đủ trên thiết kế; Xem, Xóa chỉ kiểm 2 trong 4 lớp không hợp lệ (cách A1) |
+| FR17-R12 | TC-CPN-90 | Đủ |
+| FR17-R13 | TC-CPN-30 đến TC-CPN-46 | Đủ |
+| FR17-R14 | TC-CPN-91 đến TC-CPN-93, TC-CPN-01, TC-CPN-50 | Đủ |
+| FR17-R15 | TC-CPN-10, TC-CPN-07, TC-CPN-09 | Một phần: Chỉ kiểm escape trên bảng của FR-17, không kiểm màn hình của feature khác |
+| FR17-R16 | TC-CPN-11 | Một phần: Chỉ quan sát gián tiếp |
+| FR17-R17 | TC-CPN-94 | Đủ |
+| FR17-R18 | TC-CPN-56 | Đủ |
+| FR17-R19 | TC-CPN-95 | Đủ trên thiết kế, kiểm bằng DevTools ở S6 |
+
+Yêu cầu chưa phủ đủ: FR17-R03 (xóa mã đã dùng), FR17-R11 (tổ hợp người gọi thu gọn), FR17-R15 (ngoài màn hình FR-17), FR17-R16 (gián tiếp).
+
+## 12. Tổng hợp
+
+| Nhóm | Mã | Số test case |
+|---|---|---|
+| Hợp lệ qua giao diện | TC-CPN-01 đến TC-CPN-25 | 25 |
+| Không hợp lệ qua giao diện | TC-CPN-30 đến TC-CPN-46 | 17 |
+| Xem, Xóa qua giao diện | TC-CPN-50 đến TC-CPN-56 | 7 |
+| API | TC-CPN-60 đến TC-CPN-82 | 23 (7 test case dạng bảng, gồm 28 dòng) |
+| Checklist | TC-CPN-90 đến TC-CPN-95 | 6 |
+| Tổng | | 78 |
+
+## 13. Điểm cần sinh viên quyết định
+
+| # | Vấn đề | Các lựa chọn | Đề xuất của AI |
+|---|---|---|---|
+| 1 | Kiểm chứng cho test case không hợp lệ qua giao diện | (a) Chỉ K3 (tải lại, không có dòng mới); (b) Thêm K4 (tạo lại cùng `code` với dữ liệu hợp lệ, mong đợi OUT1) | (a): K3 đủ thấy mã không được tạo vì mỗi test case dùng `code` riêng; K4 nhân đôi số bước |
+| 2 | Placeholder ô "Giá trị" có đổi theo loại không (`00_spec.md` mục 4.4) | (a) Không lập test case vì không có yêu cầu đặc tả, nên không có kết quả mong đợi; chỉ ghi quan sát ở S6; (b) Thêm vào checklist | (a): Test case không có kết quả mong đợi thì không đánh giá được Đạt hay Sai |
+| 3 | TC-CPN-13 phủ cả EC21 và EC71 | (a) Giữ; (b) Tách | (a): Bước xóa là điều kiện bắt buộc để có EC21; EC71 vẫn có test case riêng TC-CPN-51 |
+| 4 | `max_uses_per_user` cơ sở là `3` thay vì giá trị mặc định `1` | (a) Dùng `3`; (b) Dùng `1` | (a): Thấy được ô có thật sự được gửi hay hệ thống tự dùng giá trị mặc định |
+| 5 | Kiểm `GET` trong TC-CPN-60 và các test case API hợp lệ | (a) Kiểm cả giá trị từng trường; (b) Chỉ kiểm mã có xuất hiện | (a): Là cách duy nhất thấy giá trị lưu thật (K6) |
+
+## 14. Ghi chú cho bước sau
+
+Cho S4:
+
+- Biên đã hẹn từ S2 (`02_ec.md` mục 10): IN3 `percent` (cận dưới "> 0", cận trên 100, UB+1 là `100.01` hay `101` tùy số chữ số thập phân), IN3 `fixed` (cận dưới "> 0", không cận trên), IN4 (cận dưới 0), IN6 (cận dưới 1; biến thể `1.0`), IN5 (hôm qua, hôm nay, ngày mai; ngày lớn nhất ô cho chọn), IN1 (độ dài 1 sau khi cắt; biến thể `␣A␣`, `a`), số quanh 2^53.
+- Test case đang dùng giá trị giữa lớp, S4 dùng lại khi trùng điểm biên: TC-CPN-01 (`percent` 15, ngưỡng 300000, số lần 3), TC-CPN-14 (`percent` 100 = UB), TC-CPN-37 (150), TC-CPN-38 (0), TC-CPN-19 (ngưỡng 0 = LB), TC-CPN-41 (-1 = LB-1), TC-CPN-44 (số lần 0 = LB-1), TC-CPN-22, TC-CPN-23 (hôm nay, quá khứ), TC-CPN-12 (255 ký tự), TC-CPN-18, TC-CPN-21, TC-CPN-25 (số rất lớn).
+- Đường thực thi cho biên: Giao diện là chính; biên thập phân và biên âm có bản API dự phòng như TC-CPN-82 (A2).
+- Mã test case của S4 bắt đầu từ TC-CPN-100.
+
+Cho S5:
+
+- Xuất bằng `test-case-writing`: Nhóm dữ liệu (mục 3, 4) dùng `format: "matrix"`; test case nhiều bước (TC-CPN-13, TC-CPN-33, TC-CPN-51 đến TC-CPN-53, TC-CPN-62, TC-CPN-71, TC-CPN-78, TC-CPN-79, TC-CPN-81) và nhóm API dùng `format: "steps"`; test case dạng bảng giữ bảng dòng A, B, C... trong mô tả.
