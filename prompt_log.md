@@ -10421,6 +10421,274 @@ Phiên D không bị block thì đợi tôi chụp cho nhóm C của phiên A xo
 - Bash: Inspect A memory file and S6 result statuses
 - Bash: Find seed accounts used by A and password notes
 - Bash: Export prompt log and list changed files
+- Bash: Record A group B results in notes
+- Bash: Fix group B count in notes
+
+**Output AI (nguyên văn):**
+
+````text
+Nhóm B của A đã soát xong, log đã xuất. Tôi sửa lại một con số trong ghi chú rồi báo bạn.
+
+Nhóm B của phiên A không có lỗi định dạng hay thao tác cấm, và log đã xuất (175 lượt, đúng 3 phiên). Có một điểm nên làm rõ trước khi chốt 9 dòng Blocked. Commit message ở dưới.
+
+## Kết quả soát nhóm B (34 test case)
+
+| Trạng thái | Test case |
+|---|---|
+| Pass (6) | TC-REG-30, 32, 49, 50, 56, 97 |
+| Blocked (13) | TC-REG-31, 33 đến 39, 45: Mật khẩu `Test1234!` bị báo "Mật khẩu quá yếu" trước khi thấy lỗi của ô cần kiểm. TC-REG-59 đến 62: Form không có ô xác nhận mật khẩu |
+| Not run (15) | TC-REG-40 đến 44, 46 đến 48, 51 đến 55, 57, 58 (bạn bỏ vì thời gian) |
+
+- Phiên A đã gỡ hết câu hỏi và đề xuất khỏi bảng theo yêu cầu của bạn. Hai quyết định của bạn (bong bóng của trình duyệt tính vào yêu cầu giao diện tiếng Việt FR01-R14; quan sát QS01 ghi lại để xét ở S7) đã vào đúng chỗ.
+- Phiên A có ghi một memory mới (`s6-group-fill-convention`). Nội dung là quy ước điền S6 bạn đã dặn, nên các phiên khác dùng chung cũng có ích, không có gì làm lộ thông tin thiết kế.
+
+## Điểm nên làm rõ: 9 dòng Blocked
+
+Kế hoạch dùng mật khẩu `Abcdef1!`, còn bạn chạy với `Test1234!`. Hai mật khẩu đều hợp lệ theo đặc tả. Nhưng để ghi Blocked "vì bug" thì phải chắc là **mật khẩu theo kế hoạch cũng bị từ chối**. Nếu không, người chấm có thể cho rằng bị chặn là do dữ liệu bạn tự đổi.
+
+Bạn nói "mật khẩu luôn sai". Nếu bạn đã thử cả `Abcdef1!` thì ổn rồi. Nếu chưa, hãy chạy **TC-REG-01** (đăng ký hợp lệ với `Abcdef1!`) và chụp ảnh. Việc này mất 30 giây, và tấm ảnh đó vừa là bằng chứng chính cho bug lớn nhất của FR-01, vừa xác nhận 9 dòng Blocked là đúng. TC-REG-01 nằm trong nhóm C, cũng là nhóm bạn sắp chạy.
+
+## Commit
+
+```
+git add features/A_FR-01_DangKy/06_results.md features/A_FR-01_DangKy/screenshots/S6_TC-REG-3*.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-45.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-49.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-50.png features/A_FR-01_DangKy/screenshots/S6_TC-REG-56.png prompt_log.md
+git commit -m "[A-FR01][S6] Execute invalid-input group and record results (part 2)"
+```
+
+Lệnh này add 14 ảnh: TC-REG-30 đến 39, 45, 49, 50, 56.
+
+## Lưu ý cho phiên D (đã ghi nhận việc không tạo được tài khoản mới)
+
+- **Phải dùng tài khoản có sẵn.** Nhưng `test@eshop.com` đang được 6 test case của A dùng (kiểm email trùng). Ở S0 của D bạn chỉ xem, **đừng bấm Lưu** khi sửa hồ sơ, nhất là ô email. Nếu email của tài khoản này đổi, các test case email trùng của A sẽ sai.
+- Việc sửa hồ sơ thật để dành tới S6 của D, sau khi A xong và tôi reset DB.
+
+## Tình trạng
+
+| Phiên | Đang ở đâu | Việc tiếp theo |
+|---|---|---|
+| A (FR-01) | S6: Xong nhóm A và B | Nhóm C: Nên chạy TC-REG-01 với `Abcdef1!` trước. Sau đó là nhóm D (biên), nhóm E (API, chạy bằng script), rồi TC-REG-79 sau cùng, rồi báo tôi reset DB |
+| C (FR-17) | S6: Đã commit khung (`b29b8e1`) | Chờ A xong phần chụp. Khi đó tôi bật trang admin (cổng 5174) |
+| D (FR-04) | Chưa bắt đầu | Sau nhóm C của A: Cắm điện thoại, tôi chạy `adb reverse` và bật Expo, bạn chụp ảnh S0, rồi mở phiên mới chạy skill |
+````
+
+---
+
+### C176 | 23:17 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Giờ tiếp tục sang nhóm C và D, vì ngắn nên tôi làm cùng lúc 2 nhóm. Và từ nhóm D thì tôi xài pass Abcdef1! trừ những chỗ có test password.
+
+TC-REG-01: Đã thử với mật khẩu Abcdef1! Lý do tôi xài Test1234! vì theo data mẫu xem thử có tạo tài khoản được không chứ tôi cũng đã thử Abcdef1! trước đó rồi.
+
+TC-REG-104: Tôi đã nhập dấu cách rồi đó, không phải bỏ trống đâu. Chỉ là nút nhấn đăng ký thì nó mất con trỏ chuột ở ô Họ tên để thể hiện dấu cách đã nhập.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List screenshots for groups C and D
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-01.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-101.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-104.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-107.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-108.png
+- Bash: Fill groups C and D, update group B notes and QS02 with new fact
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi xem danh sách ảnh của nhóm C và D.
+
+Nhóm C có 1 ảnh (TC-REG-01), nhóm D có 4 ảnh (TC-REG-101, 104, 107, 108). Các test case còn lại của hai nhóm sẽ ghi Not run. Tôi xem 5 ảnh.
+
+Đã điền nhóm C và D trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md). File vẫn đủ 96 dòng, định dạng hợp lệ.
+
+**Nhóm C (18 test case):** TC-REG-01 **Fail**, 17 test case còn lại Not run.
+
+**Nhóm D (22 test case):**
+
+| TC | Thấy trong ảnh | Trạng thái |
+|---|---|---|
+| 101 | Họ Tên `A`, mật khẩu `Abcdef1!`, trang báo "Mật khẩu quá yếu!" | Blocked |
+| 104 | Họ Tên 1 dấu cách (theo ghi chú của bạn), mật khẩu `Abcdef1!`, trang báo "Mật khẩu quá yếu!" thay vì ERR1 | Blocked |
+| 107 | Mật khẩu 7 ký tự, trang báo "Mật khẩu quá yếu!" | Pass |
+| 108 | Mật khẩu 9 ký tự `Abcdefg1!` (hợp lệ), bị từ chối | **Fail** |
+| 18 test case còn lại | | Not run |
+
+Ở TC-REG-104, tôi ghi rõ "1 dấu cách (sinh viên ghi; dấu cách không thấy được trên ảnh)", đúng như bạn giải thích.
+
+**Tôi cũng cập nhật hai chỗ đã điền trước đó**, vì có thêm sự kiện mới là mật khẩu kế hoạch `Abcdef1!` cũng bị từ chối:
+- **9 dòng Blocked của nhóm B** (TC-REG-31, 33 đến 39, 45): Thêm câu "mật khẩu kế hoạch `Abcdef1!` cũng bị từ chối (TC-REG-01)". Như vậy có chạy lại bằng dữ liệu kế hoạch thì cũng vẫn bị chặn như nhau, nên không cần chạy lại.
+- **QS02 ở mục 6:** Ghi thêm `Abcdef1!` và `Abcdefg1!` cũng bị từ chối, kèm ảnh `S6_TC-REG-01.png`, `S6_TC-REG-108.png`. Đồng thời ghi lý do bạn dùng `Test1234!` là để thử mật khẩu của dữ liệu mẫu.
+
+**Hai việc cần bạn quyết:**
+1. **TC-REG-50, 56 (nhóm B) và 107 đang Pass**, vì mật khẩu sai bị từ chối đúng như mong đợi. Nhưng mật khẩu hợp lệ cũng bị từ chối với cùng thông báo đó, nên các kết quả Pass này không chứng minh được EShop thật sự kiểm đúng luật. Ở TC-REG-107 tôi đã ghi sự kiện này vào Ghi chú. Bạn có muốn ghi tương tự cho TC-REG-50 và 56 không, hay giữ nguyên Pass mà không ghi chú?
+2. **Nhóm E (API) sẽ cho biết lỗi nằm ở đâu.** Nếu TC-REG-70 (gửi `Abcdef1!` thẳng qua API) nhận OUT3, nghĩa là lỗi nằm ở phía giao diện; nếu cũng bị từ chối thì lỗi ở phía hệ thống. Thông tin này hữu ích cho bug report ở S7, nên bạn chạy `scripts/run_api_tests.py` sớm.
+
+**Lưu ý nhỏ:** Ảnh TC-REG-01, 101, 104, 107, 108 có hiện thanh bookmark cá nhân của bạn. Nếu ảnh sẽ được nộp hoặc đưa lên GitHub thì bạn cân nhắc che đi.
+````
+
+---
+
+### C177 | 23:17 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Nếu vậy thì chờ xong phiên A rồi tôi chụp ảnh phiên D cũng được. Vì phiên C không bị block và trong lúc chờ phiên A làm nhóm C và D, tôi có thể bắt đầu chụp test cho phiên C không? Nếu có thì chạy lên web cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find admin frontend folder and check ports
+- Bash: Start EShop admin web on port 5174
+- Bash: Check admin server ready and backend start time
+- Bash: Wait for admin server to listen on 5174
+
+**Output AI (nguyên văn):**
+
+````text
+Được, bạn chạy C ngay được. Tôi bật trang admin (cổng 5174) cho bạn.
+
+Trang admin đã chạy ở **http://localhost:5174**, đăng nhập bằng `admin@eshop.com` / `Admin123!`. Bạn bắt đầu chụp test cho C được rồi.
+
+## Vì sao chạy C ngay được
+
+- DB được reset lúc **19:53 ngày 20/10**, khi backend khởi động lại. Từ đó tới giờ A chỉ tạo và đụng tới tài khoản người dùng, không đụng mã giảm giá. Vì vậy 4 mã mẫu vẫn nguyên, và TC-CPN-50 vẫn đúng điều kiện.
+- Ô "Reset dữ liệu mẫu trước đợt test" trong mục 1 của `06_results.md` (C), bạn ghi: `20/10/2026 19:53`.
+
+## Ranh giới khi chạy C song song với A
+
+| Được chạy ngay | Phải chờ |
+|---|---|
+| Nhóm A đến G của C (checklist, thêm hợp lệ và không hợp lệ, biên, xóa không phá mẫu, API, danh sách dài) | TC-CPN-56 (cần reset trước và sau) và nhóm H (phá dữ liệu mẫu) |
+
+- **Mọi lần reset đều xoá dữ liệu của cả A và C**, vì hai bên dùng chung một DB. Tôi chỉ reset khi bạn xác nhận cả A lẫn C đều đang ở chỗ an toàn. Riêng TC-REG-79 của A cũng phải chờ C chạy xong nhóm G.
+- **TC-CPN-77 cần token của user thường:** Chỉ đăng nhập bằng `test@eshop.com` để lấy token. Đừng đổi gì ở tài khoản này, vì A đang dùng nó cho các test case email trùng.
+
+## Tin nhắn nên gửi phiên C (nếu bạn muốn chạy nhóm API bằng script như FR-01)
+
+```text
+Tôi bắt đầu chạy S6. Hãy viết script chạy nhóm API (F) giống scripts/run_api_tests.py của FR-01: Python thư viện chuẩn, có --dry-run và --only, ghi log vào logs/. Không tự chạy script, tôi sẽ chạy. Script không được reset dữ liệu và không chạy các test case của nhóm H hay TC-CPN-56. Mục 1: Reset dữ liệu mẫu trước đợt test là 20/10/2026 19:53.
+```
+
+Trong lúc phiên C viết script, bạn chụp các nhóm giao diện. Theo thứ tự chạy ở mục 10 của `05_final_tc.md`, nhóm A (checklist) đi trước.
+````
+
+---
+
+### C178 | 23:23 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Tôi cũng đang phân vân vì rõ ràng nó vẫn chặn được pass sai, còn việc nó chặn như thế nào là do code, có thể nó đã chặn luôn sai và đúng vì một cách viết logic nào đó. Nhưng vì nó đáp ứng kì vọng và các TC độc lập nhau nên mình vẫn tính là Pass đúng không? 
+TC-REG-01, 101, 104, 107, 108 lỡ rồi thì thôi vậy, bookmark cũng không có gì quá riêng tư, repo để cá nhân, và thầy chấm thôi, bởi vì thời gian không kịp để tôi chụp lại. Nghiêm trọng hoặc mất điểm hoặc ảnh không thể chấp nhận thì tôi mới phải chụp lại.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng, cả ba vẫn tính là **Pass**.
+
+- **Trạng thái được đánh giá theo kết quả mong đợi của chính từng test case.** TC-REG-50, 56, 107 mong đợi mật khẩu sai bị từ chối với nguyên nhân ERR6, và kết quả thực tế khớp như vậy. Các test case độc lập với nhau, nên một lỗi ở chỗ khác không làm test case này thành Fail.
+- **Lỗi "mật khẩu hợp lệ bị từ chối" đã có test case riêng bắt được:** TC-REG-01 và 108 đều Fail. Bug sẽ được báo qua hai test case đó ở S7. Nếu tính thêm 50, 56, 107 thành Fail thì cùng một lỗi bị đếm nhiều lần.
+- **Bạn nói đúng điểm phân vân:** Kiểm thử hộp đen không biết EShop chặn mật khẩu sai bằng logic gì. Có thể nó chặn đúng luật, cũng có thể nó chặn gần như mọi mật khẩu. "Pass" chỉ có nghĩa là test case này không phát hiện sai lệch, không chứng minh luật được cài đúng. Đây là giới hạn của test oracle; nên nhắc tới trong phần phân tích ở S8 (ví dụ: "các test case mật khẩu không hợp lệ Pass, nhưng do mật khẩu hợp lệ cũng bị từ chối nên kết quả Pass không xác nhận được luật kiểm").
+
+**Còn một điểm chưa đồng nhất:** TC-REG-107 có ghi chú "Mật khẩu hợp lệ `Abcdef1!` cũng nhận cùng thông báo này (TC-REG-01)", còn TC-REG-50 và 56 thì không. Bạn muốn tôi thêm cùng câu đó cho 50 và 56, hay xóa nó ở 107 cho gọn? Tôi nghiêng về thêm, vì đó là sự kiện có ích cho S8.
+
+**Về ảnh có thanh bookmark:** Đồng ý giữ nguyên. Ảnh vẫn thấy đủ đường dẫn, dữ liệu nhập và thông báo lỗi, nên vẫn là bằng chứng hợp lệ. Thanh bookmark không ảnh hưởng tới nội dung test và không phải lỗi bị trừ điểm. Repo để riêng tư nên không có gì đáng lo.
+````
+
+---
+
+### C179 | 23:25 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Thêm đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Add the same factual note to TC-REG-50 and 56
+
+**Output AI (nguyên văn):**
+
+````text
+Đã thêm ghi chú "Mật khẩu hợp lệ `Abcdef1!` cũng nhận cùng thông báo này (TC-REG-01)" cho TC-REG-50 và 56. Giờ cả ba test case Pass về mật khẩu không hợp lệ (50, 56, 107) có ghi chú giống nhau. Trạng thái vẫn là Pass, đầu file có thêm dòng ghi lần cập nhật này, định dạng hợp lệ.
+
+Tiếp theo là nhóm E: Bạn chạy `scripts/run_api_tests.py`, làm hai bước tay ở giao diện cho TC-REG-78 và 81 theo lời nhắc, rồi gửi tôi tên file log (và ảnh của hai bước tay nếu có) để điền.
+````
+
+---
+
+### C180 | 23:26 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Vì thời gian gấp nên tôi làm các TC nào của C thôi vậy? Để tôi chỉ chụp các ảnh ở TC đó. Giống như đang làm với phiên A.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List C test cases by run group
+
+**Output AI (nguyên văn):**
+
+````text
+Đây là danh sách rút gọn cho C, chia mức như bên A. Mức 1 gồm 29 test case giao diện, khoảng 25 ảnh; nhóm API chạy bằng script nên không cần chụp.
+
+## Mức 1: Chạy chắc chắn, theo thứ tự này
+
+| Thứ tự | Nhóm | Test case | Vì sao chọn |
+|---|---|---|---|
+| 1 | A. Checklist (chạy đầu tiên, khi 4 mã mẫu còn nguyên) | **50, 90, 91, 92, 93, 94, 95** | Chụp khoảng 3 ảnh: (1) cả trang Mã Giảm Giá, thấy luôn tiêu đề tab, cho 50, 90, 91, 92, 93, 94; (2) trang Dashboard, cho 94; (3) DevTools tìm `<h1`, cho 95. Ảnh ngày 20/10 thay cho ảnh S0 làm bằng chứng cho các bug 90, 91, 92 |
+| 2 | B. Hợp lệ | **01, 02, 06, 10, 15, 23** | Luồng chính của 2 loại giảm giá; tự viết hoa (06); hiển thị thẻ HTML (10); số thập phân (15); ngày quá khứ vẫn tạo được (23, dễ ra bug) |
+| 3 | C. Không hợp lệ | **30, 32, 33, 37, 38, 41, 43, 44** | Mỗi quy tắc một đại diện: Mã trống, trùng mã mẫu, trùng mã vừa tạo, phần trăm 150 và 0, đơn tối thiểu âm, ngày trống, số lần dùng bằng 0 |
+| 4 | D. Biên | **14, 106, 100, 121, 127, 128** | Phần trăm 100 và 101, -1; mã 1 ký tự; ngày hôm qua và ngày mai |
+| 5 | E. Xóa | **51, 52** | Xóa thành công; có hộp thoại xác nhận không (quyết định TC-CPN-52) |
+| 6 | F. API | Cả nhóm, chạy bằng script | Một lần chạy, chỉ cần file log. Phải chờ phiên C viết script (tin nhắn tôi soạn ở lượt trước) |
+
+## Mức 2: Còn thời gian thì chạy
+
+- Theo thứ tự: 22, 39, 115, 13, 36, 125.
+- Nhóm G (TC-CPN-144: tạo 100 mã bằng script, chụp 1 ảnh).
+- Nhóm H (54, 55, 56): Chạy sau khi A xong TC-REG-79 và tôi reset DB, rồi reset thêm một lần cuối.
+
+Các test case còn lại ghi Not run, giống A.
+
+## Lưu ý khi chụp
+
+- **Mỗi ảnh nên thấy cùng lúc thông báo và bảng danh sách** (có hoặc không có dòng mới), để một ảnh đủ chứng minh cả lỗi lẫn dữ liệu. Đặt tên `S6_TC-CPN-NN.png`.
+- **Các test case về ngày (127, 128, sau đó là 22): Giờ đã gần nửa đêm.** Chạy cả ba trước 0:00, hoặc cả ba sau 0:00. Ngày bạn dùng phải khớp với "Ngày chạy" ghi ở mục 1. Nếu qua 0:00 thì "hôm nay" là 21/10.
+- Không bấm "Xóa" ở các mã mẫu (`SAVE10`, `BIGBUY`, `VIP100`, `EXPIRED`) trước nhóm H.
+
+Chạy xong một nhóm thì bảo phiên C điền, giống cách bạn làm với A. Tôi sẽ soát trước khi bạn commit.
+````
+
+---
+
+### C181 | 23:28 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A đã xong nhóm C và D. Xuất log, kiểm tra và báo tôi. Nếu không có gì thì viết commit message. Tiện thể tới nhóm E, chạy script thì bạn chạy giúp tôi được không? Hay tôi phải chạy?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session A recent turns
+- Bash: Inspect A's API script usage and git status
+- Bash: Check A results format and export log
 
 **Output AI (nguyên văn):**
 
