@@ -7525,11 +7525,57 @@ Cả 9 điểm theo phương án đề xuất (a). Trước khi viết 01_io.md,
 - Read: d:\Dang\Test\.claude\skills\domain-testing-design\assets\templates\review.md
 - Grep: (?i)\b[1-5]\d\d\b|OK|status|header|Content-Type|JSON
 - Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\01_io.md
+- Bash: Run format and change-table checks
 
 **Output AI (nguyên văn):**
 
 ````text
 Tôi đọc mẫu bản review và kiểm lại API spec xem có chỗ nào nêu mã trạng thái HTTP không.
+
+Tôi đã viết xong bản review [01_io.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/01_io.md) với cả 9 quyết định theo phương án (a). Hai lệnh kiểm định dạng và kiểm bảng thay đổi của skill đều báo 0 lỗi; file `ai_raw/` giữ nguyên.
+
+## Trả lời 3 câu hỏi
+
+**1. Xóa không có Input gián tiếp sao?** Có, nhưng bản AI còn thiếu. IN9 (các mã đang có) và IN11 (người gọi API) vốn áp cho Xóa, nhưng bản AI không nói rõ, và bảng đối chiếu của R03 thiếu IN11. Chỗ thiếu thật sự là **trạng thái của chính mã cần xóa**. Tôi thêm **IN13** với ba chiều:
+- Mã đã được dùng trong đơn hàng.
+- Mã còn hạn hay đã hết hạn.
+- Mã đã bị xóa ở tab khác trong khi danh sách đang hiển thị chưa cập nhật. Đây là cách duy nhất để gặp lỗi "xóa mã không tồn tại" (ERR14) qua giao diện; bản AI tưởng lỗi này chỉ gặp được qua API.
+
+Kèm theo là câu hỏi mới **Q24**.
+
+**2. Lỗi khi gọi API.** Chưa có. Q14 và ERR15 chỉ xét giá trị sai bên trong một body JSON đọc được. Tôi bổ sung:
+- **IN14** (dạng của request): Không có body, body `{}`, JSON sai cú pháp, thiếu hoặc sai `Content-Type`.
+- **ERR16**: Request không đọc được thành dữ liệu.
+- Câu hỏi mới **Q23**.
+- IN11 thêm hai trường hợp: Không có header `Authorization`, và header sai dạng (thiếu `Bearer`).
+
+Body `{}` vẫn đọc được, nên không thuộc ERR16 mà thiếu cùng lúc cả 6 trường bắt buộc. Tôi đã ghi điểm này là ngoại lệ ở mục kiểm tra mâu thuẫn cho S3. Mã lỗi phát sinh từ giả định ở S2 vì vậy bắt đầu từ ERR17.
+
+**3. Mã trạng thái HTTP.** Các API của mã giảm giá (mục 5, 6.4) không ghi mã trạng thái nào. API spec chỉ ghi "200 OK" ở mục 1.1 đến 1.3, trong đó 1.1 (đăng ký) cũng là thao tác tạo mới. Ghi mã cụ thể như 201 hay 400 vào kết quả mong đợi là tự đặt quy tắc, thuộc loại Thừa. Tôi đã ghi ba phương án cho giả định **A20** để anh/chị chọn ở S2. Tôi đề xuất (a): Chỉ kiểm theo nhóm mã (thành công 2xx, bị từ chối 4xx, không phải 5xx, theo RFC 9110), và ghi mã thực tế ở S6. Lý do: Có chuẩn làm căn cứ mà không phải tự đặt thêm quy tắc.
+
+## Bảng "Thay đổi so với bản AI"
+
+Có 20 dòng: 9 Quyết định của SV, 10 Thiếu, 1 Mơ hồ. Các dòng phát sinh từ 3 câu hỏi ghi "Sinh viên phát hiện (câu hỏi N)". Phần nội dung cụ thể do tôi đề xuất được ghi rõ, ví dụ ba chiều của IN13 và căn cứ "200 OK".
+
+Có một dòng cần anh/chị xem lại: Dòng "Thiếu" ở câu hỏi 3. Bản AI không sai; tôi xếp vào Thiếu vì bản AI không dẫn căn cứ "200 OK" ở mục 1.1 để dùng cho giả định sau này. Nếu anh/chị thấy không đáng thành một dòng, tôi sẽ bỏ.
+
+## Commit cho bản review
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/01_io.md
+git commit -m "[C-FR17][S1] Review input/output variables"
+```
+
+Nếu bản AI chưa commit, chạy lệnh commit của bản AI trước:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S1_input_output.md
+git commit -m "[C-FR17][S1] Identify input/output variables (AI draft)"
+```
+
+Nhớ nhờ phiên điều phối xuất prompt log trước mỗi commit. Bước tiếp theo là S2.
 ````
 
 ---
@@ -7558,6 +7604,112 @@ Bạn nói đúng về video: Quay khi skill đã chạy thử xong trên C và 
 Giờ mình soát phiên A và xuất log:
 
 Thư mục tạm của phiên này bị xoá sau lần phiên khởi động lại, nên script đọc phiên cũng mất theo. Mình tạo lại script rồi soát thao tác của phiên A:
+
+S5 của A đã đúng: Mục 13 ghi rõ bạn không bổ sung test case, có dòng "Cập nhật lần 2" ở đầu file, bảng thay đổi có thêm một dòng "Quyết định của SV", `ai_raw/` nguyên vẹn, không còn dấu cấm. Log đã xuất: **129 lượt từ 3 phiên**.
+
+Commit (thêm `prompt_log.md` so với lệnh phiên A đưa):
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/A_FR-01_DangKy/05_final_tc.md prompt_log.md
+git commit -m "[A-FR01][S5] Finalize test case set with no student additions"
+git push
+```
+
+## Bảng tình trạng
+
+| Phiên | Feature | Tình trạng |
+|---|---|---|
+| A | FR-01 | ✅ Xong S0 đến S5. Chờ S6 đến S8, chạy chung vào sáng mai |
+| C | FR-17 | 🔄 Đang trả lời 3 câu hỏi của bạn và viết `01_io.md` |
+| D | FR-04 (Mobile) | ⬜ Chưa bắt đầu |
+| B | FR-07 | ⬜ Làm sau C và D, kèm quay video |
+
+**Về đề nghị của phiên A** (xuất Excel ngay để ghi kết quả khi chạy S6): Mình đề xuất **chưa làm**. Việc xuất Word/Excel nên làm một lần cho cả 4 feature ở cuối, để định dạng thống nhất. Khi chạy S6, bạn ghi kết quả thẳng vào bảng Markdown hoặc một file nháp; đến cuối gom lại rồi mới xuất.
+
+Phiên A đang rảnh. Bạn có muốn bắt đầu **D (FR-04, Mobile)** song song với C ngay bây giờ không? Nếu có thì cần 2 việc:
+1. Mình bật backend và Expo, chạy `adb reverse` để app chạy trên điện thoại. Bạn cắm cáp USB và mở khoá máy trước.
+2. Mình soạn tin nhắn gọi skill cho FR-04. Bạn mở **phiên mới** để gửi, không dùng lại phiên A, vì phiên A đã mang nhiều ngữ cảnh của FR-01.
+````
+
+---
+
+### C130 | 16:47 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bây giờ bật mobile lên sẽ khá phiền phức và tôi hiện tại chưa có điện thoại. Không có cái gì để cho ngày mai cả. Chúng ta sẽ cố gắng xong hết vào hôm nay. Bây giờ vì phiên C đang chạy, tôi nghĩ nên làm tiếp phiên A.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check port 3000 conflict and whether web is up
+- Bash: Start EShop backend on port 3000
+- Bash: Start EShop customer web on port 5173
+- Bash: Wait for servers and confirm localhost resolves to EShop
+
+**Output AI (nguyên văn):**
+
+````text
+Đồng ý, mình sẽ dồn để xong trong hôm nay. Phiên A sang **S6 (chạy test thật)**. Trước khi bật server, mình kiểm tra lại xung đột cổng 3000 với `herobroker-api` trong WSL, vì nếu còn thì kết quả S6 sẽ bị sai ngẫu nhiên:
+
+Lần này **không còn xung đột**: `herobroker-api` trong WSL đã tắt, cổng 3000 trống. Mình bật backend (khởi động là DB tự reset về dữ liệu mẫu) và web:
+
+Server đã sẵn sàng, cả `localhost` lẫn `127.0.0.1` đều trỏ đúng vào EShop:
+
+| Phần | Trạng thái |
+|---|---|
+| Backend `localhost:3000` | ✅ Chạy, DB vừa reset về dữ liệu mẫu |
+| Web `localhost:5173` | ✅ Chạy |
+| Xung đột cổng 3000 | ✅ Hết, `herobroker-api` trong WSL đã tắt |
+
+S6 là bước **bạn tự chạy test**, còn AI chỉ chuẩn bị công cụ. Để tiết kiệm thời gian, mình đề xuất nhờ phiên A làm sẵn 2 thứ:
+- **Một file ghi kết quả**, xếp theo đúng thứ tự chạy, để bạn chỉ việc điền.
+- **Một script cho nhóm API.** Bạn tự chạy script và chụp kết quả. Như vậy vẫn là bạn thực thi, còn AI chỉ viết script (sẽ khai báo trong Audit).
+
+Tin nhắn dán vào phiên A:
+
+```text
+Bắt đầu S6. Server đã chạy: backend http://localhost:3000, web http://localhost:5173, dữ liệu vừa reset về dữ liệu mẫu. Tôi là người chạy test; bạn chuẩn bị giúp, không tự chạy test, không gọi API, không mở trang.
+
+1. File ghi kết quả 06_results.md:
+   - Đầu file: Môi trường (ngày chạy, hệ điều hành, trình duyệt và phiên bản để tôi điền, commit SUT 85af3ba, ô Email có dùng type="email" không: điền sau khi chạy TC-REG-96).
+   - Bảng xếp theo thứ tự chạy ở mục 10 của 05_final_tc.md, mỗi test case một dòng: Mã, tiêu đề ngắn, giá trị nhập chính, kết quả mong đợi; các cột để tôi điền: Kết quả thực tế, Trạng thái (Pass, Fail, Blocked, Not run), Ảnh, Ghi chú. Với test case dự kiến Blocked, ghi sẵn lý do nhưng để trống cột Trạng thái cho tôi xác nhận.
+   - Cuối file: Bảng tổng hợp số Pass, Fail, Blocked, Not run (tôi sẽ nhờ bạn đếm lại sau khi điền).
+2. Script cho nhóm API (TC-REG-70 đến TC-REG-82, TC-REG-129, TC-REG-130), để tôi tự chạy: Mỗi test case in ra request và response (mã HTTP, body) và ghi vào một file log. TC-REG-79 tách thành script riêng, chạy cuối cùng như mục 10. Với test case có bước 2 qua giao diện, script in lời nhắc để tôi làm tay.
+3. Ảnh chụp: Đề xuất chỉ chụp test case Fail, Blocked và một vài test case Pass tiêu biểu, đặt tên S6_<mã>.png.
+4. Nếu không đủ thời gian chạy hết: Đề xuất thứ tự ưu tiên để tôi chọn.
+
+Nếu cần quyết định gì trước khi viết (tên file, có lưu bản trong ai_raw không...), hỏi tôi trước.
+```
+
+Lưu ý khi chạy S6:
+- **TC-REG-79 (`DROP TABLE`) chạy cuối cùng.** Chạy xong thì báo mình **reset DB** (khởi động lại backend).
+- Các test case **TC-REG-93 và 96 được phép dùng DevTools**, vì đặc tả yêu cầu những thuộc tính đó. Các test case khác thì không.
+- Tìm ra bug nào thì ghi lại để làm **S7** (issue trên repo nhóm) sau, chưa cần tạo issue ngay.
+````
+
+---
+
+### C131 | 16:50 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Test hết tất cả luôn hả?
+Phiên C: Chạy xong rồi kìa. Tổng hợp lại và đưa cho tôi để tiếp tục điều phối, xem thử có cần commit gì không.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C latest output and check its files
+- Bash: Export log, count C S1 change types, update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Mình xuất log cho commit của phiên C:
 ````
 
 
