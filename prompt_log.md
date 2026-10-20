@@ -8797,7 +8797,215 @@ Phiên C: Xong rồi đó. Xuất log, kiểm tra và điều phối đi.
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+## Phiên C: S3 review (`03_tc.md`)
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác | ✅ Không vi phạm; `ai_raw/` nguyên vẹn |
+| Script của skill | ✅ 0 lỗi; vẫn 78 test case, cả 123 lớp đều có test case |
+| 5 quyết định | ✅ Đã áp |
+| Bảng thay đổi | 5 Quyết định của SV, 5 Thiếu, 2 Mơ hồ |
+
+Điểm đáng ghi nhận: **AI tự phát hiện 7 chỗ** của chính bản nháp khi viết bản review. Ví dụ: Thông báo lỗi phải bằng tiếng Việt (R14) bị bỏ sót dù S1 đã có; TC-CPN-56 (xoá hết mã) cần reset dữ liệu riêng ngay trước khi chạy. Bước tự kiểm của skill đang hoạt động tốt.
+
+**Commit:**
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/03_tc.md prompt_log.md
+git commit -m "[C-FR17][S3] Review test cases"
+git push
+```
+
+Sau đó nhắn phiên C: "Đã commit, sang S4." Phiên C nói trước rằng nó sẽ hỏi bạn về **số chữ số thập phân** của `discount_value`, vì điều đó quyết định điểm ngay trên biên 100% là `100.01` hay `101`. Gợi ý trước để bạn trả lời nhanh: Đặc tả không quy định số chữ số thập phân. Cách an toàn là **thử cả hai** (`100.01` và `101`), vì giá trị biên lấy theo bước nhảy nhỏ nhất mà hệ thống có thể nhận. Nếu bạn muốn gọn thì chọn theo đề xuất của nó.
+
+## Bảng tình trạng
+
+| Phiên | Feature | Đang ở | Việc tiếp theo |
+|---|---|---|---|
+| A | FR-01 | S6: Bạn đang chạy test | Tiếp tục |
+| C | FR-17 | S3 xong, sắp sang S4 | Commit, rồi nhắn "sang S4" |
+| D | FR-04 (Mobile) | Chưa bắt đầu | Chờ bạn có điện thoại |
+| B | FR-07 | Chưa bắt đầu | Làm sau C và D, kèm quay video |
+````
+
+---
+
+### C148 | 20:49 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Đã commit, sang S4.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\step-s4.md
+- AskUserQuestion
+- Bash: Get time and verify 2^53 representability facts
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S4_bva.md
+- Bash: Check coverage, format, new TC ids and string lengths
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã đọc hướng dẫn S4 và mục "Ghi chú cho bước sau" của `02_ec.md` và `03_tc.md`. Có ba điểm quyết định số điểm biên của cả bảng, nên tôi hỏi trước:
+
+Bản AI của S4 đã xong: [ai_raw/S4_bva.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S4_bva.md).
+
+**Kiểm tra:**
+- Script kiểm phủ lớp chạy trên `02_ec.md`, `03_tc.md` và bản S4: Cả 123 lớp đều có test case, có 109 test case (78 của S3 cộng 31 mới), không có mã trùng, 0 lỗi định dạng.
+- Độ dài chuỗi thăm dò (1000 và 255 ký tự) đã đo bằng Python.
+- Mọi điểm mà `02_ec.md` và `03_tc.md` hẹn cho S4 đều đã có trong bảng.
+
+## Tóm tắt: 6 phân vùng, 31 test case mới
+
+| Phân vùng | Các điểm mới | Dùng lại test case đã có |
+|---|---|---|
+| P1 `percent` (0, 100] | `-1`, `0.01`, `1`, `2`, `99`, `100.01`, `101` | Để trống, `0`, `15`, `100` |
+| P2 `fixed` (0, không có cận trên) | `-1`, `0.01`, `1`, `2`, `2^53+1` | Để trống, `0`, `10^16` |
+| P3 `min_order_amount` [0, không có cận trên) | `-0.01`, `1`, `2^53+1` | Để trống, `-1`, `0`, `10^16` |
+| P4 `max_uses_per_user` [1, không có cận trên) | `-1`, `1`, `2`, `1.0` (qua API), `2^53+1` | Để trống, `0`, `10^16` |
+| P5 độ dài `code` sau khi cắt | `␣`, `Q`, `␣K␣`, `j`, `QZ`, 1000 ký tự | Để trống, 255 ký tự |
+| P6 ngày so với ngày chạy (ranh giới hiển thị "Hết hạn") | `01/01/0001`, hôm qua, ngày mai, `12/31/9999` | Hôm nay, `2099-12-31` |
+
+- Phân vùng không có cận trên thì không có điểm "giữa" và không có UB; thay bằng điểm thăm dò giá trị lớn nhất.
+- Không dùng `0.99` cho số lần dùng, vì nó vi phạm cùng lúc "nhỏ hơn 1" và "phải là số nguyên".
+- TC-CPN-130 là bản API dự phòng dạng bảng, 7 dòng; chỉ chạy dòng nào mà test case giao diện tương ứng bị trình duyệt chặn.
+
+**Phát hiện ảnh hưởng S3:** TC-CPN-18, 21, 25 của S3 dùng `10^16`. Số này biểu diễn chính xác được bằng số thực 64 bit, nên ba test case đó không phát hiện được lỗi mất độ chính xác. Các điểm `2^53 + 1` (`9007199254740993`) ở S4 bù cho chỗ này. Tôi ghi vào phần "Ghi chú cho bước sau" để anh/chị xét ở S5.
+
+## Cần anh/chị quyết định (mục 7)
+
+| # | Vấn đề | Tôi đề xuất | Lý do |
+|---|---|---|---|
+| 1 | **Giả định mới A27:** Số lần dùng là `1.0` có hợp lệ không | (a) Hợp lệ, lưu là 1 | Giá trị bằng đúng số nguyên 1 |
+| 2 | Ba điểm `2^53 + 1` | (a) Giữ cả ba | `10^16` không phát hiện được lỗi mất độ chính xác; mỗi trường có thể lưu theo kiểu khác nhau |
+| 3 | Các điểm LB+1 (5 test case) | (a) Giữ | Slide có điểm này; mỗi điểm chỉ là một test case dữ liệu |
+| 4 | Điểm âm của P1, P2, P4 (không phải điểm biên theo slide) | (a) Giữ làm đại diện theo rủi ro | Bắt luật bị viết thành "khác 0" mà giá trị `0` không bắt được |
+| 5 | Ngày `01/01/0001` | (a) Giữ | Là điểm "nhỏ nhất giao diện cho nhập" |
+| 6 | Một dấu cách `␣` | (a) Giữ | Đúng là LB-1 sau khi cắt; TC-CPN-31 (`␣␣␣`) chỉ là đại diện lớp |
+| 7 | Kết quả khác giả định khi chạy ở S6 | (a) Ghi trạng thái riêng "Khác giả định", xét ở S5 hoặc S7 | Giả định do sinh viên chốt, không phải đặc tả |
+
+## Commit cho bản AI
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S4_bva.md
+git commit -m "[C-FR17][S4] Add boundary value analysis (AI draft)"
+```
+
+Nhớ nhờ phiên điều phối xuất prompt log trước khi commit.
+````
+
+---
+
+### C149 | 20:50 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Ở bảng result, có cần phải ghi các bước kiểm thử như nào không?
+Phiên C: Đang viết S4.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+**Không cần.** Các bước kiểm thử đã nằm trong bộ test case (`05_final_tc.md`): Mỗi test case có tiền điều kiện, giá trị nhập và quy trình chung. Bảng kết quả chỉ ghi **những gì xảy ra khi chạy**, tham chiếu theo mã test case.
+
+Cột "Kết quả thực tế" nên ghi **cụ thể những gì nhìn thấy**, đừng chỉ ghi "đúng" hay "sai":
+
+| Ghi chưa tốt | Ghi tốt |
+|---|---|
+| Lỗi | Hiện thông báo "Email đã tồn tại" phía trên nút "Đăng Ký"; vẫn ở `/register` |
+| Thành công | Chuyển sang `/login`, hiện form đăng nhập |
+| Không chặn | Không có thông báo; chuyển sang `/login` (tài khoản được tạo dù mật khẩu chỉ 7 ký tự) |
+
+Hai trường hợp nên ghi thêm vào cột "Ghi chú":
+- **Khi làm khác với các bước đã thiết kế**, ví dụ: Bỏ qua bước nhập Xác nhận mật khẩu vì form không có trường đó (D01); thông báo do trình duyệt hiện (bong bóng) chứ không phải của trang; giá trị bị trình duyệt tự sửa.
+- **Câu chữ chính xác của thông báo lỗi**, vì đặc tả không nêu câu chữ (Q16) nên đây là thông tin mới.
+
+Với test case **Fail**, đến S7 bug report sẽ cần "các bước tái hiện". Lúc đó lấy luôn từ test case tương ứng trong `05_final_tc.md`, nên bây giờ không cần chép lại.
+
+**Phiên C:** Đã ghi nhận, đang viết S4.
+````
+
+---
+
+### C150 | 21:01 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã điền xong phần A. Kiểm tra cho tôi. Riêng stt4 tôi chưa điền nhưng tôi đã có chụp ảnh để bạn xem và điền, tôi chỉ kiểm tra. Ngoài ra các chỗ còn lại bạn hãy xem và kiểm tra cho tôi xem tôi đã điền đúng chưa. Và phần stt7, ký tự bị che là sao? Tôi chưa hiểu phần đó.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Show 06_results header, group A rows, and screenshot list
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-93.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-96.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-94_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-94_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-94_3.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-94_4.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-94_5.png
+- Bash: Show rows affected by the Email input type finding
+- Bash: Fill group A rows, environment rows, and add notes to affected rows
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã xem ảnh `S6_TC-REG-93.png`, `S6_TC-REG-96.png` và `S6_TC-REG-94_1.png`. Tôi xem tiếp 4 ảnh còn lại của TC-REG-94 để kiểm thứ tự focus bạn ghi.
+
+Tôi ghi thêm vào đầu file một dòng về những gì AI vừa điền và kiểm, cho minh bạch.
+````
+
+---
+
+### C151 | 21:02 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đã điền xong bảng và bảo check lại.
+Phiên C: Đã viết xong rồi đó, bạn xuất log, kiểm tra và nói tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session A latest status
+- Bash: Read session C S4 status and repo state
+- Bash: Export log and record C S4 notes
+
+**Output AI (nguyên văn):**
+
+````text
+## Phiên C: Bản nháp S4 đã xong
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác | ✅ Không vi phạm; `ai_raw/` các bước trước nguyên vẹn |
+| Script | ✅ 0 lỗi; 109 test case (78 của S3, 31 mới); cả 123 lớp đều có test case |
+| 3 câu hỏi trước khi viết | Bạn đã trả lời (bước nhảy, độ dài thăm dò, biên qua API) |
+
+**Điểm hay:** AI **tự phát hiện** 3 test case của S3 (TC-CPN-18, 21, 25) dùng giá trị `10^16`. Số này biểu diễn chính xác được bằng số thực 64 bit, nên không bắt được lỗi mất độ chính xác. AI bổ sung điểm biên `2^53 + 1` để bù, và đã tự kiểm phép tính bằng Python. Đây là bằng chứng tốt cho skill. Ngoài ra, AI cũng **tuân thủ đúng bài học từ FR-01**: Không có điểm "giữa" cho phân vùng không có cận trên, và không dùng `0.99` vì giá trị đó vi phạm 2 điều kiện cùng lúc.
+
+**Phiên điều phối phát hiện thêm 1 điểm** (từ kiến thức chung, **không** liên quan tới kết quả nhập thử của bạn): Giá trị `2^53 + 1` = `9007199254740993` khi nhập vào **ô số trên giao diện** có thể bị **chính trình duyệt hoặc code JavaScript của trang** làm tròn thành `9007199254740992` trước khi gửi đi. Nếu vậy, test qua giao diện sẽ không biết lỗi nằm ở trình duyệt hay ở EShop. Điểm này nên đặt câu hỏi cho phiên C.
+
+**7 quyết định:** Mình thấy các đề xuất đều hợp lý. Tin nhắn dán vào phiên C:
+
+```text
+Cả 7 điểm theo đề xuất (a). Thêm một câu hỏi (do Claude ở phiên điều phối, session 305c705a, phát hiện khi soát; ghi đúng người phát hiện trong bảng thay đổi): Giá trị 2^53+1 nhập vào ô số trên giao diện có thể bị trình duyệt hoặc JavaScript của trang làm tròn trước khi gửi, giống việc ô type="email" tự cắt khoảng trắng. Có cần chạy các điểm 2^53+1 qua API, hoặc ghi giới hạn quan sát cho bản chạy qua giao diện không? Sau đó viết 04_bva.md.
+```
+
+**Commit bản nháp S4.** Nhớ **không `add`** các file của FR-01 (`06_results.md` và ảnh S6), vì phiên A vẫn đang kiểm tra:
 ````
 
 
