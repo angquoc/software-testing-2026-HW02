@@ -15177,11 +15177,193 @@ Phiên D: Tôi không mở được VS Code số 2, vì đường dẫn gi
 
 - Bash: Read session B latest and check files
 - Bash: Run B S2/S3 checks and export log
+- Bash: Create backup workspace file and update notes
+- Bash: Rewrite workspace file with forward slashes
 
 **Output AI (nguyên văn):**
 
 ````text
 Vì sao VS Code không mở cửa sổ thứ hai: Khi một thư mục đã mở sẵn, VS Code chỉ chuyển về cửa sổ đang mở thư mục đó. Tôi sẽ đưa cách khác. Trước hết tôi soát phiên B.
+
+Phiên B đạt, bạn commit được ngay. Về D, có hai cách để có cửa sổ riêng mà vẫn giữ đúng thư mục.
+
+## Phiên D: Hai cách
+
+**Cách 1 (nhanh nhất, đề xuất): Mở thêm một tab Claude Code ngay trong cửa sổ hiện tại**, giống cách bạn đang chạy song song A, B, C.
+- Lúc quay, dùng OBS **Display Capture** và để tab D đang hiện trên màn hình.
+- Chuyển sang tab B thì bấm **tạm dừng**; quay lại tab D thì quay tiếp.
+
+**Cách 2: Cửa sổ VS Code riêng.** Tôi đã tạo sẵn file workspace trỏ tới cùng thư mục `D:/Dang/Test`, nên mở nó thì VS Code bắt buộc tạo cửa sổ mới:
+- Trong VS Code chọn **File, Open Workspace from File**, rồi chọn `C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\D_video.code-workspace`.
+- Skill và prompt log vẫn hoạt động bình thường, vì thư mục làm việc vẫn là `D:\Dang\Test`.
+
+Mở phiên D xong thì báo tôi để thêm vào whitelist của prompt log.
+
+## Phiên B: S2 đã chốt, có bản AI của S3
+
+- **`02_ec.md`:** 32 lớp, giống bản AI; bảng thay đổi có 2 dòng "Quyết định của SV". Kiểm tra 0 lỗi.
+- **Bản AI của S3:** 32 test case, phủ đủ cả 32 lớp, không trùng mã. Kiểm tra 0 lỗi, không có dấu "—" hay "·".
+  - 12 test case giao diện, mỗi đường thêm vào giỏ có một đại diện.
+  - 7 test case API không hợp lệ, mỗi test case chỉ vi phạm 1 lớp.
+  - 5 test case API hợp lệ, 8 test case checklist.
+- **5 điểm phiên B đã tự áp, tôi đồng ý cả 5:**
+  1. Gộp checklist thành 8 test case.
+  2. Thiếu token thì kiểm qua lệnh thêm vào giỏ, token sai thì kiểm qua lệnh xem giỏ.
+  3. Chỉ đặt bước kiểm chứng (tải lại trang, gọi API xem giỏ) ở các test case làm giỏ thay đổi.
+  4. Thêm sản phẩm trùng chỉ kiểm qua trang chi tiết.
+  5. Gọi API chỉ dùng mã sản phẩm 1, mã duy nhất thấy trên ảnh.
+- Phiên B dự kiến S4 thêm khoảng 6 test case, cả bộ khoảng 38.
+
+**Dán vào phiên B:**
+
+```text
+Chấp nhận cả 5 điểm đã áp ở S3. Viết 03_tc.md, rồi làm luôn S4 theo các điểm biên bạn đã liệt kê. Không cần đưa lệnh commit.
+```
+
+**Commit** (đứng ở `D:\Dang\Test\Homeworks\HW02`):
+
+```
+git add features/B_FR-07_GioHang/02_ec.md
+git commit -m "[B-FR07][S2] Review equivalence classes"
+
+git add features/B_FR-07_GioHang/ai_raw/S3_test_cases.md prompt_log.md
+git commit -m "[B-FR07][S3] Select test cases (AI draft)"
+```
+
+Log đã xuất: 253 lượt, đúng 4 phiên.
+````
+
+---
+
+### C254 | 06:45 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Chấp nhận cả 5 điểm đã áp ở S3. Viết 03_tc.md, rồi làm luôn S4 theo các điểm biên bạn đã liệt kê. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read S4 guide and get time
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\mk03.py
+- Bash: Generate 03_tc.md and run checks
+- Bash: Read coverage check logic
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S4_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S4_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S4_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S4_bva.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S4_bva.md
+- Bash: Verify S4 checks and arithmetic
+- Bash: Set actual creation time in S4 draft
+
+**Output AI (nguyên văn):**
+
+````text
+Viết `03_tc.md` từ bản AI, chốt 5 điểm đã áp.
+
+`03_tc.md` xong, các script kiểm tra không báo lỗi. Trước khi viết S4, mình xem script nhận diện test case trong bảng biên thế nào để tránh báo trùng mã.
+
+Đã xong hai file. Script kiểm tra không báo lỗi định dạng, bảng thay đổi hay độ phủ lớp, và đếm được **38 test case**, đúng mục tiêu 35 đến 45.
+
+- **[03_tc.md](Homeworks/HW02/features/B_FR-07_GioHang/03_tc.md):** Chốt cả 5 điểm đã áp, nội dung test case không đổi so với bản AI. Mục kiểm tra mâu thuẫn có 4 dòng, không có chỗ vướng. Bảng thay đổi có 1 dòng "Quyết định của SV".
+- **[ai_raw/S4_bva.md](Homeworks/HW02/features/B_FR-07_GioHang/ai_raw/S4_bva.md):** Bản AI của S4, thêm 6 test case mới (TC-CART-100 đến 105).
+
+**Biên 1 tỷ (P4) khác với điểm đã hẹn ở `03_tc.md`:** Lúc hẹn mình ghi MacBook × 22 = 990,000,000 và cho rằng không tạo được đúng 1 tỷ. Khi tự kiểm mình thấy Bàn phím cơ Keychron Q1 (4,000,000) × 250 = 1,000,000,000, tức đạt đúng cận dưới. Vì vậy P4 dùng Keychron × 249 (996,000,000) và × 250 (1,000,000,000), cộng với MacBook × 23 đã có ở TC-CART-12. Không tạo được đúng 999,999,999 vì giá trong dữ liệu mẫu đều là bội của 1,000,000.
+
+**Các phân vùng có thứ tự:**
+
+| Phân vùng | Điểm biên | Test case mới | Dùng lại |
+|---|---|---|---|
+| P1 Số lượng thêm (cận dưới 1, không có cận trên) | 0 qua giao diện (kiểm luôn A31), −1 qua API, 2, thăm dò 1000 | 100, 102, 101, 103 | 01 (giá trị 1), 31 (0 qua API) |
+| P2 Số lượng khi bấm giảm | 1, 2 | | 06, 05 (dự kiến Blocked) |
+| P3 Số dòng trong giỏ | 0, 1, 2 | | 10, 01, 02 |
+| P4 Độ lớn tiền, biên 1 tỷ | 996,000,000 và 1,000,000,000 | 104, 105 | 12 |
+
+Với S4, FR07-R27 chuyển thành phủ đủ, vì TC-CART-100 kiểm số lượng 0 ngay trên ô "Số lượng:" của giao diện.
+
+**Các điểm mình đã áp luôn, bạn duyệt một lượt (mục 6):**
+
+| # | Đã áp |
+|---|---|
+| 1 | Thêm số lượng −1 qua API. Lý do: Hệ thống kiểm "khác 0" và kiểm "lớn hơn 0" sẽ cho kết quả khác nhau ở số âm |
+| 2 | Thăm dò số lượng 1000 qua giao diện, thay cho cận trên và điểm giữa (phân vùng không có cận trên). Số 23 ở TC-CART-12 không phải giá trị thăm dò |
+| 3 | P4 dùng Keychron để đạt đúng biên 1 tỷ, như giải thích ở trên |
+| 4 | Không thăm dò giỏ có nhiều dòng hơn 2 |
+
+Bạn duyệt xong thì mình viết `04_bva.md`. Sau đó là S5: Bạn review lần cuối, rồi xuất Word và Excel bằng skill `test-case-writing`.
+````
+
+---
+
+### C255 | 06:47 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+<command-message>domain-testing-design</command-message>
+<command-name>/domain-testing-design</command-name>
+<command-args>Feature D, FR-04 Quản lý hồ sơ cá nhân trên Mobile (app EShop chạy bằng Expo Go trên Android, Samsung Galaxy S21 Ultra), thư mục Homeworks/HW02/features/D_FR-04_HoSo_Mobile/.
+
+Lưu ý:
+- Bắt đầu từ S0. Tài khoản khảo sát: test@eshop.com (mật khẩu theo SRS). Không dùng chức năng đăng ký. Ở S0 chỉ quan sát, không bấm Lưu khi sửa hồ sơ.
+- Mỗi bước tôi chỉ review một lượt: Chỉ dừng hỏi trước khi viết nếu quyết định thay đổi cấu trúc cả bản; điểm nhỏ thì áp phương án bạn đề xuất và liệt kê để tôi duyệt. Mục tiêu cả bộ khoảng 25 đến 35 test case.
+- Ảnh tôi chụp trên điện thoại, đặt tên theo danh sách bạn đưa; tôi không tự điền bảng quan sát, bạn điền từ ảnh và đánh dấu "AI từ ảnh".
+- Tuân thủ WORKFLOW.md: Hộp đen, không đọc mã nguồn EShop, không đọc file của feature khác trừ khi tôi cho phép.</command-args>
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Locate workflow file and feature folder
+- Bash: Read project workflow
+- Bash: Read skill rules, lessons, S0 guide
+- Bash: Read platforms guide and templates
+- Bash: Outline the SRS headings
+- Read: D:\Dang\Test\Homeworks\eshop-sut\README.md
+- Read: D:\Dang\Test\Homeworks\eshop-sut\api_specification.md
+- Bash: Read HW02 README and assignment mentions
+- Bash: Read pool section of assignment
+- Bash: Inspect format checker and get current time
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S0_khao_sat.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S0_khao_sat.md
+- Bash: Copy to 00_spec, verify identical, run format check
+- Bash: Fix heading dash, re-sync and re-check
+- Bash: Correct method note, re-sync and re-check
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi bắt đầu bằng việc đọc quy trình dự án và tài liệu của skill.
+
+Đã đọc xong WORKFLOW, skill và đặc tả; giờ tôi viết bản S0 pha 1.
+
+Line 95 is the section heading where I named the SRS title with its em dash; I'll drop the dash from my own heading (it stays verbatim in the quote rule note) and re-sync.
+````
+
+---
+
+### C256 | 06:50 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Đã xong, xuất log, kiểm tra và báo tôi.
+Phiên D: Tôi đã đang quay video bằng prompt bạn đưa. Mọi thứ vẫn đang chạy nên tôi chỉ quay khúc đầu, pause đoạn AI đang viết để làm việc khác và không phải edit video rồi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find new D session and read session B latest
+- Bash: Read session D first turn and actions
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\export_prompt_log.py
+- Bash: Check B S3/S4, export log, update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên D mới là `633ed316`. Tôi kiểm phiên D rồi thêm vào whitelist, đồng thời chạy kiểm tra file của B.
+
+Phiên D sạch, không có thao tác bị cấm. Tôi thêm phiên D vào whitelist, kiểm file của B rồi xuất log.
 ````
 
 
