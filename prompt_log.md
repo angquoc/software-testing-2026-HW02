@@ -8965,6 +8965,48 @@ Tôi đã điền xong phần A. Kiểm tra cho tôi. Riêng stt4 tôi chưa đi
 Tôi đã xem ảnh `S6_TC-REG-93.png`, `S6_TC-REG-96.png` và `S6_TC-REG-94_1.png`. Tôi xem tiếp 4 ảnh còn lại của TC-REG-94 để kiểm thứ tự focus bạn ghi.
 
 Tôi ghi thêm vào đầu file một dòng về những gì AI vừa điền và kiểm, cho minh bạch.
+
+Tôi đã kiểm và điền xong nhóm A trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md). File vẫn đủ 96 dòng, định dạng hợp lệ.
+
+## Kiểm tra nhóm A
+
+| STT | TC | Kết quả kiểm | Đã làm |
+|---|---|---|---|
+| 1 | TC-REG-90 | Đúng | Giữ nguyên |
+| 2 | TC-REG-91 | Đúng | Giữ nguyên |
+| 3 | TC-REG-92 | Đúng | Giữ nguyên |
+| 4 | TC-REG-93 | **AI điền từ ảnh** `S6_TC-REG-93.png`: Lệnh Console trả về mảng rỗng (`length: 0`), tức trang **không có thẻ `<h1>` nào**. Tiêu đề "Đăng Ký Tài Khoản" chỉ được định dạng cho to, không phải `<h1>` | Điền **Fail (đề xuất)**. Ảnh chỉ chụp khung DevTools, không thấy đường dẫn trang, nên bạn xác nhận đã chạy lệnh khi đang ở `/register` rồi bỏ chữ "(đề xuất)" |
+| 5 | TC-REG-94 | Đúng với phần form: 5 ảnh cho thấy focus đi Họ Tên, Email, Mật khẩu, nút "Đăng Ký", liên kết "Đăng nhập" | Giữ Pass, thêm ghi chú (xem dưới) |
+| 6 | TC-REG-95 | Đúng | Giữ nguyên |
+| 7 | TC-REG-96 | Đúng là Fail. Ảnh cho thấy 3 ô theo thứ tự: `text`, `text`, `password`; tức Họ Tên `text`, **Email `text`**, Mật khẩu `password` | Viết lại kết quả cho đủ. Ghi rõ Fail vì FR01-R19 (ô Email); FR01-R20 (ô Mật khẩu) đạt về `type`, còn chờ kiểm ký tự bị che |
+
+Ngoài ra:
+- **Mục 1 (môi trường):** Điền hai dòng loại ô: Email "Không, `type="text"`"; Mật khẩu "Có, `type="password"`". Ô phiên bản Chrome vẫn trống, bạn nhớ điền.
+- **Lưu ý về TC-REG-94:** Ảnh đầu tiên đã ở ô Họ Tên. Theo FR-21, thứ tự Tab tính cho cả trang, nên các mục trên navbar ("EShop", "Giỏ hàng", "Đăng nhập", "Đăng ký") lẽ ra được focus trước Họ Tên. Bạn ghi rõ đã bắt đầu nhấn Tab từ đâu. Nếu bấm thẳng vào ô Họ Tên rồi mới Tab, nên làm lại từ thanh địa chỉ và ghi thêm thứ tự các mục navbar.
+- **Một quan sát phụ, không thuộc test case:** Console báo cả 3 ô đều không có nhãn gắn với ô. Không yêu cầu nào trong phạm vi nói tới điều này nên tôi chỉ ghi ở cột kết quả, không tính là lỗi.
+
+## "Ký tự bị che" là gì
+
+Khi gõ vào ô mật khẩu, trang không hiện chữ thật mà hiện thành dấu chấm (●●●●), để người đứng cạnh không đọc được mật khẩu. FR-22 viết "Trường Mật khẩu phải dùng `type="password"` (không hiển thị rõ)", và cụm "không hiển thị rõ" chính là điều này.
+
+Ảnh của bạn mới chứng minh ô có `type="password"`, chưa chứng minh ký tự thực sự bị che (ví dụ có thể có nút "hiện mật khẩu" đang bật sẵn). Cách kiểm:
+
+1. Ở `/register`, gõ `Abc1` vào ô Mật khẩu.
+2. Nếu thấy `●●●●` thì đạt; nếu thấy `Abc1` thì không đạt.
+3. Chụp ảnh lúc ô đang có ký tự, lưu `S6_TC-REG-96_2.png`, rồi xóa ô.
+4. Điền vào dòng TC-REG-96, thay cho chỗ "(sinh viên kiểm, xem hướng dẫn)".
+
+## Hệ quả của việc ô Email là `type="text"`
+
+Kết quả này làm thay đổi cách đọc một số test case. Tôi đã ghi chú vào các dòng tương ứng:
+- **TC-REG-11, 33, 48:** Giới hạn GH2 không còn áp dụng. Trình duyệt không tự cắt dấu cách nên kết quả qua giao diện chính là hành vi của EShop.
+- **TC-REG-14, 121, 122 (tên miền có dấu): Cần bạn quyết định trước khi chạy.** Giả định A15 (b) dựa trên việc trình duyệt chuyển tên miền sang punycode, mà việc đó chỉ xảy ra với ô `type="email"`. Ô hiện là `text`, nên EShop sẽ nhận nguyên chuỗi có dấu. Các phương án:
+  - **(a)** Giữ kết quả mong đợi theo đặc tả, tức như thể ô đúng là `type="email"` như FR-22 yêu cầu. Chạy và ghi kết quả; nếu khác thì ghi nguyên nhân có thể là lỗi của TC-REG-96, không tách thành bug riêng.
+  - **(b)** Đổi kết quả mong đợi theo định nghĩa "valid email address" (chỉ nhận ASCII): Cả 3 test case thành ERR3.
+  - **(c)** Ghi Not run, kèm lý do tiền đề của A15 (b) không còn đúng, rồi đưa vào phân tích ở S8.
+
+  Nhận xét của tôi: Phương án (a) nhất quán nhất với cách ta đã chọn là thiết kế theo đặc tả.
+- **Ghi lại cho S8:** Lý do bỏ TC-REG-124 ở S4 (Email là 1 dấu cách qua giao diện) dựa trên giả định ô là `type="email"`. Giờ thấy giả định đó sai, nên test case này thực ra không trùng TC-REG-32. Đây là một điểm cho phần AI gap analysis. S5 đã chốt nên tôi không thêm lại; nếu bạn muốn chạy bổ sung thì báo tôi.
 ````
 
 ---
@@ -9006,6 +9048,208 @@ Cả 7 điểm theo đề xuất (a). Thêm một câu hỏi (do Claude ở phi�
 ```
 
 **Commit bản nháp S4.** Nhớ **không `add`** các file của FR-01 (`06_results.md` và ảnh S6), vì phiên A vẫn đang kiểm tra:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/ai_raw/S4_bva.md prompt_log.md
+git commit -m "[C-FR17][S4] Add boundary value analysis (AI draft)"
+git push
+```
+
+Mình đã ghi thêm vào danh sách việc của S5 (FR-17) trong `_NOTES.md`: Điểm biên `j` (mã 1 ký tự chữ thường) trong S4 cũng chạy qua giao diện, nên cũng bị tự chuyển thành chữ hoa (E07). Đến S5, bạn thêm test case qua API cho cả EC18, EC07 và điểm này. **Không báo cho phiên C.**
+
+## Bảng tình trạng
+
+| Phiên | Feature | Đang ở | Việc tiếp theo |
+|---|---|---|---|
+| A | FR-01 | S6: Đang kiểm nhóm checklist bạn vừa điền, xem ảnh và điền thứ tự Tab | Chờ phiên A trả lời |
+| C | FR-17 | S4: Bản nháp xong | Commit, rồi gửi 7 quyết định và câu hỏi |
+| D | FR-04 | Chưa bắt đầu | Cần điện thoại |
+| B | FR-07 | Chưa bắt đầu | Sau C và D, kèm quay video |
+
+Khi phiên A kiểm xong nhóm checklist, bạn báo mình. Mình sẽ soát kết quả trước khi bạn chạy tiếp nhóm B (test case không hợp lệ).
+````
+
+---
+
+### C152 | 21:10 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Về các ảnh DevTools, tôi cần chụp lại thấy rõ địa chỉ đường dẫn hả?
+2. Tôi bấm từ đầu nhưng chỉ cap từ phần họ tên theo đúng test á, vậy là cần chụp lại từ đầu sao?
+3. a
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Record decision (a) on rows TC-REG-14, 121, 122
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi trả lời hai câu hỏi trước, rồi áp phương án (a) vào ba dòng TC-REG-14, 121, 122.
+
+Đã ghi quyết định (a) vào cột Ghi chú của TC-REG-14, 121 và 122. Kết quả mong đợi giữ nguyên như `05_final_tc.md`, nên không phải sửa bộ test đã chốt ở S5.
+
+**1. Có cần chụp lại ảnh DevTools cho thấy đường dẫn không?**
+
+Không bắt buộc. Nhưng nên chụp lại ảnh của TC-REG-93, còn TC-REG-96 thì không cần:
+- **TC-REG-96:** Ảnh đã đủ. Bảng có đúng 3 ô `text`, `text`, `password`, khớp với form Đăng ký. Trang Đăng nhập chỉ có 2 ô nên không thể nhầm.
+- **TC-REG-93:** Kết quả "0 thẻ `<h1>`" có thể xảy ra ở bất kỳ trang nào, nên ảnh hiện tại không chứng minh được là đang ở `/register`. Có cách đơn giản, không cần chỉnh khung DevTools để lộ thanh địa chỉ: Chạy lệnh dưới đây trong Console. Kết quả sẽ in luôn đường dẫn trang cạnh số thẻ `<h1>`, ví dụ `['/register', 0]`.
+  ```js
+  [location.pathname, document.querySelectorAll('h1').length]
+  ```
+  Chụp lại khung Console, lưu đè lên `S6_TC-REG-93.png`. Sau đó bỏ chữ "(đề xuất)" ở dòng TC-REG-93 và xóa câu "Ảnh chỉ chụp khung DevTools..." ở cột Ghi chú.
+
+**2. Có cần chụp lại TC-REG-94 từ đầu không?**
+
+Không cần chụp lại. Bạn đã bấm Tab từ đầu, và các ảnh chụp đúng phạm vi mà test case ghi (kết quả mong đợi của TC-REG-94 chỉ liệt kê các ô và nút trong form). Bạn chỉ cần bổ sung bằng chữ vào cột "Kết quả thực tế" những gì đã thấy **trước** ô Họ Tên. Ví dụ: "Từ thanh địa chỉ, Tab lần lượt qua EShop, Giỏ hàng, Đăng nhập, Đăng ký (trên navbar), rồi tới Họ Tên, Email, Mật khẩu, nút "Đăng Ký", liên kết "Đăng nhập"". Ghi đúng những gì bạn thấy; nếu không nhớ chắc thì bấm lại một lượt để xem, không cần chụp.
+
+Lưu ý cho S8: FR-21 yêu cầu thứ tự Tab trên **cả trang**, nhưng kết quả mong đợi mà AI thiết kế cho TC-REG-94 chỉ tính phần form. Đây là phạm vi hẹp hơn đặc tả, nên ghi lại cho phần AI gap analysis. Sau khi bạn bổ sung phần navbar như trên thì test case này đã phủ đủ yêu cầu.
+
+**3. Phương án (a):** Đã ghi vào ba dòng như ở đầu tin nhắn này. Bạn chạy ba test case đó như bình thường; nếu kết quả khác mong đợi thì ghi nguyên nhân có thể là lỗi ô Email không phải `type="email"` (TC-REG-96, FR01-R19).
+````
+
+---
+
+### C153 | 21:11 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Cả 7 điểm theo đề xuất (a). Thêm một câu hỏi (do Claude ở phiên điều phối, session 305c705a, phát hiện khi soát; ghi đúng người phát hiện trong bảng thay đổi): Giá trị 2^53+1 nhập vào ô số trên giao diện có thể bị trình duyệt hoặc JavaScript của trang làm tròn trước khi gửi, giống việc ô type="email" tự cắt khoảng trắng. Có cần chạy các điểm 2^53+1 qua API, hoặc ghi giới hạn quan sát cho bản chạy qua giao diện không? Sau đó viết 04_bva.md.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\04_bva.md
+- Bash: Run all checks across EC, TC and BVA files
+
+**Output AI (nguyên văn):**
+
+````text
+Câu hỏi của phiên điều phối là đúng. Tôi trả lời và áp vào bản review như sau:
+
+- Theo chuẩn HTML, giá trị của ô số là chuỗi đúng như đã gõ. Số chỉ bị làm tròn khi chuỗi đó bị đổi thành kiểu số, việc này có thể do mã JavaScript của trang làm trước khi gửi.
+- Khác với trường hợp ô email tự cắt khoảng trắng: Ở đây có ba chỗ có thể làm tròn là trình duyệt, mã của trang Web Admin (cũng là một phần của hệ thống được test) và phía server. Kết quả qua giao diện không cho biết chỗ nào làm tròn.
+- Ô số cũng không chặn giá trị này, nên cách "API chỉ làm dự phòng khi trình duyệt chặn" (A2) không áp dụng được.
+- Vì vậy cần **cả hai việc**: Ghi giới hạn quan sát cho bản chạy qua giao diện, và thêm một test case API **luôn chạy** cho ba điểm `2^53 + 1`.
+
+Bản review S4 đã xong: [04_bva.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/04_bva.md). Bộ test case đủ cho S5, tổng cộng **110 test case** (78 của S3 cộng 32 của S4).
+
+**Kiểm tra:** Script chạy trên cả `02_ec.md`, `03_tc.md` và `04_bva.md`: Đủ 123 lớp, 110 test case, không có mã trùng, 0 lỗi. Cảnh báo về các số lớp bỏ trống (77, 123, 124, 126) là các lớp đã bỏ có chủ ý ở S2. File `ai_raw/S4_bva.md` giữ nguyên.
+
+## Câu hỏi của phiên điều phối
+
+Đúng, và cần làm cả hai việc: Thêm test case API và ghi giới hạn quan sát.
+
+- **Vì sao:** Ô số giữ đúng chuỗi đã gõ, nhưng khi chuỗi đó được đổi thành số thì `9007199254740993` thành `...992`. Việc đổi này có thể xảy ra ở trình duyệt, ở mã JavaScript của trang Web Admin, hoặc ở server. Ô số cũng không chặn giá trị này, nên cách A2 (API chỉ chạy khi giao diện bị chặn) không áp dụng được.
+- **Khác ô email ở một điểm:** Mã của trang Web Admin là một phần của hệ thống được test. Nếu trang làm tròn thì từ phía admin đó vẫn là lỗi của FR-17.
+- **Đã thêm:**
+  - **TC-CPN-131**: Test case API dạng bảng 3 dòng, **luôn chạy** cùng đợt với ba test case giao diện. Kèm bảng cách đọc kết hợp hai kết quả: Giao diện sai mà API đúng thì làm tròn xảy ra trước khi gửi; cả hai sai thì server làm tròn.
+  - **Mục 6 "Giới hạn quan sát":** Bản AI của S4 thiếu hẳn mục này. Ngoài số lớn, mục này ghi thêm giới hạn cho số lẻ, số âm, ngày chạy, độ dài `code` và giá trị `1.0`.
+- **Bảng thay đổi:** Ghi người phát hiện là Claude ở phiên điều phối (session 305c705a), sinh viên chuyển sang. Các dòng giới hạn quan sát khác ghi là AI bổ sung khi viết bản review.
+
+**Cần anh/chị xem:** TC-CPN-131 chạy qua API dù giao diện không bị chặn, nên là ngoại lệ so với quyết định trước khi viết số 3 (API chỉ dự phòng). Tôi đã ghi ngoại lệ này ở đầu file và ở mục kiểm tra mâu thuẫn. Nếu anh/chị không muốn ngoại lệ, có thể đổi TC-CPN-131 thành dự phòng, chỉ chạy khi giao diện cho kết quả sai.
+
+## Đã áp 7 quyết định (a)
+
+- A27: `1.0` hợp lệ, nên TC-CPN-118 thành hợp lệ, mong đợi tạo thành công qua API.
+- Giữ các điểm `2^53 + 1`, LB+1, điểm âm, ngày `01/01/0001` và một dấu cách.
+- Trạng thái "Khác giả định" áp cho mọi test case ở S6, kể cả test case của S3. Tôi đã ghi vào mục "Ghi chú cho bước sau" cho S5.
+
+Bảng thay đổi có 7 dòng: 4 Quyết định của SV, 3 Thiếu.
+
+## Commit
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/04_bva.md
+git commit -m "[C-FR17][S4] Review boundary values"
+```
+
+Nếu bản AI của S4 chưa commit, chạy lệnh này trước:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S4_bva.md
+git commit -m "[C-FR17][S4] Add boundary value analysis (AI draft)"
+```
+
+S5 do anh/chị làm: Review lần cuối và bổ sung test case còn thiếu. Khi cần xuất Word và Excel, tôi ghép sang skill `test-case-writing` theo bảng ánh xạ của skill này. Trước khi xuất, cần thêm trạng thái "Khác giả định" vào danh sách trạng thái hoặc ghi ở `notes`.
+````
+
+---
+
+### C154 | 21:14 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã bổ sung lại ảnh S6_TC-REG-93.png cũng như S6_TC-REG-96_2.png. Bây giờ bạn kiểm tra và viết lại phần A nếu có đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-93.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S6_TC-REG-96_2.png
+- Bash: Show current group A rows and environment, list S6 screenshots
+- Bash: Update TC-REG-93 and 96 rows and environment from new screenshots
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã cập nhật nhóm A trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md). Không còn chỗ nào nhắc tới tên ảnh cũ `S6_TC-REG-96.png`, định dạng hợp lệ.
+
+**Những gì đã sửa:**
+- **TC-REG-93:** Kết quả thực tế ghi theo ảnh mới: Console trả `['/register', 0]`, tức đang ở trang Đăng ký và không có thẻ `<h1>` nào. Bỏ câu "ảnh không thấy đường dẫn". Trạng thái **Fail** (bạn đã bỏ chữ "đề xuất").
+- **TC-REG-96:** Thay chỗ "(sinh viên kiểm)" bằng kết quả: "Gõ 4 ký tự, ô hiện `••••`". Cột Ảnh ghi cả `S6_TC-REG-96_1.png` (loại ô) và `S6_TC-REG-96_2.png` (ký tự bị che). Ghi chú nói rõ: Fail chỉ vì ô Email là `text` (FR01-R19); ô Mật khẩu đạt FR01-R20.
+- **Mục 1:** Dòng ô Email trỏ sang `S6_TC-REG-96_1.png`; dòng ô Mật khẩu ghi thêm "ký tự gõ vào bị che".
+- **Đầu file:** Thêm dòng ghi lần cập nhật này.
+
+**Nhóm A hiện tại:**
+
+| TC | Trạng thái | Yêu cầu |
+|---|---|---|
+| TC-REG-90 | Fail | FR01-R11 (D01) |
+| TC-REG-91 | Fail | FR01-R14 (D04) |
+| TC-REG-92 | Fail | FR01-R15 (D03) |
+| TC-REG-93 | Fail | FR01-R16 |
+| TC-REG-94 | Pass | FR01-R17 |
+| TC-REG-95 | Fail | FR01-R18 (D02) |
+| TC-REG-96 | Fail | FR01-R19 (ô Email) |
+
+Tổng nhóm A: 6 Fail, 1 Pass. TC-REG-93 và 96 là hai ứng viên bug mới so với 4 khác biệt đã thấy từ S0.
+
+**Còn hai chỗ bạn cần điền:**
+1. **TC-REG-94:** Bổ sung vào cột "Kết quả thực tế" thứ tự các mục trên navbar được focus trước ô Họ Tên (bạn đã bấm từ đầu, chỉ cần ghi lại bằng chữ). Sau đó xóa câu nhắc ở cột Ghi chú.
+2. **Mục 1:** Phiên bản Chrome.
+
+Xong hai chỗ này thì bạn sang nhóm B (TC-REG-30 trở đi).
+````
+
+---
+
+### C155 | 21:16 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đang nhờ AI viết lại dựa trên ảnh đã có, những gì tôi điền, vì AI dùng từ tốt hơn, tôi kiểm tra. Đồng thời AI cũng có nói có tư liệu cho phần AI gap analysis. Nên bạn kiểm tra và bổ sung nếu cần.
+Phiên C: Đã viết xong, chờ bạn xuất log, sau đó kiểm tra và báo lại tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session A latest turns
+- Bash: Read session C S4 review and run checker
+- Bash: Export log and record A S6 and C S4 findings
+
+**Output AI (nguyên văn):**
+
+````text
+Mình xuất log và ghi các phát hiện vào `_NOTES.md`:
 ````
 
 
