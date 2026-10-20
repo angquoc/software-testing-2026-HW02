@@ -3,6 +3,9 @@
 - Bước: S6 (Chạy test thật, ghi kết quả thực tế và trạng thái, chụp ảnh). Sinh viên chạy test và điền file này; AI chỉ chuẩn bị khung
 - Bản này: Sinh viên điền. Bản gốc của AI: `ai_raw/S6_results_template.md`
 - Thời gian tạo khung: 2026-10-20 16:57 (+07:00)
+- 2026-10-20 20:20 (+07:00): AI điền sẵn TC-REG-90, 91, 92, 95 bằng cách đối chiếu ảnh S0 (chụp 19/10/2026, SUT không đổi commit `85af3ba`), sửa tên hệ điều hành và trình duyệt ở mục 1. Sinh viên xác nhận trên trang hiện tại. TC-REG-93, 94, 96, 97 và mọi test case cần nhập dữ liệu hay gọi API do sinh viên tự chạy và điền
+- 2026-10-20 21:01 (+07:00): AI điền TC-REG-93 từ ảnh sinh viên chụp (`S6_TC-REG-93.png`); kiểm các dòng sinh viên đã điền ở nhóm A bằng ảnh S6; điền 2 dòng loại ô ở mục 1 theo `S6_TC-REG-96_1.png`; thêm ghi chú hệ quả của TC-REG-96 vào TC-REG-11, 14, 33, 48, 121, 122
+- 2026-10-20 21:14 (+07:00): AI cập nhật TC-REG-93, TC-REG-96 theo ảnh sinh viên chụp lại (`S6_TC-REG-93.png`, `S6_TC-REG-96_2.png`)
 - Căn cứ: `05_final_tc.md` (96 test case, thứ tự chạy ở mục 10, giới hạn quan sát ở mục 11)
 
 ---
@@ -11,16 +14,16 @@
 
 | Mục | Giá trị |
 |---|---|
-| Ngày chạy | |
-| Người chạy | |
-| Hệ điều hành | |
-| Trình duyệt và phiên bản | |
+| Ngày chạy | 20/10/2026 |
+| Người chạy | Nguyễn Thị Ánh Ngọc |
+| Hệ điều hành | Windows 11 (Windows 11 Home Single Language, bản 10.0.26200) |
+| Trình duyệt và phiên bản | Google Chrome, phiên bản: 155.0.8059.85 |
 | SUT | EShop, commit `85af3ba` |
 | Backend | `http://localhost:3000` |
 | Web | `http://localhost:5173` |
-| Reset dữ liệu mẫu trước đợt test (thời điểm) | |
-| Ô Email có dùng `type="email"` không (điền sau TC-REG-96) | |
-| Ô Mật khẩu có dùng `type="password"` không (điền sau TC-REG-96) | |
+| Reset dữ liệu mẫu trước đợt test (thời điểm) | 19:52 20/10/2026 |
+| Ô Email có dùng `type="email"` không (điền sau TC-REG-96) | Không. Ô Email khai báo `type="text"` (TC-REG-96, ảnh `S6_TC-REG-96_1.png`) |
+| Ô Mật khẩu có dùng `type="password"` không (điền sau TC-REG-96) | Có. Ô Mật khẩu khai báo `type="password"`, ký tự gõ vào bị che (TC-REG-96, ảnh `S6_TC-REG-96_1.png`, `S6_TC-REG-96_2.png`) |
 | File log API | `logs/S6_api_<thời gian>.log`, `logs/S6_tc79_<thời gian>.log` |
 | Reset dữ liệu sau TC-REG-79 (thời điểm) | |
 
@@ -57,13 +60,13 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; chạy nhóm
 
 | # | Mã | Tiêu đề ngắn | Giá trị nhập chính | Kết quả mong đợi | Kết quả thực tế | Trạng thái | Ảnh | Ghi chú |
 |---|---|---|---|---|---|---|---|---|
-| 1 | TC-REG-90 | Form Đăng ký có trường Xác nhận mật khẩu | Không nhập | Có trường Xác nhận mật khẩu |  |  |  |  |
-| 2 | TC-REG-91 | Ngôn ngữ của trang Đăng ký và tiêu đề tab | Không nhập | Toàn bộ tiếng Việt, trừ "EShop", "Email", "SUT" đã chấp nhận |  |  |  |  |
-| 3 | TC-REG-92 | Màu nút "Đăng Ký" | Không nhập | Màu xanh dương |  |  |  |  |
-| 4 | TC-REG-93 | Trang Đăng ký có đúng 1 thẻ `<h1>` | Không nhập | Đúng 1 thẻ, mô tả nội dung trang |  |  |  | DevTools |
-| 5 | TC-REG-94 | Thứ tự focus khi nhấn Tab | Không nhập | Họ Tên, Email, Mật khẩu, (Xác nhận mật khẩu), nút "Đăng Ký", liên kết "Đăng nhập", theo thứ tự trên xuống dưới, trái sang phải |  |  |  |  |
-| 6 | TC-REG-95 | Dấu `*` cạnh nhãn trường bắt buộc | Không nhập | Có dấu `*` |  |  |  |  |
-| 7 | TC-REG-96 | Loại ô Email và ô Mật khẩu | Không nhập | Email: `type="email"`; Mật khẩu: `type="password"`, ký tự bị che |  |  |  | DevTools; điền kết quả vào phần Môi trường |
+| 1 | TC-REG-90 | Form Đăng ký có trường Xác nhận mật khẩu | Không nhập | Có trường Xác nhận mật khẩu | Không có. Form chỉ có 3 ô: Họ Tên, Email, Mật khẩu | Fail | `S0_01_form_dang_ky.png` (chụp 19/10/2026) | Mô tả có trường Xác nhận mật khẩu nhưng trên giao diện lại không có dòng nào liên quan đến nó. Ứng với D01 ở `00_spec.md`. AI đối chiếu ảnh S0, SUT không đổi (commit `85af3ba`); sinh viên xác nhận trên trang hiện tại ngày 20/10/2026 |
+| 2 | TC-REG-91 | Ngôn ngữ của trang Đăng ký và tiêu đề tab | Không nhập | Toàn bộ tiếng Việt, trừ "EShop", "Email", "SUT" đã chấp nhận | Tất cả đều là tiếng Việt, ngoại trừ tiêu đề tab là `frontend-web` | Fail | `S0_01_form_dang_ky.png` (chụp 19/10/2026) | Tiêu đề tab không thể hiện được những gì mà trang web đó có. Ứng với D04. Chỉ xét chữ hiển thị sẵn; thông báo lỗi chỉ thấy khi chạy nhóm B, nếu có chữ không phải tiếng Việt thì ghi bổ sung vào đây. AI đối chiếu ảnh S0, SUT không đổi (commit `85af3ba`); sinh viên xác nhận trên trang hiện tại ngày 20/10/2026 |
+| 3 | TC-REG-92 | Màu nút "Đăng Ký" | Không nhập | Màu xanh dương | Màu đỏ: Nút "Đăng Ký" nền đỏ, chữ trắng | Fail | `S0_01_form_dang_ky.png` (chụp 19/10/2026) | Ứng với D03. AI đối chiếu ảnh S0, SUT không đổi (commit `85af3ba`); sinh viên xác nhận trên trang hiện tại ngày 20/10/2026 |
+| 4 | TC-REG-93 | Trang Đăng ký có đúng 1 thẻ `<h1>` | Không nhập | Đúng 1 thẻ, mô tả nội dung trang | Không có thẻ `<h1>` nào: Lệnh `[location.pathname, document.querySelectorAll('h1').length]` trong Console trả về `['/register', 0]`, tức đang ở trang Đăng ký và có 0 thẻ `<h1>`. Tiêu đề "Đăng Ký Tài Khoản" nhìn thấy trên trang vì vậy không phải thẻ `<h1>` | Fail | `S6_TC-REG-93.png` | DevTools. Trang không có tiêu đề `<h1>` nào (FR01-R16) |
+| 5 | TC-REG-94 | Thứ tự focus khi nhấn Tab | Không nhập | Họ Tên, Email, Mật khẩu, (Xác nhận mật khẩu), nút "Đăng Ký", liên kết "Đăng nhập", theo thứ tự trên xuống dưới, trái sang phải | Họ Tên, Email, Mật khẩu, nút "Đăng Ký", liên kết "Đăng nhập", theo thứ tự trên xuống dưới, trái sang phải | Pass | `S6_TC-REG-94_1.png`, `S6_TC-REG-94_2.png`, `S6_TC-REG-94_3.png`, `S6_TC-REG-94_4.png`, `S6_TC-REG-94_5.png` | Ảnh xác nhận thứ tự trong form. Ảnh đầu tiên đã ở ô Họ Tên, nên không thấy các mục trên navbar ("EShop", "Giỏ hàng", "Đăng nhập", "Đăng ký") có được focus trước Họ Tên không. Bắt đầu nhấn Tab từ thanh địa chỉ nhưng kết quả và ảnh chỉ cung cấp những chỗ cần xác minh trong TC |
+| 6 | TC-REG-95 | Dấu `*` cạnh nhãn trường bắt buộc | Không nhập | Có dấu `*` | Không nhãn nào có dấu `*`: "Họ Tên", "Email", "Mật khẩu" đều không có | Fail | `S0_01_form_dang_ky.png` (chụp 19/10/2026) | Ứng với D02. AI đối chiếu ảnh S0, SUT không đổi (commit `85af3ba`); sinh viên xác nhận trên trang hiện tại ngày 20/10/2026 |
+| 7 | TC-REG-96 | Loại ô Email và ô Mật khẩu | Không nhập | Email: `type="email"`; Mật khẩu: `type="password"`, ký tự bị che | Email: `type="text"`; Mật khẩu: `type="password"`. Theo thứ tự 3 ô trên form: Họ Tên `text`, Email `text`, Mật khẩu `password` (Console báo cả 3 ô "không có nhãn" gắn với ô, nên xác định theo thứ tự). Ký tự gõ vào ô Mật khẩu bị che: Gõ 4 ký tự, ô hiện `••••` | Fail | `S6_TC-REG-96_1.png` (loại ô), `S6_TC-REG-96_2.png` (ký tự bị che) | DevTools. Fail vì ô Email không phải `type="email"` (FR01-R19). Ô Mật khẩu đạt FR01-R20 (đúng `type="password"` và ký tự bị che) |
 
 ### B. Không hợp lệ qua giao diện
 
@@ -73,7 +76,7 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; chạy nhóm
 | 9 | TC-REG-97 | Vị trí thông báo lỗi | Dữ liệu của TC-REG-30 (Họ Tên để trống) | Thông báo nằm phía trên nút "Đăng Ký" |  |  |  | Quan sát khi chạy TC-REG-30 |
 | 10 | TC-REG-31 | Bị từ chối khi Họ Tên chỉ gồm 3 dấu cách | Họ Tên: `␣␣␣` | OUT2, ERR1 |  |  |  |  |
 | 11 | TC-REG-32 | Bị từ chối khi Email để trống | Email: (để trống) | OUT2, ERR2 |  |  |  |  |
-| 12 | TC-REG-33 | Bị từ chối khi Email chỉ gồm 3 dấu cách | Email: `␣␣␣` | OUT2, ERR2. Giới hạn GH2 |  |  |  |  |
+| 12 | TC-REG-33 | Bị từ chối khi Email chỉ gồm 3 dấu cách | Email: `␣␣␣` | OUT2, ERR2. Giới hạn GH2 |  |  |  | GH2 không áp dụng: Ô Email là `type="text"` (TC-REG-96), trình duyệt không tự cắt dấu cách, nên kết quả là hành vi của EShop |
 | 13 | TC-REG-34 | Bị từ chối khi Email thiếu `@` | Email: `tc34domain.com` | OUT2, ERR3 |  |  |  |  |
 | 14 | TC-REG-35 | Bị từ chối khi Email thiếu phần trước `@` | Email: `@domain.com` | OUT2, ERR3 |  |  |  |  |
 | 15 | TC-REG-36 | Bị từ chối khi Email thiếu phần sau `@` | Email: `tc36@` | OUT2, ERR3 |  |  |  |  |
@@ -88,7 +91,7 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; chạy nhóm
 | 24 | TC-REG-45 | Bị từ chối khi Email trùng tài khoản có sẵn | Email: `test@eshop.com` | OUT2, ERR4 |  |  |  |  |
 | 25 | TC-REG-46 | Bị từ chối khi Email trùng email vừa đăng ký | Họ Tên: Lần 1: `Nguyen Van A`; lần 2: `Tran Thi B`; Email: `tc46@domain.com` (cả hai lần) | Lần 1: OUT1. Lần 2: OUT2, ERR4 |  |  |  | 2 lần đăng ký |
 | 26 | TC-REG-47 | Bị từ chối khi Email trùng nhưng khác chữ hoa, chữ thường | Email: `Test@Eshop.com` | OUT2, ERR4 |  |  |  |  |
-| 27 | TC-REG-48 | Bị từ chối khi Email trùng sau khi cắt dấu cách đầu cuối | Email: `␣test@eshop.com␣` | OUT2, ERR4. Giới hạn GH2 |  |  |  |  |
+| 27 | TC-REG-48 | Bị từ chối khi Email trùng sau khi cắt dấu cách đầu cuối | Email: `␣test@eshop.com␣` | OUT2, ERR4. Giới hạn GH2 |  |  |  | GH2 không áp dụng: Ô Email là `type="text"` (TC-REG-96), trình duyệt không tự cắt dấu cách, nên kết quả là hành vi của EShop |
 | 28 | TC-REG-49 | Bị từ chối khi Mật khẩu để trống | Mật khẩu: (để trống) | OUT2, ERR5 |  |  |  |  |
 | 29 | TC-REG-50 | Bị từ chối khi Mật khẩu có 6 ký tự | Mật khẩu: `Abcd1!` | OUT2, ERR6 |  |  |  |  |
 | 30 | TC-REG-51 | Bị từ chối khi Mật khẩu không có chữ hoa | Mật khẩu: `abcdef1!` | OUT2, ERR6 |  |  |  |  |
@@ -118,10 +121,10 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; chạy nhóm
 | 49 | TC-REG-08 | Thành công khi Họ Tên có thẻ HTML và dấu nháy đơn | Họ Tên: `<b>O'Brien</b>` | OUT1, không xuất hiện lỗi hệ thống. Giới hạn GH5 |  |  |  |  |
 | 50 | TC-REG-09 | Thành công khi Email có dấu chấm ở phần trước `@` và có tên miền con | Email: `tc.09@mail.domain.com` | OUT1 |  |  |  |  |
 | 51 | TC-REG-10 | Thành công khi phần sau `@` không có dấu chấm | Email: `tc10@domain` | OUT1 |  |  |  |  |
-| 52 | TC-REG-11 | Thành công khi Email có dấu cách ở đầu và cuối | Email: `␣tc11@domain.com␣` | Bước 1: OUT1. Bước 2: Mở lại `/register`, đăng ký `tc11@domain.com` với Họ Tên `Tran Thi B`, mật khẩu `Abcdef1!`; mong đợi OUT2, ERR4. Giới hạn GH2 |  |  |  | 2 bước |
+| 52 | TC-REG-11 | Thành công khi Email có dấu cách ở đầu và cuối | Email: `␣tc11@domain.com␣` | Bước 1: OUT1. Bước 2: Mở lại `/register`, đăng ký `tc11@domain.com` với Họ Tên `Tran Thi B`, mật khẩu `Abcdef1!`; mong đợi OUT2, ERR4. Giới hạn GH2 |  |  |  | 2 bước. GH2 không áp dụng: Ô Email là `type="text"` (TC-REG-96), trình duyệt không tự cắt dấu cách, nên kết quả là hành vi của EShop |
 | 53 | TC-REG-12 | Thành công khi Email bắt đầu bằng dấu chấm | Email: `.tc12@domain.com` | OUT1 |  |  |  |  |
 | 54 | TC-REG-13 | Thành công khi Email có dấu cộng ở phần trước `@` | Email: `tc+13@domain.com` | OUT1 |  |  |  |  |
-| 55 | TC-REG-14 | Thành công khi tên miền có chữ có dấu | Email: `tc14@tênmiền.vn` | OUT1. Giới hạn GH6 |  |  |  | Phụ thuộc trình duyệt (A15) |
+| 55 | TC-REG-14 | Thành công khi tên miền có chữ có dấu | Email: `tc14@tênmiền.vn` | OUT1. Giới hạn GH6 |  |  |  | Phụ thuộc trình duyệt (A15). Lưu ý: Ô Email là `type="text"` (TC-REG-96), nên trình duyệt không chuyển tên miền sang punycode; tiền đề của A15 (b) không còn đúng. Sinh viên quyết định (20/10/2026): Giữ kết quả mong đợi theo đặc tả, như thể ô đúng `type="email"` theo FR-22; nếu kết quả khác thì ghi nguyên nhân có thể là lỗi ở TC-REG-96 (FR01-R19), không tách bug riêng |
 | 56 | TC-REG-15 | Thành công khi Email có dấu nháy đơn | Email: `tc'15@domain.com` | OUT1, không xuất hiện lỗi hệ thống |  |  |  |  |
 | 57 | TC-REG-16 | Thành công khi Mật khẩu có dấu cách ở giữa | Mật khẩu: `Abc def1!` | OUT1. Giới hạn GH3 |  |  |  |  |
 | 58 | TC-REG-17 | Thành công khi Mật khẩu có ký tự ngoài 4 loại | Mật khẩu: `Abcdef1!é` | OUT1 |  |  |  |  |
@@ -150,8 +153,8 @@ Thứ tự theo mục 10 của `05_final_tc.md`: Reset dữ liệu; chạy nhóm
 | 76 | TC-REG-118 | Thành công khi nhãn tên miền dài 62 ký tự | Email: `tc118@` + 62 chữ `a` + `.com` | OUT1 |  |  |  |  |
 | 77 | TC-REG-119 | Thành công khi nhãn tên miền dài 63 ký tự | Email: `tc119@` + 63 chữ `a` + `.com` | OUT1 |  |  |  |  |
 | 78 | TC-REG-120 | Bị từ chối khi nhãn tên miền dài 64 ký tự | Email: `tc120@` + 64 chữ `a` + `.com` | OUT2, ERR3 |  |  |  |  |
-| 79 | TC-REG-121 | Thành công khi nhãn tên miền có dấu dài 63 ký tự ở dạng punycode | Email: `tc121@tên` + 53 chữ `a` + `.vn` | OUT1. Giới hạn GH6 |  |  |  | Phụ thuộc trình duyệt (A15) |
-| 80 | TC-REG-122 | Bị từ chối khi nhãn tên miền có dấu dài 64 ký tự ở dạng punycode | Email: `tc122@tên` + 54 chữ `a` + `.vn` | OUT2, ERR3. Giới hạn GH6 |  |  |  | Phụ thuộc trình duyệt (A15) |
+| 79 | TC-REG-121 | Thành công khi nhãn tên miền có dấu dài 63 ký tự ở dạng punycode | Email: `tc121@tên` + 53 chữ `a` + `.vn` | OUT1. Giới hạn GH6 |  |  |  | Phụ thuộc trình duyệt (A15). Lưu ý: Ô Email là `type="text"` (TC-REG-96), nên trình duyệt không chuyển tên miền sang punycode; tiền đề của A15 (b) không còn đúng. Sinh viên quyết định (20/10/2026): Giữ kết quả mong đợi theo đặc tả, như thể ô đúng `type="email"` theo FR-22; nếu kết quả khác thì ghi nguyên nhân có thể là lỗi ở TC-REG-96 (FR01-R19), không tách bug riêng |
+| 80 | TC-REG-122 | Bị từ chối khi nhãn tên miền có dấu dài 64 ký tự ở dạng punycode | Email: `tc122@tên` + 54 chữ `a` + `.vn` | OUT2, ERR3. Giới hạn GH6 |  |  |  | Phụ thuộc trình duyệt (A15). Lưu ý: Ô Email là `type="text"` (TC-REG-96), nên trình duyệt không chuyển tên miền sang punycode; tiền đề của A15 (b) không còn đúng. Sinh viên quyết định (20/10/2026): Giữ kết quả mong đợi theo đặc tả, như thể ô đúng `type="email"` theo FR-22; nếu kết quả khác thì ghi nguyên nhân có thể là lỗi ở TC-REG-96 (FR01-R19), không tách bug riêng |
 | 81 | TC-REG-123 | Với Email dài 1011 ký tự | Email: `tc123` + 995 chữ `a` + `@domain.com` | OUT1. Ghi số ký tự ô thực sự nhận. Nếu bị từ chối: Ghi là khác giả định A05, xét lại ở S7 trước khi coi là bug. Giới hạn GH7 |  |  |  | Ghi số ký tự ô nhận; nếu bị từ chối ghi "khác giả định A05" |
 
 ### E. API (script `scripts/run_api_tests.py`)
