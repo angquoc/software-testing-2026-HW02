@@ -6375,6 +6375,467 @@ Tôi đã review xong 04_bva. Bạn có thể kiểm tra lại xem có lô�
 Trước khi kết luận, mình tự kiểm lại phép tính punycode của TC-REG-121 và TC-REG-122, vì đây là chỗ dễ sai nhất mà mắt thường không kiểm được:
 
 Mọi giá trị đều đúng. Mình kiểm tra phần hình thức, ghi chú, cập nhật tracker và xuất log:
+
+`04_bva.md` **đạt**, không có lỗi bạn bỏ sót:
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác của phiên thiết kế | ✅ Chỉ sửa `04_bva.md`; `ai_raw/S4_bva.md` nguyên vẹn |
+| 5 câu hỏi và 6 quyết định | ✅ Đủ. Quyết định 2 đã chuyển sang (b), khớp với câu hỏi 2 của bạn. Mục 7 còn tự kiểm tra mâu thuẫn giữa các quyết định |
+| Số test case | ✅ 24 test case mới (22 qua giao diện, 2 qua API), khớp với bảng tổng hợp. Cộng 72 ở S3, FR-01 có **96 test case** |
+| Giá trị biên | ✅ Mình tự tính lại: Độ dài các mật khẩu biên đều đúng; punycode của TC-REG-121 là 63 ký tự (hợp lệ), của TC-REG-122 là 64 ký tự (không hợp lệ). Bộ mã hoá chuẩn của Python từ chối nhãn 64 ký tự, đúng như mong đợi |
+| Người phát hiện trong bảng thay đổi | ✅ Ghi đúng: Câu 1 đến 4 là bạn, câu 5 là phiên điều phối |
+| Hình thức | ✅ Đạt |
+
+Có 2 chi tiết nhỏ, không chặn commit:
+- `git status` báo file `ai_raw/.gitkeep` đã bị xoá. Phiên thiết kế không làm việc này, có lẽ bạn đã xoá tay. Thư mục `ai_raw/` giờ đã có file thật nên không cần `.gitkeep` nữa. Lệnh dưới đây commit luôn việc xoá này.
+- Trong bảng thay đổi, dòng thêm quy ước "biên khoảng trắng của Email kiểm qua API" (mục 2) cũng xuất phát từ câu hỏi 5, tức là từ phiên điều phối. Cột lý do ghi "Như dòng trên" nên vẫn truy ra được người phát hiện.
+
+Mình đã ghi vào `_NOTES.md`:
+- **Bằng chứng S4 cho S8:** AI thiếu `␣A␣` dù chính bước S2 đã ghi biến thể này; AI thêm thừa 3 nhóm test case (mật khẩu 1 ký tự, điểm "giữa" vô nghĩa, BVA cho phép so khớp chuỗi); AI lặp lại lỗi bỏ qua việc trình duyệt cắt khoảng trắng mà S3 đã gặp.
+- **Chất liệu Critique:** AI áp máy móc 9 điểm BVA của slide và không mang ghi chú từ bước trước sang bước sau. Người phải là bên giữ mạch xuyên suốt các bước.
+
+Tracker đã đánh dấu S4 của FR-01 là xong. Log đã xuất. Commit:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add -A features/A_FR-01_DangKy/04_bva.md features/A_FR-01_DangKy/ai_raw prompt_log.md
+git commit -m "[A-FR01][S4] Review boundary value test cases"
+git push
+```
+
+FR-01 đã xong S0 đến S4. Theo kế hoạch, bước tiếp theo là **viết skill** từ các bước vừa làm. Mình đề xuất 2 việc:
+
+1. **Viết skill trong phiên thiết kế.** Phiên đó trực tiếp làm từ S0 đến S4 và đọc được `WORKFLOW.md` cùng các file review, nên hiểu rõ nhất mỗi bước cần gì. Skill lưu ở `HW02/skills/` để nộp, và chép một bản sang `D:\Dang\Test\.claude\skills\` để Claude Code dùng được.
+2. **Đưa vào skill những bài học từ các lần review**, để các feature sau không lặp lại lỗi cũ:
+   - Mang ghi chú của bước trước sang bước sau.
+   - Không áp máy móc 9 điểm BVA.
+   - Để ý hành vi của trình duyệt.
+   - Mỗi test case không hợp lệ chỉ vi phạm đúng một điều kiện.
+   - Hỏi trước những quyết định ảnh hưởng tới cấu trúc bản nháp.
+
+Bạn có muốn mình soạn sẵn tin nhắn cho bước viết skill không? Hay bạn muốn tự viết prompt cho bước này?
+````
+
+---
+
+### C114 | 14:40 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bạn soạn sẵn tin nhắn đi, tôi sẽ kiểm tra tin nhắn và gửi cho phiên đó.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đây là tin nhắn soạn sẵn. Mình chia việc làm 2 lượt: Phiên thiết kế **đề xuất cấu trúc trước, chờ bạn duyệt rồi mới viết file**, giống cách đi từng bước của các bước trước. Cách này cũng cho bạn một điểm quyết định để ghi lại.
+
+```text
+FR-01 đã xong S0 đến S4. Bây giờ tôi muốn đúc kết quy trình này thành Agent Skill theo mục 7 của đề HW02, để dùng cho 3 feature còn lại: C FR-17 (Web Admin, S0 đã xong, chạy từ S1), B FR-07 (Web), D FR-04 (Mobile, ảnh chụp từ điện thoại Android).
+
+LƯỢT NÀY CHỈ ĐỀ XUẤT, CHƯA VIẾT FILE. Đọc các nguồn bên dưới rồi đề xuất:
+(a) Một skill gộp hay hai skill tách (Domain Testing và Boundary Value Analysis), kèm tên skill. Lưu ý: Skill test-case-writing của giảng viên có nhắc tới việc kết hợp với một skill "domain-testing-design" để chọn dữ liệu.
+(b) Cấu trúc thư mục (SKILL.md, references/, ...).
+(c) Dàn ý SKILL.md: Mô tả, khi nào dùng, các bước, điểm dừng chờ sinh viên.
+(d) Những gì cần tôi quyết định trước khi viết.
+Tôi duyệt xong bạn mới viết.
+
+NGUỒN ĐỌC
+- Homeworks/HW02/WORKFLOW.md
+- Đề bài, mục 7 (Agent Skill)
+- Toàn bộ thư mục features/A_FR-01_DangKy/: Các bản review 00_spec.md đến 04_bva.md, bản AI trong ai_raw/, đặc biệt bảng "Thay đổi so với bản AI" ở cuối mỗi bản review
+- Slide S04 Domain Testing
+- .claude/skills/test-case-writing/SKILL.md (để thống nhất cách viết skill và cách nối sang bước S5)
+
+YÊU CẦU ĐỐI VỚI SKILL
+1. Làm đúng quy trình trong WORKFLOW.md: Mỗi lần chỉ làm một bước (S0, S1, S2, S3, S4); dừng sau mỗi bước chờ sinh viên review; lưu nguyên văn bản AI vào ai_raw/; không bao giờ sửa ai_raw/ (bản AI làm lại thì lưu _v2); bản review có bảng "Thay đổi so với bản AI" với cột Loại; tên file theo WORKFLOW mục 2.
+2. Giữ các nguyên tắc hộp đen ở WORKFLOW mục 1.1 và 1.4, gồm cả việc không dùng DevTools từ S0 đến S5.
+3. Dùng được cho Web, Web Admin và Mobile. Không viết cứng chi tiết của FR-01 vào phần quy trình; FR-01 chỉ dùng làm ví dụ minh họa (có thể để trong references/).
+4. Đưa vào skill những bài học từ các bảng thay đổi của FR-01, để các feature sau không lặp lại lỗi. Ít nhất gồm:
+   - Trước khi viết bản AI của một bước, hỏi sinh viên những quyết định ảnh hưởng tới cấu trúc của cả bản đó.
+   - Mang các ghi chú của bước trước sang bước sau (ví dụ biến thể giá trị mà S2 đã ghi cho S4 xét).
+   - Chỗ đặc tả không nói: Nêu giả định và các phương án, để sinh viên chọn; không tự chọn, không khẳng định quá căn cứ.
+   - S3: Mỗi test case không hợp lệ chỉ vi phạm đúng một lớp không hợp lệ; lớp hợp lệ bất thường nên có test case riêng; có ma trận truy vết yêu cầu.
+   - S4: Chỉ BVA cho phân vùng có thứ tự; không áp máy móc đủ 9 điểm (ví dụ không có điểm "giữa" khi phân vùng không có cận trên); mỗi điểm biên cũng chỉ vi phạm đúng một điều kiện.
+   - Xét môi trường thực thi, không chỉ đặc tả: Hành vi của trình duyệt hoặc nền tảng có thể làm thay đổi giá trị trước khi tới hệ thống (ví dụ ô type="email" tự cắt khoảng trắng, tên miền có dấu được chuyển sang punycode); khi đó cần cách kiểm khác (ví dụ qua API).
+   - Test case có thể phá dữ liệu (ví dụ chuỗi SQL injection) phải chạy cuối và reset dữ liệu ngay sau đó.
+   - Cách kiểm chứng tác động của thao tác (tài khoản đã tạo hay chưa, dữ liệu đã lưu dạng nào) mà không phụ thuộc feature của người khác.
+5. Nêu rõ điểm nối sang S5: Bộ test case cuối cùng được trình bày bằng skill test-case-writing của giảng viên.
+6. Nơi lưu: Bản nộp ở Homeworks/HW02/skills/<tên skill>/; một bản chép ở D:\Dang\Test\.claude\skills\<tên skill>\ để Claude Code dùng được.
+7. Văn bản tiếng Việt, theo quy tắc định dạng ở WORKFLOW mục 7.
+```
+
+Một số điểm bạn nên tự cân nhắc trước khi gửi:
+- **Mục 4 khá dài**, vì mình gom bài học từ toàn bộ bảng thay đổi của FR-01. Nếu muốn đo xem AI có **tự** rút ra được bài học hay không, bạn có thể rút mục 4 xuống chỉ còn câu đầu, kiểu "đưa vào skill những bài học từ các bảng thay đổi của FR-01", rồi so danh sách nó tự rút ra với danh sách trên. Cách này tốn thêm một vòng review, nhưng cho thêm chất liệu cho phần Critique.
+- **Một skill hay hai skill:** Mình để AI đề xuất. Đề viết "Agent Skills" (số nhiều), và README hiện ghi 2 skill (`domain-testing`, `boundary-value-analysis`). Nếu bạn đã có ý định từ trước thì nên ghi luôn vào tin nhắn.
+- **Tên người soạn tin nhắn:** Mình đã ghi vào `_NOTES.md` rằng các tin nhắn gửi phiên thiết kế do phiên điều phối soạn theo ý bạn. Tin nhắn này cũng thuộc diện đó, nên khi viết Audit Report cho phần skill, nhớ khai báo.
+````
+
+---
+
+### C115 | 14:56 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+FR-01 đã xong S0 đến S4. Bây giờ tôi muốn đúc kết quy trình này thành Agent Skill theo mục 7 của đề HW02, để dùng cho 3 feature còn lại: C FR-17 (Web Admin, S0 đã xong, chạy từ S1), B FR-07 (Web), D FR-04 (Mobile, ảnh chụp từ điện thoại Android).
+
+LƯỢT NÀY CHỈ ĐỀ XUẤT, CHƯA VIẾT FILE. Đọc các nguồn bên dưới rồi đề xuất:
+(a) Một skill gộp hay hai skill tách (Domain Testing và Boundary Value Analysis), kèm tên skill. Lưu ý: Skill test-case-writing của giảng viên có nhắc tới việc kết hợp với một skill "domain-testing-design" để chọn dữ liệu.
+(b) Cấu trúc thư mục (SKILL.md, references/, ...).
+(c) Dàn ý SKILL.md: Mô tả, khi nào dùng, các bước, điểm dừng chờ sinh viên.
+(d) Những gì cần tôi quyết định trước khi viết.
+Tôi duyệt xong bạn mới viết.
+
+NGUỒN ĐỌC
+- Homeworks/HW02/WORKFLOW.md
+- Đề bài, mục 7 (Agent Skill)
+- Toàn bộ thư mục features/A_FR-01_DangKy/: Các bản review 00_spec.md đến 04_bva.md, bản AI trong ai_raw/, đặc biệt bảng "Thay đổi so với bản AI" ở cuối mỗi bản review
+- Slide S04 Domain Testing
+- .claude/skills/test-case-writing/SKILL.md (để thống nhất cách viết skill và cách nối sang bước S5)
+
+YÊU CẦU ĐỐI VỚI SKILL
+1. Làm đúng quy trình trong WORKFLOW.md: Mỗi lần chỉ làm một bước (S0, S1, S2, S3, S4); dừng sau mỗi bước chờ sinh viên review; lưu nguyên văn bản AI vào ai_raw/; không bao giờ sửa ai_raw/ (bản AI làm lại thì lưu _v2); bản review có bảng "Thay đổi so với bản AI" với cột Loại; tên file theo WORKFLOW mục 2.
+2. Giữ các nguyên tắc hộp đen ở WORKFLOW mục 1.1 và 1.4, gồm cả việc không dùng DevTools từ S0 đến S5.
+3. Dùng được cho Web, Web Admin và Mobile. Không viết cứng chi tiết của FR-01 vào phần quy trình; FR-01 chỉ dùng làm ví dụ minh họa (có thể để trong references/).
+4. Đưa vào skill những bài học từ các bảng thay đổi của FR-01, để các feature sau không lặp lại lỗi. Ít nhất gồm:
+   - Trước khi viết bản AI của một bước, hỏi sinh viên những quyết định ảnh hưởng tới cấu trúc của cả bản đó.
+   - Mang các ghi chú của bước trước sang bước sau (ví dụ biến thể giá trị mà S2 đã ghi cho S4 xét).
+   - Chỗ đặc tả không nói: Nêu giả định và các phương án, để sinh viên chọn; không tự chọn, không khẳng định quá căn cứ.
+   - S3: Mỗi test case không hợp lệ chỉ vi phạm đúng một lớp không hợp lệ; lớp hợp lệ bất thường nên có test case riêng; có ma trận truy vết yêu cầu.
+   - S4: Chỉ BVA cho phân vùng có thứ tự; không áp máy móc đủ 9 điểm (ví dụ không có điểm "giữa" khi phân vùng không có cận trên); mỗi điểm biên cũng chỉ vi phạm đúng một điều kiện.
+   - Xét môi trường thực thi, không chỉ đặc tả: Hành vi của trình duyệt hoặc nền tảng có thể làm thay đổi giá trị trước khi tới hệ thống (ví dụ ô type="email" tự cắt khoảng trắng, tên miền có dấu được chuyển sang punycode); khi đó cần cách kiểm khác (ví dụ qua API).
+   - Test case có thể phá dữ liệu (ví dụ chuỗi SQL injection) phải chạy cuối và reset dữ liệu ngay sau đó.
+   - Cách kiểm chứng tác động của thao tác (tài khoản đã tạo hay chưa, dữ liệu đã lưu dạng nào) mà không phụ thuộc feature của người khác.
+5. Nêu rõ điểm nối sang S5: Bộ test case cuối cùng được trình bày bằng skill test-case-writing của giảng viên.
+6. Nơi lưu: Bản nộp ở Homeworks/HW02/skills/<tên skill>/; một bản chép ở D:\Dang\Test\.claude\skills\<tên skill>\ để Claude Code dùng được.
+7. Văn bản tiếng Việt, theo quy tắc định dạng ở WORKFLOW mục 7.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\Homeworks\HW02\WORKFLOW.md
+- Bash: List feature files and count change-table rows by type
+- Bash: Skim test-case-writing JSON schema reference
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đọc lại WORKFLOW và các bảng "Thay đổi so với bản AI" ở trạng thái hiện tại, vì bạn có thể đã sửa sau khi tôi viết.
+
+Đây là đề xuất của tôi. Tôi chưa viết file nào. Các nguồn tôi đã đọc lại: WORKFLOW (bản hiện tại), mục 7 của đề, cả 5 bản review và 7 file trong `ai_raw/` của FR-01, slide S04, `SKILL.md` của `test-case-writing`, và thêm `references/json-schema.md` của skill đó để thiết kế phần nối sang S5.
+
+Số dòng theo loại trong các bảng "Thay đổi so với bản AI" của FR-01:
+
+| File | Sai | Thiếu | Thừa | Quyết định của SV |
+|---|---|---|---|---|
+| `00_spec.md` | 0 | 0 | 1 | 6 |
+| `01_io.md` | 0 | 2 | 0 | 6 |
+| `02_ec.md` | 1 | 13 | 0 | 27 |
+| `03_tc.md` | 0 | 6 | 1 | 11 |
+| `04_bva.md` | 0 | 4 | 4 | 7 |
+
+Nhóm "Thiếu" và "Thừa" là nguồn chính cho phần bài học.
+
+---
+
+## (a) Một skill gộp hay hai skill tách
+
+**Đề xuất: Một skill gộp, tên `domain-testing-design`.**
+
+| Tiêu chí | Một skill gộp | Hai skill tách (DT và BVA) |
+|---|---|---|
+| Khớp với slide S04 | BVA là Step 4 của cùng một kỹ thuật | Tách một bước ra khỏi kỹ thuật |
+| Phụ thuộc giữa các bước | S4 cần lớp của S2, test case của S3 và các ghi chú chuyển tiếp. Gộp thì không phải bàn giao giữa hai skill | Skill BVA phải đọc lại kết quả của skill kia; quy tắc chung (hộp đen, `ai_raw`, bảng thay đổi) bị lặp ở hai nơi |
+| Khớp với skill của giảng viên | `test-case-writing` ghi rõ "kết hợp **domain-testing-design** để chọn dữ liệu", nên trùng tên thì hai skill nối được tự nhiên | Phải chọn tên khác, mất liên kết này |
+| Hình thức chấm điểm (mục 7: "skills that apply DT and BVA") | Vẫn thể hiện BVA rõ ràng qua một file hướng dẫn riêng cho S4 | Nhìn có vẻ "nhiều skill hơn" |
+
+Nếu bạn muốn hai skill, tôi đề xuất tên `domain-testing-design` (S0 đến S3) và `boundary-value-analysis` (S4), cả hai dùng chung một file quy tắc.
+
+## (b) Cấu trúc thư mục
+
+```
+domain-testing-design/
+├── SKILL.md                  Quy trình, quy tắc cứng, vòng lặp mỗi bước, điểm dừng, nối sang S5
+├── references/
+│   ├── rules.md              Hộp đen, file được và không được đọc, ai_raw và _vN, bảng thay đổi, commit, định dạng
+│   ├── step-s0.md            S0: Trích đặc tả, bảng quan sát, 3 pha
+│   ├── step-s1.md            S1: Biến Input/Output, Input gián tiếp, loại lỗi
+│   ├── step-s2.md            S2: Guideline của slide, khi nào tách lớp, giả định có phương án
+│   ├── step-s3.md            S3: Quy tắc chọn, test case hợp lệ bất thường, API, ma trận truy vết, thứ tự chạy
+│   ├── step-s4.md            S4: Phân vùng có thứ tự, 9 điểm, khi nào không áp dụng
+│   ├── lessons.md            Bài học từ FR-01, dạng checklist tự kiểm trước khi giao mỗi bước
+│   ├── platforms.md          Web, Web Admin, Mobile: Môi trường làm thay đổi giá trị và cách kiểm khác
+│   └── example-fr01.md       Ví dụ rút gọn: Một biến (Mật khẩu) đi qua S1 đến S4, kèm vài dòng bảng thay đổi
+├── assets/
+│   └── templates/            Khung file: ai_raw (đầu file, _vN), bản review (các mục bắt buộc, bảng thay đổi)
+└── scripts/
+    └── check_step.py         Kiểm tra máy móc (mục d, điểm 4)
+```
+
+Mỗi bước chỉ nạp file `step-sN.md` của bước đó, giữ `SKILL.md` ngắn, giống cách `test-case-writing` để chi tiết trong `references/`.
+
+## (c) Dàn ý SKILL.md
+
+**1. Frontmatter**
+- `name: domain-testing-design`
+- `description` viết tiếng Việt, kèm từ khóa tiếng Anh: Thiết kế test case bằng Domain Testing và BVA theo slide S04, từng bước S0 đến S4, mỗi lượt một bước và dừng chờ review. Dùng khi người dùng nói "domain testing", "phân hoạch tương đương", "lớp tương đương", "giá trị biên", "BVA", "làm S2 cho feature X"... Không dùng để chạy test (S6). Đến S5 thì chuyển sang `test-case-writing`.
+
+**2. Phạm vi:** S0 đến S4 do skill làm; S5 nối sang `test-case-writing`; S6 đến S8 ngoài phạm vi.
+
+**3. Bước 0, xác định ngữ cảnh**
+- Thư mục feature, nền tảng (Web, Web Admin, Mobile), vị trí đặc tả.
+- **Đang ở bước nào:** Suy ra từ các file đã có trong thư mục feature.
+- Nếu dự án có `WORKFLOW.md` thì đọc trước. Quy tắc của dự án ưu tiên hơn mặc định của skill.
+
+**4. Quy tắc cứng (luôn áp):**
+- Hộp đen; không DevTools từ S0 đến S5; danh sách file được và không được đọc.
+- Mỗi lượt một bước rồi dừng.
+- Không sửa `ai_raw/`; bản AI làm lại thì lưu `_vN`, đầu file ghi lý do.
+- Bản review có các mục bắt buộc và bảng thay đổi với 5 loại. Ghi đúng **người phát hiện**: Sinh viên, Claude ở phiên điều phối, hay AI tự bổ sung.
+- AI chỉ đưa commit message, không tự commit.
+- Định dạng văn bản theo WORKFLOW mục 7.
+
+**5. Vòng lặp chung cho mỗi bước (S1 đến S4)**
+1. Đọc bản review của các bước trước, nhất là mục **"Ghi chú cho bước sau"** (mục mới, xem dưới).
+2. **Hỏi trước** các quyết định ảnh hưởng tới cấu trúc cả bản. Danh sách câu hỏi mẫu theo từng bước nằm trong `step-sN.md`.
+3. Viết `ai_raw/SN_...md`. File gồm: Phần đầu, nội dung, "Điểm cần sinh viên quyết định" (mỗi điểm có phương án), "Ghi chú cho bước sau".
+4. Tự kiểm: Chạy `check_step.py` và đi qua checklist trong `lessons.md`.
+5. **Dừng**, gửi cho sinh viên: Tóm tắt, các điểm cần quyết định, commit message.
+6. Nhận câu hỏi và quyết định của sinh viên:
+   - Trả lời từng câu (đúng thì nhận, kèm lý do).
+   - **Kiểm tra mâu thuẫn giữa các quyết định.**
+   - Viết bản review gồm: Quyết định, trả lời câu hỏi, kiểm tra mâu thuẫn, bảng thay đổi.
+   - Gửi commit message.
+
+S0 có 3 pha riêng: AI viết bản gốc (2 file giống hệt nhau); sinh viên chụp ảnh và điền bảng; AI đối chiếu ảnh rồi viết lại.
+
+**6. Tóm tắt từng bước:** Mỗi bước 4 đến 6 dòng, trỏ sang `step-sN.md`.
+
+**7. Điểm dừng chờ sinh viên:**
+- Trước khi viết bản AI, nếu có quyết định cấu trúc cần hỏi.
+- Sau bản AI của mỗi bước.
+- Sau bản review của mỗi bước.
+- Riêng S0: Sau pha 1 (chờ ảnh và bảng quan sát).
+
+**8. Nối sang S5:**
+- Bộ test case cuối cùng (`03_tc.md` cộng `04_bva.md` cộng phần sinh viên bổ sung) được chuyển thành file JSON theo schema của `test-case-writing`, rồi xuất Word và Excel bằng các script của skill đó.
+- Cách ghép các trường:
+
+  | Nguồn trong bài | Trường JSON |
+  |---|---|
+  | Các nhóm test case (hợp lệ, không hợp lệ, API, checklist, BVA) | `suites`; nhóm chỉ khác dữ liệu dùng `format: "matrix"`, nhóm nhiều bước dùng `"steps"` |
+  | Ma trận truy vết | `requirements` |
+  | Giả định A01... | `meta.assumptions` |
+  | Bảng thay đổi | `origin`: `AI` (giữ nguyên), `Both` (AI tạo, sinh viên sửa), `Human` (sinh viên thêm). WORKFLOW yêu cầu ghi rõ test case nào do người thêm |
+  | Test case dự kiến Blocked | `notes` |
+
+**9. Tài nguyên:** Liệt kê các file trong `references/`, `assets/`, `scripts/`.
+
+**Bài học từ FR-01 đưa vào skill.** Các ý bạn yêu cầu đều có. Tôi thêm một số ý rút ra từ các bảng thay đổi, đánh dấu (+):
+
+| Bài học | Đặt ở đâu | Nguồn trong FR-01 |
+|---|---|---|
+| Hỏi quyết định cấu trúc trước khi viết bản AI | Vòng lặp, bước 2 | S3 (API, IN4, trình bày) |
+| Mục "Ghi chú cho bước sau", bước sau phải đọc | Vòng lặp, bước 1 và 3 | `␣A␣` ở `02_ec.md` bị bỏ sót ở S4 |
+| Chỗ đặc tả không nói: Nêu giả định và phương án, không tự chọn, không khẳng định quá căn cứ | `rules.md`, `step-s2.md` | "API không có trường" ở S3 (Thừa) |
+| S3: Mỗi test case không hợp lệ chỉ vi phạm 1 lớp; lớp hợp lệ bất thường có test case riêng; có ma trận truy vết | `step-s3.md` | TC-REG-07 cũ; R23 không được phủ |
+| S4: Chỉ áp cho phân vùng có thứ tự; không áp máy móc 9 điểm; mỗi điểm chỉ vi phạm 1 điều kiện | `step-s4.md` | TC-REG-105, 109, P8 (Thừa) |
+| Môi trường thực thi làm thay đổi giá trị, nên cần đường kiểm khác (API) | `platforms.md`, `step-s3.md`, `step-s4.md` | `type="email"` cắt khoảng trắng, punycode |
+| Test case có thể phá dữ liệu: Chạy cuối, reset ngay sau đó | `step-s3.md` | TC-REG-79 |
+| Kiểm chứng tác động mà không dựa vào feature khác | `step-s1.md`, `step-s3.md` | Đăng ký lại cùng email thay vì đăng nhập thử |
+| (+) S0 không hỏi những gì cần DevTools hoặc phải nhập dữ liệu | `step-s0.md` | `S0_khao_sat_v2` |
+| (+) Hỏi sớm ở S2 về cách xử lý khoảng trắng theo từng loại trường | `step-s2.md` | A03, A07, A10, A14, EC54, EC68 đến EC70 |
+| (+) Ghi giới hạn quan sát: OUT "thành công" chỉ chứng minh hệ thống chấp nhận, không chứng minh dữ liệu được lưu đúng | `step-s3.md` | Ghi chú 1 đến 3 ở `03_tc.md` |
+| (+) Kết quả mong đợi chỉ ghi nguyên nhân lỗi khi đặc tả không nêu câu chữ | `step-s1.md` | Q16 |
+| (+) Kiểm tra mâu thuẫn giữa các quyết định của sinh viên | Vòng lặp, bước 6 | Quyết định 4 ở S4 |
+| (+) Dữ liệu test đồng nhất mẫu tên; dùng `␣` cho khoảng trắng để Markdown không làm mất | `step-s3.md` | Câu hỏi 4 ở S3; lỗi hiển thị ở `02_ec.md` |
+| (+) Đếm và tham chiếu bằng script, không đếm tay | Vòng lặp, bước 4 | Hai lần đếm nhầm ở S2 và S3 |
+| (+) Ghi đúng người phát hiện trong bảng thay đổi | `rules.md` | Chỗ bạn sửa lại ở `03_tc.md` |
+
+**Ghi chú theo nền tảng (`platforms.md`).** Chỉ ghi các điểm chung, không viết cứng chi tiết của feature:
+
+| Nền tảng | Điểm cần xét |
+|---|---|
+| Web | Các loại ô nhập của trình duyệt (`email`, `number`, `date`) có thể tự kiểm tra hoặc tự sửa giá trị trước khi gửi; giới hạn của ô chỉ biết khi chạy, nên dùng chuỗi dài để thăm dò; cần đường API để vượt qua trình duyệt |
+| Web Admin | Đăng nhập admin là tiền điều kiện (quyền truy cập thuộc feature khác); thao tác Thêm/Xóa làm thay đổi dữ liệu nên cần thứ tự chạy và reset; trường ngày có kết quả phụ thuộc thời điểm chạy, phải ghi ngày chạy; dropdown áp guideline "tập giá trị" |
+| Mobile (Android) | Không có DevTools; bàn phím số có thể chặn ký tự khác; tự viết hoa, tự sửa chính tả có thể đổi giá trị; ảnh chụp từ điện thoại; dùng chung backend nên vẫn có đường API |
+
+## (d) Những gì cần bạn quyết định trước khi viết
+
+1. **Một skill hay hai skill, và tên.** Tôi đề xuất một skill tên `domain-testing-design`.
+2. **Mức độ độc lập của skill.**
+   - (a) Skill tự chứa đủ quy tắc mặc định, và nếu dự án có `WORKFLOW.md` thì file đó được ưu tiên (đề xuất).
+   - (b) Skill chỉ trỏ tới `WORKFLOW.md`. Khi đó skill không dùng được cho bài khác.
+3. **Mức độ gắn với EShop.**
+   - (a) Viết chung cho mọi hệ thống: Đường dẫn đặc tả hỏi ở Bước 0, EShop chỉ làm ví dụ (đề xuất).
+   - (b) Viết cố định cho EShop.
+4. **Script.** `check_step.py` sẽ kiểm tra:
+   - Không có dấu "—" và "·".
+   - Mã EC và TC không trùng, mọi chỗ tham chiếu đều tồn tại.
+   - Mọi lớp đều có test case.
+   - Cột Loại trong bảng thay đổi chỉ dùng 5 giá trị hợp lệ.
+
+   Tôi đề xuất có script này. Còn script chuyển Markdown sang JSON cho S5 thì **không** đề xuất: Đọc bảng Markdown bằng code rất dễ vỡ; để AI tự dựng JSON theo schema rồi dùng linter của `test-case-writing` kiểm tra thì chắc hơn. Bạn chọn có hay không cho từng script.
+5. **Mức chi tiết của ví dụ FR-01.**
+   - (a) Ví dụ rút gọn một biến, kèm đường dẫn tới các file thật (đề xuất).
+   - (b) Chép nhiều hơn.
+6. **Feature C bắt đầu từ S1.** `00_spec.md` của C được làm trước khi WORKFLOW có bảng thay đổi và mã yêu cầu dạng `FR17-R01`. Skill có nên rà nhanh S0 của C và báo phần thiếu (không tự viết lại) trước khi làm S1 không? Tôi đề xuất có.
+7. **S0 trên Mobile.** Loại bàn phím chỉ hiện ra khi chạm vào ô, dù chưa gõ gì. Việc này có tính là "quan sát" ở S0 không, hay để tới S6?
+8. **Feature dùng để quay video demo** (mục 7 của đề yêu cầu chạy trọn một feature). Tôi đề xuất B FR-07, vì feature này làm từ S0 nên thể hiện được đủ quy trình. Điểm này ảnh hưởng tới việc skill phải chạy mượt ngay từ S0.
+9. **Đồng bộ hai bản.** Bản trong `Homeworks/HW02/skills/` là bản gốc; mỗi lần sửa thì chép sang `.claude/skills/`. Chép tay hay dùng một lệnh cố định?
+10. **Commit cho skill.** Dùng tag `[skill]` theo WORKFLOW mục 4.1. Một commit cho bản đầu, sau đó mỗi lần sửa một commit?
+
+Bạn duyệt xong (hoặc chỉnh) thì tôi viết.
+````
+
+---
+
+### C116 | 15:20 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Ghi đúng người phát hiện: Sinh viên, Claude ở phiên điều phối, hay AI tự bổ sung -> Không nên set cứng phần này vì không rõ có xài Claude điều phối hay gì không. Cách tốt nhất là phân ra, kiểu Claude ở session nào.
+
+1. Một skill.
+2. a
+3. a
+4. Tôi đồng ý theo đề xuất.
+5. a
+6. Có, nên vậy để đảm bảo 00_spec được tạo ra trước đó không bỏ sost và kéo theo các điểm khác.
+7. Nó cũng thuộc dạng quan sát, để vào S0.
+8. Được, chọn mục B. Tôi sẽ dùng skill cho C để xem thử như nào giữa các bước, D cho toàn bộ từ đầu. Ok hết thì tôi làm cho B quay video nhỉ?
+9. Đồng bộ hai bản, bạn là người đồng bộ.
+10. Đồng ý.
+
+Mà phần S0 bạn sẽ cần hình ảnh thì mới viết tiếp các bảng quan sát đúng không, nếu như vậy mà cần hỗ trợ gì thì hãy nói người dùng cung cấp đủ rồi tiếp tục từng bước thay vì cố gắng tự làm hết hoặc nhảy vào đọc code.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check skill target folders and HW02 gitignore
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\SKILL.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\rules.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\step-s0.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\step-s1.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\step-s2.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\step-s3.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\step-s4.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\lessons.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\platforms.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\references\example-fr01.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\assets\templates\ai_raw.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\assets\templates\review.md
+- Write: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\scripts\check_step.py
+- Bash: Run check_step.py against FR-01 files as a test
+- Bash: Negative test check_step.py with injected errors
+- Bash: List skill files, format-check them, copy to .claude/skills and verify
+- Edit: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\scripts\check_step.py
+- Edit: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\scripts\check_step.py
+- Bash: Re-run format check, confirm negative case still caught, sync skill copy
+- Write: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\skill-sync-duty.md
+- Bash: Add skill sync memory pointer to MEMORY.md index
+- Bash: Remove duplicate line from memory index
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi bắt đầu viết. Trước hết tôi kiểm tra thư mục đích và `.gitignore` của repo HW02, để chắc thư mục `skills/` được commit và không ghi đè skill nào đang có.
+
+Cả hai thư mục đích đều chưa có skill này. Tôi viết `SKILL.md` trước.
+
+Tiếp theo là `references/rules.md`.
+
+Tiếp theo là `references/step-s0.md`.
+
+Tiếp theo là `references/step-s1.md` và `references/step-s2.md`.
+
+Tiếp theo là `references/step-s3.md` và `references/step-s4.md`.
+
+Tiếp theo là hai file khung trong `assets/templates/`.
+
+Giờ tôi viết `scripts/check_step.py`, rồi chạy thử trên chính các file của FR-01 để chắc nó cho kết quả đúng.
+
+Tôi lưu một ghi nhớ: Từ nay tôi là người đồng bộ hai bản skill, để các phiên sau không quên bước này.
+
+Mục lục `MEMORY.md` có sẵn một dòng bị lặp (dòng "No em dash or middle dot"). Tôi xóa dòng thừa.
+
+Tôi đã viết xong skill `domain-testing-design` theo các quyết định của bạn và đồng bộ sang bản chạy:
+- Bản nộp: [Homeworks/HW02/skills/domain-testing-design/](Homeworks/HW02/skills/domain-testing-design/)
+- Bản để Claude Code dùng: `D:\Dang\Test\.claude\skills\domain-testing-design\`, giống hệt bản nộp (đã so bằng `diff -r`).
+
+**Cấu trúc (13 file):**
+
+| File | Nội dung |
+|---|---|
+| [SKILL.md](Homeworks/HW02/skills/domain-testing-design/SKILL.md) | Bước 0 (xác định ngữ cảnh, suy ra bước hiện tại, rà các bước trước khi bắt đầu giữa chừng), quy tắc cứng, vòng lặp 4 pha cho S1 đến S4, S0 ba pha, điểm dừng, nối sang S5 |
+| `references/rules.md` | File được và không được đọc, hộp đen, khi thiếu thông tin, quy ước mã, `ai_raw/` và `_vN`, các mục bắt buộc của bản review, bảng thay đổi, giả định, commit, định dạng, checklist rà bước trước |
+| `references/step-s0.md` đến `step-s4.md` | Hướng dẫn từng bước, mỗi bước có mục "Hỏi trước khi viết" |
+| `references/lessons.md` | Checklist tự kiểm theo từng bước; mỗi mục ghi lỗi đã gặp ở FR-01 |
+| `references/platforms.md` | Web, Web Admin, Mobile: Môi trường làm thay đổi giá trị và cách kiểm khác |
+| `references/example-fr01.md` | Biến Mật khẩu đi qua S1 đến S4, kèm vài dòng bảng thay đổi |
+| `assets/templates/` | Khung file `ai_raw` và bản review |
+| `scripts/check_step.py` | Kiểm tra định dạng, bảng thay đổi, số lớp, độ phủ |
+
+**Các điểm bạn yêu cầu:**
+- **Ghi người phát hiện:** Không cố định "Claude điều phối". Skill ghi theo thông tin sinh viên cung cấp: Sinh viên; AI bổ sung khi viết bản review (kèm định danh phiên nếu biết); hoặc một phiên AI khác (tên công cụ và định danh phiên). Không rõ thì phải hỏi, không mặc định là sinh viên.
+- **S0 cần ảnh:** Ở pha 3, việc đầu tiên là kiểm tra ảnh đã đủ chưa (thấy thanh tab, không bị cắt, đúng màn hình). Thiếu thì liệt kê cụ thể cần chụp gì rồi dừng. Ngoài ra có mục "Khi thiếu thông tin" áp cho mọi bước: Không được bù chỗ thiếu bằng cách đọc code, tự mở trang hay tự đoán, và không tự điền bảng quan sát thay sinh viên.
+- **Mobile:** Ở S0 được chạm vào ô để xem loại bàn phím, nhưng không gõ.
+- **Feature C bắt đầu từ S1:** Bước 0 sẽ rà `00_spec.md` theo checklist ở `rules.md` mục 11, báo phần thiếu kèm hệ quả cho các bước sau, rồi chờ bạn quyết định.
+
+**Kiểm tra script:**
+- Chạy trên FR-01 cho kết quả đúng: 70 lớp (30 hợp lệ, 32 không hợp lệ, 8 Output), 96 test case, số lượng theo loại ở các bảng thay đổi khớp với số tôi đếm trước đó.
+- Thử 4 lỗi cố ý thì bắt đủ cả 4.
+- Lần chạy đầu trên chính các file của skill báo nhầm ở những câu chỉ **nhắc tới** dấu "—" để nêu quy tắc. Tôi đã sửa để script bỏ qua ký tự nằm trong dấu nháy.
+
+**Một lưu ý về file ví dụ:** `example-fr01.md` có ghi đường dẫn tới các file thật của FR-01, nhưng nói rõ phiên đang làm feature khác không được mở chúng (WORKFLOW mục 1.4 chỉ cho đọc thư mục feature đang làm). Những gì cần dùng đã được tóm tắt ngay trong file ví dụ.
+
+**Về kế hoạch C, D rồi B:** Hợp lý. Gợi ý thêm:
+- Khi làm C và D, mỗi chỗ skill chạy chưa tốt thì báo tôi. Tôi sửa, đồng bộ hai bản, và bạn commit với tag `[skill]`.
+- Trước khi quay video cho B, nên "chốt" một phiên bản skill (một commit riêng), để video khớp với đúng bản nộp.
+- Trong video nên cho thấy các điểm dừng và lúc bạn review. Đó là phần thể hiện quy trình "AI-First có người kiểm soát" mà đề yêu cầu.
+
+**Commit:** Chỉ bản trong repo HW02; thư mục `.claude/` nằm ngoài repo.
+```
+cd "D:/Dang/Test/Homeworks/HW02"
+git add skills/domain-testing-design
+git commit -m "[skill] Add domain-testing-design skill for S0 to S4"
+```
+
+Tôi cũng lưu một ghi nhớ rằng mình chịu trách nhiệm đồng bộ hai bản skill mỗi khi sửa, và xóa một dòng bị lặp trong mục lục ghi nhớ.
+````
+
+---
+
+### C117 | 15:42 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Đã xong skill. Bạn hãy xuất log, kiểm tra đi. Tôi đọc qua thấy khá ổn rồi, còn phải chạy thử mới biết điều chỉnh ở đâu thêm. Nhưng bạn có thể xem và rà soát trước đó để đảm bảo lần gọi skill tốt hơn. Nếu không có gì thì commit message.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Audit skill creation, list files, compare copies
+- Bash: Read the new memory file and skill file sizes
+- Read: D:\Dang\Test\Homeworks\HW02\skills\domain-testing-design\SKILL.md
+- Bash: Read first half of rules.md
+- Bash: Read lessons and platforms references
+- Bash: Run the skill's checker on FR-01 files
+- Bash: Record skill audit notes and export log
+
+**Output AI (nguyên văn):**
+
+````text
+`SKILL.md` có cấu trúc tốt. Mình đọc tiếp các file tham chiếu quan trọng nhất (`rules.md`, `lessons.md`, `platforms.md`):
 ````
 
 
