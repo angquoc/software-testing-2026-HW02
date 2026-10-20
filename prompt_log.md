@@ -8138,6 +8138,492 @@ Theo đề xuất cho tất cả giả định và 5 điểm cấu trúc. Lưu �
 Nếu bạn muốn khác ở điểm nào (ví dụ A05 hay A22) thì thêm vào tin nhắn.
 
 **Commit bản nháp S2 của C.** Log đã xuất xong ở bước dưới:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/ai_raw/S2_equivalence_classes.md prompt_log.md
+git commit -m "[C-FR17][S2] Add equivalence classes (AI draft)"
+git push
+```
+
+## Server và S6 của phiên A
+
+| Phần | Trạng thái |
+|---|---|
+| Backend `localhost:3000` | ✅ Đang chạy, DB đã về dữ liệu mẫu. Chỉ một tiến trình nghe cổng 3000, không xung đột |
+| Web `localhost:5173` | ✅ Đang chạy |
+| `06_results.md` | **Chưa có dòng nào được điền** (0 trên 96). Bạn bắt đầu từ nhóm A (checklist) |
+
+## Thứ tự đề xuất bây giờ
+
+1. Commit bản nháp S2 của C, rồi gửi tin nhắn quyết định sang phiên C. Phiên C sẽ viết bản review trong lúc bạn test.
+2. **Chạy S6 cho FR-01** theo mức ưu tiên 1 (36 test case). Mỗi khi xong một nhóm, bạn báo mình để mình nhờ phiên A đếm và kiểm tra.
+3. Khi phiên C viết xong bản review S2, mình soát trước rồi báo bạn một lượt.
+````
+
+---
+
+### C138 | 19:57 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Theo đề xuất cho tất cả giả định và 5 điểm cấu trúc. Lưu ý cho S3 sau này: Hãy đề xuất cách giới hạn số test case (ví dụ nhóm API kiểu dữ liệu và request hỏng chỉ giữ vài đại diện), để tôi chọn trước khi viết.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\02_ec.md
+- Bash: Check classes, format, change table and per-section counts
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi lấy thời gian rồi viết bản review [02_ec.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/02_ec.md). Lưu ý của anh/chị về việc giới hạn số test case ở S3 sẽ được ghi vào mục "Ghi chú cho bước sau".
+
+Tôi kiểm lại bằng script: Đếm lớp, định dạng, bảng thay đổi và số lớp theo từng mục.
+
+Bản review S2 đã xong: [02_ec.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/02_ec.md). Còn một giả định mới (A26) cần anh/chị chốt trước S3.
+
+**Kiểm tra:** Script đếm 123 lớp, khớp với bảng tổng hợp ở từng mục, và báo 0 lỗi định dạng, 0 lỗi ở bảng thay đổi. Script có cảnh báo về các số EC77, EC123, EC124, EC126 bị bỏ trống; đó là các lớp tôi bỏ có chủ ý. File `ai_raw/` giữ nguyên.
+
+## Đã áp quyết định
+
+- Không còn lớp GĐ. Còn 94 lớp Input (49 H, 45 KH) và 29 lớp Output.
+- **Bỏ 7 lớp**, vẫn giữ mã để không dùng lại cho thứ khác:
+  - EC77 (mã đã dùng trong đơn hàng), theo A16 (i)(c). Đã ghi thành rủi ro chưa kiểm.
+  - 6 lớp Output của các mã lỗi không phát sinh theo phương án đã chọn: ERR18, ERR19, ERR21, ERR23, ERR24, ERR25.
+- **Một số lớp chấp nhận nhiều kết quả:** EC14, EC39, EC48, EC65 (tạo thành công, hoặc bị từ chối có thông báo rõ); EC73 đến EC75 (phản hồi 2xx hoặc 4xx). Mỗi lớp đều ghi rõ khi nào là "Sai": Lưu sai giá trị, bị cắt cụt, xóa nhầm, hoặc lỗi máy chủ 5xx.
+- Yêu cầu của anh/chị về S3 đã nằm ở dòng đầu mục 10 "Ghi chú cho bước sau": Trước khi viết S3, tôi sẽ đề xuất các cách giới hạn số test case để anh/chị chọn.
+
+## Mâu thuẫn tôi tìm thấy khi kiểm tra (mục 9)
+
+1. **A15 (b) vướng A20 (a):** Với EC73 đến EC75, A15 chấp nhận phản hồi thành công, còn A20 đòi bị từ chối phải là 4xx. Tôi cho A15 ưu tiên vì là quy tắc riêng: Chấp nhận cả 2xx và 4xx, chỉ 5xx là sai.
+2. **A05 (c) cộng A18 (b):** Mã vừa tạo với ngày hôm nay hoặc ngày quá khứ sẽ hiện ngay chữ "Hết hạn". Đây không phải mâu thuẫn, nhưng tôi đã ghi vào kết quả mong đợi của EC54, EC55.
+3. **A07 (b):** Nếu giao diện không có hộp thoại xác nhận thì đó là hành vi đúng. Vì vậy test case của EC78, EC79 sẽ ghi "Không áp dụng", không ghi Blocked như ghi chú cũ ở S1.
+4. **Cho S4:** Đặc tả không nói `discount_value` có mấy chữ số thập phân. Vì vậy điểm ngay trên cận 100 của `percent` có thể là `100.01` hoặc `101`; S4 sẽ đề xuất.
+
+## Cần anh/chị chốt: Giả định mới A26
+
+A09 nói "khoảng trắng" nhưng không nói gồm những ký tự nào. Câu hỏi là ký tự tab và khoảng trắng không ngắt (U+00A0) ở đầu, cuối `code` có bị cắt không.
+
+- **(a)** Chỉ dấu cách thường bị cắt; tab và U+00A0 là ký tự bình thường. Không thêm lớp. **Tôi đề xuất phương án này.** Lý do: Ô chữ trên giao diện khó gõ hai ký tự này, nên giữ bộ test gọn.
+- **(b)** Mọi loại khoảng trắng đều bị cắt. Thêm 2 lớp, đánh số từ EC131.
+
+Tôi đã ghi điểm này vào bảng thay đổi với loại "Mơ hồ", vì bản AI dùng chữ "khoảng trắng" mà không định nghĩa. Bảng thay đổi có 23 dòng Quyết định của SV, 4 Thiếu, 1 Mơ hồ.
+
+## Commit cho bản review
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/02_ec.md
+git commit -m "[C-FR17][S2] Review equivalence classes"
+```
+
+Nếu bản AI của S2 chưa commit, chạy lệnh này trước:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S2_equivalence_classes.md
+git commit -m "[C-FR17][S2] Add equivalence classes (AI draft)"
+```
+
+Anh/chị chốt A26 thì tôi cập nhật vào `02_ec.md` (ghi "Cập nhật lần 1"). Sau đó sang S3, bắt đầu bằng các phương án giới hạn số test case.
+````
+
+---
+
+### C139 | 20:07 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi vẫn đang làm.
+Phiên C: Xong rồi đấy, xuất log, kiểm tra và tổng hợp cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C S2 review result and run checker
+
+**Output AI (nguyên văn):**
+
+````text
+## Phiên C: Bản review S2 đã xong (`02_ec.md`)
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Thao tác | ✅ Không vi phạm; `ai_raw/` nguyên vẹn |
+| Script của skill | ✅ 0 lỗi; 123 lớp (49 hợp lệ, 45 không hợp lệ, 29 Output); không còn lớp phụ thuộc giả định |
+| Cảnh báo số lớp bỏ trống (EC77, 123, 124, 126) | ✅ Cố ý: Đó là các lớp bị bỏ theo quyết định của bạn, giữ mã để không dùng lại |
+| Bảng thay đổi | Thiếu 4, Mơ hồ 1, Quyết định của SV 23 |
+
+**Phiên C tự phát hiện 4 chỗ mâu thuẫn hoặc hệ quả giữa các quyết định**, và đã xử lý hợp lý:
+1. **A15 và A20:** Xoá mã không tồn tại có thể nhận cả 2xx lẫn 4xx, chỉ 5xx mới là sai.
+2. **A05 và A18:** Mã vừa tạo với ngày hôm nay hoặc ngày quá khứ sẽ hiện chữ "Hết hạn" ngay. AI đã ghi điều này vào kết quả mong đợi.
+3. **A07:** Nếu không có hộp thoại xác nhận khi xoá thì đó là hành vi đúng, ghi "Không áp dụng" thay vì Blocked.
+4. **Cho S4:** Đặc tả không nói `discount_value` có mấy chữ số thập phân, nên điểm ngay trên biên 100 có thể là `100.01` hoặc `101`. S4 sẽ đề xuất.
+
+Đây là dữ liệu tốt cho phần đánh giá skill: Bước tự kiểm tra mâu thuẫn trong skill đã chạy đúng thiết kế.
+
+**Còn chờ bạn: Giả định A26** (tab và khoảng trắng không ngắt ở đầu, cuối `code` có bị cắt không). AI đề xuất **(a): Chỉ cắt dấu cách thường**, không thêm lớp, vì trên giao diện khó gõ hai ký tự này. Mình đồng ý với đề xuất đó.
+
+## Tin nhắn dán vào phiên C
+
+```text
+A26 chọn (a). Cập nhật 02_ec.md, rồi sang S3: Trước khi viết bản AI, đề xuất các cách giới hạn số test case để tôi chọn.
+```
+
+Đợi phiên C cập nhật xong `02_ec.md` (vài phút) thì commit một lần cho gọn. Báo mình để mình xuất log trước khi commit. Lệnh sẽ là:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/02_ec.md prompt_log.md
+git commit -m "[C-FR17][S2] Review equivalence classes"
+git push
+```
+
+**Lưu ý:** `06_results.md` của FR-01 đang được bạn điền dở nên **đừng `add`** file này vào commit của C. Lệnh trên chỉ `add` đúng 2 file.
+````
+
+---
+
+### C140 | 20:09 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+A26 chọn (a). Cập nhật 02_ec.md, rồi sang S3: Trước khi viết bản AI, đề xuất các cách giới hạn số test case để tôi chọn.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local date and time
+- Read: D:\Dang\Test\.claude\skills\domain-testing-design\references\step-s3.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\02_ec.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\02_ec.md
+- Bash: Recheck the updated review file
+- AskUserQuestion
+- Bash: Read coverage check implementation
+- Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S3_test_cases.md
+- Bash: Run coverage and format checks on S3 draft
+- Bash: Show lines around 260
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S3_test_cases.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S3_test_cases.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S3_test_cases.md
+- Bash: Recheck coverage and leftover shorthand codes
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi cập nhật `02_ec.md` với A26 phương án (a).
+
+Tôi đã ghi A26 phương án (a) vào [02_ec.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/02_ec.md) dưới dạng "Cập nhật lần 1". Thay đổi gồm: Dòng cập nhật ở đầu file, mục 4.3, mục 9, mục 10 và một dòng mới trong bảng thay đổi. Không thêm lớp nào. Script báo 0 lỗi.
+
+Commit cho cập nhật này:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/02_ec.md
+git commit -m "[C-FR17][S2] Settle whitespace assumption A26"
+```
+
+## S3: Các cách giới hạn số test case
+
+Nếu không giới hạn gì, bộ test case sẽ có khoảng **105 test case**, chưa kể S4. Số này gồm:
+- 3 test case cơ sở.
+- 27 lớp hợp lệ bất thường, mỗi lớp một test case.
+- 7 test case hợp lệ cho Xóa và Xem.
+- 45 lớp không hợp lệ.
+- Lặp lớp quyền cho cả ba thao tác Thêm, Xem, Xóa: 8.
+- Đường dẫn API của FR-12: 4.
+- Chạy cùng lớp qua cả giao diện và API: Khoảng 6.
+- Checklist: 5.
+
+Có bốn cách giới hạn và dùng kết hợp được:
+
+| Cách | Làm gì | Bớt khoảng | Đổi lại |
+|---|---|---|---|
+| **B. Gộp lớp cùng quy tắc vào test case dạng bảng** | Mỗi nhóm lớp có cùng một quy tắc thành **một test case**, mỗi dòng là một request chỉ sai một lớp. Áp cho 7 nhóm: `null`/`""` (6 lớp), không phải số (3), chuỗi chứa số (3), request hỏng (EC91 đến EC94), định dạng ngày (EC58 đến EC60), `id` sai khi xóa (EC73 đến EC75), `type` sai (EC26 đến EC29) | 19 | Lớp nào cũng vẫn có một dòng truy vết được. Mỗi dòng có kết quả riêng, nhưng trạng thái của cả test case gộp lại |
+| **A1. Thu gọn tổ hợp người gọi API** | Đủ 4 lớp không hợp lệ cho thao tác Thêm. Xem và Xóa chỉ chạy "không có header" (EC86) và "user thường" (EC89). Đường của FR-12 chỉ chạy 2 test case: `POST` với EC86, `DELETE` với EC89 | 6 | Không kiểm "header sai dạng" và "token không hợp lệ" ở Xem và Xóa |
+| **A2. Lớp thập phân, lớp âm chỉ chạy qua giao diện** | Viết sẵn bản API làm dự phòng, chỉ chạy ở S6 nếu trình duyệt chặn giá trị trước khi gửi | 6 | Phải ghi rõ điều kiện chạy dự phòng |
+| **C. Bỏ bớt lớp rủi ro thấp** | Trong các nhóm ở B, chỉ giữ 1 đến 2 đại diện; các lớp còn lại không có test case, ghi rủi ro trong ma trận truy vết | Thêm khoảng 10 (so với B) | Trái nguyên tắc của slide là mỗi lớp có ít nhất một test case; script sẽ báo các lớp trống |
+
+Tôi đề xuất **B + A1 + A2, còn khoảng 74 test case**. Lý do: Bớt được khoảng 30% mà lớp nào cũng vẫn có test case. Cách C chỉ bớt thêm khoảng 10 nhưng phải chấp nhận lớp trống.
+
+Bản AI còn cần chốt thêm ba điểm về cấu trúc, tôi hỏi cùng lúc. Mặc định về đường thực thi theo cột "Đường" của S2: Lớp `GD, API` chạy qua giao diện, lớp `API` chạy qua API. Nếu anh/chị muốn khác thì ghi ở ô "Other".
+
+Đã chốt: B + A1 + A2, Markdown, `TC-CPN-NN` với `FR17TCNN`, chuỗi SQL không phá dữ liệu. Trước khi viết, tôi xem script kiểm phủ lớp đọc bảng theo cách nào.
+
+Đã đủ thông tin để viết. Bộ test case dự kiến có 78 test case, nhiều hơn ước tính 74 một chút vì A2 cần thêm một test case API dự phòng.
+
+Script báo TC-CPN-11 bị định nghĩa hai lần. Tôi xem dòng 260.
+
+Bản AI của S3 đã xong: [ai_raw/S3_test_cases.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S3_test_cases.md).
+
+**Kiểm tra:** Script kiểm phủ lớp báo cả 123 lớp đều có test case và 0 lỗi; script kiểm định dạng cũng báo 0 lỗi. Lúc đầu script bắt được một lỗi: Bảng "Giới hạn quan sát" có dòng bị hiểu là định nghĩa TC-CPN-11 lần thứ hai. Tôi đã sửa trước khi giao. Script còn một cảnh báo về mã TC-CPN-100; mã này được nhắc có chủ ý, là mã bắt đầu dành cho S4.
+
+## Tóm tắt: 78 test case
+
+| Nhóm | Mã | Số lượng |
+|---|---|---|
+| Hợp lệ qua giao diện | TC-CPN-01 đến 25 | 25 (2 test case cơ sở, mỗi lớp hợp lệ bất thường một test case) |
+| Không hợp lệ qua giao diện | TC-CPN-30 đến 46 | 17, mỗi test case chỉ sai một lớp |
+| Xem, Xóa qua giao diện | TC-CPN-50 đến 56 | 7 |
+| API | TC-CPN-60 đến 82 | 23, trong đó 7 test case dạng bảng gồm 28 dòng |
+| Checklist | TC-CPN-90 đến 95 | 6 |
+
+- **Cách B:** 7 test case dạng bảng: Chuỗi chứa số, `type` sai, `null`/`""`, không phải số, định dạng ngày, request hỏng, `id` sai. Mỗi dòng là một request riêng chỉ sai một lớp và có kết quả riêng.
+- **Cách A1:** Người gọi API có đủ 4 lớp cho Thêm; Xem và Xóa chỉ kiểm "không có header" và "user thường"; đường dẫn của FR-12 có 2 test case (TC-CPN-80, 81).
+- **Cách A2:** TC-CPN-82 là bản API dự phòng, chỉ chạy dòng nào mà test case giao diện tương ứng bị trình duyệt chặn.
+- **Kết quả mong đợi chung** viết một lần ở mục 2.3. Mọi phản hồi 5xx đều là "Sai".
+- **Thứ tự chạy:** Các test case xóa mã mẫu chạy cuối (TC-CPN-54, 55), TC-CPN-56 (xóa hết mã) chạy cuối cùng, rồi reset dữ liệu ngay.
+- **Ma trận truy vết:** 4 yêu cầu chỉ phủ một phần, có ghi lý do:
+  - R03: Không kiểm xóa mã đã dùng trong đơn hàng.
+  - R11: Xem và Xóa chỉ kiểm 2 trong 4 lớp người gọi, theo cách A1.
+  - R15: Chỉ kiểm escape trên bảng của FR-17.
+  - R16: Chỉ quan sát được gián tiếp.
+
+## Cần anh/chị quyết định (mục 13)
+
+| # | Vấn đề | Tôi đề xuất | Lý do |
+|---|---|---|---|
+| 1 | Kiểm chứng cho test case không hợp lệ qua giao diện | (a) Chỉ tải lại trang, xem không có dòng mới (K3) | Mỗi test case dùng `code` riêng nên K3 đủ; K4 nhân đôi số bước |
+| 2 | Placeholder ô "Giá trị" có đổi theo loại không | (a) Không lập test case, chỉ ghi quan sát ở S6 | Đặc tả không yêu cầu nên không có kết quả mong đợi để đánh giá |
+| 3 | TC-CPN-13 phủ cả EC21 và EC71 | (a) Giữ | Phải xóa mới có EC21; EC71 vẫn có test case riêng (TC-CPN-51) |
+| 4 | `max_uses_per_user` cơ sở là `3`, không dùng mặc định `1` | (a) Dùng `3` | Thấy được ô có thật sự được gửi lên không |
+| 5 | Test case API hợp lệ kiểm `GET` tới mức nào | (a) Kiểm giá trị từng trường | Là cách duy nhất thấy giá trị được lưu thật |
+
+## Commit cho bản AI
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S3_test_cases.md
+git commit -m "[C-FR17][S3] Select test cases (AI draft)"
+```
+
+Nhớ nhờ phiên điều phối xuất prompt log trước khi commit.
+````
+
+---
+
+### C141 | 20:17 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi có thắc mắc, nếu như các quan sát (checklist giao diện) tôi đã chụp gửi cho AI, cũng đã cùng AI viết qua các bước, liệu có thể để AI điền và tôi review lại tiết kiệm thời gian không? Còn những cái như phải nhập, phải gọi API các thứ thì tôi làm.
+Phiên C: AI có hỏi tôi vài câu hỏi, tôi đã chọn và đang viết.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+**Phiên A: Được, nhưng chỉ cho một phần của checklist.** Tiêu chí phân biệt: **Kết quả đó đã được bạn quan sát thật trên hệ thống chưa?**
+
+| Test case | Nội dung | AI điền được không | Vì sao |
+|---|---|---|---|
+| TC-REG-90 | Form có trường Xác nhận mật khẩu | ✅ Được | Bạn đã quan sát ở S0 (D01), có ảnh |
+| TC-REG-91 | Ngôn ngữ, tiêu đề tab | ✅ Được | Đã có trong ảnh S0 chụp lại có thanh tab (D04) |
+| TC-REG-92 | Màu nút "Đăng Ký" | ✅ Được | Thấy rõ trong ảnh S0 |
+| TC-REG-95 | Dấu `*` cạnh nhãn | ✅ Được | Thấy rõ trong ảnh S0 |
+| TC-REG-93 | Số thẻ `<h1>` | ❌ Bạn làm | Cần DevTools, chưa ai xem |
+| TC-REG-96 | `type="email"`, `type="password"` | ❌ Bạn làm | Cần DevTools; kết quả này còn quyết định cách đọc các test case khoảng trắng của Email |
+| TC-REG-94 | Thứ tự khi nhấn Tab | ❌ Bạn làm | Phải thao tác |
+| TC-REG-97 | Vị trí thông báo lỗi | ❌ Bạn làm | Phải bấm gửi form |
+
+Cách làm 4 test case được phép cho AI điền cũng cần đúng quy tắc:
+- Ghi rõ **nguồn**: "Theo ảnh `S0_xx` chụp ngày 19/10; SUT không đổi (commit `85af3ba`)". Đây là kết quả bạn quan sát thật, chỉ là quan sát từ hôm trước.
+- AI chỉ **đề xuất** trạng thái Pass hoặc Fail. **Bạn liếc trang hiện tại để xác nhận**, mỗi test case khoảng 10 giây. Cách này vừa nhanh vừa đúng nguyên tắc "kết quả thực tế lấy từ lần chạy thật".
+- Phần này sẽ được khai báo trong Audit: "AI điền sẵn kết quả 4 test case checklist từ ảnh S0, sinh viên xác nhận".
+
+Tin nhắn dán vào phiên A:
+
+```text
+Với nhóm checklist: Bạn điền sẵn kết quả của TC-REG-90, 91, 92, 95 dựa trên ảnh S0 tôi đã chụp (ghi rõ ảnh nào, ngày chụp 19/10, SUT không đổi commit 85af3ba), và đề xuất trạng thái. Tôi sẽ xem trang hiện tại để xác nhận. TC-REG-93, 94, 96, 97 tôi tự làm. Không mở trang, không dùng DevTools, không đọc mã nguồn. Chỉ sửa đúng 4 dòng đó trong 06_results.md, không đụng các dòng tôi đã điền.
+```
+
+Mình thêm câu "không đụng các dòng tôi đã điền" vì `06_results.md` đang được bạn điền dở. Nếu phiên A ghi đè cả file thì phần bạn đã điền sẽ mất. **Bạn nên lưu file trước khi gửi tin nhắn.**
+
+**Phiên C:** Đã ghi nhận, phiên C đang viết. Khi nó xong, mình soát và báo bạn.
+````
+
+---
+
+### C142 | 20:19 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Với nhóm checklist: Bạn điền sẵn kết quả của TC-REG-90, 91, 92, 95 dựa trên ảnh S0 tôi đã chụp (ghi rõ ảnh nào, ngày chụp 19/10, SUT không đổi commit 85af3ba), và đề xuất trạng thái. Tôi sẽ xem trang hiện tại để xác nhận. TC-REG-93, 94, 96, 97 tôi tự làm. Không mở trang, không dùng DevTools, không đọc mã nguồn. Có thể sửa các dòng mà tôi đã điền nếu như tôi điền sai. Nhưng mà chỉ trong phạm vi là đã quan sát, đã thấy, tức là những thứ này tôi và bạn đã cùng nhau đi từ bước trước, và có thể quan sát được. Còn những thứ như phải nhập, gọi API các thứ thì tôi vẫn sẽ tự làm tự điền.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check what the student has filled in 06_results.md so far
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\screenshots\S0_01_form_dang_ky.png
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\06_results.md
+- Bash: Format-check 06_results.md and confirm row count unchanged
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi xem `06_results.md` hiện tại (bạn có thể đã điền vài dòng) và mở lại các ảnh S0 để đối chiếu, trước khi điền.
+
+Tôi đã điền xong trong [06_results.md](Homeworks/HW02/features/A_FR-01_DangKy/06_results.md). Bảng vẫn đủ 96 dòng, định dạng hợp lệ. Căn cứ duy nhất là ảnh `S0_01_form_dang_ky.png` (chụp 16:06 ngày 19/10/2026; SUT vẫn là commit `85af3ba`). Tôi không mở trang, không dùng DevTools, không đọc code.
+
+**Bốn dòng checklist:**
+
+| TC | Kết quả thực tế | Trạng thái | Ghi chú |
+|---|---|---|---|
+| TC-REG-90 | Không có trường Xác nhận mật khẩu; form chỉ có 3 ô Họ Tên, Email, Mật khẩu | Fail (bạn đã điền) | Giữ ghi chú của bạn, thêm "ứng với D01" |
+| TC-REG-91 | Tiêu đề tab là `frontend-web`, còn lại đều tiếng Việt | Fail (bạn đã điền) | Thêm "ứng với D04"; ghi rõ mới chỉ xét chữ hiển thị sẵn |
+| TC-REG-92 | Nút "Đăng Ký" nền đỏ, chữ trắng | **Fail (đề xuất)** | Ứng với D03 |
+| TC-REG-95 | Không nhãn nào ("Họ Tên", "Email", "Mật khẩu") có dấu `*` | **Fail (đề xuất)** | Ứng với D02 |
+
+Mỗi dòng ghi ảnh S0 kèm ngày chụp, và câu "AI đối chiếu ảnh S0, sinh viên xác nhận trên trang hiện tại". Với TC-REG-92 và 95, bạn xác nhận xong thì bỏ chữ "(đề xuất)".
+
+**Lưu ý về TC-REG-91:** Thông báo lỗi chỉ hiện khi nhập dữ liệu, nên chưa được xét. Khi chạy nhóm B, nếu gặp thông báo có chữ không phải tiếng Việt thì ghi bổ sung vào dòng này.
+
+**Mục 1 (môi trường):**
+- "Window" sửa thành "Windows 11 (Windows 11 Home Single Language, bản 10.0.26200)". Căn cứ là thanh tác vụ trong ảnh và thông tin hệ thống của máy.
+- "Google" sửa thành "Google Chrome". Ảnh không cho biết phiên bản, nên tôi để chỗ trống cho bạn điền; xem ở `chrome://settings/help`.
+
+**Đầu file:** Thêm một dòng ghi lại rằng AI đã điền sẵn 4 dòng này từ ảnh S0, còn TC-REG-93, 94, 96, 97 và mọi test case cần nhập dữ liệu hay gọi API do bạn tự chạy và điền.
+
+**Gợi ý:** Khi xác nhận trên trang hiện tại, bạn có thể chụp một ảnh `S6_TC-REG-90.png` toàn trang. Một ảnh này đủ làm bằng chứng mới cho cả 4 dòng, và cũng dùng được cho bug report ở S7.
+````
+
+---
+
+### C143 | 20:23 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `38378bef`
+
+**Prompt (nguyên văn):**
+
+````text
+Đối với những phần sử dụng DevTool, hãy hướng dẫn từng bước để tôi có thể thấy và kiểm thử.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Dưới đây là hướng dẫn cho hai test case dùng DevTools là TC-REG-93 và TC-REG-96, theo WORKFLOW mục 3.3: Chỉ kiểm những thuộc tính mà đặc tả yêu cầu. Mỗi test case có hai cách; cách Console cho kết quả rõ và dễ chụp hơn.
+
+## Chuẩn bị chung
+
+1. Mở Chrome, vào `http://localhost:5173/register`, nhấn **F5** để tải lại trang cho sạch (chưa nhập gì).
+2. Mở DevTools bằng một trong ba cách:
+   - Nhấn **F12**.
+   - Nhấn **Ctrl + Shift + I**.
+   - Nhấp chuột phải vào trang, chọn **Inspect** (giao diện tiếng Việt là **Kiểm tra**).
+3. DevTools hiện ra (thường ở bên phải hoặc bên dưới). Các thẻ ở trên cùng gồm **Elements**, **Console**...
+
+**Lưu ý quan trọng:** Khi xem HTML, bạn sẽ thấy thêm các thuộc tính khác như `required`, `maxlength`, `pattern`. **Chỉ ghi những gì test case hỏi.** Không dùng các thuộc tính khác để sửa thiết kế hay kết luận bug, theo WORKFLOW mục 1.1 và 3.3. Giới hạn số ký tự của ô được xác định bằng cách dán chuỗi dài ở TC-REG-103, 110, 123.
+
+---
+
+## TC-REG-93: Trang Đăng ký có đúng 1 thẻ `<h1>`
+
+**Cách 1, dùng Console (khuyên dùng):**
+
+1. Bấm thẻ **Console**. Nếu đang có nhiều dòng thông báo cũ, bấm biểu tượng 🚫 (Clear console) hoặc nhấn **Ctrl + L**.
+2. Bấm vào dòng có dấu `>` ở cuối Console, dán lệnh sau rồi nhấn **Enter**:
+   ```js
+   [...document.querySelectorAll('h1')].map((e, i) => `${i + 1}. ${e.textContent.trim()}`)
+   ```
+   Lần đầu dán, Chrome có thể cảnh báo và yêu cầu gõ `allow pasting`. Gõ đúng cụm đó, nhấn Enter, rồi dán lại lệnh.
+3. Đọc kết quả. Ví dụ `(1) ['1. Đăng Ký Tài Khoản']` nghĩa là có 1 thẻ, nội dung "Đăng Ký Tài Khoản". Nếu thấy `(2) [...]` thì trang có 2 thẻ `<h1>`; ghi lại nội dung từng thẻ. Ví dụ, logo "EShop" cũng có thể là một thẻ `<h1>`.
+4. Chụp ảnh khung Console có cả lệnh lẫn kết quả, lưu thành `S6_TC-REG-93.png`.
+
+**Cách 2, dùng Elements:**
+
+1. Bấm thẻ **Elements**, bấm vào vùng mã HTML, rồi nhấn **Ctrl + F**. Một ô tìm kiếm hiện ra ở dưới khung.
+2. Gõ `h1`. Chrome báo số kết quả (ví dụ "1 of 1") và tô sáng từng chỗ.
+3. Nhấn **Enter** nhiều lần để đi qua từng kết quả. Chỉ tính những kết quả là thẻ `<h1 ...>`; bỏ qua chỗ mà chữ "h1" chỉ nằm trong tên class hay đoạn chữ khác.
+
+**Ghi vào `06_results.md`:**
+- Cột "Kết quả thực tế": Số thẻ và nội dung từng thẻ.
+- Trạng thái: **Pass** nếu đúng 1 thẻ và nội dung mô tả trang Đăng ký. **Fail** nếu có 0 thẻ, từ 2 thẻ trở lên, hoặc nội dung không mô tả trang.
+
+---
+
+## TC-REG-96: Loại ô Email và ô Mật khẩu
+
+**Cách 1, dùng Console (khuyên dùng):**
+
+1. Ở thẻ **Console**, dán lệnh sau rồi nhấn **Enter**:
+   ```js
+   console.table([...document.querySelectorAll('input')].map(i => ({nhan: i.labels?.[0]?.textContent.trim() ?? '(không có nhãn)', type_trong_HTML: i.getAttribute('type'), type_trinh_duyet_hieu: i.type})))
+   ```
+2. Một bảng hiện ra, mỗi dòng là một ô nhập:
+   - **nhan:** Nhãn của ô (Họ Tên, Email, Mật khẩu).
+   - **type_trong_HTML:** Giá trị viết trong HTML. Nếu là `null` thì ô **không khai báo** `type`.
+   - **type_trinh_duyet_hieu:** Loại mà trình duyệt áp dụng. Ô không khai báo `type` thì trình duyệt coi là `text`.
+3. Nếu cột nhan ghi "(không có nhãn)", hãy xác định ô theo thứ tự: Ô thứ nhất là Họ Tên, thứ hai là Email, thứ ba là Mật khẩu (giống thứ tự trên form trong ảnh S0).
+4. Chụp ảnh bảng, lưu thành `S6_TC-REG-96_1.png`.
+
+**Cách 2, dùng Inspect từng ô:**
+
+1. Nhấp chuột phải vào **ô Email** trên trang, chọn **Inspect**. Thẻ Elements mở ra và tô sáng một dòng dạng `<input ...>`.
+2. Tìm `type="..."` trong dòng đó. Nếu không có chữ `type=` thì ô không khai báo type, tức trình duyệt coi là `text`.
+3. Làm tương tự với **ô Mật khẩu**.
+
+**Kiểm tra ký tự bị che (không cần DevTools):**
+
+1. Gõ `Abc1` vào ô Mật khẩu.
+2. Quan sát: Ký tự hiện thành dấu chấm (●) là bị che; hiện rõ `Abc1` là không bị che.
+3. Chụp ảnh lúc đang có ký tự trong ô, lưu thành `S6_TC-REG-96_2.png`. Xóa ô sau khi chụp.
+
+**Ghi vào `06_results.md`:**
+- **Mục 1 (môi trường):** Hai dòng "Ô Email có dùng `type="email"` không" và "Ô Mật khẩu có dùng `type="password"` không". Ghi đúng giá trị thấy được, ví dụ "Không, ô Email là `type="text"`" hoặc "Không khai báo type (trình duyệt coi là text)".
+- **Dòng TC-REG-96:** Kết quả của cả hai ô và việc ký tự có bị che không. Trạng thái **Pass** chỉ khi Email là `email`, Mật khẩu là `password` **và** ký tự bị che. Một trong ba điều không đạt thì **Fail**, và ghi rõ điều nào không đạt (FR01-R19 hay FR01-R20).
+
+**Kết quả này ảnh hưởng tới cách đọc các test case khác:**
+- Nếu ô Email **không** phải `type="email"`: Trình duyệt không tự cắt dấu cách và không tự chặn email sai định dạng. Khi đó, kết quả của TC-REG-11, 33, 48 và các test case định dạng email qua giao diện là hành vi của chính EShop, nên giới hạn GH2 không còn áp dụng. Ghi điều này vào cột Ghi chú của các dòng đó.
+- Nếu ô Email **có** `type="email"`: Khi nhập sai định dạng, có thể sẽ hiện bong bóng thông báo của trình duyệt (ví dụ "Please include an '@'..."). Ghi rõ "thông báo của trình duyệt" ở cột Kết quả thực tế.
+
+---
+
+Hai test case còn lại trong nhóm A **không cần DevTools**:
+- **TC-REG-94:** Bấm vào thanh địa chỉ, nhấn **Tab** nhiều lần, ghi thứ tự các ô và nút lần lượt được viền sáng.
+- **TC-REG-97:** Quan sát vị trí thông báo lỗi khi chạy TC-REG-30.
+
+Bạn muốn tôi chép hướng dẫn này vào `06_results.md` thành một phụ lục không? Như vậy nó sẽ được nộp cùng bằng chứng.
+````
+
+---
+
+### C144 | 20:24 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Bảo tôi nên chụp lại toàn màn hình và ghi file dạng S6, nhưng ảnh đó cũng là S0, có cần thiết không? Tôi vẫn đang kiểm thử. Đã đọc qua phần AI viết trong file.
+Phiên C: Đã viết xong rồi kìa.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C latest turns and repo state
+- Bash: Verify A26 update, check S3 coverage, export log
+
+**Output AI (nguyên văn):**
+
+````text
+Mình soát phiên C trước, rồi trả lời câu hỏi của phiên A:
 ````
 
 
