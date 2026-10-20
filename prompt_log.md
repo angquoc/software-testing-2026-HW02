@@ -14449,11 +14449,27 @@ Chọn cả 9 điểm theo phương án (a). Viết bản review 01_io.md. Vì t
 **Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
 
 - Bash: Get current time
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Bash: Run format and changes checks on review
 
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Đã viết bản review S1: [01_io.md](Homeworks/HW02/features/B_FR-07_GioHang/01_io.md). Script kiểm tra định dạng và bảng thay đổi không có lỗi, file trong `ai_raw/` không bị sửa.
+
+**Đã áp 9 quyết định (đều theo phương án (a)):**
+- **Mục 2 mới, "Tiền điều kiện chung":** Reset dữ liệu mẫu, đăng nhập `test@eshop.com` khi test qua giao diện, giỏ ban đầu trống, lấy token bằng `POST /api/login` khi test API.
+- **Biến bỏ hoặc chuyển:** Trạng thái đăng nhập (IN13) thành tiền điều kiện chung. Thời điểm xem lại giỏ (IN14) không còn là biến; tải lại trang trở thành một cách kiểm chứng. Giá đổi giữa hai lần thêm (IN15) bỏ hẳn. Ba mã này không dùng lại cho biến khác.
+- **Người sở hữu giỏ (IN16):** Chỉ xét qua API, dùng token của `admin@eshop.com` làm người dùng khác.
+- **Kiểm chứng:** Bỏ cách "đăng xuất rồi đăng nhập lại", chỉ dùng tải lại trang và `GET /api/cart`.
+- **Giữ nguyên:** Nút `+`/`-` (IN4, đặc tả yêu cầu nhưng giao diện không có), 3 đường thêm vào giỏ (IN3), 3 loại lỗi theo nguyên nhân, nhóm checklist riêng.
+- **Ghi chú của bạn cho S3:** Ghi thành quyết định 10. S2 vẫn chia lớp đầy đủ cho 3 đường thêm vào giỏ; S3 chỉ chọn một test case đại diện cho mỗi đường.
+
+**Kiểm tra mâu thuẫn (mục 10):** Không có quyết định nào mâu thuẫn nhau. Có hai điểm mình đã ghi để S2 xử lý:
+- **Kiểm chứng bằng tải lại trang:** Đặc tả không nói giỏ có được giữ khi tải lại trang không (Q14). Vì vậy mọi kiểm chứng đều kèm `GET /api/cart`. Nếu giỏ mất khi tải lại thì ghi nhận ở S6.
+- **Lỗi ERR3 (`id` không tồn tại, thiếu trường):** Đặc tả không nói đây là lỗi, nên S2 phải đặt giả định cho kết quả mong đợi.
+
+Bảng thay đổi có 10 dòng, đều là "Quyết định của SV". S1 xong; khi cần, bạn gọi mình làm S2.
 ````
 
 ---
@@ -14472,11 +14488,304 @@ Phiên C đã cung cấp đủ ảnh và tạo xong hết issue.
 - Bash: Check log screenshot times and FR-01 untouched
 - Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\screenshots\S6_TC-CPN-69_log.png
 - Bash: Export log and view S7 tracker row
+- Bash: Update S7 tracker for C
 
 **Output AI (nguyên văn):**
 
 ````text
 Đủ 12 issue (#55 đến #66). Tôi kiểm thêm 4 ảnh log đã chụp lại chưa và mục FR-01 có bị đụng không.
+
+S7 của C đã đủ 12 issue (#55 đến #66), mục FR-01 không bị đụng, và log đã xuất (243 lượt, đúng 4 phiên). Còn một việc chưa xong: **4 ảnh log bị cắt mép vẫn chưa được chụp lại**, nên 4 issue đang kèm ảnh thiếu bằng chứng.
+
+## Kết quả kiểm
+
+- 12 bug FR-17 đều đã có số issue, không còn `#___`.
+- 12 ảnh trang issue (`S7_issue_55` đến `66`).
+- Không có dấu "—" hay "·".
+
+**4 ảnh log chưa được chụp lại:** Phiên C báo các ảnh này bị cắt lúc 03:06, nhưng 4 file vẫn mang giờ 03:00 đến 03:04, tức là chưa được chụp lại. Các issue đó đã được tạo với ảnh bị cắt. Tôi mở ảnh 69 để xem: Thấy `HTTP 500` nhưng không thấy stack trace, mà stack trace mới chính là phần "lộ thông tin máy chủ" của bug.
+
+| Issue | Ảnh | Không thấy được |
+|---|---|---|
+| #65 (BUG-07, lỗi 500) | `S6_TC-CPN-69_log.png` | Stack trace, đường dẫn tệp |
+| #66 (BUG-09, ngày không hợp lệ) | `S6_TC-CPN-68_log.png` | Cả 3 giá trị `expired_at` |
+| #63 (BUG-05, chữ ở trường số) | `S6_TC-CPN-67_log.png` | Giá trị `"abc"` ở dòng C |
+| #61 (BUG-02, thiếu trường bắt buộc) | `S6_TC-CPN-66_log_2.png` | Dòng E, F |
+
+**Cách sửa nhanh, khoảng 5 phút:**
+1. Mở `features/C_FR-17_QuanLyCoupon/logs/S6_api_20261021_003400.log` trong VS Code.
+2. Bấm **Alt+Z** để dòng dài tự xuống dòng.
+3. Chụp lại 4 đoạn, **lưu đè cùng tên file**. `bug_report.md` không phải sửa gì.
+4. Trên GitHub, **thêm một comment** vào #61, #63, #65, #66, kéo ảnh mới vào, kèm một dòng "Ảnh log đầy đủ (bản trước bị cắt mép)". Thêm comment nhanh hơn sửa phần mô tả, và vẫn giữ lịch sử.
+5. Không cần chụp lại `S7_issue_*.png`.
+
+Nếu không kịp, ít nhất làm **#65 và #66**, vì hai ảnh đó thiếu chính bằng chứng của bug.
+
+## Commit
+
+**Bây giờ** (đứng ở `D:\Dang\Test\Homeworks\HW02`):
+
+```
+git add bugs/bug_report.md features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-*_log*.png features/C_FR-17_QuanLyCoupon/screenshots/S7_issue_*.png prompt_log.md
+git commit -m "[C-FR17][S7] Link GitHub issues for FR-17 bugs"
+```
+
+**Sau khi chụp lại 4 ảnh:**
+
+```
+git add features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-66_log_2.png features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-67_log.png features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-68_log.png features/C_FR-17_QuanLyCoupon/screenshots/S6_TC-CPN-69_log.png
+git commit -m "[C-FR17][S7] Replace cropped log screenshots"
+```
+
+## Việc tiếp theo
+
+- **C:** S8 (AI gap analysis), dùng tin nhắn tương tự lần của A. Bạn muốn tôi soạn thì nói một tiếng.
+- **B:** Đang chờ bạn dán quyết định 9 điểm của S1 (tin nhắn ở lượt trước).
+- **D:** Chưa bắt đầu. Đây là feature sẽ quay video, nên nên bắt đầu ngay khi C xong S8, để màn hình gọn.
+````
+
+---
+
+### C244 | 03:24 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bỏ qua đi, bởi vì chúng ta có log mà, không sao đâu.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Record decision to skip retaking screenshots
+
+**Output AI (nguyên văn):**
+
+````text
+Được, bỏ qua. Log đầy đủ đã nằm trong `features/C_FR-17_QuanLyCoupon/logs/` và đã commit, nên vẫn kiểm chứng được. Tôi đã ghi quyết định này vào `_NOTES.md`.
+
+Bạn chỉ cần chạy commit đầu tiên ở lượt trước (`[C-FR17][S7] Link GitHub issues for FR-17 bugs`), bỏ commit thứ hai.
+
+**Tin nhắn S8 cho phiên C**, dán khi bạn sẵn sàng:
+
+```text
+Sang S8 cho FR-17. Viết features/C_FR-17_QuanLyCoupon/08_gap_analysis.md (AI gap analysis, đề mục 6.3: AI bỏ sót test case hay bug nào, vì sao: do chất lượng input/prompt, do giới hạn của công cụ AI, hay do độ phức tạp của feature). Lưu bản gốc vào ai_raw/S8_gap_analysis.md:
+1. Thống kê các bảng "Thay đổi so với bản AI" từ S1 đến S5 theo Loại và theo người phát hiện (sinh viên, AI tự phát hiện khi review, phiên điều phối). Ghi rõ lấy số từ file nào.
+2. Test case AI bỏ sót hoặc thiết kế sai: Liệt kê, mỗi dòng xếp vào một nguyên nhân theo đề, kèm căn cứ từ cột "Vì sao AI bỏ sót" và "Phát hiện". Nêu riêng các test case do thông tin bị giữ lại từ S0 (ô tự viết hoa) và các ý sinh viên hỏi khi review S5.
+3. Bug AI bỏ sót: Bug nào chỉ tìm được nhờ test case sinh viên thêm hoặc sửa; bug nào bản AI gốc đã bắt được.
+4. Giới hạn của kết quả: S6 rút gọn (69 test case Not run, BVA qua giao diện không chạy), nhóm API chạy trước giao diện.
+5. Bài học ngắn (3 đến 5 ý).
+Chỉ dùng file trong thư mục feature và bugs/bug_report.md. Câu hỏi hỏi tôi ở đây. Không cần đưa lệnh commit.
+```
+````
+
+---
+
+### C245 | 03:25 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S8 cho FR-17. Viết features/C_FR-17_QuanLyCoupon/08_gap_analysis.md (AI gap analysis, đề mục 6.3: AI bỏ sót test case hay bug nào, vì sao: do chất lượng input/prompt, do giới hạn của công cụ AI, hay do độ phức tạp của feature). Lưu bản gốc vào ai_raw/S8_gap_analysis.md:
+1. Thống kê các bảng "Thay đổi so với bản AI" từ S1 đến S5 theo Loại và theo người phát hiện (sinh viên, AI tự phát hiện khi review, phiên điều phối). Ghi rõ lấy số từ file nào.
+2. Test case AI bỏ sót hoặc thiết kế sai: Liệt kê, mỗi dòng xếp vào một nguyên nhân theo đề, kèm căn cứ từ cột "Vì sao AI bỏ sót" và "Phát hiện". Nêu riêng các test case do thông tin bị giữ lại từ S0 (ô tự viết hoa) và các ý sinh viên hỏi khi review S5.
+3. Bug AI bỏ sót: Bug nào chỉ tìm được nhờ test case sinh viên thêm hoặc sửa; bug nào bản AI gốc đã bắt được.
+4. Giới hạn của kết quả: S6 rút gọn (69 test case Not run, BVA qua giao diện không chạy), nhóm API chạy trước giao diện.
+5. Bài học ngắn (3 đến 5 ý).
+Chỉ dùng file trong thư mục feature và bugs/bug_report.md. Câu hỏi hỏi tôi ở đây. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Extract change tables from S1 to S5 review files
+- Bash: Check whether bug-finding test cases existed in AI drafts
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\ai_raw\S8_gap_analysis.md
+- Bash: Copy S8 draft to 08 file and check format
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi trích các bảng "Thay đổi so với bản AI" của S1 đến S5 để đếm theo Loại và theo người phát hiện.
+
+Bản S8 đã xong: [08_gap_analysis.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/08_gap_analysis.md). Bản gốc [ai_raw/S8_gap_analysis.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S8_gap_analysis.md) giống hệt (đã kiểm bằng `cmp`). Script kiểm định dạng báo 0 lỗi. Tôi chỉ dùng các file trong thư mục feature và mục FR-17 của `bugs/bug_report.md`.
+
+## Kết quả chính
+
+**1. Thống kê 72 dòng thay đổi** (mỗi số ghi rõ lấy từ mục nào của file nào):
+
+| Sai | Thiếu | Thừa | Mơ hồ | Quyết định của SV |
+|---|---|---|---|---|
+| 1 | 23 | 0 | 5 | 43 |
+
+Trong 29 dòng Sai, Thiếu, Mơ hồ: Sinh viên phát hiện 12, AI tự phát hiện khi review 15, phiên điều phối 2. Trong 15 dòng AI tự phát hiện có 7 dòng chỉ là cập nhật hệ quả; 8 dòng là lỗi thật. Phần bổ sung lúc gộp S5 (ô tự viết hoa) không nằm trong bảng thay đổi, nên được đếm riêng ở mục 1.3.
+
+**2. Test case bỏ sót hoặc thiết kế sai**, phân loại theo nguyên nhân chính:
+
+| Nguyên nhân | Số nhóm | Ví dụ |
+|---|---|---|
+| Giới hạn của công cụ AI | 8 | Input gián tiếp của thao tác Xóa, dạng request API, số `2^53 + 1`, gán sai FR-12 cho `GET`, danh sách dài |
+| Chất lượng input/prompt | 4 | Đều do thông tin ô tự viết hoa bị giữ lại từ S0 |
+| Độ phức tạp của feature | 3 | Tham chiếu chéo tới dòng dự phòng API, `GET` thiếu trường, điểm biên số thập phân |
+
+Có mục riêng cho thông tin bị giữ lại từ S0 (10 test case) và cho 4 ý anh/chị hỏi khi review S5.
+
+**3. Bug:**
+- Bản AI gốc bắt được **10 trên 12 bug**.
+- 2 bug chỉ tìm được nhờ người hoặc phiên khác bổ sung:
+  - BUG-07 (#65): Nhờ câu hỏi của anh/chị ở S1 về dạng request API.
+  - BUG-06 (#64): Nhờ phiên điều phối ở S4 về số lớn bị làm tròn.
+- Ý 1 của anh/chị ở S5 tránh được một bug trích sai căn cứ (TC-CPN-77).
+
+**4. Giới hạn:** 69 test case Not run, toàn bộ BVA qua giao diện không chạy; chưa đọc kết hợp được TC-CPN-131 với test case giao diện; nhóm API chạy trước giao diện; 4 ảnh log bị cắt chữ.
+
+**5. Bài học:** 5 ý, mỗi ý gắn với số liệu ở trên.
+
+## Hai điểm anh/chị nên xem
+
+1. **TC-CPN-143 (khoảng trắng qua API) xếp vào "Chất lượng input/prompt".** Lý do: Dấu hiệu mã của trang tự sửa giá trị là thông tin bị giữ lại. Nếu anh/chị cho rằng AI lẽ ra phải tự xét đến khả năng này thì đổi sang "Giới hạn của công cụ AI". Khi đó tổng sẽ là 3 nhóm input, 9 nhóm AI, 3 nhóm độ phức tạp.
+2. **Ở thống kê người phát hiện,** dòng "Mục 6" của S4 có cả phiên điều phối lẫn AI; tôi đếm vào phiên điều phối vì phần chính (số lớn) do phiên điều phối phát hiện. Tôi đã ghi chú cách đếm ngay dưới bảng.
+````
+
+---
+
+### C246 | 03:26 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A vậy là xong hả?
+Phiên B: Đã xong. Cần bạn log, review và báo cho tôi.
+Phiên C: Đang làm S8.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session B S1 review and run checks
+- Bash: Check B input variables and stock handling
+- Bash: Check feedback output and quantity domain
+- Bash: Find visual feedback requirement in B spec
+- Bash: Export log and note B S1 finding
+
+**Output AI (nguyên văn):**
+
+````text
+S1 của B đạt kiểm tra. Trước khi báo, tôi soát thêm nội dung xem có chỗ nào AI bỏ sót không.
+
+Phiên A đã xong cả 9 bước cho FR-01. Bản review S1 của phiên B đạt mọi kiểm tra, nhưng tôi thấy thiếu một kết quả mong đợi, cần bạn quyết trước khi commit. Log đã xuất (246 lượt, đúng 4 phiên).
+
+## Phiên A: Xong
+
+- Đã đủ S0 đến S8 cho FR-01.
+- Phần còn lại của FR-01 thuộc **phần chung**, làm sau cho cả 4 feature: Xuất Word và Excel bằng skill `test-case-writing`, đưa số liệu vào README (Test Summary), report, PDF.
+- Lúc đó có thể dùng lại phiên A cho phần xuất Word và Excel của FR-01, vì nó đã nắm rõ dữ liệu.
+- Ảnh `S7_issue_42.png` vẫn chưa chụp lại. Nếu bạn không sửa issue #42 thì bỏ qua.
+
+## Phiên B: Review S1
+
+**Kết quả kiểm:**
+- File trong `ai_raw` còn nguyên; kiểm định dạng và bảng thay đổi đều 0 lỗi.
+- Bảng thay đổi có 10 dòng, đều là "Quyết định của SV" (9 điểm phương án (a), cộng ghi chú của bạn về S3).
+- Không có dấu "—" hay "·".
+
+**Tôi phát hiện thiếu một kết quả mong đợi:** Không có kết quả "**phản hồi trực quan sau khi bấm Thêm vào giỏ**" (thông báo toast hoặc badge cập nhật).
+- Đặc tả nói rõ ở FR-24 ý 1: *"Sau khi bấm 'Thêm vào giỏ', phải có phản hồi trực quan (toast/badge)"*. FR-06 cũng nói tương tự.
+- Ở S0, AI xếp yêu cầu này ra ngoài phạm vi (mục 3.6), với lý do nó "xảy ra ở trang chi tiết (FR-06)". Phần badge thì đã có ở FR07-R24.
+- Nhưng FR-24 áp cho **mọi** nút "Thêm vào giỏ". Ở S1, AI lại lấy cả **đường thêm từ trang chủ** (IN3) làm một biến của FR-07. Vậy phần toast sau khi thêm cũng thuộc phạm vi B.
+- Ở S6 kiểm việc này rất nhanh: Bấm thêm rồi chụp một ảnh.
+
+Nếu đồng ý, đây sẽ là một dòng loại "Thiếu", người phát hiện ghi phiên điều phối. Dòng này cũng là dữ liệu cho phần gap analysis của B.
+
+**Tin nhắn dán vào phiên B** (nếu đồng ý thêm):
+
+```text
+Bổ sung vào 01_io.md trước khi sang S2: Thiếu output "phản hồi trực quan sau khi bấm Thêm vào giỏ" (toast hoặc badge cập nhật), căn cứ FR-24 ý 1 và FR-06 ý 3. FR-24 áp cho mọi nút Thêm vào giỏ, mà IN3 đã có cả đường trang chủ, nên phần toast thuộc phạm vi FR-07 ở bước này (phần badge đã có ở FR07-R24). Thêm một yêu cầu mới (ví dụ FR07-R33) và một OUT tương ứng; ghi vào bảng "Thay đổi so với bản AI" loại Thiếu, người phát hiện: Claude ở phiên điều phối (305c705a). Không sửa 00_spec.md đã commit, chỉ ghi chú ở 01_io.md rằng mục 3.6 của S0 được điều chỉnh. Không cần đưa lệnh commit.
+```
+
+Nếu không muốn thêm, bạn commit luôn bản hiện tại.
+
+## Commit (sau khi quyết, đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+```
+git add features/B_FR-07_GioHang/01_io.md prompt_log.md
+git commit -m "[B-FR07][S1] Review input/output variables"
+```
+
+Nếu bạn cho phiên B thêm phần toast, báo tôi soát và xuất lại log trước khi commit.
+
+## Phiên C
+
+Đang làm S8. Xong thì báo tôi soát giống như A.
+````
+
+---
+
+### C247 | 06:19 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Bổ sung vào 01_io.md trước khi sang S2: Thiếu output "phản hồi trực quan sau khi bấm Thêm vào giỏ" (toast hoặc badge cập nhật), căn cứ FR-24 ý 1 và FR-06 ý 3. FR-24 áp cho mọi nút Thêm vào giỏ, mà IN3 đã có cả đường trang chủ, nên phần toast thuộc phạm vi FR-07 ở bước này (phần badge đã có ở FR07-R24). Thêm một yêu cầu mới (ví dụ FR07-R33) và một OUT tương ứng; ghi vào bảng "Thay đổi so với bản AI" loại Thiếu, người phát hiện: Claude ở phiên điều phối (305c705a). Không sửa 00_spec.md đã commit, chỉ ghi chú ở 01_io.md rằng mục 3.6 của S0 được điều chỉnh. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check ai_raw unchanged and get time
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\01_io.md
+- Bash: Re-run checks after update
+
+**Output AI (nguyên văn):**
+
+````text
+Các file trong `ai_raw/` khớp với bản đã commit, không có thay đổi. Giờ bổ sung vào `01_io.md`.
+
+Đã bổ sung vào [01_io.md](Homeworks/HW02/features/B_FR-07_GioHang/01_io.md) (ghi là "Cập nhật lần 1"). `00_spec.md` và `ai_raw/` không bị sửa; script kiểm tra không báo lỗi.
+
+Bạn nói đúng. FR-24 ý 1 nói về nút "Thêm vào giỏ", trùng với nhãn nút ở trang chủ (O31), mà trang chủ đã là một đường thêm hàng của IN3. Bản AI ở S0 (mục 3.6) chỉ xét trang chi tiết nên xếp yêu cầu này ra ngoài phạm vi, và bản AI ở S1 không xét lại khi thêm đường trang chủ.
+
+**Đã thêm:**
+- **FR07-R33, mục 7.1 mới:** "Sau khi bấm nút thêm vào giỏ ở trang chủ hoặc trang chi tiết, có phản hồi trực quan (toast hoặc badge cập nhật)", căn cứ FR-24 ý 1 và FR-06 ý 3. Mục này có thêm một đoạn ghi chú rằng mục 3.6 của S0 được điều chỉnh và vì sao. FR07-R33 cũng đã gắn vào IN3 và bảng truy vết.
+- **OUT15:** Toast hiện ra, hoặc số trên badge thay đổi, sau khi bấm nút ở trang chủ hoặc trang chi tiết. Đường API không áp dụng. Đặc tả không nêu nội dung toast nên kết quả mong đợi không ghi câu chữ.
+- **Mục 9:** Ghi điểm bạn nêu và câu trả lời, kèm người phát hiện là Claude ở phiên điều phối (305c705a).
+- **Bảng thay đổi:** Thêm 2 dòng loại "Thiếu" (một dòng cho FR07-R33, một dòng cho OUT15), cùng ghi người phát hiện như trên.
+
+**Kiểm tra mâu thuẫn, thêm 3 dòng:**
+- **Với ghi chú S0 "không dùng toast làm dấu hiệu":** Không mâu thuẫn. Toast được kiểm như một kết quả riêng, còn việc giỏ đã thay đổi thật vẫn kiểm bằng tải lại trang và `GET /api/cart`.
+- **Với badge (OUT11):** Hai yêu cầu chồng lấn. Nếu chỉ có toast mà không có badge thì FR07-R33 đạt nhưng FR07-R24 không đạt.
+- **Với quyết định "mỗi đường một đại diện":** Hai test case đại diện của trang chủ và trang chi tiết ở S3 kiểm luôn OUT15.
+
+**Để S2 xét:** Đặc tả không nói khi thêm hàng bị từ chối (ví dụ ô "Số lượng:" nhập sai ở trang chi tiết) thì có được hiện toast không. S2 sẽ xem có cần đặt giả định cho điểm này không.
+````
+
+---
+
+### C248 | 06:21 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bây giờ là 6:21 21/10/2026. Phiên mới khởi động lại. Liệu tôi có thể xong phiên B vào lúc 8h 21/10/2026 không? Cắt bỏ những cái râu ria, tôi chụp ảnh cho phiên điền, chỉ review 1 lần mỗi khi gọi skill đi qua 1 bước. Phiên D cũng tương tự vậy nhưng có quay video thì tới 9h được không?
+Phiên C: Xong rồi, xuất log, kiểm tra và báo tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Recreate session reader and read session C S8
+- Bash: Verify C S8 counts and bug mapping
+- Bash: Export log and record C S8 in notes
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên điều phối khởi động lại nên mất thư mục tạm; tôi tạo lại công cụ đọc phiên ở chỗ khác, rồi soát phiên C trước.
+
+Các server đã tắt sau khi khởi động lại. Tôi sẽ bật lại khi B tới S6; lần bật đó cũng tạo lại dữ liệu mẫu. Giờ tôi kiểm số liệu S8 của C.
 ````
 
 
