@@ -15338,6 +15338,49 @@ Tôi bắt đầu bằng việc đọc quy trình dự án và tài liệu của
 Đã đọc xong WORKFLOW, skill và đặc tả; giờ tôi viết bản S0 pha 1.
 
 Line 95 is the section heading where I named the SRS title with its em dash; I'll drop the dash from my own heading (it stays verbatim in the quote rule note) and re-sync.
+
+Tôi đã xong S0 pha 1 cho Feature D (FR-04 Hồ sơ, Mobile). Giờ dừng lại chờ bạn chụp ảnh.
+
+**File đã tạo**
+- [ai_raw/S0_khao_sat.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S0_khao_sat.md) là bản gốc của AI. [00_spec.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/00_spec.md) có nội dung giống hệt (đã so bằng `cmp`). Script `check_step.py format` báo 0 lỗi.
+
+**Nội dung chính**
+- **Trích nguyên văn đặc tả:** FR-04; tài khoản mẫu; FR-20; các dòng liên quan của FR-21 đến FR-23; API `GET/PUT /api/users/me`; SEC-02, 04, 05, 06.
+- **23 yêu cầu có mã** (`FR04-R01` đến `R23`), chia 4 nhóm: Chính 8, phụ 8, API 4, bảo mật tham khảo 3. Có thêm bảng những yêu cầu chung không áp dụng cho màn hình này (`<h1>`, Tab Order, `₫`, `type=`, Step Indicator...), kèm lý do.
+- **25 câu hỏi mở** (Q01 đến Q25). Các câu chính hỏi: Số điện thoại có ký tự khác chữ số thì sao, "10–11 chữ số" có tính số 0 đầu không, gửi `email`, `role`, `id` qua API thì hệ thống làm gì, PUT thiếu trường thì sao.
+- **Bảng quan sát** O01 đến O20 còn trống. Có thêm cột "Nguồn" để ở pha 3 tôi ghi "AI từ ảnh".
+
+**Các điểm nhỏ tôi đã áp tạm phương án đề xuất** (mục 7 trong file, bạn duyệt giúp):
+1. Phạm vi trích: Lấy FR-04 làm trọng tâm, cộng nhóm phụ (giao diện chung), API và bảo mật tham khảo.
+2. FR-23 (làm nổi mục đang chọn trên thanh điều hướng, nhãn "Đăng xuất"): Giữ làm nhóm phụ, chỉ kiểm nếu những thành phần này có trên màn hình Hồ sơ.
+3. Giữ nhóm API (Postman hoặc cURL) để kiểm `role`, `email` và trường hợp không có token, vì ứng dụng không gửi được những thứ này.
+4. FR-04 trên Web nằm ngoài phạm vi.
+
+**Một chỗ khác WORKFLOW (theo yêu cầu của bạn):** Bạn chỉ chụp ảnh, tôi điền bảng quan sát ở pha 3. Tôi đã ghi điều này ở đầu file. Ô nào ảnh không cho thấy thì tôi sẽ yêu cầu chụp thêm chứ không đoán.
+
+**Ảnh cần chụp** (đặt vào `screenshots/`). Chụp cả màn hình, có thanh trạng thái. Chỉ chạm vào ô, không gõ, không bấm Lưu.
+
+| Ảnh | Nội dung |
+|---|---|
+| `S0_01_sau_dang_nhap.png` | Màn hình ngay sau khi đăng nhập `test@eshop.com`, thấy cả thanh điều hướng |
+| `S0_02_ho_so.png` | Màn hình Hồ sơ vừa mở, thấy tiêu đề, toàn bộ nội dung và thanh điều hướng |
+| `S0_03_form_sua.png` | Form sửa, chưa chạm ô nào, thấy đủ các ô và các nút. Nếu màn Hồ sơ đã là form sửa thì bỏ ảnh này, chỉ cần báo tôi |
+| `S0_04_ban_phim_ho_ten.png` | Đã chạm ô Họ Tên, bàn phím đang mở |
+| `S0_05_cham_email.png` | Đã chạm vùng Email, chụp dù bàn phím có hiện hay không |
+| `S0_06_ban_phim_sdt.png` | Đã chạm ô Số điện thoại, bàn phím đang mở |
+| `S0_07_ban_phim_dia_chi.png` | Đã chạm ô Địa chỉ, bàn phím đang mở |
+
+- Màn hình dài thì cuộn xuống và chụp thêm, thêm hậu tố `_cuon` vào tên file.
+- Thoát form bằng nút hủy hoặc quay lại. Nếu ứng dụng hỏi có bỏ thay đổi không thì chụp thêm `S0_08_hoi_bo_thay_doi.png` rồi chọn bỏ.
+
+**Commit (1), bản AI:**
+```
+git add Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S0_khao_sat.md Homeworks/HW02/features/D_FR-04_HoSo_Mobile/00_spec.md
+git commit -m "[D-FR04][S0] Add spec extract and requirement list (AI draft)"
+```
+Lần tới, vì bạn không tự điền bảng quan sát, commit (2) chỉ gồm ảnh: `[D-FR04][S0] Add UI exploration screenshots`. Hãy commit ảnh trước khi tôi viết lại `00_spec.md` ở pha 3.
+
+Theo bộ nhớ, tôi có thói quen tick mục TRACKER trong `_NOTES.md`. Nhưng WORKFLOW mục 1.4 cấm phiên thiết kế đọc file đó, nên tôi không động vào. Việc tick để phiên điều phối làm.
 ````
 
 ---
@@ -15364,6 +15407,107 @@ Phiên D: Tôi đã đang quay video bằng prompt bạn đưa. Mọi thứ v
 Phiên D mới là `633ed316`. Tôi kiểm phiên D rồi thêm vào whitelist, đồng thời chạy kiểm tra file của B.
 
 Phiên D sạch, không có thao tác bị cấm. Tôi thêm phiên D vào whitelist, kiểm file của B rồi xuất log.
+
+B đạt, bạn commit được ngay. Phiên D đã được thêm vào whitelist và không có thao tác cấm. Log đã xuất (256 lượt, đúng 5 phiên).
+
+## Phiên B: S3 đã chốt, có bản AI của S4
+
+- **`03_tc.md`:** Giữ nguyên 32 test case như bản AI; bảng thay đổi có 1 dòng "Quyết định của SV". Kiểm tra 0 lỗi.
+- **Bản AI của S4:** Thêm 6 test case biên, **tổng 38**. Kiểm tra phủ lớp và định dạng 0 lỗi.
+- **AI tự phát hiện mình sai.** Ở S3, nó hẹn dùng 990,000,000 và cho rằng không tạo được đúng mốc 1 tỷ. Khi làm S4, nó tự kiểm lại và thấy Keychron (4,000,000) × 250 = đúng 1,000,000,000, nên đổi sang dùng mốc này. Đây là một điểm tốt để đưa vào gap analysis của B.
+- **4 điểm phiên B đã tự áp, tôi đồng ý cả 4:**
+  1. Thêm số lượng −1 qua API.
+  2. Thử số lượng 1000 qua giao diện để dò cận trên, vì đặc tả không có cận trên.
+  3. Dùng Keychron để đạt đúng mốc 1 tỷ.
+  4. Không thử giỏ có hơn 2 dòng.
+
+Cuối lượt, phiên B nhắc sẽ xuất Word và Excel ở S5. Ta đã bỏ việc này để kịp giờ, nên dặn phiên B bỏ qua.
+
+**Dán vào phiên B:**
+
+```text
+Chấp nhận cả 4 điểm ở S4. Viết 04_bva.md, rồi làm luôn S5: Gộp 03_tc.md và 04_bva.md thành 05_final_tc.md (bản AI lưu ai_raw/S5_final_test_cases.md), mỗi test case có cột Nguồn gốc và Phát hiện như FR-01. Không xuất Word, Excel (đã bỏ vì thiếu thời gian). Tôi không bổ sung test case ở S5. Không cần đưa lệnh commit.
+```
+
+## Phiên D
+
+Phiên D đang viết pha 1 của S0, đã tạo `00_spec.md` và `ai_raw/S0_khao_sat.md`. Khi nó đưa danh sách ảnh cần chụp, bạn chụp trên điện thoại **theo đúng thứ tự** rồi báo tôi để kéo ảnh về và đặt tên. Trước khi chụp, nhớ commit bản AI của S0 (tôi sẽ đưa lệnh sau khi soát).
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+```
+git add tools/export_prompt_log.py
+git commit -m "[setup] Add FR-04 skill session to prompt log whitelist"
+
+git add features/B_FR-07_GioHang/03_tc.md
+git commit -m "[B-FR07][S3] Review test cases"
+
+git add features/B_FR-07_GioHang/ai_raw/S4_bva.md prompt_log.md
+git commit -m "[B-FR07][S4] Add boundary value analysis (AI draft)"
+```
+
+Đừng `add` các file của D. Tôi sẽ soát xong rồi đưa lệnh riêng.
+````
+
+---
+
+### C257 | 06:54 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Chấp nhận cả 4 điểm ở S4. Viết 04_bva.md, rồi làm luôn S5: Gộp 03_tc.md và 04_bva.md thành 05_final_tc.md (bản AI lưu ai_raw/S5_final_test_cases.md), có thể tham khảo ở feature A và C để viết cho chung format. mỗi test case có cột Nguồn gốc và Phát hiện như FR-01. Không xuất Word, Excel. Tôi không bổ sung test case ở S5. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\mk04.py
+- Bash: Generate 04_bva.md, check, list feature A and C files
+- Bash: Outline S5 files of features A and C
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Bash: Read feature C S5 head
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Bash: Get time and status
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S5_final_test_cases.md
+- Bash: Check S5 draft format and coverage
+- Bash: Align TC-100 detection note with section 9.2
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\mk05.py
+- Bash: Generate 05_final_tc.md and run checks
+
+**Output AI (nguyên văn):**
+
+````text
+Viết `04_bva.md` trước, rồi xem định dạng S5 của feature A và C (bạn đã cho phép đọc).
+
+Đã nắm định dạng S5 của A và C. Giờ viết bản AI của S5 cho FR-07.
+
+Tự kiểm xong bản AI. Giờ tạo `05_final_tc.md` từ bản AI, ghi việc bạn không bổ sung test case nào ở S5.
+````
+
+---
+
+### C258 | 06:56 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Đang làm.
+Phiên D: Bạn kiểm tra, xuất log, và review cho tôi đi. Tôi chỉ đọc qua bạn, rồi tôi sẽ copy prompt qua D để quay.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session D S0 output and check files
+- Bash: Test listing phone screenshots via adb
+- Bash: Recheck device and server ports
+- Read: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\hw02-tracker-in-notes.md
+- Write: C:\Users\Lenovo\.claude\projects\d--Dang-Test\memory\hw02-tracker-in-notes.md
+- Bash: Update memory index and export prompt log
+
+**Output AI (nguyên văn):**
+
+````text
+Bản AI của S0 cho D đạt: giống hệt `00_spec.md`, kiểm định dạng 0 lỗi. Tôi thử trước lệnh kéo ảnh từ điện thoại để lát nữa không bị vướng.
 ````
 
 
