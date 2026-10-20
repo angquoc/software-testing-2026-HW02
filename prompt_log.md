@@ -14917,6 +14917,56 @@ Bản nháp dài 316 từ, vượt giới hạn 300. Tôi rút gọn.
 Bản nháp còn 295 từ. Giờ tôi điền README, rồi xem phiên B đã tới đâu.
 
 Phiên B đã sửa S1 và viết xong bản AI của S2. Tôi đọc toàn bộ lượt trả lời và kiểm file.
+
+Phiên B đã thêm phần toast vào S1 và viết xong bản AI của S2. Bản nháp phần chung đã có. Log đã xuất (250 lượt, đúng 4 phiên).
+
+## Phiên B
+
+**S1 đã sửa xong.** Đã thêm yêu cầu FR07-R33 và kết quả OUT15 (phản hồi trực quan sau khi bấm "Thêm vào giỏ"). Bảng thay đổi có thêm 2 dòng "Thiếu", ghi người phát hiện là phiên điều phối. Kiểm tra 0 lỗi.
+
+**Bản AI của S2:** 32 lớp (25 hợp lệ, 7 không hợp lệ). Kiểm tra 0 lỗi, đúng mức gọn bạn yêu cầu. Các phương án nhỏ AI đã tự áp và liệt kê để bạn duyệt một lượt. Tôi xem qua thấy hợp lý cả:
+- Thành tiền = Đơn giá × Số lượng; Tổng cộng = tổng các Thành tiền.
+- Thêm sản phẩm đã có thì tăng đúng số lượng thêm.
+- Hủy ở hộp thoại xóa thì giỏ giữ nguyên.
+- Qua API, giỏ dùng giá trong CSDL chứ không dùng `price` client gửi.
+- Test case cho nút `+`/`-` dự kiến Blocked ở S6, vì giao diện không có nút.
+
+Tôi đề xuất **chấp nhận nguyên bản S2** để đi nhanh. Dán vào phiên B:
+
+```text
+Chấp nhận toàn bộ các phương án đã áp ở S2. Viết 02_ec.md, rồi làm luôn S3 (mỗi đường thêm vào giỏ một test case đại diện). Không cần đưa lệnh commit.
+```
+
+## Phần chung: Đã viết nháp
+
+| File | Nội dung | Còn chờ |
+|---|---|---|
+| `report.md` | Cách làm (quy trình, nguyên tắc). A và C đầy đủ: Từng bước Domain Testing, BVA, kết quả, bug, gap analysis, đều có link tới file chi tiết. Agent Skill, Test Summary, **bản nháp AI Critique (295 từ)**, Mandatory Disclosure, **Appendix B gồm 17 artifact** | Phần B, D; link video; điểm tự chấm; câu kết luận của Appendix B |
+| `README.md` | Test Summary đã điền A và C | B, D, dòng tổng, link video, tự chấm |
+| `tools/md_to_pdf.py` | Xuất PDF cho mọi file MD bằng Chrome chạy ngầm. Đã thử, tiếng Việt và bảng hiện đúng | Chạy một lần ở cuối |
+
+**Phần bạn phải tự làm khi review lúc khoảng 10:50:**
+- Đọc và sửa **AI Critique** cho đúng giọng của bạn (đang ghi rõ đây là bản nháp).
+- Viết câu **"Kết luận: Khi nào nên, không nên dùng AI?"** ở cuối Appendix B.
+- Điền **điểm tự chấm**.
+- Ký **[AI-03]**, điền **[AI-05]**. Phần này tôi chuẩn bị file sau khi có đủ số liệu.
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+```
+git add features/B_FR-07_GioHang/01_io.md
+git commit -m "[B-FR07][S1] Review input/output variables"
+
+git add features/B_FR-07_GioHang/ai_raw/S2_equivalence_classes.md
+git commit -m "[B-FR07][S2] Add equivalence classes (AI draft)"
+
+git add report.md README.md tools/md_to_pdf.py prompt_log.md
+git commit -m "[report] Draft main report, test summary and PDF export tool"
+```
+
+## Chuẩn bị cho D (làm trong lúc phiên B viết)
+
+Khi rảnh tay, bạn cắm điện thoại qua USB, bật USB debugging và mở sẵn Expo Go, rồi báo tôi. Tôi kiểm `adb`, chạy `adb reverse` cho cổng 3000 và 8081, bật backend và Expo. Lần bật backend này cũng tạo lại dữ liệu mẫu, không ảnh hưởng gì vì A và C đã xong S6.
 ````
 
 ---
@@ -14978,6 +15028,160 @@ Mình đã viết bản AI của S2: [ai_raw/S2_equivalence_classes.md](Homework
 - **S3:** Mỗi đường thêm vào giỏ một test case đại diện, theo quyết định 10 ở S1.
 
 Bạn review S2 thì gửi luôn các điểm muốn đổi trong một lần, mình viết `02_ec.md` rồi làm tiếp S3.
+````
+
+---
+
+### C251 | 06:32 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Chấp nhận toàn bộ các phương án đã áp ở S2. Viết 02_ec.md, rồi làm luôn S3 (mỗi đường thêm vào giỏ một test case đại diện). Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read S3 guide and get time
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\mk02.py
+- Bash: Generate 02_ec.md and run checks
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S3_test_cases.md
+- Bash: Check format and class coverage for S3
+- Bash: Correct creation time in S3 draft
+
+**Output AI (nguyên văn):**
+
+````text
+Viết `02_ec.md` từ bản AI, áp các quyết định đã chấp nhận.
+
+Đã viết xong cả hai file:
+
+- **[02_ec.md](Homeworks/HW02/features/B_FR-07_GioHang/02_ec.md):** Chốt A01 đến A31 và các điểm 2 đến 4 theo phương án (a), nội dung lớp không đổi. Mục kiểm tra mâu thuẫn có 5 dòng, không có chỗ nào vướng. Bảng thay đổi có 2 dòng "Quyết định của SV".
+- **[ai_raw/S3_test_cases.md](Homeworks/HW02/features/B_FR-07_GioHang/ai_raw/S3_test_cases.md):** Bản AI của S3, gồm **32 test case**. Script xác nhận cả 32 lớp đều có test case và không có mã test case trùng.
+
+**Các nhóm test case:**
+
+| Nhóm | Mã | Nội dung |
+|---|---|---|
+| Giao diện hợp lệ (12) | TC-CART-01 đến 12 | Mỗi đường thêm vào giỏ một đại diện: 01 trang chi tiết, 02 trang chủ, 50 qua API. Còn có thêm trùng (03), nút +/- (04 đến 06, dự kiến Blocked), hủy và xác nhận xóa (07, 08), xóa dòng cuối (09), giỏ trống (10), Tiếp tục mua sắm (11), tổng từ 1 tỷ (12) |
+| API không hợp lệ (7) | TC-CART-30 đến 36 | Mỗi test case một lớp không hợp lệ: `id` không tồn tại, số lượng 0, thập phân, không phải số, thiếu `quantity`, thiếu token, token sai |
+| API hợp lệ (5) | TC-CART-50 đến 54 | Thêm và xem giỏ, `price` sai, `name` có HTML, `name` có ký tự SQL, giỏ tách theo người dùng |
+| Checklist (8) | TC-CART-90 đến 97 | Gộp theo nhóm điểm kiểm tra |
+
+**Bảng truy vết:** Phủ R01 đến R33. Có 5 yêu cầu chỉ phủ một phần:
+- **R08, R09:** Thêm trùng chỉ kiểm qua trang chi tiết.
+- **R26:** Giỏ hiện không hiển thị ảnh nên chưa kiểm được `alt`.
+- **R27:** Chờ S4 kiểm giá trị 0 ở ô "Số lượng:" trên giao diện.
+- **R32:** Chỉ quan sát gián tiếp được.
+
+Ngoài ra R04 và R05 (nút +/-) có test case nhưng dự kiến Blocked.
+
+**Thứ tự chạy:** Chạy giao diện theo chuỗi trạng thái giỏ, sau đó API không hợp lệ, rồi API hợp lệ. Test case chuỗi SQL (TC-CART-53) chạy cuối cùng, xong thì reset dữ liệu ngay.
+
+**Các điểm mình đã áp luôn, bạn duyệt một lượt (mục 11):**
+
+| # | Đã áp |
+|---|---|
+| 1 | Checklist gộp thành 8 test case thay vì khoảng 17, để cả bộ nằm trong 35 đến 45 |
+| 2 | Lỗi thiếu token kiểm qua `POST`, lỗi token sai kiểm qua `GET` |
+| 3 | Bước kiểm chứng (tải lại trang và `GET /api/cart`) chỉ đặt ở các test case thay đổi giỏ: 01, 02, 03, 07, 08 |
+| 4 | Thêm trùng chỉ qua trang chi tiết, theo quyết định 10 của S1 |
+| 5 | API chỉ dùng `id` = 1, là mã duy nhất đã thấy trên ảnh (O32) |
+
+**Cho S4:** Phần lớn điểm biên đã có test case, chỉ cần thêm khoảng 6 test case nên cả bộ sẽ khoảng 38. Các điểm mới gồm: Số lượng 0 qua ô "Số lượng:" trên giao diện (kiểm luôn A31), số lượng −1 qua API, số lượng 2, và tổng 990,000,000 (MacBook Pro M3 × 22, ngay dưới 1 tỷ).
+
+Bạn review S3 thì gửi mọi điểm muốn đổi trong một lần; mình sẽ viết `03_tc.md` rồi làm S4.
+````
+
+---
+
+### C252 | 06:36 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Các file bạn viết, tôi sẽ đọc sau khi B và D xong hoặc khi tôi chỉ toàn thời gian chết để tiết kiệm thời gian thay vì review lại quá nhiều lần.
+
+Tôi đã cắm USB rồi đấy. Chúng ta có thể quay video không? Khi tôi gọi skill để thể hiện, đưa các quyết dịnh, nếu AI chạy viết thì dừng lại, có thể mở 1 cửa sổ VS mới không? Tôi hỏi để tiết kiệm thời gian giống làm song song A và C, nếu không được thì thôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check adb, device, ports, mobile project config
+- Bash: List devices and set up adb reverse ports
+- Bash: Start EShop backend (reseeds DB)
+- Bash: Start EShop customer web on port 5173
+- Bash: Start Expo dev server for the mobile app
+- Bash: Wait for servers and show their status
+- Bash: Wait for Expo and recheck device authorization
+- Bash: Set adb reverse and open app in Expo Go
+- Bash: Check D folder and phone screenshot folder
+
+**Output AI (nguyên văn):**
+
+````text
+Quay video kiểu đó được. Trong lúc bạn đọc cách làm bên dưới, tôi kiểm điện thoại và bật các server.
+
+Điện thoại đang chờ bạn cho phép gỡ lỗi USB. Trong lúc đó tôi bật backend và trang web.
+
+Điện thoại đã kết nối. Tôi đã chạy `adb reverse` cho cổng 3000 và 8081, bật backend (dữ liệu mẫu tạo lại lúc 06:37), trang web (cổng 5173) và Expo, rồi mở app trong Expo Go. Bạn xem điện thoại đã hiện app EShop chưa.
+
+## Quay video và làm song song: Được
+
+**Mở cửa sổ VS Code thứ hai cho D:**
+- Trong VS Code, chọn **File, New Window**, rồi **Open Folder** đúng thư mục `D:\Dang\Test`, giống cửa sổ hiện tại.
+- Phải đúng thư mục này thì skill mới được nạp, và phiên mới mới nằm cùng chỗ với các phiên khác để tôi đọc và đưa vào prompt log.
+- Mở Claude Code trong cửa sổ mới, gọi skill cho D.
+
+**Cách quay để không phải cắt video:**
+- Dùng OBS với **Display Capture** (quay cả màn hình). Lúc quay thì để cửa sổ D phóng to hết màn hình.
+- Khi AI đang viết, **bấm tạm dừng**, rồi chuyển sang cửa sổ B làm việc khác. Lúc quay lại cửa sổ D thì bấm quay tiếp.
+- Không dùng chế độ quay riêng một cửa sổ: Hai cửa sổ VS Code có tên gần giống nhau nên OBS dễ chọn nhầm.
+- Trước khi quay: Trong cửa sổ D chỉ mở các file của D. Đừng để `_NOTES.md` hiện trên màn hình.
+
+**Video nên có các đoạn:** Gọi skill, AI hỏi gom các điểm cần quyết định, bạn trả lời, AI đưa ra kết quả từng bước, chạy `check_step.py`. Không cần quay lúc bạn chụp ảnh trên điện thoại.
+
+## Ảnh trên điện thoại: Tôi kéo về giúp
+
+Bạn chụp màn hình bằng nút **Nguồn + Giảm âm lượng**, **chụp theo đúng thứ tự** trong danh sách mà skill đưa ra. Chụp xong thì báo tôi. Tôi dùng `adb` kéo các ảnh mới nhất về `features/D_FR-04_HoSo_Mobile/screenshots/` và đặt tên theo danh sách. Bạn không phải chuyển ảnh bằng tay.
+
+## Lệnh mở phiên D (dán vào cửa sổ mới, bắt đầu quay từ đây)
+
+```text
+/domain-testing-design Feature D, FR-04 Quản lý hồ sơ cá nhân trên Mobile (app EShop chạy bằng Expo Go trên Android, Samsung Galaxy S21 Ultra), thư mục Homeworks/HW02/features/D_FR-04_HoSo_Mobile/.
+
+Lưu ý:
+- Bắt đầu từ S0. Tài khoản khảo sát: test@eshop.com (mật khẩu theo SRS). Không dùng chức năng đăng ký. Ở S0 chỉ quan sát, không bấm Lưu khi sửa hồ sơ.
+- Vì thiếu thời gian, mỗi bước tôi chỉ review một lượt: Chỉ dừng hỏi trước khi viết nếu quyết định thay đổi cấu trúc cả bản; điểm nhỏ thì áp phương án bạn đề xuất và liệt kê để tôi duyệt. Mục tiêu cả bộ khoảng 25 đến 35 test case.
+- Ảnh tôi chụp trên điện thoại, đặt tên theo danh sách bạn đưa; tôi không tự điền bảng quan sát, bạn điền từ ảnh và đánh dấu "AI từ ảnh".
+- Tuân thủ WORKFLOW.md: Hộp đen, không đọc mã nguồn EShop, không đọc file của feature khác trừ khi tôi cho phép.
+```
+
+Mở phiên D xong thì báo tôi, để tôi thêm phiên đó vào whitelist của prompt log.
+
+**Lưu ý về tài khoản:** `test@eshop.com` vẫn đang được 6 test case của A dùng để kiểm email trùng. A đã chạy xong nên không còn ảnh hưởng, nhưng ở S6 của D, nếu sửa email của tài khoản này thì báo tôi để reset DB sau đó.
+````
+
+---
+
+### C253 | 06:40 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Chạy xong rồi kìa, xuất log, kiểm tra và báo tôi.
+Phiên D: Tôi không mở được VS Code số 2, vì đường dẫn giống nhau nên nó toàn chĩa về lại bên đây.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session B latest and check files
+- Bash: Run B S2/S3 checks and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Vì sao VS Code không mở cửa sổ thứ hai: Khi một thư mục đã mở sẵn, VS Code chỉ chuyển về cửa sổ đang mở thư mục đó. Tôi sẽ đưa cách khác. Trước hết tôi soát phiên B.
 ````
 
 
