@@ -8619,11 +8619,185 @@ Phiên C: Đã viết xong rồi kìa.
 
 - Bash: Read session C latest turns and repo state
 - Bash: Verify A26 update, check S3 coverage, export log
+- Bash: Update tracker and notes for C S2/S3 and A S6
 
 **Output AI (nguyên văn):**
 
 ````text
 Mình soát phiên C trước, rồi trả lời câu hỏi của phiên A:
+
+## Phiên A: Có cần chụp lại ảnh checklist thành ảnh S6 không?
+
+**Không cần**, với 4 test case dựa trên ảnh S0 (TC-REG-90, 91, 92, 95). Có 3 lý do:
+- Ảnh S0 là **ảnh chụp thật** từ chính hệ thống, cùng phiên bản SUT (commit `85af3ba`). Chụp lại chỉ tạo ra ảnh trùng.
+- Trong cột "Ảnh" của `06_results.md`, chỉ cần **trỏ tới ảnh S0**, ví dụ `S0_01_form_dang_ky.png`.
+- Ở S7, issue trên GitHub dùng chính các ảnh S0 đó cũng được.
+
+**Chỉ chụp ảnh S6** cho những gì bạn làm mới bây giờ:
+- TC-REG-93 và 96: Ảnh DevTools.
+- TC-REG-97: Vị trí thông báo lỗi.
+- TC-REG-94: Nếu thứ tự Tab sai.
+- Các test case **Fail** phát hiện khi nhập dữ liệu.
+
+Nếu muốn, bạn nhắn phiên A một câu: "Các TC dựa trên ảnh S0 thì cột Ảnh trỏ về ảnh S0, không chụp lại".
+
+## Phiên C: Đã xong S2 và bản nháp S3
+
+| Bước | Tình trạng |
+|---|---|
+| **S2 review** (`02_ec.md`) | ✅ Đã cập nhật A26 theo lựa chọn (a), có dòng "Cập nhật lần 1" và có trong bảng thay đổi. **Chưa commit** |
+| **S3 bản nháp** | ✅ **78 test case** (bạn chọn cách giới hạn B, A1, A2 để giảm từ khoảng 105). Script xác nhận **cả 123 lớp đều có test case**, 0 lỗi. Cảnh báo về TC-CPN-100 là có chủ ý (mã dành sẵn cho S4) |
+| Thao tác | ✅ Không vi phạm; `ai_raw/` của các bước trước nguyên vẹn |
+
+**Commit (2 commit, theo thứ tự).** Log đã xuất xong. Nhớ **không `add`** file `06_results.md` mà bạn đang điền:
+
+```bat
+cd /d D:\Dang\Test\Homeworks\HW02
+git add features/C_FR-17_QuanLyCoupon/02_ec.md prompt_log.md
+git commit -m "[C-FR17][S2] Review equivalence classes"
+git add features/C_FR-17_QuanLyCoupon/ai_raw/S3_test_cases.md
+git commit -m "[C-FR17][S3] Select test cases (AI draft)"
+git push
+```
+
+**5 quyết định của S3:** Mình thấy cả 5 đề xuất đều hợp lý.
+1. Kiểm chứng test case không hợp lệ bằng cách tải lại trang xem có dòng mới không.
+2. Placeholder ô Giá trị chỉ ghi quan sát, không lập test case.
+3. Giữ TC-CPN-13.
+4. `max_uses_per_user` cơ sở dùng `3`, để thấy ô có thật sự được gửi lên không.
+5. Test case API hợp lệ kiểm giá trị từng trường.
+
+Riêng điểm 4 rất tinh: Nếu dùng giá trị mặc định `1` thì không phân biệt được hệ thống nhận giá trị bạn nhập hay tự dùng mặc định.
+
+Tin nhắn dán vào phiên C:
+
+```text
+Cả 5 điểm theo đề xuất (a). Viết bản review 03_tc.md.
+```
+
+Nếu bạn có câu hỏi riêng về bộ test case thì thêm vào tin nhắn. Còn không thì gửi luôn để phiên C viết trong lúc bạn tiếp tục chạy S6 cho FR-01.
+````
+
+---
+
+### C145 | 20:26 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `1648c211`
+
+**Prompt (nguyên văn):**
+
+````text
+Cả 5 điểm theo đề xuất (a). Viết bản review 03_tc.md.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Get current local date and time
+- Write: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\03_tc.md
+- Bash: Run coverage, format and change-table checks on 03_tc.md
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi rà lại bản AI trước khi viết bản review và thấy 4 chỗ cần sửa:
+- Dòng F của TC-CPN-82 ghi giá trị và điều kiện chạy không khớp với TC-CPN-44.
+- TC-CPN-56 (xóa hết mã) chưa nói rõ phải xóa bao nhiêu mã.
+- Kết quả mong đợi chung cho lỗi qua giao diện thiếu yêu cầu thông báo bằng tiếng Việt (R14).
+- Chưa có cách kiểm thay thế khi `GET` không trả đủ trường.
+
+Tôi sửa các chỗ này trong bản review và ghi vào bảng thay đổi.
+
+Bản review S3 đã xong: [03_tc.md](Homeworks/HW02/features/C_FR-17_QuanLyCoupon/03_tc.md). Vẫn 78 test case.
+
+**Kiểm tra:** Script báo cả 123 lớp đều có test case, 0 lỗi định dạng, 0 lỗi ở bảng thay đổi. Cảnh báo về TC-CPN-100 là có chủ ý: Mã này dành cho S4. File `ai_raw/S3_test_cases.md` giữ nguyên từ lúc giao.
+
+## Đã áp 5 quyết định (a)
+
+Cả 5 phương án anh/chị chọn đều trùng với bản AI, nên trong bản review chỉ thêm ghi chú:
+- Test case không hợp lệ qua giao diện chỉ dùng K3 (tải lại trang, xem không có dòng mới).
+- Placeholder ô "Giá trị" không lập test case; chuyển thành ghi chú quan sát cho S6.
+- TC-CPN-13 vẫn phủ cả EC21 và EC71.
+- `max_uses_per_user` cơ sở là `3`.
+- Test case API hợp lệ kiểm giá trị từng trường qua `GET`.
+
+## AI tự phát hiện khi viết bản review (7 dòng trong bảng thay đổi)
+
+| Chỗ sửa | Loại | Vì sao |
+|---|---|---|
+| Dòng F của TC-CPN-82 gửi `0` thay cho `-1`; điều kiện chạy thành "khi TC-CPN-44 bị chặn" | Mơ hồ | Bản AI ghi điều kiện không khớp với TC-CPN-44 và trỏ sang S4. Biên âm `-1` của số lần dùng chuyển sang S4 |
+| Các test case giao diện trỏ đúng dòng A đến F của TC-CPN-82 | Mơ hồ | Bản AI chỉ ghi "dòng tương ứng" |
+| TC-CPN-56 có bước reset riêng ngay trước khi chạy | Thiếu | Nếu chạy sau mọi test case khác, danh sách đã có hàng chục mã phải xóa tay; reset trước thì chỉ phải xóa 4 mã mẫu |
+| Thông báo lỗi phải bằng tiếng Việt (R14); ghi lại ngôn ngữ trình duyệt khi thông báo là bong bóng | Thiếu | `01_io.md` có thuộc tính này của thông báo lỗi nhưng bản AI bỏ sót |
+| Cách kiểm thay thế khi `GET` không trả đủ trường: Kiểm trên bảng của giao diện | Thiếu | Bản AI chỉ xử lý trường hợp thiếu `id` |
+| Ghi chú cho S4 thêm biên `-1` của số lần dùng; ghi chú cho S5 thêm TC-CPN-56 vào nhóm nhiều bước | Thiếu | Hệ quả của hai chỗ sửa trên |
+
+Bảng thay đổi có 12 dòng: 5 Quyết định của SV, 5 Thiếu, 2 Mơ hồ.
+
+## Commit cho bản review
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/03_tc.md
+git commit -m "[C-FR17][S3] Review test cases"
+```
+
+Nếu bản AI của S3 chưa commit, chạy lệnh này trước:
+
+```
+git add Homeworks/HW02/features/C_FR-17_QuanLyCoupon/ai_raw/S3_test_cases.md
+git commit -m "[C-FR17][S3] Select test cases (AI draft)"
+```
+
+Bước tiếp theo là S4 (phân tích giá trị biên). Trước khi viết bản AI của S4, tôi sẽ hỏi anh/chị về bước nhảy của số thập phân, vì nó quyết định điểm ngay trên cận 100 của `percent` là `100.01` hay `101`.
+````
+
+---
+
+### C146 | 20:27 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A, ở ghi chú có ghi AI đối chiếu ảnh S0, SUT không đổi (commit 85af3ba); sinh viên xác nhận trên trang hiện tại. Nếu tôi xác nhận xong thì có xóa cụm "sinh viên xác nhận trên trang hiện tại" không hay để đó?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+**Nên giữ, và sửa thành thì quá khứ kèm ngày.** Ví dụ:
+
+> AI đối chiếu ảnh S0, SUT không đổi (commit 85af3ba); **sinh viên đã xác nhận trên trang hiện tại ngày 20/10/2026**.
+
+Có 3 lý do nên giữ:
+- Cụm này cho biết **ai làm phần nào**: AI điền từ ảnh, bạn kiểm lại trên hệ thống đang chạy. Đây đúng là thông tin mà Audit Report và phần "human review" cần.
+- Nếu xoá đi thì người đọc chỉ thấy "AI đối chiếu ảnh S0". Khi đó kết quả trông như **AI tự kết luận**, không có bước người kiểm, và sẽ không đạt yêu cầu "kết quả thực tế lấy từ lần chạy thật".
+- Thêm "đã" và ngày thì câu chuyển từ một **lời dặn** thành một **ghi nhận đã làm**.
+
+Nếu lúc xác nhận bạn thấy trang hiện tại **khác** với ảnh S0 thì không dùng câu trên. Khi đó ghi kết quả thực tế mới, chụp ảnh S6 cho test case đó, và ghi chú "khác với ảnh S0".
+````
+
+---
+
+### C147 | 20:45 20/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên A: Tôi đang làm.
+Phiên C: Xong rồi đó. Xuất log, kiểm tra và điều phối đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session C S3 review and run checker
+- Bash: Find case-insensitivity test cases in C's S3
+- Bash: Export log and record the S5 reminder
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
