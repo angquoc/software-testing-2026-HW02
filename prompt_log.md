@@ -15671,11 +15671,65 @@ Không cần đưa lệnh commit.
 - Bash: Read FR-17 API script first part
 - Bash: Read FR-17 script main and FR-01 TC79 script
 - Bash: Get time and list feature folder
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S6_results_template.md
+- Bash: Copy template to 06_results.md and check
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\scripts\run_api_tests.py
+- Bash: Compile and dry-run the API script
+- Bash: Dry-run show-cart and token tests
 
 **Output AI (nguyên văn):**
 
 ````text
 Đã xem cách FR-01 làm `06_results.md` và cách FR-17 viết `run_api_tests.py`. Viết khung S6 trước.
+
+Khung S6 xong: 38 dòng kết quả, đã điền sẵn 6 dòng checklist từ ảnh S0. Giờ viết script API.
+
+Đã tạo khung S6 và script API. Mình chưa gửi request thật nào; script mới chạy thử ở chế độ `--dry-run` (không gửi gì, không tạo log).
+
+- **[06_results.md](Homeworks/HW02/features/B_FR-07_GioHang/06_results.md)** cùng bản AI [ai_raw/S6_results_template.md](Homeworks/HW02/features/B_FR-07_GioHang/ai_raw/S6_results_template.md): Hai file giống hệt nhau, cấu trúc như FR-01. Mục 1 đã điền thông tin môi trường bạn đưa. Bảng kết quả có 38 dòng, chia 5 nhóm: Checklist, giao diện, giá trị biên, API, và TC-CART-53 chạy cuối.
+- **[scripts/run_api_tests.py](Homeworks/HW02/features/B_FR-07_GioHang/scripts/run_api_tests.py):** Chỉ dùng thư viện chuẩn của Python; token được che trong log; log ghi vào `logs/`.
+
+**Cách chạy script** (từ thư mục feature):
+
+| Lệnh | Việc |
+|---|---|
+| `python scripts/run_api_tests.py` | Chạy 8 test case API không hợp lệ (30 đến 35, 102, 36), ghi số dòng giỏ trước và sau mỗi request |
+| `python scripts/run_api_tests.py --only 50` (rồi 51, 54, 52) | Mỗi lệnh một test case API hợp lệ. Trước mỗi lệnh phải xóa hết giỏ qua giao diện, vì API spec không có API xóa giỏ; script sẽ cảnh báo nếu giỏ chưa trống |
+| `python scripts/run_api_tests.py --only 53` | Chuỗi SQL, chạy cuối cùng, log riêng `S6_tc53_...`; xong thì reset dữ liệu ngay |
+| `python scripts/run_api_tests.py --show-cart` | In `GET /api/cart` để kiểm chứng thay đổi đã lưu (K1) cho các test case giao diện |
+
+**Checklist điền sẵn từ ảnh S0** (cột Ghi chú có chữ "Từ ảnh S0"; bạn kiểm lại):
+
+| TC | Điền sẵn | Trạng thái đề xuất |
+|---|---|---|
+| 90 | Cột "Giá" thay vì "Đơn giá"; nhãn "Tổng tạm tính:" | Fail |
+| 91 | Giỏ trống không có hình minh họa | Fail |
+| 92 | Tiêu đề tab "frontend-web" | Fail |
+| 93 | "Tiến hành thanh toán" màu xanh lá. Màu nút trong dialog xóa ghi thêm khi chạy TC-CART-07 | Fail |
+| 94 | Phân cách hàng nghìn bằng dấu phẩy. Ảnh không phân biệt được `₫` với `đ` gạch dưới | Để trống, cần sao chép giá trị dán vào trình soạn thảo rồi mới chốt |
+| 95 | Mục "Giỏ hàng" không được làm nổi trên navbar; không có breadcrumb | Fail |
+
+TC-CART-96 (thẻ h1, cần DevTools) và TC-CART-97 (thứ tự Tab) để trống.
+
+**10 test case giao diện tối thiểu**, chạy liền mạch từ giỏ trống sau lần reset lúc 06:37 (cũng ghi ở mục 2.1 của file):
+
+| # | TC | Làm gì | Ảnh |
+|---|---|---|---|
+| 1 | 10 | Mở Giỏ hàng khi trống, chụp; bấm "Tiếp tục mua sắm", chụp trang đích | `S6_TC-CART-10_1.png`, `_2.png` |
+| 2 | 01 | Trang chi tiết iPhone, giữ số lượng 1, bấm "Thêm vào giỏ hàng", **chụp ngay** để bắt toast hoặc badge; mở Giỏ hàng, chụp; F5, chụp; chạy `--show-cart` | `S6_TC-CART-01_1.png` đến `_3.png` |
+| 3 | 11 | Bấm nút quay về ("← Mua tiếp"), chụp trang đích | `S6_TC-CART-11.png` |
+| 4 | 02 | Trang chủ, bấm "Thêm vào giỏ" ở Samsung, chụp ngay; mở Giỏ hàng, chụp (mong đợi tổng 58,000,000, badge 2) | `S6_TC-CART-02_1.png`, `_2.png` |
+| 5 | 07 | Bấm "Xóa" ở dòng Samsung, chụp (có dialog không); bấm hủy, chụp. Ghi luôn màu nút trong dialog cho TC-CART-93 | `S6_TC-CART-07_1.png`, `_2.png` |
+| 6 | 08 | "Xóa" dòng Samsung, xác nhận, chụp; F5; thêm lại Samsung từ trang chủ, chụp (mong đợi số lượng 1) | `S6_TC-CART-08_1.png`, `_2.png` |
+| 7 | 03 | Trang chi tiết iPhone, nhập số lượng 3, thêm; mở Giỏ hàng, chụp (mong đợi vẫn 2 dòng, iPhone 4, tổng 148,000,000, badge 5) | `S6_TC-CART-03_1.png`, `_2.png` |
+| 8 | 09 | Xóa Samsung trước; bấm "Xóa" iPhone, chụp dialog; xác nhận, chụp trạng thái giỏ trống | `S6_TC-CART-09_1.png`, `_2.png` |
+| 9 | 100 | Giỏ trống. Trang chi tiết iPhone, nhập số lượng 0, thêm, chụp ngay; mở Giỏ hàng, chụp | `S6_TC-CART-100_1.png`, `_2.png` |
+| 10 | 105 | Giỏ trống. Trang chi tiết Bàn phím cơ Keychron Q1, nhập 250, thêm; mở Giỏ hàng, chụp (mong đợi 1,000,000,000 ₫) | `S6_TC-CART-105.png` |
+
+- **Không cần thao tác:** TC-CART-04 đến 06 (nút +/-). Giao diện không có nút (thấy ở `S0_03`), nên đề xuất ghi Blocked.
+- **Nếu còn thời gian**, theo thứ tự tốn ít thời gian nhất: TC-CART-94 (sao chép giá trị dán ra ngoài), 97 (bấm Tab), 96 (DevTools), 103 (số lượng 1000).
+- **Ở bước 8:** Số lượng iPhone là 4 chứ không phải 1 như tiền điều kiện của TC-CART-09, vì chạy nối tiếp sau TC-CART-03; không ảnh hưởng kết quả mong đợi.
+- **Thứ tự:** Chạy nhóm giao diện xong rồi mới chạy script API. Các test case giao diện không chạy và không có ảnh thì ghi Not run.
 ````
 
 ---
@@ -15710,6 +15764,86 @@ Tên file có dấu cách nên vòng lặp bị tách sai. Tôi kéo lại theo 
 5 ảnh đúng thứ tự. Danh sách của skill dùng đuôi `.png`, còn điện thoại lưu `.jpg`, nên tôi chuyển sang PNG khi đặt tên.
 
 Ảnh đã nằm trong `features/D_FR-04_HoSo_Mobile/screenshots/`. Tôi xuất log.
+
+Tôi đã kéo 5 ảnh về, xem từng ảnh để xác nhận đúng thứ tự, rồi đặt tên và lưu vào `features/D_FR-04_HoSo_Mobile/screenshots/`. Log đã xuất (261 lượt, đúng 5 phiên).
+
+| Tên file | Nội dung (đã xem ảnh) |
+|---|---|
+| `S0_01_sau_dang_nhap.png` | Danh sách sản phẩm; thanh trên có "Chào, Test User", "Giỏ (0)" |
+| `S0_02_ho_so.png` | "Hồ sơ của bạn": Email xám, ghi "(Không đổi)"; Họ Tên; Số điện thoại (placeholder "VD: 0912345678"); Địa chỉ giao hàng; nút "Cập nhật" màu xanh, nút "Thoát" màu đỏ; mục "Lịch sử đơn hàng" |
+| `S0_04_ban_phim_ho_ten.png` | Bàn phím chữ |
+| `S0_06_ban_phim_sdt.png` | Bàn phím số |
+| `S0_07_ban_phim_dia_chi.png` | Bàn phím chữ, có phím xuống dòng |
+
+Ảnh 3 và ảnh 5 không có là hợp lý: Màn hình Hồ sơ đã là form sửa, và ô Email bị khoá nên đã thấy rõ trong ảnh 2. Có một điểm phiên D sẽ thấy ngay: Nút đỏ ghi "Thoát", trong khi FR-23 yêu cầu nhãn "Đăng xuất".
+
+**Commit ảnh** (đứng ở `D:\Dang\Test\Homeworks\HW02`):
+
+```
+git add features/D_FR-04_HoSo_Mobile/screenshots prompt_log.md
+git commit -m "[D-FR04][S0] Add UI exploration screenshots"
+```
+
+**Bật quay lại, rồi dán vào phiên D.** Bạn chỉ cần điền phần trong ngoặc vuông: Bạn mở màn Hồ sơ bằng cách nào. Ảnh 1 không thấy nút Hồ sơ, có thể bạn bấm vào "Chào, Test User".
+
+```text
+Ảnh S0 đã có trong screenshots/: S0_01, S0_02, S0_04, S0_06, S0_07. Không có S0_03 vì màn Hồ sơ đã là form sửa (S0_02). Không có S0_05 vì ô Email bị khóa, ghi "Email (Không đổi)", thấy rõ ở S0_02. Không có S0_08: Form không có nút hủy, chỉ có nút "Thoát" màu đỏ; tôi không bấm nút này.
+Chấp nhận cả 4 điểm đã áp ở mục 7. Ngoài ảnh:
+- Mở màn Hồ sơ bằng cách: [điền, ví dụ: bấm "Chào, Test User" trên thanh trên]
+Làm S0 pha 3: Điền bảng quan sát từ ảnh, đánh dấu "AI từ ảnh"; ô nào ảnh không cho thấy thì để trống và liệt kê, không đoán. Rồi làm luôn S1. Không cần đưa lệnh commit.
+```
+````
+
+---
+
+### C262 | 07:03 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Ảnh S0 đã có trong screenshots/: S0_01, S0_02, S0_04, S0_06, S0_07. Không có S0_03 vì màn Hồ sơ đã là form sửa (S0_02). Không có S0_05 vì ô Email bị khóa, ghi "Email (Không đổi)", thấy rõ ở S0_02. Không có S0_08: Form không có nút hủy, chỉ có nút "Thoát" màu đỏ; tôi không bấm nút này.
+Chấp nhận cả 4 điểm đã áp ở mục 7. Ngoài ảnh:
+- Mở màn Hồ sơ bằng cách: Bấm "Chào, Test User" trên thanh trên
+Làm S0 pha 3: Điền bảng quan sát từ ảnh, đánh dấu "AI từ ảnh"; ô nào ảnh không cho thấy thì để trống và liệt kê, không đoán. Rồi làm luôn S1. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List screenshots and check spec state
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S0_01_sau_dang_nhap.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S0_02_ho_so.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S0_04_ban_phim_ho_ten.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S0_06_ban_phim_sdt.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S0_07_ban_phim_dia_chi.png
+- Bash: Read S1 guide and review template
+
+**Output AI (nguyên văn):**
+
+````text
+Đã xem đủ 5 ảnh. Giờ tôi đọc hướng dẫn S1 và khung bản review rồi viết lại `00_spec.md`.
+````
+
+---
+
+### C263 | 07:04 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Đã xong, xuất log, kiểm tra và báo cho tôi
+Phiên D: Đang chạy.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session B S6 setup output
+- Bash: Check B script safety and S6 template
+- Bash: Check pycache ignore status and export log
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
