@@ -15816,11 +15816,60 @@ Làm S0 pha 3: Điền bảng quan sát từ ảnh, đánh dấu "AI từ ảnh"
 - Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S0_06_ban_phim_sdt.png
 - Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S0_07_ban_phim_dia_chi.png
 - Bash: Read S1 guide and review template
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\00_spec.md
+- Bash: Find section line numbers in AI draft
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s0_head.md
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s0_tail.md
+- Bash: Assemble 00_spec.md and run format/changes checks
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S1_input_output.md
+- Bash: Format-check S1 and verify referenced codes exist
 
 **Output AI (nguyên văn):**
 
 ````text
 Đã xem đủ 5 ảnh. Giờ tôi đọc hướng dẫn S1 và khung bản review rồi viết lại `00_spec.md`.
+
+Ảnh đủ để điền gần hết bảng. Chỉ O12 (chạm vào Email có hiện bàn phím không) là không có ảnh. Giờ tôi viết lại `00_spec.md`.
+
+Đã nhận: O12 sẽ ghi "Không hiện bàn phím, màn hình giữ như `S0_02`", nguồn "Sinh viên cung cấp". Như vậy bảng quan sát không còn ô trống.
+
+S0 pha 3 đã xong (format và cột Loại của bảng thay đổi đều 0 lỗi). Giờ tôi viết bản AI của S1.
+
+Tôi đã xong S0 pha 3 và bản AI của S1. Giờ dừng chờ bạn review S1.
+
+**S0 pha 3:** Viết lại [00_spec.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/00_spec.md); mục 1 đến 4 giữ nguyên như bản AI.
+- **Bảng quan sát:** Đã điền đủ 20 ô, ghi nguồn "AI từ ảnh". Có 3 chỗ ghi "Sinh viên cung cấp": cách mở màn Hồ sơ (O02), chạm Email không hiện bàn phím (O12, theo tin bạn vừa gửi), và việc bạn không bấm "Thoát" (O19). Không còn ô trống, không cần chụp thêm.
+- **Đã trả lời bằng quan sát:**
+  - Q12: Email nằm trong ô xám, nhãn "(Không đổi)".
+  - Q23: Hồ sơ ban đầu có Họ Tên `Test User`, Số điện thoại và Địa chỉ đều trống.
+  - Q24: Màn Hồ sơ không có trường nào khác.
+  - Q10 và Q22 mới trả lời được một phần.
+- **2 câu hỏi mới:** Q26 hỏi "Thoát" làm gì. Q27 hỏi thanh trên có được coi là "Navbar" theo FR-23 không.
+- **3 khác biệt, chờ xác nhận ở S6, chưa kết luận bug:**
+  - D01: Nút đỏ "Thoát". Nếu đó là nút đăng xuất thì FR-23 đòi nhãn "Đăng xuất".
+  - D02: "Chào, Test User" không được làm nổi khi đang ở màn Hồ sơ.
+  - D03: Không ô nào có `*`. Chỉ thành lỗi nếu S2 chốt có trường bắt buộc.
+- **Ngoài phạm vi:** Thanh trạng thái Android đè lên header của app.
+
+**S1:** [ai_raw/S1_input_output.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S1_input_output.md)
+- **Input:** 5 biến nhập trực tiếp (Họ Tên, Số điện thoại, Địa chỉ, Email, `role`) và 5 biến gián tiếp (token, hồ sơ hiện có, body thiếu trường, mã người khác trong body, chủ token).
+- **Output:**
+  - OUT1 đến OUT4: Thành công qua app, thành công qua API, GET trả đúng hồ sơ, và `email`, `role`, hồ sơ người khác giữ nguyên.
+  - ERR1 đến ERR6, chia theo nguyên nhân. Nhiều loại chỉ tồn tại nếu S2 chốt giả định tương ứng.
+- **Khác:** Có cách kiểm chứng tác động, ma trận yêu cầu với biến, và nhóm checklist cho R06 (phần giao diện), R09 đến R16.
+
+**10 điểm nhỏ đã áp tạm phương án (a)** (mục 8 trong file, cần bạn duyệt). Những điểm ảnh hưởng nhiều nhất:
+- **Điểm 1:** Đăng nhập là tiền điều kiện của nhóm giao diện. Token chỉ là biến của nhóm API.
+- **Điểm 2:** Các lỗi Số điện thoại gộp thành một ERR2 ở phía Output. Phía Input vẫn tách lớp ở S2.
+- **Điểm 5:** Để kiểm R07, dùng `admin@eshop.com` làm tài khoản thứ hai, chỉ đọc hồ sơ của tài khoản này, không sửa.
+- **Điểm 7:** Kiểm `role` không đổi bằng `GET /api/users/me`. Nếu phản hồi không có `role` thì ghi là giới hạn quan sát, không dùng API admin.
+- **Điểm 9 (Q27):** Coi thanh trên là thanh điều hướng, nên áp R15.
+
+Lưu ý thêm cho bước sau:
+- Bàn phím che nút "Cập nhật" (O20), nên ở S6 phải ẩn bàn phím trước khi bấm.
+- Bàn phím của ô Số điện thoại không có phím dấu cách, `-`, `.`, nên các lớp chứa những ký tự này phải kiểm qua API hoặc dán.
+
+Script `check_step.py format` báo 0 lỗi ở cả hai file. Mọi mã O, Q, FR04-R mà S1 tham chiếu đều có trong `00_spec.md`. `ai_raw/S0_khao_sat.md` giữ nguyên như bản gốc.
 ````
 
 ---
@@ -15839,6 +15888,315 @@ Phiên D: Đang chạy.
 - Bash: Read session B S6 setup output
 - Bash: Check B script safety and S6 template
 - Bash: Check pycache ignore status and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên B đã tạo xong khung S6 và script API, đạt cả. Bạn có thể bắt đầu chạy test B ngay. Log đã xuất (263 lượt, đúng 5 phiên).
+
+## Kết quả kiểm
+
+- `06_results.md` giống hệt bản AI trong `ai_raw`, 38 dòng; kiểm định dạng 0 lỗi.
+- **Script an toàn:**
+  - Không reset dữ liệu, không xóa giỏ.
+  - Token được che trong log.
+  - Chỉ dùng `test@eshop.com` và `admin@eshop.com` (để kiểm giỏ tách theo người dùng).
+  - Phiên B chỉ chạy thử ở chế độ `--dry-run`, chưa gửi request thật nào.
+- Thư mục `__pycache__` sinh ra khi kiểm script đã nằm trong `.gitignore`, nên không lọt vào commit.
+- **6 dòng checklist điền sẵn từ ảnh S0** (90 đến 93, 95 là Fail; 94 để trống). Tôi đã đối chiếu các ảnh này ở S0, khớp.
+
+## Thứ tự chạy B (khoảng 25 phút)
+
+1. **10 test case giao diện** theo bảng của phiên B, đúng thứ tự từ 1 đến 10, chụp đúng tên ảnh. Giỏ đang trống, vì dữ liệu mẫu vừa được tạo lại lúc 06:37.
+2. **Script API**, mở terminal ở `features/B_FR-07_GioHang`. Tôi đề xuất rút gọn:
+   - `python scripts/run_api_tests.py`: 8 test case không hợp lệ chạy một lần.
+   - `--only 51`: Gửi `price` sai, chỗ dễ có bug nhất.
+   - `--only 54`: Giỏ tách theo người dùng.
+   - Trước mỗi lệnh `--only`, xóa hết giỏ qua giao diện.
+   - **Bỏ 50 và 52** để đỡ phải xóa giỏ nhiều lần.
+3. **`--only 53` chạy sau cùng**, rồi báo tôi reset DB.
+
+Phiên D lúc đó vẫn đang ở phần thiết kế, chưa dùng dữ liệu, nên reset không ảnh hưởng gì tới D.
+
+Chạy xong, bạn bảo phiên B điền kết quả theo ảnh và log, giống A và C. Nhớ kèm thời điểm reset tôi báo.
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+```
+git add features/B_FR-07_GioHang/ai_raw/S6_results_template.md features/B_FR-07_GioHang/06_results.md features/B_FR-07_GioHang/scripts/run_api_tests.py prompt_log.md
+git commit -m "[B-FR07][S6] Add results template and API test script"
+```
+
+**Phiên D** vẫn đang chạy pha 3 và S1. Xong thì báo tôi soát.
+````
+
+---
+
+### C264 | 07:08 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Vì phải khởi động lại nên web đã chạy chưa? Hay cần khởi động lại để chụp ảnh?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check web and backend are serving
+
+**Output AI (nguyên văn):**
+
+````text
+Web đang chạy, không cần khởi động lại. Tôi vừa kiểm: trang web **http://localhost:5173** và backend (cổng 3000) đều trả lời bình thường. Expo cho D (cổng 8081) cũng đang chạy.
+
+- Backend được bật lại lúc **06:37**, lúc đó dữ liệu mẫu được tạo lại, nên giỏ của `test@eshop.com` đang trống. Ô "Reset dữ liệu mẫu trước đợt test" trong mục 1 của B ghi 06:37 là đúng.
+- Nếu trình duyệt còn phiên đăng nhập cũ từ lúc chụp ảnh S0, bạn **đăng xuất rồi đăng nhập lại**, để giỏ hiện đúng dữ liệu vừa tạo lại.
+
+Bạn bắt đầu chụp được ngay, theo thứ tự 10 test case của phiên B.
+````
+
+---
+
+### C265 | 07:10 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Các ảnh đã có sẵn như giỏ hàng khi trống thì vẫn phải chụp lại sao? Soát kỹ giúp tôi, những ảnh nào đã có thì không cần chụp lại, trừ khi cần thiết.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check existing screenshots and status
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\06_results.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\06_results.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\06_results.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\06_results.md
+- Edit: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\06_results.md
+- Bash: Check format and count new images in 2.1
+- Bash: Correct image counts
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn nói đúng, danh sách trước bắt chụp thừa. Mình đã soát lại và sửa mục 2.1 của [06_results.md](Homeworks/HW02/features/B_FR-07_GioHang/06_results.md): Số ảnh mới giảm từ **19 xuống 14**. Bản AI trong `ai_raw/` giữ nguyên, phần sửa ghi ở dòng "Cập nhật lần 1".
+
+**Nguyên tắc:** Ảnh S0 dùng lại được khi chỉ cần chứng minh trạng thái đang hiển thị (giỏ trống, giỏ 2 dòng, không có nút, không có badge). Ảnh S0 chụp cùng ngày, cùng phiên bản EShop, và dữ liệu cũng vừa reset như bây giờ. Chỉ chụp mới khi phải chứng minh kết quả của một thao tác (bấm nút, xóa, thêm), vì ảnh S0 không có thao tác đó.
+
+**Dùng lại ảnh S0** (mình đã điền sẵn kết quả và cột Ảnh, bạn kiểm lại):
+
+| TC | Ảnh S0 | Chứng minh gì |
+|---|---|---|
+| 10 (phần giỏ trống) | `S0_05` | Không có hình minh họa, có thông báo, không có badge. Chỉ còn chụp trang đích sau khi bấm "Tiếp tục mua sắm" |
+| 02 (phần giỏ 2 dòng) | `S0_03` | Đúng trạng thái này: iPhone và Samsung, tổng 58,000,000, không có badge. Chỉ chụp lúc bấm "Thêm vào giỏ" để bắt toast; chụp lại giỏ nếu thấy khác `S0_03` |
+| 04, 05, 06 | `S0_03` | Không có nút +/-, nên đã điền Blocked |
+| Checklist 90 đến 93, 95 | `S0_01`, `S0_03`, `S0_05` | Đã điền từ lượt trước |
+
+**Vẫn phải chụp mới**, và lý do:
+- **01, 02, 100, chụp ngay sau khi bấm nút thêm:** Toast chỉ hiện lúc bấm; `S0_02` chụp trước khi bấm nên không có.
+- **07, 08, 09:** Kết quả của dialog xóa và của việc xóa.
+- **03:** Số lượng tăng khi thêm lại sản phẩm đã có.
+- **11, 10:** Trang đích sau khi bấm nút quay về.
+- **105:** Định dạng tiền ở đúng 1 tỷ.
+- **09:** Ảnh giỏ trống ở đây khác `S0_05`. Phải thấy trạng thái trống hiện **ngay sau khi xóa** (giả định A11), còn `S0_05` là lúc mở trang.
+
+**Gộp hoặc bỏ thêm:**
+- **Trang Giỏ hàng:** Bấm F5 trước rồi mới chụp, một ảnh thay cho hai ảnh trước và sau F5. Nếu thấy trước và sau F5 khác nhau thì chụp thêm.
+- **TC-09:** Bỏ ảnh dialog vì đã có ở `S6_TC-CART-07_1`; chỉ chụp nếu dialog lần này trông khác.
+
+**14 ảnh cần chụp:** `S6_TC-CART-10`, `01_1`, `01_2`, `11`, `02`, `07_1`, `07_2`, `08_1`, `08_2`, `03`, `09`, `100_1`, `100_2`, `105`.
+````
+
+---
+
+### C266 | 07:11 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Tôi đang quay bằng cái có sẵn trong laptop, giờ cap màn hình thì có mất không?
+Phiên D: Xong rồi, xuất log, kiểm tra và báo cáo cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session D phase 3 and S1 output, run checks
+- Bash: Read FR-04 spec and D S1 variables
+- Bash: Export log, check status, update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi trả lời câu về quay video ở cuối. Trước hết tôi soát phiên D.
+
+Phiên D đạt, không có thao tác bị cấm. Log đã xuất (266 lượt, đúng 5 phiên).
+
+## Phiên D: S0 xong, có bản AI của S1
+
+**S0 pha 3:**
+- AI điền đủ 20 ô quan sát từ ảnh; 3 ô ghi "Sinh viên cung cấp" (cách mở Hồ sơ, chạm Email không hiện bàn phím, không bấm "Thoát").
+- File trong `ai_raw` còn nguyên. Kiểm định dạng và bảng thay đổi 0 lỗi (6 dòng "Quyết định của SV").
+- 3 khác biệt chờ xác nhận ở S6. Tôi đối chiếu ảnh thấy đúng:
+  - Nút đỏ ghi "Thoát" (FR-23 đòi "Đăng xuất").
+  - Mục đang chọn không được làm nổi.
+  - Không ô nào có dấu `*`.
+
+**Bản AI của S1:**
+- 5 biến nhập trực tiếp: Họ Tên, Số điện thoại, Địa chỉ, Email, `role`.
+- 5 biến gián tiếp: Token, hồ sơ đang có, body thiếu trường, gửi mã người dùng khác, tài khoản sở hữu token.
+- Kết quả: OUT1 đến OUT4 khi thành công, ERR1 đến ERR6 khi lỗi.
+- Bám sát FR-04: Số điện thoại bắt đầu bằng 0, dài 10 đến 11 chữ số; Email không đổi được; không tự đổi `role`; chỉ sửa hồ sơ của chính mình.
+- AI còn ghi chú 2 điểm thực tế cho S6: Bàn phím che nút "Cập nhật", và bàn phím số không có phím dấu cách hay `-`. Vì vậy các lớp chứa ký tự đó phải kiểm qua API.
+
+**10 điểm AI đã áp tạm. Tôi đồng ý cả 10**, nên dán vào phiên D (lúc quay):
+
+```text
+Chấp nhận cả 10 điểm đã áp ở S1. Viết 01_io.md, rồi làm luôn S2 (gọn: chỉ chia lớp ở mức cho kết quả khác nhau; điểm nhỏ thì áp phương án đề xuất và liệt kê để tôi duyệt). Không cần đưa lệnh commit.
+```
+
+**Commit** (đứng ở `D:\Dang\Test\Homeworks\HW02`):
+
+```
+git add features/D_FR-04_HoSo_Mobile/00_spec.md
+git commit -m "[D-FR04][S0] Review spec against UI exploration"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S1_input_output.md prompt_log.md
+git commit -m "[D-FR04][S1] Identify input/output variables (AI draft)"
+```
+
+## Chụp màn hình cho B khi đang quay video D
+
+Tôi không chắc trình quay có sẵn trên laptop của bạn xử lý thế nào khi chụp màn hình, nên làm theo cách an toàn:
+
+1. **Bấm tạm dừng** video D trước, đúng như lúc chờ AI viết. Khi đang tạm dừng thì không có gì bị ghi thêm vào video.
+2. Chụp **thử một ảnh** cho B, rồi xem thanh điều khiển của trình quay: Nếu vẫn hiện trạng thái tạm dừng thì chụp tiếp bình thường.
+3. Quay lại phiên D thì bấm tiếp tục quay.
+
+Nếu trình quay **không có nút tạm dừng** mà chỉ có dừng hẳn, thì dừng và lưu đoạn video này. Lúc quay lại D, bạn quay một đoạn mới. Tôi có thể ghép các đoạn bằng một lệnh, bạn không phải tự cắt ghép.
+````
+
+---
+
+### C267 | 07:18 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Chấp nhận cả 10 điểm đã áp ở S1. Viết 01_io.md, rồi làm luôn S2 (gọn: chỉ chia lớp ở mức cho kết quả khác nhau; điểm nhỏ thì áp phương án đề xuất và liệt kê để tôi duyệt). Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read S2 guide and class-check conventions
+- Bash: Read class-counting logic
+- Bash: Locate S1 sections and section-8 references
+- Bash: Build S1 review head and body from AI draft
+- Bash: Verify remaining proposal wording
+- Bash: Rename proposal column header
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s1_tail.md
+- Bash: Assemble 01_io.md and run checks
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S2_equivalence_classes.md
+- Bash: Run format and class-count checks on S2
+
+**Output AI (nguyên văn):**
+
+````text
+Viết `01_io.md` trước: giữ nội dung mục 1 đến 7 của bản AI, đổi mục 8 thành "Quyết định của sinh viên", rồi thêm các mục review.
+
+`01_io.md` đã xong (0 lỗi). Giờ tôi viết bản AI của S2.
+
+Tôi đã viết xong `01_io.md` và bản AI của S2. Giờ dừng chờ bạn review S2.
+
+**S1, bản review:** [01_io.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/01_io.md)
+- Nội dung giữ như bản AI, chỉ đổi chữ "đề xuất" thành "đã chốt". Bảng thay đổi có 10 dòng loại "Quyết định của SV". Q27 đã đóng: Thanh trên được coi là thanh điều hướng.
+- Phần kiểm tra mâu thuẫn không thấy chỗ vướng.
+
+**S2, bản AI:** [ai_raw/S2_equivalence_classes.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S2_equivalence_classes.md)
+- **Số lớp:** 38 lớp, gồm 19 hợp lệ, 12 không hợp lệ và 7 lớp Output. Số đếm lấy từ script.
+- **Cách chia:** Chỉ tách lớp khi kết quả mong đợi khác nhau (khác mã Output, hoặc khác dạng dữ liệu được lưu), hoặc khi có lý do rõ tin rằng hệ thống xử lý khác.
+- **Theo biến:**
+
+| Biến | Các lớp |
+|---|---|
+| Họ Tên | Cơ sở; có dấu; khoảng trắng đầu cuối; có thẻ HTML; có dấu nháy đơn; rỗng; chỉ khoảng trắng |
+| Số điện thoại | 10 đến 11 chữ số là một lớp; trống; không bắt đầu bằng `0`; dưới 10 chữ số; trên 11 chữ số; có ký hiệu (`*`, `#`, `+`, `,`) hoặc chữ cái; có dấu phân cách `-`, `.`, `␣` (chỉ qua API); khoảng trắng đầu cuối (chỉ qua API) |
+| Địa chỉ | 5 lớp, đều hợp lệ; không có lớp nào dẫn tới ERR3 |
+| `email`, `role`, token, body thiếu trường, `id` người khác | Mỗi biến một cặp lớp, đi qua API |
+
+- **Ước tính:** Khoảng 27 đến 30 test case cho cả S3 và S4, nằm trong mục tiêu 25 đến 35.
+- **Kiểm tra:** `check_step.py` báo 0 lỗi về format và về mã lớp.
+
+**Các điểm đã áp tạm phương án đề xuất** (mục 2 và mục 7 trong file, cần bạn duyệt). Những giả định nên xem kỹ:
+- **A01 (a), Họ Tên bắt buộc:** Rỗng hoặc chỉ khoảng trắng bị từ chối (ERR1). Hệ quả là ô Họ Tên phải có `*`, nên D03 ở S0 thành khác biệt cần kiểm.
+- **A05 (a), Số điện thoại không bắt buộc:** Xóa trống thì vẫn lưu được. Tôi có ghi trong file rằng đọc chặt chữ "bắt đầu bằng số 0" thì phương án (b), tức trống là lỗi, cũng có căn cứ.
+- **A06 (a) và A08 (a):** Ký tự không phải chữ số làm số bị từ chối; khoảng trắng đầu cuối thì được cắt rồi mới kiểm. Vì vậy dấu cách ở giữa số là không hợp lệ, còn ở đầu cuối là hợp lệ.
+- **A07 (a):** "10–11 chữ số" tính cả số `0` đầu, theo ví dụ `0912345678` trong API spec.
+- **A13 đến A15 (c) và A16 (d):** Với `email`, `role` và `id` người khác, phản hồi bỏ qua trường hay từ chối cả yêu cầu đều chấp nhận. Chỉ bắt buộc dữ liệu được bảo vệ không đổi. Với body thiếu trường, giữ nguyên hoặc từ chối đều được, chỉ xóa mất trường không gửi là sai.
+- **A19 (a), không lưu một phần:** Ở S3, mỗi test case không hợp lệ sẽ đổi thêm một trường hợp lệ khác để phát hiện trường hợp hệ thống lưu một phần.
+
+Các điểm nhỏ khác ở mục 7, đều đã áp (a):
+- Chữ có dấu của Địa chỉ gộp vào lớp cơ sở.
+- Dấu nháy đơn chỉ thử ở Họ Tên.
+- Không lập lớp cho token hết hạn.
+- Không lập lớp cho đầu số nhà mạng.
+- ERR5 và ERR6 không có lớp Output riêng.
+
+Hai việc cần biết trước khi chạy test:
+- Test case về `id` người khác (EC31) cần lấy được `id` của admin qua `GET /api/users/me`. Nếu phản hồi không có `id` thì test case đó Blocked.
+- Kiểm `role` không đổi cũng phụ thuộc vào việc `GET /api/users/me` có trả trường `role` hay không. Nếu không có thì ghi là giới hạn quan sát.
+````
+
+---
+
+### C268 | 07:34 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Khi giữ nguyên số lượng 1 và thêm vào giỏ hàng thì không có gì thay đổi. Giỏ hàng sẽ trống. Chỉ khi thay đổi số lượng sau đó thêm vào giỏ hàng thì nút mới chuyển sang đã thêm và được bỏ vào giỏ. Đó cũng là chỗ tôi làm ở S0_03. Vì trang giỏ hàng trống nên tôi không chụp do đã có.
+2. Mua tiếp và trang đích là trang chủ, đã có nên không chụp lại.
+3. bấm "Thêm vào giỏ" ở Samsung -> Không hiện noti hay bất cứ thứ gì, trang chủ đứng nguyên nên không có gì để chụp. Sao (mong đợi tổng 58,000,000, badge 2)? Bấm 1 lần thì nó hiện 1 lần à, bấm 2 lần thì nó tách đôi, tôi có chụp lại.
+4. Bấm xóa không có dialog gì cả. 
+5. Lúc đầu có 2 cái, tôi xóa 1 cái, xong thêm lại vào 1 cái. Kết quả thêm giống kết quả trước khi xóa nên tôi không chụp.
+6. Vì tôi đã xóa iphone trước đó nên bỏ vào giỏ hàng chỉ có 3 mới thêm thôi, không phải 5.
+7. Giỏ trống có ảnh rồi nên không chụp lại khi xóa hết.
+8. Nút thêm vào giỏ ở trang chi tiết có vẻ bấm 2 lần mới ăn vì tôi bấm 1 lần đều không hiện gì, bấm lại thì nó ghi đã thêm.
+Tôi đã chụp hết và nêu các kết quả cho bạn, nếu bạn còn cần gì hay chỗ nào chưa rõ thì hỏi tôi, nếu không thì điền bảng.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List new screenshots and logs
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-10.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-01_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-02.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-08.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-03_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-03_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-105_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-105_2.png
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C269 | 07:35 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Tôi đã chụp xong ảnh và đang làm.
+Phiên D: Xong rồi, xuất log, kiểm tra và báo cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session D S2 output and run checks
+- Bash: Export log and update notes
 
 **Output AI (nguyên văn):**
 
