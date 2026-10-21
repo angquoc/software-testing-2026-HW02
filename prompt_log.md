@@ -15482,6 +15482,30 @@ Viết `04_bva.md` trước, rồi xem định dạng S5 của feature A và C (
 Đã nắm định dạng S5 của A và C. Giờ viết bản AI của S5 cho FR-07.
 
 Tự kiểm xong bản AI. Giờ tạo `05_final_tc.md` từ bản AI, ghi việc bạn không bổ sung test case nào ở S5.
+
+Đã viết xong ba file: `04_bva.md` (bản review S4), bản AI của S5 và `05_final_tc.md`. Không xuất Word hay Excel. Script kiểm tra không báo lỗi định dạng, bảng thay đổi hay độ phủ lớp: Cả 32 lớp đều có test case, bộ cuối gồm 38 test case.
+
+- **[04_bva.md](Homeworks/HW02/features/B_FR-07_GioHang/04_bva.md):** Chốt cả 4 điểm của S4. Mục kiểm tra mâu thuẫn ghi lại việc thay điểm 990,000,000 (đã hẹn ở `03_tc.md`) bằng 996,000,000 và 1,000,000,000; `03_tc.md` giữ nguyên.
+- **[ai_raw/S5_final_test_cases.md](Homeworks/HW02/features/B_FR-07_GioHang/ai_raw/S5_final_test_cases.md):** Bản AI gộp `03_tc.md` và `04_bva.md`.
+- **[05_final_tc.md](Homeworks/HW02/features/B_FR-07_GioHang/05_final_tc.md):** Giống bản AI, chỉ thêm ở mục 13 rằng bạn không bổ sung test case nào và S5 đã chốt, cùng 1 dòng "Quyết định của SV" trong bảng thay đổi.
+
+**Format chung với A và C:** Giữ cùng 14 mục như `A_FR-01_DangKy/05_final_tc.md`: Quy ước nguồn gốc và cột "Phát hiện", tổng hợp, 6 nhóm test case TS-01 đến TS-06, nguồn gốc chi tiết, thứ tự chạy, giới hạn quan sát (GH1 đến GH8), ma trận truy vết từng yêu cầu R01 đến R33. Mọi bảng test case đều có cột "Nguồn gốc" và "Phát hiện".
+
+| Nhóm | Số TC |
+|---|---|
+| TS-01 Giỏ hàng hợp lệ qua giao diện | 12 |
+| TS-02 API không hợp lệ | 7 |
+| TS-03 API hợp lệ | 3 |
+| TS-04 Bảo mật (`name` có HTML, có SQL) | 2 |
+| TS-05 Giá trị biên | 6 |
+| TS-06 Checklist | 8 |
+| **Tổng** | **38** |
+
+**Nguồn gốc:** Cả 38 test case đều là "AI", vì ở S3 và S4 bạn chấp nhận nguyên các phương án và không sửa test case nào. Cột "Phát hiện" ghi phiên điều phối `305c705a` ở 4 test case kiểm phản hồi trực quan sau khi bấm thêm vào giỏ (FR07-R33): TC-CART-01, 02, 100 và 101. Mục 9.2 ghi chi tiết cho phần gap analysis ở S8.
+
+Ma trận truy vết còn 5 yêu cầu chỉ phủ một phần: R08, R09 (thêm trùng chỉ kiểm qua trang chi tiết), R26 (giỏ không hiển thị ảnh) và R32 (Parameterized Query chỉ quan sát gián tiếp). R04, R05 phủ đủ trên thiết kế nhưng dự kiến Blocked vì giao diện không có nút +/-.
+
+Bước tiếp theo là S6: Chạy test theo thứ tự ở mục 10. TC-CART-53 (chuỗi SQL) chạy cuối cùng, xong thì reset dữ liệu ngay.
 ````
 
 ---
@@ -15508,6 +15532,86 @@ Phiên D: Bạn kiểm tra, xuất log, và review cho tôi đi. Tôi chỉ �
 
 ````text
 Bản AI của S0 cho D đạt: giống hệt `00_spec.md`, kiểm định dạng 0 lỗi. Tôi thử trước lệnh kéo ảnh từ điện thoại để lát nữa không bị vướng.
+
+Bản AI của S0 cho D đạt, nhưng **điện thoại vừa mất kết nối** với máy, cần cắm lại trước khi chụp. Log đã xuất (258 lượt, đúng 5 phiên).
+
+## Phiên D: S0 pha 1
+
+**Kết quả kiểm:**
+- `ai_raw/S0_khao_sat.md` giống hệt `00_spec.md`. Kiểm định dạng 0 lỗi, không có dấu "—" hay "·".
+- Không có thao tác bị cấm.
+- Nội dung: 23 yêu cầu (FR04-R01 đến R23), 25 câu hỏi mở, bảng quan sát O01 đến O20 còn trống, danh sách 7 ảnh cần chụp.
+- AI chủ động hỏi các chỗ đặc tả không rõ: Số điện thoại có ký tự khác chữ số thì sao, "10–11 chữ số" có tính số 0 đầu không, gửi `email`, `role` qua API thì hệ thống xử lý thế nào.
+
+**4 điểm phiên D đã tự áp, tôi đồng ý cả 4:**
+1. Lấy FR-04 làm trọng tâm, cộng các yêu cầu giao diện chung, API và bảo mật tham khảo.
+2. FR-23 chỉ kiểm nếu màn hình Hồ sơ có các thành phần đó.
+3. Giữ nhóm API để kiểm `role`, `email` và trường hợp không có token. Ở S6 sẽ chạy bằng script Python như A và C, không cần Postman.
+4. FR-04 trên Web nằm ngoài phạm vi.
+
+**Đã sửa một memory gây nhầm:**
+- Memory dùng chung cho mọi phiên đang dặn "tick tracker trong `_NOTES.md`". Đó là lý do phiên B từng chạy lệnh đọc file này, và phiên D cũng nhắc tới nó.
+- Tôi đã sửa lại: Chỉ phiên điều phối được dùng `_NOTES.md`; phiên thiết kế không được đọc.
+
+## Việc của bạn bây giờ
+
+**1. Commit bản AI** (đứng ở `D:\Dang\Test\Homeworks\HW02`):
+
+```
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S0_khao_sat.md features/D_FR-04_HoSo_Mobile/00_spec.md prompt_log.md
+git commit -m "[D-FR04][S0] Add spec extract and requirement list (AI draft)"
+```
+
+**2. Cắm lại điện thoại**, rồi báo tôi để chạy lại `adb reverse` (app cần nó để gọi backend).
+
+**3. Chụp ảnh** bằng nút Nguồn + Giảm âm lượng, đúng thứ tự sau. Đăng nhập `test@eshop.com` / `Test1234!`. Chỉ chạm vào ô, không gõ, **không bấm Lưu**.
+
+| Thứ tự | Màn hình |
+|---|---|
+| 1 | Ngay sau khi đăng nhập, thấy cả thanh điều hướng |
+| 2 | Màn hình Hồ sơ vừa mở |
+| 3 | Form sửa, chưa chạm ô nào. Bỏ ảnh này nếu màn Hồ sơ đã là form sửa |
+| 4 | Đã chạm ô Họ Tên, bàn phím đang mở |
+| 5 | Đã chạm vùng Email (chụp dù bàn phím có hiện hay không) |
+| 6 | Đã chạm ô Số điện thoại, bàn phím đang mở |
+| 7 | Đã chạm ô Địa chỉ, bàn phím đang mở |
+| (thêm) | Nếu bấm hủy mà app hỏi "bỏ thay đổi không" thì chụp thêm, rồi chọn bỏ |
+
+Chụp xong thì báo tôi: Có bỏ ảnh 3 không, có ảnh cuộn hay ảnh "hỏi bỏ thay đổi" không. Tôi kéo ảnh về và đặt tên đúng, rồi đưa lệnh commit ảnh.
+
+**4. Sau khi tôi kéo ảnh xong, dán vào phiên D** (lúc này bật quay lại), sửa phần trong ngoặc vuông:
+
+```text
+Ảnh S0 đã có trong screenshots/ (S0_01 đến S0_07, [ghi rõ ảnh nào bỏ hoặc thêm]). Chấp nhận cả 4 điểm đã áp ở mục 7. Ngoài ảnh:
+- Mở màn Hồ sơ bằng cách: [ví dụ: bấm tab "Hồ sơ" ở thanh dưới]
+- Khi thoát form không lưu: [có hoặc không hỏi bỏ thay đổi]
+Làm S0 pha 3: Điền bảng quan sát từ ảnh, đánh dấu "AI từ ảnh"; ô nào ảnh không cho thấy thì để trống và liệt kê, không đoán. Rồi làm luôn S1. Không cần đưa lệnh commit.
+```
+````
+
+---
+
+### C259 | 06:58 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Xong rồi, xuất log, kiểm tra và báo tôi.
+Phiên D: Tôi đã cắm lại điện thoại.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Reconnect adb reverse and test screenshot listing
+- Bash: Read B S5 output and run checks
+- Bash: Check permission claim and sed target in session B
+- Bash: Show the sed command target
+- Bash: Export log, check git, update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Kiểm tra của B đều 0 lỗi. Có 2 điểm tôi cần xác minh thêm: phiên B nói "bạn đã cho phép đọc" file S5 của A và C, và có một lệnh `sed` sửa file sau khi viết.
 ````
 
 
