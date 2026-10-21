@@ -34,7 +34,7 @@ Số feature: 4. "Đã chạy" gồm cả test case Blocked, Khác giả định
 | Feature | TC thiết kế | Đã chạy | Pass | Fail | Chưa chạy | Bug |
 |---|---|---|---|---|---|---|
 | A: FR-01 | 96 | 46 | 9 | 19 | 50 | 13 (#42 đến #54) |
-| B: FR-07 | | | | | | |
+| B: FR-07 | 38 | 30 | 6 | 20 | 8 | 18 (#67 đến #84) |
 | C: FR-17 | 115 | 46 | 26 | 13 | 69 | 12 (#55 đến #66) |
 | D: FR-04 (Mobile) | | | | | | |
 | **Tổng** | | | | | | |

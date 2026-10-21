@@ -104,7 +104,7 @@ Chi tiết: [`08_gap_analysis.md`](features/A_FR-01_DangKy/08_gap_analysis.md).
 
 Thư mục: [`features/B_FR-07_GioHang/`](features/B_FR-07_GioHang/)
 
-> _(Đang thực hiện. Điền khi xong S8.)_
+Thiết kế bằng Agent Skill `domain-testing-design`, mỗi bước sinh viên review một lượt.
 
 ### 3.1 Domain Testing từng bước
 
@@ -112,24 +112,30 @@ Thư mục: [`features/B_FR-07_GioHang/`](features/B_FR-07_GioHang/)
 |---|---|---|
 | S0 Đặc tả | Trích FR-07 và các yêu cầu chung áp cho trang Giỏ hàng (FR-06, FR-21 đến FR-24, API giỏ hàng, SEC); 32 yêu cầu, 30 câu hỏi mở; 10 khác biệt giữa giao diện và đặc tả (không có nút `+`/`-`, không có badge, không có breadcrumb, cột "Giá" thay cho "Đơn giá", nút "← Mua tiếp", nút thanh toán màu xanh lá...) | [`00_spec.md`](features/B_FR-07_GioHang/00_spec.md) |
 | S1 Input, Output | 8 biến Input trực tiếp, 5 biến gián tiếp; 3 đường thêm vào giỏ (trang chủ, trang chi tiết, API); 3 loại lỗi theo nguyên nhân | [`01_io.md`](features/B_FR-07_GioHang/01_io.md) |
-| S2 Lớp tương đương | _(điền)_ | `02_ec.md` |
-| S3 Coverage, Minimum Set | _(điền)_ | `03_tc.md` |
+| S2 Lớp tương đương | 32 lớp (25 hợp lệ, 7 không hợp lệ); giả định A01 đến A31 (cách tính Thành tiền, Tổng cộng; thêm trùng thì tăng đúng số lượng thêm; giỏ dùng giá trong CSDL) | [`02_ec.md`](features/B_FR-07_GioHang/02_ec.md) |
+| S3 Coverage, Minimum Set | 32 test case phủ đủ 32 lớp: 12 qua giao diện (mỗi đường thêm vào giỏ một đại diện), 7 API không hợp lệ (mỗi test case vi phạm 1 lớp), 5 API hợp lệ, 8 checklist | [`03_tc.md`](features/B_FR-07_GioHang/03_tc.md) |
 
 ### 3.2 Boundary Value Analysis
 
-_(điền)_
+4 phân vùng có thứ tự: Số lượng thêm (cận dưới 1, không có cận trên; điểm 0 qua giao diện, -1 qua API, 2, thăm dò 1000), số lượng khi bấm giảm (1, 2), số dòng trong giỏ (0, 1, 2), độ lớn tiền quanh mốc 1 tỷ của định dạng (996,000,000 và đúng 1,000,000,000 bằng Keychron Q1 × 250). 6 test case BVA mới, các điểm còn lại dùng lại test case của S3. Chi tiết: [`04_bva.md`](features/B_FR-07_GioHang/04_bva.md).
 
 ### 3.3 Bộ test case cuối và kết quả
 
-_(điền)_
+- [`05_final_tc.md`](features/B_FR-07_GioHang/05_final_tc.md): **38 test case**, cả 38 có nguồn gốc AI (sinh viên chấp nhận các phương án đề xuất); 4 test case có phần do phiên điều phối phát hiện (phản hồi trực quan sau khi thêm vào giỏ, FR-24).
+- [`06_results.md`](features/B_FR-07_GioHang/06_results.md): Chạy ngày 21/10/2026, bản rút gọn. Pass 6, Fail 20, Blocked 4, Not run 8. API chạy bằng [`scripts/run_api_tests.py`](features/B_FR-07_GioHang/scripts/run_api_tests.py).
+- Phát hiện chính: Giỏ không có nút `+`/`-`, không có hộp thoại xác nhận khi xóa, không có badge, toast, breadcrumb; thêm sản phẩm đã có thì tạo dòng mới; nút ở trang chi tiết phải bấm 2 lần mới thêm; giỏ trên web mất sau khi tải lại trang; API nhận số lượng 0, âm, thập phân, sản phẩm không tồn tại và lưu đơn giá do client gửi.
 
 ### 3.4 Bug
 
-_(điền)_
+18 bug, issue **#67 đến #84** (3 High, 5 Medium, 10 Low). Chi tiết: [`bugs/bug_report.md`](bugs/bug_report.md), mục FR-07.
 
 ### 3.5 AI gap analysis
 
-_(điền)_
+Chi tiết: [`08_gap_analysis.md`](features/B_FR-07_GioHang/08_gap_analysis.md).
+
+- 25 dòng thay đổi so với bản AI từ S0 đến S5: 23 Quyết định của SV, 2 Thiếu (output phản hồi trực quan sau khi thêm vào giỏ, do phiên điều phối phát hiện). AI tự sửa 3 lỗi trước khi giao, trong đó có lỗi tính "không tạo được đúng 1 tỷ" ở S4.
+- Chỗ AI bỏ sót theo nguyên nhân: Giới hạn của công cụ AI 3, độ phức tạp của feature 2, chất lượng input 1.
+- Bộ test case AI thiết kế bắt trực tiếp 15 trên 18 bug. Vì sinh viên chấp nhận gần như toàn bộ đề xuất để kịp giờ, bảng thay đổi của FR-07 ít dữ liệu hơn FR-01 và FR-17 để đánh giá AI.
 
 ---
 
@@ -203,11 +209,11 @@ Bảng đầy đủ ở [`README.md`](README.md).
 | Feature | TC thiết kế | Đã chạy | Pass | Fail | Chưa chạy | Bug |
 |---|---|---|---|---|---|---|
 | A: FR-01 | 96 | 46 | 9 | 19 | 50 | 13 |
-| B: FR-07 | | | | | | |
+| B: FR-07 | 38 | 30 | 6 | 20 | 8 | 18 |
 | C: FR-17 | 115 | 46 | 26 | 13 | 69 | 12 |
 | D: FR-04 (Mobile) | | | | | | |
 
-"Đã chạy" gồm cả test case Blocked (A: 18), Khác giả định (C: 6) và Không áp dụng (C: 1).
+"Đã chạy" gồm cả test case Blocked (A: 18, B: 4), Khác giả định (C: 6) và Không áp dụng (C: 1).
 
 ---
 

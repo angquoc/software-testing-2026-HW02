@@ -17381,6 +17381,926 @@ Phiên B và D đều đã xong. Xuất log, kiểm tra và báo lại ch
 
 ````text
 Cả hai phiên đều ổn. Tôi điền link video vào README và `report.md`, kiểm file của B và D, rồi xuất log.
+
+Phiên B đã xong S7 (bản nháp), phiên D đã xong khung S6. Link video đã điền vào README và `report.md`. Log đã xuất (291 lượt, đúng 5 phiên), TRACKER đã cập nhật.
+
+## Phiên B: S7 (18 bug)
+
+**Kết quả kiểm:**
+- Mục FR-07 trong `bugs/bug_report.md` có 18 bug: 3 High, 5 Medium, 10 Low.
+- Mục FR-01 và FR-17 không bị đụng; chỉ đổi dòng FR-07 trong mục lục thành link.
+- Hai dấu "—" trong file đều nằm trong đoạn trích nguyên văn đặc tả, nên giữ.
+- S6 đã có giờ reset 08:11 và chữ "Không chạy" ở 8 dòng Not run.
+
+**Đề xuất cho các điểm phiên B hỏi:**
+- **KG01 đến KG04, QS01:** Đồng ý cả. Đặc biệt QS01 (giỏ trên web mất sau khi tải lại trang) để mức **Medium**, vì đặc tả không nói giỏ phải được giữ lại.
+- **Gộp các bug Low lại cho bớt issue?** **Giữ riêng 18 bug** như A và C. Thay vào đó, **bỏ bước chụp trang issue (`S7_issue_*.png`)** cho B và D. Đề chỉ yêu cầu mỗi issue có đính ảnh bug, việc này bạn vẫn làm. Bỏ bước chụp tiết kiệm nhiều thời gian hơn là gộp bug.
+- **BUG-07 (nút ở trang chi tiết, thuộc FR-06):** Trong nhóm không ai nhận FR-06. Hương làm FR-03, FR-08, FR-15, FR-10. Bug xảy ra trên đường thêm vào giỏ của FR-07, nên cứ tạo issue như bình thường.
+
+**Dán vào phiên B:**
+
+```text
+Đồng ý KG01 đến KG04 và QS01 (Medium). Giữ riêng 18 bug. BUG-07 tạo bình thường (trong nhóm không ai làm FR-06). Với FR-07 tôi không chụp ảnh trang issue (S7_issue_*.png); bỏ các chỗ nhắc ảnh này trong bug_report.md nếu có. Khi tôi tạo xong issue và gửi số, bạn điền vào bảng tổng hợp. Không cần đưa lệnh commit.
+```
+
+**Trước khi tạo issue:** Chụp 4 ảnh log theo bảng cuối trang HTML (`S6_TC-CART-30_log`, `31_log`, `50_log`, `51_log`), rồi mở trang `C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\FR07_issue_links.html`.
+
+## Phiên D: Khung S6 và script
+
+**Kết quả kiểm:**
+- Khung S6 có 34 dòng, 7 nhóm. Script chỉ sửa hồ sơ của `test@eshop.com`; với `admin@eshop.com` thì chỉ đọc. Không có dấu "—" hay "·".
+- Thứ tự chạy hợp lý: TC-PROF-77 chạy trước 76. Nếu 76 làm đổi được email thì tài khoản test sẽ không đăng nhập được nữa.
+- **Reset đã làm lúc 08:11**, nên bỏ bước 1 trong thứ tự chạy của phiên D.
+
+## Thứ tự để kịp giờ (bây giờ khoảng 8:35)
+
+1. **Chạy D trên điện thoại trước, khoảng 20 phút.** Mở terminal ở `features/D_FR-04_HoSo_Mobile`, làm theo 8 bước của phiên D. Trước mỗi test case giao diện chạy `python scripts/run_api_tests.py chuan --tag TC-PROF-xx`, sau đó chạy `get --tag TC-PROF-xx`. Chụp màn hình điện thoại theo tên trong bảng. Chụp xong thì báo tôi kéo ảnh về và đặt tên.
+2. Trong lúc phiên D điền kết quả và viết S7, bạn **tạo 18 issue cho B**, khoảng 20 phút.
+3. Rồi tạo issue cho D, viết S8 cho B và D, và đọc phần chung.
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+```
+git add features/B_FR-07_GioHang/06_results.md features/B_FR-07_GioHang/logs features/B_FR-07_GioHang/screenshots
+git commit -m "[B-FR07][S6] Execute reduced test set and record results"
+
+git add bugs/bug_report.md
+git commit -m "[B-FR07][S7] Draft bug reports for GitHub issues"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S6_results_template.md features/D_FR-04_HoSo_Mobile/06_results.md features/D_FR-04_HoSo_Mobile/scripts/run_api_tests.py
+git commit -m "[D-FR04][S6] Add results template and API test script"
+
+git add README.md report.md prompt_log.md
+git commit -m "[report] Add skill demo video link"
+```
+````
+
+---
+
+### C292 | 08:20 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Đồng ý KG01 đến KG04 và QS01 (Medium). Giữ riêng 18 bug. BUG-07 tạo bình thường (trong nhóm không ai làm FR-06). Với FR-07 tôi không chụp ảnh trang issue (S7_issue_*.png); bỏ các chỗ nhắc ảnh này trong bug_report.md nếu có. Khi tôi tạo xong issue và gửi số, bạn điền vào bảng tổng hợp. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Record decisions and update BUG-07 note
+- Bash: Remove issue-screenshot instruction and regenerate HTML
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã cập nhật xong `bugs/bug_report.md` và trang link issue theo các quyết định của bạn.
+
+- **Bảng "Khác giả định và quan sát":** Cột Quyết định đã ghi "Theo đề xuất" cho KG01 đến KG04, QS01 (Medium) và cả QS02, QS03. Mình hiểu "đồng ý" bao gồm luôn hai dòng gộp QS02, QS03, vì bạn giữ đủ 18 bug; nếu không phải vậy thì báo mình.
+- **BUG-07:** Bỏ lời nhắc tìm issue của FR-06, thay bằng "trong nhóm không ai làm FR-06 nên báo ở FR-07".
+- **Ảnh trang issue:** Mục FR-07 vốn không có chỗ nào nhắc `S7_issue_*.png`. Mình thêm một câu ở đầu mục ghi rằng với FR-07 bạn không chụp ảnh trang issue. Hướng dẫn trên trang HTML cũng đã bỏ bước chụp trang issue, thay bằng "ghi lại số issue để gửi cho phiên thiết kế".
+- **Trang link:** Đã tạo lại từ nội dung mới: `C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\FR07_issue_links.html`.
+
+Trước khi tạo BUG-01, 02, 03 và 08, bạn cần chụp 4 ảnh log còn thiếu theo bảng "Ảnh log cần chụp" ở cuối trang.
+
+Tạo xong issue thì gửi mình số issue theo dạng `BUG-FR07-01: #xx, ...`. Mình sẽ điền vào cột Issue của bảng tổng hợp, và thêm dòng `**Issue:** #xx` vào từng bug như mục FR-17 (bỏ phần ảnh trang issue). Riêng BUG-03 đang ghi "Related: BUG-FR07-01, BUG-FR07-02 (số issue điền sau khi tạo)"; mình sẽ đổi sang số issue thật luôn.
+````
+
+---
+
+### C293 | 08:22 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Xong rồi, xuất log, báo lại tôi.
+Phiên D: Tôi đang chụp.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session B latest and check status
+- Bash: Show QS02, QS03 rows and export log
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên B đã cập nhật đúng theo quyết định của bạn, và bản mới nhất đã nằm trong commit của bạn. Log đã xuất (293 lượt, đúng 5 phiên).
+
+**Kết quả kiểm phiên B:**
+- **QS02 và QS03:** Phiên B tự hiểu chữ "đồng ý" của bạn bao gồm cả hai dòng này. Tôi xem lại thì cả hai đều hợp lý:
+  - QS02: Nút ở trang chi tiết phải bấm 2 lần mới thêm vào giỏ. Gộp vào BUG-07, vì cùng một nút và cùng hậu quả.
+  - QS03: Gửi lặp cùng sản phẩm qua API thì mỗi lần tạo một dòng mới. Ghi chú vào BUG-04, vì cùng yêu cầu "thêm trùng thì tăng số lượng".
+- Mục FR-07 ghi rõ là không chụp ảnh trang issue. Trang HTML cũng đã bỏ bước đó.
+- Không có thao tác bị cấm.
+
+**Việc tiếp theo cho B, làm sau khi chụp xong D:**
+1. Chụp 4 ảnh log theo bảng cuối trang HTML: `S6_TC-CART-30_log`, `31_log`, `50_log`, `51_log`.
+2. Mở `C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\FR07_issue_links.html` và tạo 18 issue.
+3. Gửi phiên B số issue theo dạng `BUG-FR07-01: #xx, BUG-FR07-02: #xx, ...`.
+
+Hiện chưa có gì mới để commit; commit tiếp theo của B là lúc có số issue.
+
+**Phiên D:** Chụp xong thì báo tôi. Tôi kéo ảnh từ điện thoại về, xem từng ảnh để đặt đúng tên theo bảng 8 test case, rồi bạn mới gửi cho phiên D điền.
+````
+
+---
+
+### C294 | 08:24 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Hướng dẫn tôi chi tiết từng bước, đưa các lệnh nếu có đi. Tôi cihr việc chụp cho lẹ thay vì ngồi mò.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Dưới đây là toàn bộ các bước từ đầu đến cuối. Lệnh dùng PowerShell, chạy từ thư mục của feature. Phần trên điện thoại ghi rõ bấm gì, chụp gì.
+
+## Bước 0: Chuẩn bị (làm một lần)
+
+**0.1. Đổi định dạng ảnh chụp màn hình sang PNG.** S21 mặc định lưu ảnh JPG. Vào Cài đặt → Tính năng nâng cao → Ảnh chụp màn hình và ghi màn hình → Định dạng → chọn **PNG**. Nếu ảnh S0 của bạn đã là PNG thì bỏ qua bước này.
+
+**0.2. Thêm bàn phím tiếng Việt**, cần cho Địa chỉ `12/3 Lê Lợi, Quận 1, TP.HCM`. Vào Cài đặt → Quản lý chung → Cài đặt Bàn phím Samsung → Ngôn ngữ và kiểu bàn phím → Quản lý ngôn ngữ nhập → bật **Tiếng Việt**. Khi gõ, vuốt phím cách để đổi qua lại giữa hai ngôn ngữ.
+
+**0.3. Reset dữ liệu mẫu.** Khởi động lại backend như bạn vẫn làm (ở FR-01, khởi động lại backend là dữ liệu mẫu được tạo lại). **Ghi lại giờ reset.**
+
+**0.4. Mở PowerShell** và chạy:
+
+```powershell
+cd D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile
+adb reverse tcp:3000 tcp:3000
+function shot($name) { $f = (adb shell "ls -t /sdcard/DCIM/Screenshots/ | head -n 1").Trim(); adb pull "/sdcard/DCIM/Screenshots/$f" "screenshots\$name.png" }
+```
+
+Hàm `shot` kéo ảnh vừa chụp về máy và đặt đúng tên. Bạn chụp trên điện thoại (bấm **Nguồn + Giảm âm lượng**), rồi gõ `shot S6_TC-PROF-01_1` là xong, không phải chép tay. Hàm chỉ có tác dụng trong cửa sổ PowerShell này; mở cửa sổ mới thì phải dán lại dòng `function shot ...`.
+
+**0.5. Trên điện thoại:** Mở EShop trong Expo Go, đăng nhập `test@eshop.com` / `Test1234!`.
+
+## Bước 1: Kiểm tra script và chạy TC-PROF-70
+
+```powershell
+python scripts/run_api_tests.py run --dry-run
+python scripts/run_api_tests.py run --only TC-PROF-70
+```
+
+- Lệnh đầu chỉ in ra các yêu cầu, không gửi gì. Nếu báo lỗi, gửi tôi nội dung lỗi.
+- Ở lệnh thứ hai, xem dòng `=> Gợi ý TC-PROF-70: ...`. Nếu thấy `!! Không đặt được S_CHUAN` thì dừng lại và báo tôi.
+
+## Bước 2: Các test case giao diện
+
+Mỗi test case làm theo cùng một vòng:
+
+1. Chạy lệnh `chuan` của test case đó (có trong từng mục bên dưới).
+2. Trên điện thoại: Bấm "EShop Mobile" (hoặc nút Back), rồi bấm **"Chào, Test User"**. Các ô phải hiện `Test User` / `0900000000` / `1 Nguyen Hue, Quận 1`. Nếu vẫn hiện giá trị cũ thì ghi chú lại cho tôi.
+3. Sửa các ô theo bảng. Để xóa một ô: Nhấn giữ trong ô → Chọn tất cả → Xóa.
+4. Bấm ˅ ở góc bàn phím để ẩn bàn phím, rồi bấm **"Cập nhật"**.
+5. Chụp ảnh, chạy `shot`, rồi chạy lệnh `get`.
+
+**2.1. TC-PROF-01** (kèm TC-PROF-91, thông báo thành công)
+```powershell
+python scripts/run_api_tests.py chuan --tag TC-PROF-01
+```
+- Họ Tên `Nguyen Van An 01`; Số điện thoại `0912345678`; Địa chỉ `12/3 Lê Lợi, Quận 1, TP.HCM` (gõ bằng bàn phím tiếng Việt).
+- Bấm Cập nhật. Chụp ngay khi thông báo đang hiện:
+```powershell
+shot S6_TC-PROF-01_1
+```
+- Bấm "EShop Mobile", rồi bấm "Chào, Test User". Chụp màn Hồ sơ:
+```powershell
+shot S6_TC-PROF-01_2
+python scripts/run_api_tests.py get --tag TC-PROF-01
+```
+
+**2.2. TC-PROF-04**
+```powershell
+python scripts/run_api_tests.py chuan --tag TC-PROF-04
+```
+- Họ Tên `<b>An 04</b>`; Số điện thoại `0912345678`; Địa chỉ không chạm.
+- Bấm Cập nhật, rời màn rồi mở lại. Chụp sao cho thấy cả ô Họ Tên và dòng "Chào, ..." trên thanh trên:
+```powershell
+shot S6_TC-PROF-04
+python scripts/run_api_tests.py get --tag TC-PROF-04
+```
+
+**2.3. TC-PROF-30**
+```powershell
+python scripts/run_api_tests.py chuan --tag TC-PROF-30
+```
+- Xóa trống Họ Tên; Số điện thoại `0912345678`.
+- Bấm Cập nhật. Chụp khi thông báo đang hiện, thấy cả nút Cập nhật:
+```powershell
+shot S6_TC-PROF-30
+python scripts/run_api_tests.py get --tag TC-PROF-30
+```
+
+**2.4. TC-PROF-32** (kèm TC-PROF-91, vị trí thông báo lỗi)
+```powershell
+python scripts/run_api_tests.py chuan --tag TC-PROF-32
+```
+- Họ Tên `Nguyen Van An 32`; Số điện thoại `1912345678`.
+- Bấm Cập nhật. Chụp sao cho thấy thông báo nằm trên hay dưới nút Cập nhật:
+```powershell
+shot S6_TC-PROF-32
+python scripts/run_api_tests.py get --tag TC-PROF-32
+```
+
+**2.5. TC-PROF-33**
+```powershell
+python scripts/run_api_tests.py chuan --tag TC-PROF-33
+```
+- Họ Tên `Nguyen Van An 33`; Số điện thoại `091234567` (9 số).
+- Bấm Cập nhật. Chụp khi thông báo hiện:
+```powershell
+shot S6_TC-PROF-33
+python scripts/run_api_tests.py get --tag TC-PROF-33
+```
+
+**2.6. TC-PROF-101**
+```powershell
+python scripts/run_api_tests.py chuan --tag TC-PROF-101
+```
+- Họ Tên `Nguyen Van An 101`; Số điện thoại `09123456789` (11 số).
+- Chụp ô Số điện thoại **trước khi bấm**:
+```powershell
+shot S6_TC-PROF-101_1
+```
+- Ẩn bàn phím, bấm Cập nhật. Chụp khi thông báo hiện:
+```powershell
+shot S6_TC-PROF-101_2
+python scripts/run_api_tests.py get --tag TC-PROF-101
+```
+
+**2.7. TC-PROF-34**
+```powershell
+python scripts/run_api_tests.py chuan --tag TC-PROF-34
+```
+- Họ Tên `Nguyen Van An 34`; gõ đủ `091234567890` (12 số). Nếu ô không nhận thêm thì cứ để như vậy.
+- Chụp ô **sau khi gõ**:
+```powershell
+shot S6_TC-PROF-34_1
+```
+- Ẩn bàn phím, bấm Cập nhật. Chụp khi thông báo hiện:
+```powershell
+shot S6_TC-PROF-34_2
+python scripts/run_api_tests.py get --tag TC-PROF-34
+```
+
+## Bước 3: Các test case API còn lại
+
+```powershell
+python scripts/run_api_tests.py run --only TC-PROF-71,TC-PROF-72,TC-PROF-73,TC-PROF-74,TC-PROF-75,TC-PROF-78,TC-PROF-79,TC-PROF-80,TC-PROF-102
+```
+
+Không cần chụp ảnh; log tự ghi vào `logs\`.
+
+## Bước 4: TC-PROF-90, làm cuối cùng trên điện thoại
+
+- Ở màn Hồ sơ: Nhấn giữ một chữ trong ô Họ Tên → Sao chép.
+- **(6)** Chạm vào ô Email, rồi nhấn giữ ô Email (xem có hiện menu "Dán" không; nếu có thì bấm Dán). Chụp:
+```powershell
+shot S6_TC-PROF-90_6
+```
+- **(7)** Bấm nút **"Thoát"**. Chụp màn hình ngay sau khi bấm:
+```powershell
+shot S6_TC-PROF-90_7
+```
+
+## Bước 5: Nhóm chạy cuối, rồi reset
+
+```powershell
+python scripts/run_api_tests.py last
+```
+
+Chạy xong thì **reset dữ liệu mẫu ngay** (khởi động lại backend) và **ghi giờ reset**.
+
+## Gửi lại cho tôi
+
+- Giờ reset ở bước 0.3 và bước 5.
+- Một dòng xác nhận "chụp đủ". Ảnh đã nằm trong `screenshots\` và log trong `logs\`, tôi tự đọc.
+- Ghi chú nếu có: Thông báo biến mất trước khi kịp chụp (ghi lại chữ trong thông báo), ô không hiện `S_CHUAN` sau khi mở lại, hoặc lệnh nào báo `!!`.
+
+Nếu lệnh `shot` báo lỗi (ví dụ đường dẫn ảnh trên máy bạn khác), cứ gửi ảnh với tên đúng như trên vào `screenshots\`, tôi xử lý phần còn lại.
+````
+
+---
+
+### C295 | 08:30 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Đã chụp ảnh xong và đang tạo issue.
+Phiên D: Tôi có hỏi vài câu hỏi và phiên D có trả lời, xuất log, kiểm tra và báo lại cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session D recent Q&A turns
+- Bash: Read the user's questions and first part of D reply
+- Bash: Read latest user question to D and first part of reply
+- Bash: Export log and check adb in PowerShell PATH
+
+**Output AI (nguyên văn):**
+
+````text
+Hướng dẫn của phiên D nhìn chung dùng được, nhưng **có một lỗi sẽ chặn bạn ngay ở bước 0.4**, và hai chỗ bạn nên bỏ qua. Tôi xuất log trước.
+
+Đã xác nhận 2 vấn đề: Trong PowerShell không có lệnh `adb`, và **điện thoại lại vừa mất kết nối** (`no devices`). Mất kết nối thì app trên điện thoại không gọi được backend, nên mọi test case giao diện sẽ báo lỗi mạng.
+
+Log đã xuất (295 lượt, đúng 5 phiên). Phiên D không có thao tác bị cấm; nó còn hỏi xin phép trước khi mở file của FR-01.
+
+## Sửa trước khi chạy D
+
+**1. Cắm lại cáp USB**, mở khoá màn hình điện thoại. Nếu điện thoại hỏi "Cho phép gỡ lỗi USB" thì chọn cho phép. Xong thì báo tôi, tôi chạy lại `adb reverse` và kiểm tra app gọi được backend.
+
+**2. Bỏ bước 0.3 (reset):** Tôi đã reset lúc **08:11**, và từ đó tới giờ chưa có gì đụng tới hồ sơ của `test@eshop.com`. Bạn báo phiên D giờ này.
+
+**3. Thay bước 0.4.** Lệnh `adb` không có trong PATH của PowerShell, nên lệnh `adb reverse` và hàm `shot` của phiên D sẽ báo lỗi "not recognized". Dán đoạn này vào PowerShell thay cho bước 0.4:
+
+```powershell
+cd D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile
+$adb = "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe"
+function shot($name) { $f = (& $adb shell "ls -t /sdcard/DCIM/Screenshots/ | head -n 1").Trim(); & $adb pull "/sdcard/DCIM/Screenshots/$f" "screenshots\$name.jpg" }
+```
+
+- Bỏ dòng `adb reverse` trong hướng dẫn của phiên D, vì tôi sẽ chạy giúp.
+- Hàm `shot` lưu ảnh với đuôi `.jpg`. **Bỏ luôn bước 0.1** (đổi định dạng ảnh trên điện thoại sang PNG). Chạy xong, tôi chuyển tất cả sang `.png` một lần.
+
+**4. Bước 0.2 (bàn phím tiếng Việt):** Vẫn nên làm, mất khoảng 1 phút. Địa chỉ có dấu là dữ liệu cơ sở của TC-PROF-01.
+
+**5. Bước 5 (reset sau lệnh `last`):** Không tự khởi động lại backend. Chạy xong `last` thì báo tôi reset.
+
+Các bước còn lại (lệnh `chuan`, `get`, `run`, `last`, cách chụp từng test case) giữ nguyên như hướng dẫn của phiên D.
+
+## Phiên B
+
+Tạo xong 18 issue thì gửi số issue cho phiên B, theo dạng `BUG-FR07-01: #xx, ...`.
+````
+
+---
+
+### C296 | 08:39 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Đã cắm lại USB. Với những lỗi của phiên D kết hợp với hướng dẫn đã có, bạn viết lại từng bước 1 đúng luôn đi, tôi sẽ chỉ chụp và báo lại reset lúc nào thôi, đỡ phải nhảy qua nhảy lại 2 phiên.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Reconnect adb reverse, test phone reachability, check script help
+- Bash: Dry-run D API script to confirm it works
+- Bash: Relaunch EShop app in Expo Go
+
+**Output AI (nguyên văn):**
+
+````text
+Script chạy thử ổn: Không gửi gì, không tạo log. Tôi mở lại app EShop trên điện thoại để nó kết nối lại sau khi bạn cắm cáp.
+
+Điện thoại đã kết nối, `adb reverse` đã bật, app EShop vừa được mở lại trong Expo Go. Dữ liệu được reset lúc **08:11**. Đây là toàn bộ các bước đã sửa, bạn chỉ cần làm theo từ trên xuống và không phải quay lại phiên D.
+
+## Bước 0: Chuẩn bị (một lần)
+
+**Trên điện thoại:**
+- Nếu app không tự hiện trang EShop thì mở Expo Go, chọn lại project.
+- Đăng nhập `test@eshop.com` / `Test1234!`.
+- Bật bàn phím tiếng Việt (khoảng 1 phút), vì địa chỉ ở bước 2.1 có dấu: Vào **Cài đặt**, **Quản lý chung**, **Cài đặt Bàn phím Samsung**, **Ngôn ngữ và kiểu bàn phím**, **Quản lý ngôn ngữ nhập**, bật **Tiếng Việt**. Khi gõ, vuốt phím cách để đổi ngôn ngữ.
+
+**Mở PowerShell, dán nguyên khối này:**
+
+```powershell
+cd D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile
+$adb = "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe"
+function shot($name) { $f = (& $adb shell "ls -t /sdcard/DCIM/Screenshots/ | head -n 1").Trim(); & $adb pull "/sdcard/DCIM/Screenshots/$f" "screenshots\$name.jpg" }
+```
+
+Cách chụp: Bấm **Nguồn + Giảm âm lượng** trên điện thoại, rồi gõ `shot <tên>` trong PowerShell. Ảnh sẽ được kéo về với đúng tên. Đuôi `.jpg` để nguyên, cuối cùng tôi chuyển sang `.png`.
+
+## Bước 1: Chạy TC-PROF-70 qua API
+
+```powershell
+python scripts/run_api_tests.py run --only TC-PROF-70
+```
+
+Xem dòng `=> Gợi ý TC-PROF-70`. Nếu thấy `!! Không đặt được S_CHUAN` thì dừng lại và báo tôi.
+
+## Bước 2: 7 test case trên điện thoại
+
+**Vòng chung cho mỗi test case:**
+1. Chạy lệnh `chuan` của test case đó.
+2. Trên điện thoại: Bấm "EShop Mobile", rồi bấm **"Chào, Test User"** để mở lại Hồ sơ. Các ô phải hiện `Test User`, `0900000000`, `1 Nguyen Hue, Quận 1`.
+3. Sửa các ô theo bảng. Muốn xóa một ô thì nhấn giữ trong ô, chọn tất cả, rồi xóa.
+4. Bấm **˅** ở góc bàn phím để ẩn bàn phím, rồi bấm **"Cập nhật"**.
+5. Chụp và chạy `shot`, sau đó chạy lệnh `get`.
+
+| TC | Lệnh trước | Sửa các ô | Chụp và lệnh sau |
+|---|---|---|---|
+| **01** | `python scripts/run_api_tests.py chuan --tag TC-PROF-01` | Họ Tên `Nguyen Van An 01`; Số điện thoại `0912345678`; Địa chỉ `12/3 Lê Lợi, Quận 1, TP.HCM` | Chụp khi thông báo đang hiện, `shot S6_TC-PROF-01_1`. Bấm "EShop Mobile", rồi "Chào, ...", chụp Hồ sơ, `shot S6_TC-PROF-01_2`. Chạy `python scripts/run_api_tests.py get --tag TC-PROF-01` |
+| **04** | `... chuan --tag TC-PROF-04` | Họ Tên `<b>An 04</b>`; Số điện thoại `0912345678`; Địa chỉ không đụng | Bấm Cập nhật, rời màn rồi mở lại. Chụp sao cho thấy cả ô Họ Tên và dòng "Chào, ..." trên thanh trên, `shot S6_TC-PROF-04`. Chạy `... get --tag TC-PROF-04` |
+| **30** | `... chuan --tag TC-PROF-30` | **Xóa trống** Họ Tên; Số điện thoại `0912345678` | Chụp khi thông báo hiện, thấy cả nút Cập nhật, `shot S6_TC-PROF-30`. Chạy `... get --tag TC-PROF-30` |
+| **32** | `... chuan --tag TC-PROF-32` | Họ Tên `Nguyen Van An 32`; Số điện thoại `1912345678` | Chụp sao cho thấy thông báo nằm trên hay dưới nút Cập nhật, `shot S6_TC-PROF-32`. Chạy `... get --tag TC-PROF-32` |
+| **33** | `... chuan --tag TC-PROF-33` | Họ Tên `Nguyen Van An 33`; Số điện thoại `091234567` (9 số) | Chụp khi thông báo hiện, `shot S6_TC-PROF-33`. Chạy `... get --tag TC-PROF-33` |
+| **101** | `... chuan --tag TC-PROF-101` | Họ Tên `Nguyen Van An 101`; Số điện thoại `09123456789` (11 số) | Chụp ô số **trước khi bấm**, `shot S6_TC-PROF-101_1`. Bấm Cập nhật, chụp thông báo, `shot S6_TC-PROF-101_2`. Chạy `... get --tag TC-PROF-101` |
+| **34** | `... chuan --tag TC-PROF-34` | Họ Tên `Nguyen Van An 34`; gõ `091234567890` (12 số). Ô không nhận thêm thì để vậy | Chụp ô **sau khi gõ**, `shot S6_TC-PROF-34_1`. Bấm Cập nhật, chụp thông báo, `shot S6_TC-PROF-34_2`. Chạy `... get --tag TC-PROF-34` |
+
+(`...` là `python scripts/run_api_tests.py`.) Nếu thông báo biến mất trước khi kịp chụp, ghi lại chữ trong thông báo rồi báo tôi.
+
+## Bước 3: Các test case API còn lại
+
+```powershell
+python scripts/run_api_tests.py run --only TC-PROF-71,TC-PROF-72,TC-PROF-73,TC-PROF-74,TC-PROF-75,TC-PROF-78,TC-PROF-79,TC-PROF-80,TC-PROF-102
+```
+
+Không cần chụp.
+
+## Bước 4: TC-PROF-90 (làm sau cùng trên điện thoại)
+
+1. Ở màn Hồ sơ, nhấn giữ một chữ trong ô Họ Tên, chọn **Sao chép**.
+2. Chạm vào ô Email, rồi nhấn giữ ô Email. Nếu hiện menu "Dán" thì bấm Dán. Chụp, `shot S6_TC-PROF-90_6`.
+3. Bấm nút đỏ **"Thoát"**. Chụp ngay màn hình hiện ra sau đó, `shot S6_TC-PROF-90_7`.
+
+## Bước 5: Nhóm chạy cuối
+
+```powershell
+python scripts/run_api_tests.py last
+```
+
+**Chạy xong thì báo tôi, tôi reset ngay.** Không tự khởi động lại backend.
+
+## Gửi tôi khi xong
+
+- Câu "Xong D, chụp đủ", kèm ghi chú nếu có lệnh nào báo `!!`, hoặc ô Hồ sơ không hiện đúng giá trị chuẩn.
+- Tôi sẽ reset, chuyển ảnh sang `.png`, kiểm đủ ảnh và log, rồi soạn sẵn tin nhắn để bạn gửi phiên D điền kết quả.
+````
+
+---
+
+### C297 | 08:50 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Hình như tôi làm sai rồi, tôi chạy mỗi chuan mà chưa chạy get. Có cần làm lại từ đầu không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List D logs and screenshots with times
+- Bash: List newest phone screenshots and check chuan log
+
+**Output AI (nguyên văn):**
+
+````text
+Không cần làm lại từ đầu. Tôi xem log để biết test case nào đã chạy `chuan` mà thiếu `get`.
+
+Không cần làm lại. Tôi xem log và ảnh trên điện thoại thì thấy:
+
+- `chuan` đã chạy cho TC-PROF-01, 04 và 30; `get` chưa chạy lần nào.
+- Trên điện thoại có 5 ảnh chụp lúc 08:46 đến 08:48, nhưng chưa ảnh nào được kéo về máy. Có vẻ lệnh `shot` chưa chạy.
+
+**Làm ngay bây giờ** (trước khi chạy `chuan` của test case tiếp theo):
+
+```powershell
+python scripts/run_api_tests.py get --tag TC-PROF-30
+```
+
+Dữ liệu trên server lúc này vẫn là kết quả của TC-PROF-30, nên `get` vẫn đọc đúng.
+
+**TC-PROF-01 và 04: Bỏ qua, không làm lại.**
+- Dữ liệu của hai test case này đã bị lệnh `chuan` sau ghi đè, nên `get` không còn đọc lại được.
+- Nhưng ảnh chụp sau khi mở lại Hồ sơ đã cho thấy giá trị app lấy từ server. Ảnh đó đủ làm bằng chứng.
+- Khi gửi phiên D điền, tôi sẽ ghi rõ "không có log `get`, bằng chứng là ảnh sau khi mở lại".
+
+**Từ giờ:**
+- Nhớ chạy `get` ngay sau mỗi test case, trước `chuan` của test case tiếp theo.
+- **Không cần gõ `shot` nữa.** Bạn cứ chụp trên điện thoại theo đúng thứ tự trong bảng. Cuối cùng tôi kéo hết ảnh về, xem từng ảnh để đặt tên, như lần S0.
+
+Còn một phát hiện từ log: Phản hồi của API đăng nhập và `GET /api/users/me` **có trường `password`**. Script che giá trị nên chưa biết là mật khẩu thật hay đã băm, nhưng trả trường này về đã là dấu hiệu lộ dữ liệu. Tôi sẽ nhắc phiên D xét điểm này ở S7.
+````
+
+---
+
+### C298 | 08:54 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Xong rồi. Bạn kiểm tra đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List D logs, screenshots, phone shots
+- Bash: Pull D S6 screenshots and summarize get logs
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_s6\084744.jpg
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_s6\084812.jpg
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_s6\085319.jpg
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_s6\085352.jpg
+- Bash: Name and convert D S6 screenshots
+
+**Output AI (nguyên văn):**
+
+````text
+Các ảnh khớp với thứ tự thời gian của log. Tôi đặt tên và chuyển sang PNG.
+
+Đã đặt tên và lưu 11 ảnh. Nhưng **bước 3, 4, 5 chưa chạy**: Chưa có log của các test case API còn lại, chưa có ảnh TC-PROF-90, chưa chạy lệnh `last`. Bây giờ là 08:56.
+
+## Làm tiếp (trong cửa sổ PowerShell đang mở)
+
+**Bước 3:**
+
+```powershell
+python scripts/run_api_tests.py run --only TC-PROF-71,TC-PROF-72,TC-PROF-73,TC-PROF-74,TC-PROF-75,TC-PROF-78,TC-PROF-79,TC-PROF-80,TC-PROF-102
+```
+
+**Bước 4 (TC-PROF-90) trên điện thoại:**
+1. Nhấn giữ một chữ trong ô Họ Tên, chọn Sao chép.
+2. Nhấn giữ ô Email, nếu có "Dán" thì bấm. Chụp màn hình.
+3. Bấm nút đỏ "Thoát". Chụp ngay màn hình hiện ra.
+
+Không cần gõ `shot`, tôi kéo ảnh về sau.
+
+**Bước 5:**
+
+```powershell
+python scripts/run_api_tests.py last
+```
+
+Xong thì báo tôi để reset.
+
+## Những gì tôi thấy trong ảnh (để phiên D xét khi điền)
+
+- **Thông báo lỗi của app ghi "Vui lòng nhập đúng 9-10 chữ số"**, trong khi đặc tả FR-04 ghi **10–11 chữ số**. TC-PROF-101 (11 chữ số, hợp lệ) bị báo lỗi này.
+- Ở TC-PROF-04, số `0912345678` (10 chữ số, hợp lệ cả theo đặc tả lẫn theo câu thông báo) cũng bị báo cùng lỗi.
+- Ảnh `S6_TC-PROF-04_2` (sau khi mở lại Hồ sơ) có ô Địa chỉ **trống**, trong khi dữ liệu chuẩn vừa đặt qua API là `1 Nguyen Hue, Quận 1`. Có thể app không tải lại hồ sơ từ server khi mở màn hình.
+
+Đây là điều tôi quan sát được; kết luận Pass hay Fail để phiên D xét.
+
+## Ghi chú về log (gửi kèm phiên D)
+
+- Lệnh `chuan` lúc 08:53:21 bị gắn nhãn TC-PROF-33, nhưng thực ra là của TC-PROF-101.
+- Lệnh `get` TC-PROF-101 lúc 08:53:29 chạy **trước** khi thao tác trên app nên bỏ qua; lần lúc 08:53:58 mới là kết quả thật.
+- TC-PROF-01, 04 và 33 không có log `get`.
+
+Sau khi bạn chạy `last` và tôi reset xong, tôi sẽ soạn sẵn nguyên tin nhắn cho phiên D, gồm cả các ghi chú này, để bạn dán một lần.
+````
+
+---
+
+### C299 | 08:59 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Lệnh chuan lúc 08:53:21 bị gắn nhãn TC-PROF-33, nhưng thực ra là của TC-PROF-101.
+Lệnh get TC-PROF-101 lúc 08:53:29 chạy trước khi thao tác trên app nên bỏ qua; lần lúc 08:53:58 mới là kết quả thật.
+TC-PROF-01, 04 và 33 không có log get.
+Tôi đã bổ sung hết ảnh chụp rồi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List logs and screenshots
+- Bash: Read run, chuan and get logs
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-01_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-01_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-04_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-04_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-30.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-32.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-33.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-101_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-101_2.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-34_1.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\S6_TC-PROF-34_2.png
+- Bash: Extract pre-chuan profile from each chuan log's login response
+- Bash: Fill run results into 06_results.md
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\fill_s6.py
+- Bash: Run fill script on 06_results.md and verify
+- Bash: Locate Blocked and Pass cells
+- Bash: Mark UI rows outside minimal list as Not run
+- Bash: Spot-check two Not run rows
+- Bash: Fix punctuation in TC-104 note
+
+**Output AI (nguyên văn):**
+
+````text
+Đã đọc xong log: TC-PROF-70 đạt, GET có trả `role` và `id`. Riêng TC-PROF-101: Lần get lúc 08:53:58 vẫn ra Số điện thoại `0900000000`. Giờ tôi xem ảnh.
+
+Lệnh bị lỗi cú pháp shell khi truyền đoạn Python dài qua heredoc. Tôi ghi đoạn Python ra file tạm rồi chạy file đó.
+
+Tôi đã điền kết quả vào [06_results.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/06_results.md). Phát hiện lớn nhất: **Ứng dụng từ chối cả Số điện thoại hợp lệ.** Ngoài ra nhóm API (E, G) và TC-PROF-90 điểm (6), (7) chưa có log và ảnh, nên chưa có kết quả.
+
+**Kết quả từng test case** (trạng thái do AI đề xuất, bạn review):
+
+| Test case | Kết quả | Trạng thái |
+|---|---|---|
+| TC-PROF-70 (API) | HTTP 200, lưu đúng | Pass |
+| TC-PROF-01 | `0912345678` (10 số, hợp lệ) bị chặn: "Số điện thoại không hợp lệ. Vui lòng nhập đúng 9-10 chữ số." | **Fail** |
+| TC-PROF-101 | Số 11 chữ số bị chặn với cùng thông báo | **Fail** |
+| TC-PROF-04, 30 | Lỗi báo về Số điện thoại cơ sở, nên không kiểm được Họ Tên | Blocked |
+| TC-PROF-32 | `1912345678` qua được kiểm tra của app, backend từ chối với thông báo "Lỗi cập nhật" | Pass |
+| TC-PROF-33, 34 | Bị từ chối, không lưu. Ô Số điện thoại nhận đủ 12 chữ số | Pass |
+| TC-PROF-91 | Thông báo bằng tiếng Việt; hộp thoại nằm giữa màn hình, phía trên nút | Pass (đề xuất) |
+| TC-PROF-90 | Điểm (4) không có `*`, điểm (5) không làm nổi mục đang chọn | Fail (đề xuất) |
+
+- Cùng số `0912345678` gửi qua API ở TC-PROF-70 thì được lưu. Vậy kiểm tra Số điện thoại của app trái đặc tả (FR-04 ghi 10 đến 11 chữ số). Đây là ứng viên bug cho S7.
+- Tôi ghi trong file một giả thuyết, chưa kiểm: App chỉ nhận số **không** bắt đầu bằng `0`, còn backend lại đòi bắt đầu bằng `0`. Nếu đúng thì không có số điện thoại nào lưu được qua app.
+
+**Tôi đã áp các ghi chú của bạn:**
+- Log `chuan` lúc 08:53:21 được tính cho TC-PROF-101.
+- Bỏ lần `get` lúc 08:53:29.
+- TC-PROF-01, 04 và 33 không có log `get`. Tôi kiểm việc "không lưu" bằng phản hồi đăng nhập trong log `chuan` của test case kế tiếp; cả ba lần đều ra `S_CHUAN`.
+- Ở TC-PROF-101 bạn gõ `09123453789` thay vì `09123456789`. Số này vẫn có 11 chữ số và bắt đầu bằng `0`, nên kết quả vẫn dùng được; tôi đã ghi chú.
+- Các test case giao diện ngoài danh sách tối thiểu đã ghi Not run.
+
+**Mục 6, ba quan sát ngoài test case:**
+- QS01: Thông báo nói "9-10 chữ số", khác đặc tả (10 đến 11).
+- QS02: API trả về cả trường `password` (script đã che giá trị), cùng `reset_token`.
+- QS03: Trong ảnh, ô Địa chỉ trống dù hệ thống đang lưu `1 Nguyen Hue, Quận 1`.
+
+**Tạm tính:** 5 Pass, 3 Fail, 2 Blocked, 24 Not run.
+
+**Cần bạn trả lời:**
+1. **Nhóm E, nhóm G và TC-PROF-90 điểm (6), (7)** là bạn bỏ qua, hay sẽ chạy? Nếu chạy:
+   ```powershell
+   python scripts/run_api_tests.py run --only TC-PROF-71,TC-PROF-72,TC-PROF-73,TC-PROF-74,TC-PROF-75,TC-PROF-78,TC-PROF-79,TC-PROF-80,TC-PROF-102
+   ```
+   Sau đó làm TC-PROF-90 điểm (6), (7) trên điện thoại (`shot S6_TC-PROF-90_6`, `shot S6_TC-PROF-90_7`), rồi chạy `python scripts/run_api_tests.py last` và reset dữ liệu ngay. Riêng nhóm E sẽ cho biết backend có xử lý đúng số 11 chữ số không (TC-PROF-102).
+2. **QS03:** Sau khi chạy `chuan` và mở lại màn Hồ sơ, các ô có hiện `0900000000` và `1 Nguyen Hue, Quận 1` không?
+3. **TC-PROF-91:** Hộp thoại nằm giữa màn hình có tính là thông báo "trên nút submit" theo FR04-R14 không?
+4. **Giờ reset** trước đợt chạy.
+
+Nếu còn thời gian, nên chạy thêm TC-PROF-06 (xóa trống Số điện thoại, đổi Họ Tên). Test case này đã có trong thiết kế, và nó cho biết app còn lưu được hồ sơ không khi không nhập số điện thoại.
+````
+
+---
+
+### C300 | 09:00 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã xong issue, bổ sung ảnh cho bạn, đổi tên cho đúng format giúp tôi. Và dựa vào đó cập nhật số issue luôn đi. Nếu thiếu issue nào thì nói tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List screenshots with times
+- Bash: Check PIL and image size
+- Bash: Build contact sheets of issue page headers
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\sheet0.png
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\sheet1.png
+- Bash: Build contact sheet of log screenshots
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\logs_sheet.png
+- Bash: Rename log and issue screenshots to convention
+- Bash: Fill issue numbers and image references in FR-07 section
+- Bash: Verify image references exist on disk
+
+**Output AI (nguyên văn):**
+
+````text
+Đủ 18 issue, từ #67 đến #84, đúng thứ tự BUG-FR07-01 đến 18 (mình đối chiếu tiêu đề trên từng ảnh). Giờ xem 5 ảnh log để đặt tên cho đúng.
+
+Đã cập nhật xong. **Không thiếu issue nào:** 18 bug ứng với #67 đến #84, đúng thứ tự BUG-FR07-01 đến 18. Mình đã đối chiếu tiêu đề trên từng ảnh trang issue.
+
+**Đổi tên ảnh** trong `features/B_FR-07_GioHang/screenshots/`:
+- **18 ảnh trang issue:** `github.com_angquoc_..._issues_NN.png` đổi thành `S7_issue_67.png` đến `S7_issue_84.png`, theo quy ước ở mục 5 của WORKFLOW.
+- **Một ảnh log đặt nhầm tên:** `S6_TC-CART-31_log_2.png` đổi thành `S6_TC-CART-50_log_2.png`. Nội dung ảnh là phần sau phản hồi `GET /api/cart` trong log `075653` (của TC-CART-50), nối tiếp `S6_TC-CART-50_log_1.png`, không phải log của TC-CART-31.
+- **3 ảnh đã đúng tên:** `S6_TC-CART-30_log.png`, `31_log.png` và `51_log.png`.
+
+**Trong `bugs/bug_report.md` (mục FR-07):**
+- **Bảng tổng hợp:** Cột Issue đã điền #67 đến #84.
+- **Từng bug:** Có thêm dòng `**Issue:** #NN (ảnh trang issue: ...S7_issue_NN.png)` như mục FR-17. Vì bạn đã chụp ảnh trang issue, mình bỏ câu "sinh viên không chụp ảnh trang issue" thêm ở lượt trước.
+- **Ô Ảnh chụp:** Bỏ hết các chỗ "Chưa có (ảnh cần chụp...)", thay bằng ảnh log thật: BUG-01 (31_log, 50_log_1, 50_log_2), BUG-02 (51_log), BUG-03 (30_log), BUG-08 (50_log_1, 50_log_2).
+- **BUG-03:** Related đổi thành số thật: `#67 (BUG-FR07-01), #68 (BUG-FR07-02)`.
+
+Mình đã kiểm lại: Mọi ảnh được nhắc trong mục FR-07 đều có trong thư mục `screenshots`. Phần FR-01 và FR-17 không đổi.
+
+**Lưu ý:** Các issue đã đăng trên GitHub vẫn ghi theo bản cũ:
+- Ô Ghi chú của BUG-03 (#69) vẫn là "Related: BUG-FR07-01, BUG-FR07-02 (số issue điền sau khi tạo)".
+- Ô Ảnh chụp của BUG-01, 02, 03, 08 vẫn có dòng "Chưa có (ảnh cần chụp...)" (nếu khi tạo bạn chưa xóa đi).
+
+Nếu muốn khớp với file thì bạn sửa trực tiếp trên GitHub: Đổi ô Ghi chú của #69 thành `Related: #67, #68`, và xóa dòng "Chưa có" ở các issue đó.
+````
+
+---
+
+### C301 | 09:05 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Đã xong rồi, xuất log, báo cáo cho tôi. Issue tạo rồi thì khỏi sửa đi, tốn thời gian. Cũng không phải sai nghiêm trọng.
+Phiên D: Cũng đã xong, xuất log, kiểm tra và báo cáo cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read sessions B and D latest turns and D logs
+- Bash: Verify B issue screenshots and bug report references
+- Bash: Update tracker for B S7 and D S6
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên B đã xong S7. Phiên D đã điền kết quả phần giao diện, nhưng **nhóm API còn lại và lệnh `last` vẫn chưa chạy**. Log đã xuất (301 lượt, đúng 5 phiên), TRACKER đã cập nhật.
+
+## Phiên B: S7 xong
+
+- **Đủ 18 issue, #67 đến #84**, đúng thứ tự BUG-FR07-01 đến 18. Có đủ 18 ảnh trang issue và 5 ảnh log.
+- Phiên B phát hiện một ảnh log bị đặt nhầm tên và đã sửa (`31_log_2` đổi thành `50_log_2`).
+- Tôi kiểm lại: Mọi ảnh nhắc trong `bug_report.md` đều có thật; mục FR-07 không còn chỗ nào thiếu số issue.
+- **Không sửa các issue đã đăng**, như bạn quyết định. Tôi đã ghi lại quyết định này.
+
+**Dán vào phiên B để sang S8:**
+
+```text
+Sang S8 cho FR-07. Viết 08_gap_analysis.md (bản AI lưu ai_raw/S8_gap_analysis.md), cấu trúc như S8 của FR-17 (được đọc C_FR-17_QuanLyCoupon/08_gap_analysis.md để lấy cấu trúc): Thống kê bảng "Thay đổi so với bản AI" S0 đến S5 theo Loại và người phát hiện; test case AI bỏ sót và nguyên nhân (input, giới hạn công cụ, độ phức tạp); bug nào bản AI gốc bắt được; giới hạn kết quả (S6 rút gọn, Not run); 3 đến 5 bài học. Gọn, không dài. Không cần đưa lệnh commit.
+```
+
+## Phiên D: Chạy nốt (khoảng 1 phút)
+
+Trong PowerShell đang mở:
+
+```powershell
+python scripts/run_api_tests.py run --only TC-PROF-71,TC-PROF-72,TC-PROF-73,TC-PROF-74,TC-PROF-75,TC-PROF-78,TC-PROF-79,TC-PROF-80,TC-PROF-102
+python scripts/run_api_tests.py last
+```
+
+- Lệnh thứ nhất có TC-PROF-102, gửi số 11 chữ số qua API. Kết quả cho biết lỗi số điện thoại nằm ở app hay ở cả server.
+- **Bỏ TC-PROF-90 điểm (6), (7) và TC-PROF-06**, ghi Not run cho kịp giờ.
+- Chạy xong `last` thì báo tôi reset.
+
+**Sau khi tôi reset, dán vào phiên D** (đã trả lời sẵn 4 câu nó hỏi):
+
+```text
+1. Đã chạy nhóm E (run --only ...) và nhóm G (last); xem log mới trong logs/. TC-PROF-90 điểm (6), (7) và TC-PROF-06: Not run, sinh viên bỏ vì thiếu thời gian. Reset sau nhóm G lúc [giờ phiên điều phối báo].
+2. QS03: Không. Ảnh S6_TC-PROF-04_2 (chụp sau khi mở lại màn Hồ sơ) cho thấy ô Địa chỉ trống, dù server đang lưu "1 Nguyen Hue, Quận 1".
+3. TC-PROF-91: Hộp thoại nằm giữa màn hình, phía trên nút "Cập nhật", không nằm bên dưới; tính là Pass, ghi chú đây là hộp thoại của hệ thống.
+4. Reset trước đợt chạy: 08:11 21/10/2026.
+Điền nốt 06_results.md, đếm tổng hợp, rồi sang S7: Thêm mục FR-04 vào bugs/bug_report.md theo cấu trúc mục FR-17 (platform: mobile, pool: D; xét cả QS01 đến QS03), và tạo trang HTML link issue như FR-07 (C:/Users/Lenovo/AppData/Local/Temp/claude/d--Dang-Test/709e0d24-6893-4a96-8d81-6ef43586ae51/scratchpad/s7/make_issue_links_fr07.py). Không tự tạo issue. Không cần đưa lệnh commit.
+```
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+```
+git add bugs/bug_report.md features/B_FR-07_GioHang/screenshots prompt_log.md
+git commit -m "[B-FR07][S7] Link GitHub issues for FR-07 bugs"
+```
+
+Phần S6 của D (ảnh, log, `06_results.md`) commit sau khi chạy nốt hai lệnh và phiên D điền xong.
+````
+
+---
+
+### C302 | 09:06 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S8 cho FR-07. Viết 08_gap_analysis.md (bản AI lưu ai_raw/S8_gap_analysis.md), cấu trúc như S8 của FR-17 (được đọc C_FR-17_QuanLyCoupon/08_gap_analysis.md để lấy cấu trúc): Thống kê bảng "Thay đổi so với bản AI" S0 đến S5 theo Loại và người phát hiện; test case AI bỏ sót và nguyên nhân (input, giới hạn công cụ, độ phức tạp); bug nào bản AI gốc bắt được; giới hạn kết quả (S6 rút gọn, Not run); 3 đến 5 bài học. Gọn, không dài. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read FR-17 gap analysis for structure
+- Bash: Count change table rows per step
+- Bash: Get time and list S6 observations
+- Bash: Locate observation rows in results
+- Write: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\ai_raw\S8_gap_analysis.md
+- Bash: Copy S8 to review file and check format
+
+**Output AI (nguyên văn):**
+
+````text
+Đã viết xong S8: [08_gap_analysis.md](Homeworks/HW02/features/B_FR-07_GioHang/08_gap_analysis.md), giống hệt bản AI `ai_raw/S8_gap_analysis.md`. Script kiểm tra định dạng không báo lỗi. Bố cục theo S8 của FR-17, gồm 5 mục.
+
+**1. Bảng thay đổi S0 đến S5:** Có 25 dòng.
+- 23 dòng là "Quyết định của SV", vì từ S2 bạn chấp nhận toàn bộ đề xuất.
+- 2 dòng "Thiếu", cùng một chỗ là FR07-R33 và OUT15. Cả hai do phiên điều phối `305c705a` phát hiện.
+- Mình thêm mục 1.3 ghi 3 lỗi AI tự sửa trước khi giao, không có trong bảng thay đổi. Đáng chú ý nhất là lỗi tính ở S4 ("không tạo được đúng 1 tỷ").
+
+**2. Chỗ AI bỏ sót và nguyên nhân:** 6 dòng, chia theo nguyên nhân như sau:
+
+| Nguyên nhân | Số dòng | Nội dung |
+|---|---|---|
+| Giới hạn của công cụ AI | 3 | Chia phạm vi theo trang nên bỏ FR-24 ý 1; checklist nút "Tiếp tục mua sắm" chỉ xét giỏ trống; tiền điều kiện nối tiếp làm sai giá trị mong đợi khi test case đầu tiên Fail |
+| Độ phức tạp của feature | 2 | Giỏ có được giữ sau khi tải lại trang không (Q14) không có lớp nào; cách kiểm chứng K1 giả định giỏ Web và giỏ API là một |
+| Chất lượng input/prompt | 1 | Thêm trùng qua trang chủ và API không được thiết kế, do bạn giới hạn mỗi đường một đại diện (ghi rõ đây không phải AI bỏ sót) |
+
+**3. Bug:** Bộ test case AI thiết kế bắt trực tiếp được 15/18 bug. 3 bug còn lại:
+- **BUG-12:** Cần Output OUT15 do phiên điều phối bổ sung ở S1.
+- **BUG-08:** Chỉ bắt được một phần; việc giỏ mất sau khi tải lại không có test case, lộ ra nhờ script so giỏ trước và sau.
+- **BUG-11:** Thành bug từ đề xuất KG04 ở S7, không phải từ một test case Fail.
+
+**4. Giới hạn:** S6 có 8 test case Not run, trong đó 4/5 test case giá trị biên qua giao diện. Một số test case chạy với tiền điều kiện khác kế hoạch, một số trạng thái dùng lại ảnh S0. Bảng quan sát S0 do AI điền theo yêu cầu của bạn. Bảng thay đổi ít dữ liệu để đánh giá đề xuất của AI.
+
+**5. Bài học:** 4 ý:
+- Chia phạm vi theo nút chứ không theo trang.
+- Không dùng một hành vi chưa được kiểm (tải lại trang) làm cách kiểm chứng.
+- Chuỗi tiền điều kiện nối tiếp tiết kiệm thời gian nhưng dễ gãy khi test case đầu tiên Fail.
+- Áp đề xuất hàng loạt giúp kịp giờ nhưng làm mất dấu vết review; khi gấp vẫn nên đọc kỹ các đề xuất loại bỏ biến.
+````
+
+---
+
+### C303 | 09:07 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Đã chạy xong lệnh trong powershell bạn nói.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Confirm last-group log exists
+- TaskStop
+- Bash: Restart backend to reseed DB
+- Bash: Confirm reseed and summarize API results
+
+**Output AI (nguyên văn):**
+
+````text
+Đã reset lúc **09:07**. Dữ liệu mẫu được tạo lại, `test@eshop.com` trở về vai trò `user`. Log không lộ token.
+
+## Kết quả nhóm API của D (dòng "Gợi ý" do script so tự động; phiên D sẽ xét lại)
+
+| Test case | Gợi ý | Ý nghĩa |
+|---|---|---|
+| **77** | Không đạt | **User thường tự đổi `role` thành `admin` qua API.** Đây là lỗi vượt quyền, nhiều khả năng Critical |
+| 73, 74, 75 | Không đạt | API nhận số điện thoại sai (không bắt đầu bằng `0`, thiếu chữ số...) |
+| 71, 72 | Không đạt | Lỗi khi body thiếu trường |
+| 102 | Đạt | API nhận số 11 chữ số. Vậy lỗi chặn số hợp lệ nằm ở **app**, không phải ở server |
+| 76, 78, 79, 80 | Đạt | Không đổi được email; thiếu hoặc sai token thì bị chặn; không sửa được hồ sơ người khác |
+
+## Dán vào phiên D (đã điền sẵn giờ reset)
+
+```text
+1. Đã chạy nhóm E (log S6_run_20261021_090657.log) và nhóm G (log S6_last_20261021_090658.log). Phiên điều phối reset ngay sau nhóm G lúc 09:07 21/10/2026 (sau TC-PROF-77, test@eshop.com đã có role admin; reset đưa về user). TC-PROF-90 điểm (6), (7) và TC-PROF-06: Not run, sinh viên bỏ vì thiếu thời gian.
+2. QS03: Không. Ảnh S6_TC-PROF-04_2 (chụp sau khi mở lại màn Hồ sơ) cho thấy ô Địa chỉ trống, dù server đang lưu "1 Nguyen Hue, Quận 1".
+3. TC-PROF-91: Hộp thoại nằm giữa màn hình, phía trên nút "Cập nhật", không nằm bên dưới; tính là Pass, ghi chú đây là hộp thoại của hệ thống.
+4. Reset trước đợt chạy: 08:11 21/10/2026.
+Điền nốt 06_results.md từ 2 log mới, đếm tổng hợp, rồi sang S7: Thêm mục FR-04 vào bugs/bug_report.md theo cấu trúc mục FR-17 (platform: mobile, pool: D; xét cả QS01 đến QS03), và tạo trang HTML link issue như FR-07 (C:/Users/Lenovo/AppData/Local/Temp/claude/d--Dang-Test/709e0d24-6893-4a96-8d81-6ef43586ae51/scratchpad/s7/make_issue_links_fr07.py). Không tự tạo issue. Không cần đưa lệnh commit.
+```
+
+**Lưu ý thời gian:** Bây giờ là 09:07. Phiên B và D có thể làm song song: B viết S8, D điền S6 rồi viết S7. Trong lúc chờ, bạn có thể bắt đầu đọc `report.md` (phần AI Critique và Disclosure).
+````
+
+---
+
+### C304 | 09:09 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Đã chạy nhóm E (log S6_run_20261021_090657.log) và nhóm G (log S6_last_20261021_090658.log). Phiên điều phối reset ngay sau nhóm G lúc 09:07 21/10/2026 (sau TC-PROF-77, test@eshop.com đã có role admin; reset đưa về user). TC-PROF-90 điểm (6), (7) và TC-PROF-06: Not run, sinh viên bỏ vì thiếu thời gian.
+2. QS03: Không. Ảnh S6_TC-PROF-04_2 (chụp sau khi mở lại màn Hồ sơ) cho thấy ô Địa chỉ trống, dù server đang lưu "1 Nguyen Hue, Quận 1".
+3. TC-PROF-91: Hộp thoại nằm giữa màn hình, phía trên nút "Cập nhật", không nằm bên dưới; tính là Pass, ghi chú đây là hộp thoại của hệ thống.
+4. Reset trước đợt chạy: 08:11 21/10/2026.
+Điền nốt 06_results.md từ 2 log mới, đếm tổng hợp, rồi sang S7: Thêm mục FR-04 vào bugs/bug_report.md theo cấu trúc mục FR-17 (platform: mobile, pool: D; xét cả QS01 đến QS03), và tạo trang HTML link issue như FR-07 (C:/Users/Lenovo/AppData/Local/Temp/claude/d--Dang-Test/709e0d24-6893-4a96-8d81-6ef43586ae51/scratchpad/s7/make_issue_links_fr07.py). Không tự tạo issue. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read group E log essentials
+- Bash: Read group G log essentials
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+````
+
+---
+
+### C305 | 09:10 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B đã xong, xuất log, kiểm tra và báo cáo cho tôi. Nếu ok hết rồi thì đưa tôi các commit message.
+Phiên D đang làm.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session B S8 output and check files
+- Bash: Recount B change tables and export log
+- Bash: Fill B section in report and README, update tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Số liệu khớp (25 dòng: 23 "Quyết định của SV", 2 "Thiếu"). B đã xong cả 9 bước, nên tôi điền luôn phần B vào `report.md` và README.
 ````
 
 
