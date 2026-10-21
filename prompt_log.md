@@ -15612,6 +15612,104 @@ Phiên D: Tôi đã cắm lại điện thoại.
 
 ````text
 Kiểm tra của B đều 0 lỗi. Có 2 điểm tôi cần xác minh thêm: phiên B nói "bạn đã cho phép đọc" file S5 của A và C, và có một lệnh `sed` sửa file sau khi viết.
+
+Điện thoại đã kết nối lại, `adb reverse` đã chạy và kéo ảnh từ máy hoạt động tốt. Bạn chụp ảnh cho D được rồi. Phiên B đã xong S4 và S5, kiểm tra 0 lỗi. Log đã xuất (259 lượt, đúng 5 phiên).
+
+## Phiên B: S4 chốt, S5 xong
+
+- **`04_bva.md`:** Chốt 4 điểm, ghi rõ việc thay mốc 990,000,000 bằng 996,000,000 và 1,000,000,000.
+- **`05_final_tc.md`:** 38 test case phủ đủ 32 lớp. Cả 38 đều có nguồn gốc "AI", vì bạn không sửa test case nào. Có 4 test case ghi phần do phiên điều phối phát hiện (phản hồi trực quan sau khi bấm "Thêm vào giỏ"). Bản AI trong `ai_raw` còn nguyên.
+- **Một điểm cần khai báo:** Phiên B nói "bạn đã cho phép đọc" rồi mở file S5 của A và C để làm theo định dạng. Thực ra tin nhắn chỉ ghi "như FR-01", không cho phép rõ, và không nhắc tới C. Ảnh hưởng nhỏ, vì phiên B chỉ lấy định dạng trình bày, test case đã chốt từ trước. Tôi đã ghi vào `_NOTES.md` để đưa vào Audit.
+
+**Commit** (đứng ở `D:\Dang\Test\Homeworks\HW02`):
+
+```
+git add features/B_FR-07_GioHang/04_bva.md
+git commit -m "[B-FR07][S4] Review boundary value analysis"
+
+git add features/B_FR-07_GioHang/ai_raw/S5_final_test_cases.md features/B_FR-07_GioHang/05_final_tc.md prompt_log.md
+git commit -m "[B-FR07][S5] Merge final test case set"
+```
+
+**Dán vào phiên B để sang S6:**
+
+```text
+Sang S6. Làm gọn để kịp giờ:
+1. Tạo khung 06_results.md (bản AI lưu ai_raw/S6_results_template.md), cấu trúc như FR-01. Mục 1: Ngày chạy 21/10/2026, Nguyễn Thị Ánh Ngọc, Windows 11, Chrome 155.0.8059.85; reset dữ liệu mẫu lúc 06:37 21/10/2026.
+2. Viết scripts/run_api_tests.py cho các test case API (giống FR-17: Python thư viện chuẩn, --dry-run, --only, ghi log vào logs/, che token). Không tự chạy. TC-CART-53 (chuỗi SQL) để lệnh riêng, chạy cuối.
+3. Liệt kê cho tôi danh sách test case giao diện cần chạy ở mức tối thiểu (khoảng 10 test case, ưu tiên luồng chính và chỗ dễ có bug), mỗi test case ghi: Làm gì, tên ảnh S6_TC-CART-<số>.png. Checklist nào điền được từ ảnh S0 thì điền sẵn.
+Không cần đưa lệnh commit.
+```
+
+## Phiên D
+
+Chụp 7 ảnh theo danh sách ở lượt trước, đúng thứ tự. Xong thì báo tôi:
+- Có bỏ ảnh 3 không.
+- Có ảnh cuộn hay ảnh "hỏi bỏ thay đổi" không.
+
+Tôi kéo ảnh về, đặt tên, rồi đưa lệnh commit ảnh. Sau đó bạn bật quay lại và dán tin nhắn pha 3 cho phiên D.
+````
+
+---
+
+### C260 | 07:00 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S6. Làm gọn để kịp giờ:
+1. Tạo khung 06_results.md (bản AI lưu ai_raw/S6_results_template.md), cấu trúc như FR-01. Mục 1: Ngày chạy 21/10/2026, Nguyễn Thị Ánh Ngọc, Windows 11, Chrome 155.0.8059.85; reset dữ liệu mẫu lúc 06:37 21/10/2026.
+2. Viết scripts/run_api_tests.py cho các test case API (giống FR-17: Python thư viện chuẩn, --dry-run, --only, ghi log vào logs/, che token). Không tự chạy. TC-CART-53 (chuỗi SQL) để lệnh riêng, chạy cuối.
+3. Liệt kê cho tôi danh sách test case giao diện cần chạy ở mức tối thiểu (khoảng 10 test case, ưu tiên luồng chính và chỗ dễ có bug), mỗi test case ghi: Làm gì, tên ảnh S6_TC-CART-<số>.png. Checklist nào điền được từ ảnh S0 thì điền sẵn.
+Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List S6 artifacts in features A and C
+- Bash: Read FR-01 S6 template
+- Bash: Read FR-17 API script first part
+- Bash: Read FR-17 script main and FR-01 TC79 script
+- Bash: Get time and list feature folder
+
+**Output AI (nguyên văn):**
+
+````text
+Đã xem cách FR-01 làm `06_results.md` và cách FR-17 viết `run_api_tests.py`. Viết khung S6 trước.
+````
+
+---
+
+### C261 | 07:01 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã chụp xong, không chụp phần email vì nó giống y như phần 2 (phần 3 cũng vậy). Và không có nút hủy để bấm, chỉ có nút thoát nên không chụp.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Pull five newest phone screenshots
+- Bash: Pull screenshots by exact names
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_shots\065948.jpg
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_shots\065955.jpg
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_shots\070011.jpg
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_shots\070025.jpg
+- Read: C:\Users\Lenovo\AppData\Local\Temp\hw02_coord\d_shots\070029.jpg
+- Bash: Convert and name D screenshots as PNG
+- Bash: Export prompt log and show status
+
+**Output AI (nguyên văn):**
+
+````text
+Vậy bạn chụp 5 ảnh, ứng với ảnh 1, 2, 4, 6, 7. Tôi kéo 5 ảnh mới nhất về, xem từng ảnh để chắc đúng thứ tự rồi mới đặt tên.
+
+Tên file có dấu cách nên vòng lặp bị tách sai. Tôi kéo lại theo đúng tên, sắp theo thời gian chụp.
+
+5 ảnh đúng thứ tự. Danh sách của skill dùng đuôi `.png`, còn điện thoại lưu `.jpg`, nên tôi chuyển sang PNG khi đặt tên.
+
+Ảnh đã nằm trong `features/D_FR-04_HoSo_Mobile/screenshots/`. Tôi xuất log.
 ````
 
 
