@@ -13,9 +13,10 @@ SUT: [EShop](https://github.com/ttbhanh/eshop-sut) (commit `85af3ba`)
 | `prompt_log.md` / `.pdf` | Appendix A: Prompt log có timestamp |
 | `features/` | Mỗi feature một thư mục: Đặc tả, output AI nguyên văn (`ai_raw/`), bản đã review từng bước, test case, ảnh chụp |
 | `bugs/` | Bug report, liên kết tới GitHub Issues của nhóm |
-| `skills/` | Agent Skills: Domain Testing, Boundary Value Analysis |
+| `skills/` | Agent Skill `domain-testing-design` (một skill gộp Domain Testing và Boundary Value Analysis, S0 đến S4), video demo ở mục Video demo |
 | `forms/` | [AI-02] Audit Report, [AI-03] Disclosure, [AI-05] Privacy Checklist |
 | `tools/` | Script hỗ trợ (xuất prompt log, điền form, ...) |
+| `WORKFLOW.md` / `.pdf` | Quy trình làm bài: Các bước S0 đến S8, nguyên tắc kiểm thử hộp đen, cách lưu bản AI và bảng "Thay đổi so với bản AI" |
 | `git_log.txt` | Git commit log |
 
 ## Feature đã chọn

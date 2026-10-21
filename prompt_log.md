@@ -7,10 +7,10 @@
 | Bài tập | HW02-AI: Domain Testing on EShop |
 | Chính sách AI | Open (khai báo + AI Audit Report bắt buộc) |
 | Bloom-AI | G9.2 (Apply), G9.3 (Analyse) |
-| Công cụ AI | Claude Code (Anthropic); ChatGPT, Gemini _(nếu dùng)_ |
+| Công cụ AI | Claude Code (Anthropic, claude-opus-5-5); không dùng công cụ AI nào khác |
 | Múi giờ | Giờ Việt Nam (UTC+7), định dạng `HH:MM dd/mm/yyyy` |
 
-**Quy ước mã:** `C##` = Claude, `G##` = ChatGPT, `M##` = Gemini. Mã này dùng để dẫn chiếu trong AI Audit Report (Appendix B).
+**Quy ước mã:** `C##` là lượt trao đổi với Claude Code, đánh số theo thời gian qua mọi phiên. Mã này dùng để dẫn chiếu trong AI Audit Report (Appendix B) và form [AI-03].
 
 ---
 
@@ -19090,11 +19090,255 @@ Có repo nào cần phải để public để giáo viên chấm không?
 
 - Bash: Check repo visibility and assignment repo requirements
 - Bash: Export final prompt log and find stale PDFs
+- Bash: Re-export prompt log PDF
+- Bash: Update tracker for forms, PDFs, zip
 
 **Output AI (nguyên văn):**
 
 ````text
 Tôi kiểm nhanh trạng thái hai repo trên GitHub, rồi làm bước 2 (xuất prompt log lần cuối).
+
+Đề không bắt buộc repo nào phải công khai, nhưng **repo nhóm nên mở cho giảng viên xem được**. Tôi vừa kiểm thì **cả hai repo đều đang để Private** (GitHub trả 404 khi truy cập không đăng nhập).
+
+**Repo nhóm `software-testing-2026-HW02-group`: Nên công khai, hoặc mời giảng viên vào.**
+- Đề yêu cầu báo bug trên trang GitHub Issues của nhóm, và chấm cả "referenced links".
+- `report.md` và `bug_report.md` dẫn tới 48 issue (#42 đến #89). Repo Private thì giảng viên bấm link sẽ gặp trang 404.
+- Bài nộp có ảnh chụp trang issue nên vẫn có bằng chứng. Nhưng để giảng viên mở được issue thật, có hai cách:
+  1. **Chuyển repo nhóm sang Public:** Settings, General, Danger Zone, **Change visibility**.
+  2. **Giữ Private, mời giảng viên làm collaborator:** Cần tên tài khoản GitHub của giảng viên.
+- Đây là repo chung, có issue của Hương và An, nên bạn hỏi nhóm trước. Repo do angquoc tạo nên chỉ chủ repo đổi được. Tôi không tự đổi.
+
+**Repo cá nhân `software-testing-2026-HW02`: Để Private được.** Đề chỉ yêu cầu nộp git log dạng text, tức file `git_log.txt` trong zip, không yêu cầu link repo.
+
+## Bước 2: Đã xong
+
+- Đã xuất prompt log lần cuối: 318 lượt, đúng 5 phiên.
+- Đã xuất lại `prompt_log.pdf`. Đây là file PDF duy nhất cũ hơn file `.md` của nó; tôi đã kiểm cả 82 cặp.
+- TRACKER đã cập nhật.
+
+**Commit cuối:**
+
+```
+git add prompt_log.md prompt_log.pdf
+git commit -m "[docs] Final prompt log export"
+```
+
+Chạy xong thì báo tôi. Tôi sẽ xuất `git_log.txt`, nén và cắt zip thành 5 phần, rồi thử ghép và giải nén lại để chắc file không lỗi.
+
+Lưu ý: Các lượt trao đổi **sau** lần xuất này (đóng gói zip) sẽ không có trong prompt log nộp bài. Phần đó chỉ là thao tác đóng gói, không ảnh hưởng nội dung.
+````
+
+---
+
+### C319 | 10:06 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Đã public repo nhóm.
+Đã commit xong.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Verify repo public, export git log
+- Bash: Check HW01 git log format and package layout
+- Bash: Export git log and stage submission folder
+- Bash: Create split zip volumes with 7-Zip
+- Bash: Join volumes and verify zip integrity and contents
+- Bash: Write extraction guide and update tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Đã gom 379 file (97.9 MB) vào thư mục `23120061_HW02_AI_DomainTesting_100`, đã bỏ `.git`, `_NOTES.md`, file đề bài và `__pycache__`. Giờ tôi nén và cắt thành các phần 19 MB.
+
+Bài đã đóng gói xong, sẵn sàng nộp Moodle. Bây giờ là 10:07, còn gần 2 tiếng trước hạn 12:00.
+
+## Nộp lên Moodle (5 file, thư mục `D:\Dang\Test\Homeworks\HW02_submit\`)
+
+| File | Dung lượng |
+|---|---|
+| `23120061_HW02_AI_DomainTesting_100.zip.001` | 19.9 MB |
+| `23120061_HW02_AI_DomainTesting_100.zip.002` | 19.9 MB |
+| `23120061_HW02_AI_DomainTesting_100.zip.003` | 19.9 MB |
+| `23120061_HW02_AI_DomainTesting_100.zip.004` | 10.7 MB |
+| `HUONG_DAN_GIAI_NEN.txt` | 1 KB |
+
+- Bản nén chỉ còn 68 MB, nên cắt **4 phần** chứ không phải 5 như dự kiến. Mỗi phần dưới 20 MB, tổng 5 file, trong giới hạn 20 file.
+- `HUONG_DAN_GIAI_NEN.txt` nằm ngoài zip. File ghi 2 cách mở (bằng 7-Zip, WinRAR, hoặc lệnh `copy /b`), kèm link video và link Issues của nhóm.
+
+## Đã kiểm
+
+- **Ghép 4 phần rồi mở bằng một trình giải nén khác** (không phải 7-Zip): Không lỗi, đủ **379 file**.
+- Có đủ `report.md`, `README.md`, `prompt_log.md`, `bug_report.md` kèm bản PDF; `git_log.txt`; 3 form (`.docx`, `.md`, `.pdf`); `features/`, `skills/`, `tools/`.
+- Không lọt `_NOTES.md`, file đề bài hay thư mục `.git`.
+- `git_log.txt` gồm 101 commit, định dạng giống HW01. File này chỉ có trong zip, không commit vào repo.
+- **Repo nhóm đã Public:** Issue #85 mở được khi không đăng nhập, nên link #42 đến #89 trong báo cáo đều xem được.
+
+## Hai điều nên biết
+
+1. **Đây là zip cắt nhiều phần, không phải một file `.zip` duy nhất** như mẫu tên trong đề. Ghép lại thì đúng tên `23120061_HW02_AI_DomainTesting_100.zip`. Nếu Moodle có ô ghi chú khi nộp, bạn nên ghi một câu: "File zip được cắt 4 phần vì vượt 20 MB, xem HUONG_DAN_GIAI_NEN.txt".
+2. **Prompt log trong bài dừng ở lần xuất lúc 10:06.** Các lượt sau đó (xuất `git_log.txt`, nén zip) không có trong log. Đây chỉ là thao tác đóng gói, không ảnh hưởng nội dung.
+
+TRACKER trong `_NOTES.md` đã cập nhật, chỉ còn mục G10 (nộp Moodle). Nộp xong thì báo tôi đánh dấu hoàn thành.
+````
+
+---
+
+### C320 | 10:15 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Lúc nộp đề không cho nộp phần HUONG_DAN_GIAI_NEN đâu. Với lại link youtube và github đều có trong docs nộp rồi mà, đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check video and GitHub links in submitted docs
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi kiểm lại xem link video và link GitHub đã nằm trong các file nộp chưa.
+
+Đúng, cả hai link đã có trong bài nộp, nên bỏ file hướng dẫn cũng không thiếu gì:
+
+| Link | Có trong |
+|---|---|
+| Video YouTube `https://youtu.be/c8caqIW1d7M` | `README.md` (mục Video demo) và `report.md` (mục 6, Agent Skill) |
+| Repo nhóm `https://github.com/angquoc/software-testing-2026-HW02-group` | `report.md` (bảng thông tin đầu bài) và `bugs/bug_report.md` (đầu file) |
+| Số issue #42 đến #89 | `bugs/bug_report.md`: Mỗi bug có dòng "Issue: #NN" |
+
+Vậy bạn **chỉ nộp 4 phần `.zip.001` đến `.zip.004`**.
+- Người chấm có 7-Zip hoặc WinRAR thì mở file `.001` là tự đọc đủ 4 phần.
+- Nếu Moodle có ô ghi chú khi nộp, bạn có thể ghi một câu: "File zip được cắt thành 4 phần vì vượt 20 MB; mở file .001 bằng 7-Zip hoặc WinRAR." Nếu không có ô ghi chú thì thôi.
+
+File `HUONG_DAN_GIAI_NEN.txt` nằm ngoài zip, không ảnh hưởng gì; bạn để đó hay xoá đều được.
+
+Nộp xong thì báo tôi đánh dấu G10 hoàn thành trong TRACKER.
+````
+
+---
+
+### C321 | 10:16 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Yêu cầu đặt tên bạn lấy ở đâu?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi lấy từ **mục 14 "Submission Regulations" trong đề HW02** (`2026.HW02.Domain Testing_En.md`). Nguyên văn:
+
+> - **Filename format:** `<StudentID>_HW02_AI_DomainTesting_<SelfAssessedGrade>.zip`
+>     - *SelfAssessedGrade:* a 3-digit number in the range [000, 100].
+>     - *Example:* `25127001_HW02_AI_DomainTesting_090.zip`
+
+Áp vào bài của bạn:
+- `<StudentID>` là `23120061`.
+- `<SelfAssessedGrade>` là `100`, lấy theo điểm tự chấm bạn đã điền trong `report.md` và `README.md` (25 + 25 + 25 + 15 + 10).
+
+Kết quả là `23120061_HW02_AI_DomainTesting_100.zip`.
+
+Chỗ duy nhất lệch với đề là các đuôi `.001` đến `.004` do cắt file. Ghép lại thì đúng tên trên. Nếu bạn muốn tự chấm thấp hơn 100, ví dụ vì S6 của mỗi feature đều chạy rút gọn, thì báo tôi: Tôi sửa điểm trong `report.md` và `README.md`, xuất lại PDF và đóng gói lại với tên mới. Việc này mất khoảng 5 phút.
+````
+
+---
+
+### C322 | 10:18 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Lúc nộp có cả nộp tool không?
+
+Tôi đã thử down về và giải nén (mô phỏng cách giáo viên làm): C:\Users\Lenovo\Downloads\23120061_HW02_AI_DomainTesting_100.zip\23120061_HW02_AI_DomainTesting_100
+
+Kiểm tra xem đúng chưa, đáp ứng yêu cầu đề bài chưa, có sai, dư thiếu ở đâu không
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Inspect extracted submission folder and md/pdf pairs
+- Bash: Check per-feature completeness, skills, tools, README
+- Bash: Check prompt log header/footer and leftover placeholders
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi kiểm thư mục bạn vừa giải nén, đối chiếu với yêu cầu của đề.
+
+Đủ 379 file, mọi file `.md` đều có `.pdf` đi kèm. Giờ tôi kiểm nội dung từng phần so với đề.
+
+Bản giải nén đúng và đủ theo yêu cầu của đề. Nhưng tôi tìm thấy **2 chỗ ghi sai**, nên sửa trước khi nộp, mất khoảng 5 phút.
+
+## Có nộp `tools/` không?
+
+**Nên nộp.** Đề chấm cả "scripts" và nhận "any other supporting materials". Mục 9 của đề còn khuyến khích "tạo skill hoặc rule tự trích thông tin sau mỗi phiên AI", và `tools/export_prompt_log.py` chính là công cụ đó. Các script khác (xuất PDF, điền form) cho thấy cách bạn làm ra các file nộp.
+
+## Đối chiếu với yêu cầu của đề
+
+| Yêu cầu (mục 14 của đề và Homework Policies) | Trong bài | Kết quả |
+|---|---|---|
+| Báo cáo chính, có Domain Testing và BVA, kèm PDF | `report.md` và `.pdf`; mỗi feature có đủ `00` đến `06`, `08` | Đạt |
+| Giải thích từng bước | `00_spec` đến `05_final_tc` cho cả 4 feature, bản gốc của AI trong `ai_raw/` | Đạt |
+| AI gap analysis | `08_gap_analysis.md` cả 4 feature, tóm tắt trong `report.md` | Đạt |
+| Bug report, có ảnh bug trên GitHub Issues | `bugs/bug_report.md`; ảnh trang issue: A 13, B 18, C 12, D 5, tổng **48 ảnh**, khớp 48 issue | Đạt |
+| AI Critique và AI Audit Report, kèm PDF | Trong `report.md`; [AI-02] trong `forms/` | Đạt |
+| Form [AI-03] đã ký, [AI-05] | `forms/`, có `.docx`, `.md`, `.pdf` và ảnh chữ ký | Đạt |
+| Git log dạng text | `git_log.txt`, 101 commit | Đạt |
+| README có tự chấm và Test Summary (số feature, test case, Pass, Fail, chưa chạy, bug, video) | `README.md` | Đạt |
+| Agent Skill và video | `skills/domain-testing-design/`; link YouTube trong README và report | Đạt |
+| Mọi file `.md` có bản PDF | Kiểm cả 82 file: Không thiếu file nào | Đạt |
+| Không lọt file không nộp | Không có `_NOTES.md`, file đề hay `.git` | Đạt |
+
+## 2 chỗ ghi sai, nên sửa
+
+1. **`prompt_log.md`, bảng đầu file và mục 2:**
+   - Bảng ghi "Công cụ AI: Claude Code; ChatGPT, Gemini _(nếu dùng)_".
+   - Mục 2 "Công cụ khác (tự điền)" còn nguyên đoạn mẫu và chữ "_(Chưa có)_". Đây là khung chép từ HW01.
+   - Bài này chỉ dùng Claude Code, nên nên sửa thành "Claude Code (Anthropic, claude-opus-5-5)" và "Không dùng công cụ AI nào khác". Để nguyên, người chấm có thể nghĩ bạn quên điền phần ChatGPT, Gemini.
+2. **`README.md`, bảng cấu trúc:** Dòng `skills/` ghi "Agent Skills: Domain Testing, Boundary Value Analysis", tức như có 2 skill. Thực tế chỉ có 1 skill gộp là `domain-testing-design`. Tiện thì thêm một dòng cho `WORKFLOW.md`, hiện chưa được giới thiệu.
+
+**Không phải sửa:** File `.gitignore` có trong zip nhưng vô hại; xoá cũng được.
+
+## Nếu đồng ý sửa, tôi sẽ làm liền một lượt
+
+1. Sửa 2 file trên, xuất lại PDF của chúng.
+2. Đưa bạn lệnh commit; bạn commit.
+3. Xuất lại `git_log.txt`, nén và cắt zip lại, thử ghép và giải nén để kiểm.
+
+Bạn đồng ý thì tôi làm ngay. Bây giờ khoảng 10:20, vẫn còn dư thời gian.
+````
+
+---
+
+### C323 | 10:20 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Sửa đi, tiện xóa .gitignore trong phần nén nộp luôn chứ nộp để làm gì đâu.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Show prompt log section 2 exact text
+- Bash: Fix prompt log header, section 2, and README
+
+**Output AI (nguyên văn):**
+
+````text
+(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
 ````
 
 
@@ -19102,10 +19346,6 @@ Tôi kiểm nhanh trạng thái hai repo trên GitHub, rồi làm bước 2 (xu�
 
 ---
 
-## 2. Công cụ khác (tự điền)
+## 2. Công cụ khác
 
-> Dán nguyên văn prompt và output. Mẫu:
->
-> `### G01 | HH:MM dd/mm/yyyy | Tool: ChatGPT (<model>)` → **Phần liên quan:** … → **Prompt (nguyên văn):** … → **Output AI (nguyên văn):** …
-
-_(Chưa có)_
+Không dùng công cụ AI nào khác ngoài Claude Code.
