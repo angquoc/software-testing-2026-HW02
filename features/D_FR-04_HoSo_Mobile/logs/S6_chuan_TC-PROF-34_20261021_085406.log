@@ -1,0 +1,12 @@
+# FR-04 S6 chuan TC-PROF-34  2026-10-21 08:54:06  base=http://localhost:3000
+  -> POST /api/login  Authorization: (không có)
+     body: {"email": "test@eshop.com", "password": "<đã che>"}
+  <- HTTP 200  body: {"message": "Login successful", "token": "<đã che>", "user": {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}}
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2

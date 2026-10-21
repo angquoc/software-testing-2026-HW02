@@ -1,0 +1,182 @@
+# FR-04 S6 run  2026-10-21 09:06:57  base=http://localhost:3000
+  -> POST /api/login  Authorization: (không có)
+     body: {"email": "test@eshop.com", "password": "<đã che>"}
+  <- HTTP 200  body: {"message": "Login successful", "token": "<đã che>", "user": {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}}
+
+=== TC-PROF-71 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 71", "phone": " 0912345678 ", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 71", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": " 0912345678 "}
+     name='Nguyen Van An 71', phone='␣0912345678␣', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-71: KHÔNG ĐẠT. Mong đợi OUT2 và EV3 trả {'name': 'Nguyen Van An 71', 'phone': '0912345678'}
+
+=== TC-PROF-72 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 72"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 72", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": null, "phone": null}
+     name='Nguyen Van An 72', phone=None, shipping_address=None, email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-72: KHÔNG ĐẠT. Phản hồi thành công: phone, shipping_address phải giữ S_CHUAN, name đổi (A16 (d))
+
+=== TC-PROF-73 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 73", "phone": "0912-345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 73", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "0912-345678"}
+     name='Nguyen Van An 73', phone='0912-345678', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-73: KHÔNG ĐẠT. Mong đợi ERR2 (API): Không thành công, EV3 trả S_CHUAN
+
+=== TC-PROF-74 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 74", "phone": "1912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 74", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "1912345678"}
+     name='Nguyen Van An 74', phone='1912345678', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-74: KHÔNG ĐẠT. Mong đợi ERR2 (API): Không thành công, EV3 trả S_CHUAN
+
+=== TC-PROF-75 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 75", "phone": "091234567", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 75", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "091234567"}
+     name='Nguyen Van An 75', phone='091234567', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-75: KHÔNG ĐẠT. Mong đợi ERR2 (API): Không thành công, EV3 trả S_CHUAN
+
+=== TC-PROF-78 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: (không có)
+     body: {"name": "Nguyen Van An 78", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 401  body: {"error": "Unauthorized"}
+  -> GET /api/users/me  Authorization: (không có)
+  <- HTTP 401  body: {"error": "Unauthorized"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-78: ĐẠT. Mong đợi ERR4 cho PUT và GET; EV3 (token hợp lệ) trả S_CHUAN
+
+=== TC-PROF-79 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer abc
+     body: {"name": "Nguyen Van An 79", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 403  body: {"error": "Forbidden"}
+  -> GET /api/users/me  Authorization: Bearer abc
+  <- HTTP 403  body: {"error": "Forbidden"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-79: ĐẠT. Mong đợi ERR4 cho PUT và GET; EV3 (token hợp lệ) trả S_CHUAN
+
+=== TC-PROF-80 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  (1) Đăng nhập admin
+  -> POST /api/login  Authorization: (không có)
+     body: {"email": "admin@eshop.com", "password": "<đã che>"}
+  <- HTTP 200  body: {"message": "Login successful", "token": "<đã che>", "user": {"id": 1, "name": "Admin User", "email": "admin@eshop.com", "password": "<đã che>", "role": "admin", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": null, "phone": null}}
+  [(2) EV3 admin trước] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 1, "name": "Admin User", "email": "admin@eshop.com", "password": "<đã che>", "role": "admin", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": null, "phone": null}
+     name='Admin User', phone=None, shipping_address=None, email='admin@eshop.com', role='admin', id=1
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 80", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "id": 1}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [(3) EV3 admin sau] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 1, "name": "Admin User", "email": "admin@eshop.com", "password": "<đã che>", "role": "admin", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": null, "phone": null}
+     name='Admin User', phone=None, shipping_address=None, email='admin@eshop.com', role='admin', id=1
+  [EV3 test (ghi nhận)] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 80", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "0912345678"}
+     name='Nguyen Van An 80', phone='0912345678', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-80: ĐẠT. Mong đợi OUT4: Hồ sơ admin không đổi
+
+=== TC-PROF-102 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 102", "phone": "09123456789", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 102", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "09123456789"}
+     name='Nguyen Van An 102', phone='09123456789', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-102: ĐẠT. Mong đợi OUT2 và EV3 trả {'name': 'Nguyen Van An 102', 'phone': '09123456789'}

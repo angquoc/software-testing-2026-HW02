@@ -1,0 +1,22 @@
+# FR-04 S6 run  2026-10-21 08:44:16  base=http://localhost:3000
+  -> POST /api/login  Authorization: (không có)
+     body: {"email": "test@eshop.com", "password": "<đã che>"}
+  <- HTTP 200  body: {"message": "Login successful", "token": "<đã che>", "user": {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": null, "phone": null}}
+
+=== TC-PROF-70 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 70", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 70", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "0912345678"}
+     name='Nguyen Van An 70', phone='0912345678', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='user', id=2
+  => Gợi ý TC-PROF-70: ĐẠT. Mong đợi OUT2, EV3 trả đúng B(70) và email test@eshop.com (OUT3)

@@ -1,0 +1,46 @@
+# FR-04 S6 last  2026-10-21 09:06:58  base=http://localhost:3000
+Nhóm G: Chạy cuối cùng; reset dữ liệu mẫu ngay sau (05_final_tc.md mục 9 bước 6)
+  -> POST /api/login  Authorization: (không có)
+     body: {"email": "test@eshop.com", "password": "<đã che>"}
+  <- HTTP 200  body: {"message": "Login successful", "token": "<đã che>", "user": {"id": 2, "name": "Nguyen Van An 102", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "09123456789"}}
+
+=== TC-PROF-77 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  [EV3 trước, ghi role] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "user", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='user', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 77", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "role": "admin"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3 sau] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 77", "email": "test@eshop.com", "password": "<đã che>", "role": "admin", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "0912345678"}
+     name='Nguyen Van An 77', phone='0912345678', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='admin', id=2
+  => Gợi ý TC-PROF-77: KHÔNG ĐẠT. Mong đợi OUT4: role trước 'user', sau 'admin'
+  !! Vai trò bị đổi: Ghi kết quả, reset dữ liệu mẫu ngay.
+
+=== TC-PROF-76 ===
+  [S_CHUAN] Đặt trạng thái chuẩn
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [S_CHUAN kiểm] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Test User", "email": "test@eshop.com", "password": "<đã che>", "role": "admin", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "1 Nguyen Hue, Quận 1", "phone": "0900000000"}
+     name='Test User', phone='0900000000', shipping_address='1 Nguyen Hue, Quận 1', email='test@eshop.com', role='admin', id=2
+  -> PUT /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+     body: {"name": "Nguyen Van An 76", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "email": "tc76@eshop.com"}
+  <- HTTP 200  body: {"message": "Profile updated"}
+  [EV3] GET /api/users/me
+  -> GET /api/users/me  Authorization: Bearer eyJhbG...<đã che>
+  <- HTTP 200  body: {"id": 2, "name": "Nguyen Van An 76", "email": "test@eshop.com", "password": "<đã che>", "role": "admin", "login_attempts": 0, "locked_until": null, "reset_token": null, "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "phone": "0912345678"}
+     name='Nguyen Van An 76', phone='0912345678', shipping_address='12/3 Lê Lợi, Quận 1, TP.HCM', email='test@eshop.com', role='admin', id=2
+  => Gợi ý TC-PROF-76: ĐẠT. Mong đợi OUT4: email vẫn test@eshop.com (EV3 trả 'test@eshop.com')
