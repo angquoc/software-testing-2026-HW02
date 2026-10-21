@@ -13,7 +13,7 @@ Mỗi bug dưới đây là nội dung để dán vào issue GitHub theo templat
 | FR-01 Đăng ký tài khoản | A | Web | [FR-01](#fr-01-đăng-ký-tài-khoản) |
 | FR-07 Giỏ hàng | B | Web | [FR-07](#fr-07-giỏ-hàng) |
 | FR-17 Quản lý mã giảm giá | C | Web Admin | [FR-17](#fr-17-quản-lý-mã-giảm-giá) |
-| FR-04 Quản lý hồ sơ cá nhân | D | Mobile | (bổ sung sau) |
+| FR-04 Quản lý hồ sơ cá nhân | D | Mobile | [FR-04](#fr-04-quản-lý-hồ-sơ-cá-nhân) |
 
 ---
 
@@ -1847,3 +1847,247 @@ Cột "Đề xuất" là của AI; cột "Quyết định" là của sinh viên.
 ### Test case Blocked và bug gây chặn
 
 Không có test case Blocked trong lần chạy này.
+
+---
+
+## FR-04: Quản lý hồ sơ cá nhân
+
+- Nguồn: `features/D_FR-04_HoSo_Mobile/06_results.md` (kết quả chạy ngày 21/10/2026, S6 rút gọn), bộ test case ở `features/D_FR-04_HoSo_Mobile/05_final_tc.md`
+- Môi trường chung: Samsung Galaxy S21 Ultra (Android 15); ứng dụng EShop chạy bằng Expo Go 54.0.8; EShop commit `85af3ba`; backend `http://localhost:3000`, điện thoại truy cập qua `adb reverse`; API gọi bằng script Python trên Windows 11
+- Điều kiện tiên quyết chung: Đã reset dữ liệu EShop về dữ liệu mẫu. Giao diện: Đăng nhập ứng dụng bằng `test@eshop.com` / `Test1234!`, bấm "Chào, Test User" để mở màn "Hồ sơ của bạn". API: Lấy token bằng `POST /api/login`
+- Body cơ sở khi gọi `PUT /api/users/me`: `{"name": "Nguyen Van An <số test case>", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM"}`. Trạng thái hồ sơ trước mỗi test case (`S_CHUAN`): Họ Tên `Test User`, Số điện thoại `0900000000`, Địa chỉ `1 Nguyen Hue, Quận 1`
+
+### Tổng hợp
+
+| Bug | Tiêu đề ngắn | Severity | Technique | Test case | Issue |
+|---|---|---|---|---|---|
+| BUG-FR04-01 | Người dùng tự đổi `role` thành `admin` qua API cập nhật hồ sơ | Critical | EP | TC-PROF-77 | #85 |
+| BUG-FR04-02 | Ứng dụng từ chối Số điện thoại hợp lệ 10 và 11 chữ số | High | EP, BVA | TC-PROF-01, TC-PROF-101 | #86 |
+| BUG-FR04-03 | API lưu Số điện thoại không hợp lệ | Medium | EP, BVA | TC-PROF-74, TC-PROF-75, TC-PROF-71 | #87 |
+| BUG-FR04-04 | Màn Hồ sơ không hiển thị Địa chỉ giao hàng đã lưu | Medium | EP | TC-PROF-04 (quan sát QS03) | #88 |
+| BUG-FR04-05 | Thanh trên không làm nổi mục đang chọn khi ở màn Hồ sơ | Low | EP | TC-PROF-90 (điểm 5) | #89 |
+
+Label chung cho mọi bug của FR-04: `bug` (template tự gắn), `platform: mobile`, `pool: D`. Label `severity` và `technique` theo bảng trên. BUG-FR04-04 lấy từ quan sát QS03, sinh viên đã duyệt (bảng "Khác giả định và quan sát" cuối mục).
+
+---
+
+### BUG-FR04-01: Người dùng tự đổi `role` thành `admin` qua API cập nhật hồ sơ
+
+- **Issue:** #85 (ảnh trang issue: `features/D_FR-04_HoSo_Mobile/screenshots/S7_issue_85.png`)
+- **Tiêu đề:** `[23120061][FR-04][Mobile] API cập nhật hồ sơ: Người dùng tự đổi role thành admin`
+- **Labels:** `bug`, `severity: critical`, `platform: mobile`, `technique: EP`, `pool: D`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-04: Quản lý hồ sơ cá nhân
+
+**Nền tảng:** Mobile
+
+**Test case phát hiện lỗi:** TC-PROF-77
+
+**Mức độ:** Critical
+
+**Điều kiện tiên quyết:** Đã reset dữ liệu EShop về dữ liệu mẫu; backend chạy ở `http://localhost:3000`
+
+**Các bước tái hiện:**
+1. Gửi `POST http://localhost:3000/api/login`, body `{"email": "test@eshop.com", "password": "Test1234!"}`; lấy `token` (tài khoản user thường).
+2. Gửi `GET http://localhost:3000/api/users/me`, header `Authorization: Bearer <token>`; ghi giá trị `role`.
+3. Gửi `PUT http://localhost:3000/api/users/me`, header `Authorization: Bearer <token>`, `Content-Type: application/json`, body `{"name": "Nguyen Van An 77", "phone": "0912345678", "shipping_address": "12/3 Lê Lợi, Quận 1, TP.HCM", "role": "admin"}`.
+4. Gửi lại `GET http://localhost:3000/api/users/me` với cùng token.
+
+**Dữ liệu test:** Token của `test@eshop.com`; trường `"role": "admin"` trong body
+
+**Kết quả mong đợi (theo đặc tả):** `role` vẫn là `user` sau bước 4; yêu cầu có thể bị từ chối hoặc được chấp nhận nhưng bỏ qua `role`. README của EShop, FR-04 và mục 9:
+
+> - Người dùng chỉ có thể cập nhật hồ sơ của chính mình; không thể tự thay đổi thuộc tính `role`.
+>
+> SEC-06: API cập nhật hồ sơ không được cho phép thay đổi trường `role` từ client.
+
+**Kết quả thực tế:** Bước 2: `"role": "user"`. Bước 3: HTTP 200 `{"message": "Profile updated"}`. Bước 4: `"role": "admin"` (cùng `id` 2, `email` `test@eshop.com`).
+
+**Ảnh chụp:** `features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-77_log.png` (ảnh cần chụp: S6_TC-PROF-77_log.png); log đầy đủ: `features/D_FR-04_HoSo_Mobile/logs/S6_last_20261021_090658.log`
+
+**Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/D_FR-04_HoSo_Mobile/scripts/run_api_tests.py`)
+
+**Ghi chú:** Hệ quả: Bất kỳ người dùng đã đăng ký nào cũng tự nâng mình thành `admin`. Sau test case này, tài khoản `test@eshop.com` giữ `role` `admin` cho tới khi reset dữ liệu (đã reset lúc 09:07 21/10/2026). Hai trường được bảo vệ khác được xử lý đúng: `email` gửi trong body bị bỏ qua (TC-PROF-76), `id` của người khác bị bỏ qua (TC-PROF-80). Chưa kiểm token đăng nhập lại sau khi đổi `role` có gọi được API Admin không
+
+---
+
+### BUG-FR04-02: Ứng dụng từ chối Số điện thoại hợp lệ 10 và 11 chữ số
+
+- **Issue:** #86 (ảnh trang issue: `features/D_FR-04_HoSo_Mobile/screenshots/S7_issue_86.png`)
+- **Tiêu đề:** `[23120061][FR-04][Mobile] Màn Hồ sơ: Từ chối Số điện thoại hợp lệ 10 và 11 chữ số bắt đầu bằng 0`
+- **Labels:** `bug`, `severity: high`, `platform: mobile`, `technique: EP`, `technique: BVA`, `pool: D`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-04: Quản lý hồ sơ cá nhân
+
+**Nền tảng:** Mobile
+
+**Test case phát hiện lỗi:** TC-PROF-01 (10 chữ số, EP), TC-PROF-101 (11 chữ số, BVA cận trên)
+
+**Mức độ:** High
+
+**Điều kiện tiên quyết:** Đã reset dữ liệu EShop về dữ liệu mẫu; đăng nhập ứng dụng bằng `test@eshop.com`; mở màn "Hồ sơ của bạn" bằng cách bấm "Chào, Test User"
+
+**Các bước tái hiện:**
+1. Nhập Họ Tên `Nguyen Van An 01`, Số điện thoại `0912345678`, Địa chỉ giao hàng `12/3 Lê Lợi, Quận 1, TP.HCM`.
+2. Ẩn bàn phím, bấm "Cập nhật".
+3. Bấm "OK", đổi Họ Tên thành `Nguyen Van An 101`, Số điện thoại thành `09123453789` (11 chữ số), bấm "Cập nhật".
+4. Gửi `GET http://localhost:3000/api/users/me` bằng token của `test@eshop.com` để xem hồ sơ đã lưu.
+
+**Dữ liệu test:** `0912345678` (10 chữ số), `09123453789` (11 chữ số); cả hai bắt đầu bằng `0`
+
+**Kết quả mong đợi (theo đặc tả):** Cả hai số hợp lệ, hồ sơ được cập nhật. README của EShop, FR-04:
+
+> - Người dùng đã đăng nhập có thể cập nhật: **Họ Tên**, **Số điện thoại**, **Địa chỉ giao hàng mặc định**.
+> - **Số điện thoại hợp lệ**: bắt đầu bằng số `0`, từ 10–11 chữ số.
+
+**Kết quả thực tế:** Ở bước 2 và bước 3, ứng dụng hiện hộp thoại "Lỗi" với nội dung "Số điện thoại không hợp lệ. Vui lòng nhập đúng 9-10 chữ số."; hồ sơ không đổi (bước 4 trả Họ Tên `Test User`, Số điện thoại `0900000000`).
+
+**Ảnh chụp:** `features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-01_1.png`, `S6_TC-PROF-01_2.png`, `S6_TC-PROF-101_1.png`, `S6_TC-PROF-101_2.png`
+
+**Môi trường:** Samsung Galaxy S21 Ultra (Android 15), Expo Go 54.0.8, EShop commit `85af3ba`
+
+**Ghi chú:** Cùng hai giá trị gửi qua API thì được lưu (`0912345678` ở TC-PROF-70, `09123456789` ở TC-PROF-102), nên lỗi nằm ở kiểm tra của ứng dụng. Thông báo nêu quy tắc "9-10 chữ số", khác đặc tả "10–11 chữ số", và số 9 chữ số `091234567` cũng bị từ chối với cùng thông báo (TC-PROF-33). Số `1912345678` (không bắt đầu bằng `0`) qua được kiểm tra này nhưng nhận "Lỗi cập nhật" và không được lưu (TC-PROF-32), dù API lưu được số đó; vì vậy trong lần chạy này chưa có cách nào lưu Số điện thoại qua ứng dụng. Lỗi này chặn TC-PROF-04 và TC-PROF-30. Số 11 chữ số đã gõ là `09123453789` (khác kế hoạch `09123456789` một chữ số, vẫn 11 chữ số bắt đầu bằng `0`)
+
+---
+
+### BUG-FR04-03: API lưu Số điện thoại không hợp lệ
+
+- **Issue:** #87 (ảnh trang issue: `features/D_FR-04_HoSo_Mobile/screenshots/S7_issue_87.png`)
+- **Tiêu đề:** `[23120061][FR-04][Mobile] API cập nhật hồ sơ: Lưu Số điện thoại không bắt đầu bằng 0, ít hơn 10 chữ số hoặc có dấu cách`
+- **Labels:** `bug`, `severity: medium`, `platform: mobile`, `technique: EP`, `technique: BVA`, `pool: D`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-04: Quản lý hồ sơ cá nhân
+
+**Nền tảng:** Mobile
+
+**Test case phát hiện lỗi:** TC-PROF-74 (không bắt đầu bằng `0`, EP), TC-PROF-75 (9 chữ số, BVA LB-1), TC-PROF-71 (có dấu cách ở đầu và cuối, EP)
+
+**Mức độ:** Medium
+
+**Điều kiện tiên quyết:** Đã reset dữ liệu EShop về dữ liệu mẫu; backend chạy ở `http://localhost:3000`; có token của `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Gửi `PUT http://localhost:3000/api/users/me`, header `Authorization: Bearer <token>`, `Content-Type: application/json`, body cơ sở với `"phone": "1912345678"`; rồi `GET /api/users/me`.
+2. Lặp lại với `"phone": "091234567"`.
+3. Lặp lại với `"phone": " 0912345678 "` (một dấu cách ở đầu và ở cuối).
+
+**Dữ liệu test:** `1912345678` (10 chữ số, bắt đầu bằng `1`); `091234567` (9 chữ số); `␣0912345678␣` (`␣` là một dấu cách)
+
+**Kết quả mong đợi (theo đặc tả):** Hệ thống không lưu các số này. README của EShop, FR-04:
+
+> - **Số điện thoại hợp lệ**: bắt đầu bằng số `0`, từ 10–11 chữ số.
+
+**Kết quả thực tế:** Cả ba yêu cầu nhận HTTP 200 `{"message": "Profile updated"}`; `GET /api/users/me` trả `phone` đúng như đã gửi: `1912345678`, `091234567`, `␣0912345678␣` (giữ nguyên dấu cách).
+
+**Ảnh chụp:** `features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-74_log.png`, `S6_TC-PROF-75_log.png`, `S6_TC-PROF-71_log.png` (ảnh cần chụp: S6_TC-PROF-74_log.png, S6_TC-PROF-75_log.png, S6_TC-PROF-71_log.png); log đầy đủ: `features/D_FR-04_HoSo_Mobile/logs/S6_run_20261021_090657.log`
+
+**Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/D_FR-04_HoSo_Mobile/scripts/run_api_tests.py`)
+
+**Ghi chú:** Ứng dụng lại từ chối cả số hợp lệ (BUG-FR04-02), nên kiểm tra Số điện thoại ở ứng dụng và ở hệ thống đều không khớp đặc tả. Hành vi liên quan, không tính là bằng chứng của bug này vì dựa trên giả định A06 (`features/D_FR-04_HoSo_Mobile/02_ec.md`): `"0912-345678"` cũng được lưu nguyên văn (TC-PROF-73)
+
+---
+
+### BUG-FR04-04: Màn Hồ sơ không hiển thị Địa chỉ giao hàng đã lưu
+
+- **Issue:** #88 (ảnh trang issue: `features/D_FR-04_HoSo_Mobile/screenshots/S7_issue_88.png`)
+- **Tiêu đề:** `[23120061][FR-04][Mobile] Màn Hồ sơ: Ô Địa chỉ giao hàng trống dù hồ sơ đang có địa chỉ`
+- **Labels:** `bug`, `severity: medium`, `platform: mobile`, `technique: EP`, `pool: D`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-04: Quản lý hồ sơ cá nhân
+
+**Nền tảng:** Mobile
+
+**Test case phát hiện lỗi:** TC-PROF-04 (quan sát QS03 trong `features/D_FR-04_HoSo_Mobile/06_results.md`)
+
+**Mức độ:** Medium
+
+**Điều kiện tiên quyết:** Đã reset dữ liệu EShop về dữ liệu mẫu; đăng nhập ứng dụng bằng `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Gửi `PUT http://localhost:3000/api/users/me` (token của `test@eshop.com`), body `{"name": "Test User", "phone": "0900000000", "shipping_address": "1 Nguyen Hue, Quận 1"}`; gửi `GET /api/users/me` để xác nhận địa chỉ đã lưu.
+2. Trên ứng dụng, rời màn Hồ sơ rồi bấm "Chào, Test User" để mở lại.
+3. Quan sát ô "Địa chỉ giao hàng".
+
+**Dữ liệu test:** Địa chỉ đã lưu `1 Nguyen Hue, Quận 1`
+
+**Kết quả mong đợi (theo đặc tả):** Ô "Địa chỉ giao hàng" hiển thị địa chỉ đang lưu để người dùng cập nhật. Mong đợi suy ra từ README của EShop, FR-04 (đặc tả không nói trực tiếp về việc hiển thị giá trị hiện tại):
+
+> - Người dùng đã đăng nhập có thể cập nhật: **Họ Tên**, **Số điện thoại**, **Địa chỉ giao hàng mặc định**.
+
+**Kết quả thực tế:** Ô "Địa chỉ giao hàng" trống, trong khi `GET /api/users/me` (08:47:03) trả `"shipping_address": "1 Nguyen Hue, Quận 1"`. Ô Email hiển thị đúng `test@eshop.com`.
+
+**Ảnh chụp:** `features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-04_2.png`; log: `features/D_FR-04_HoSo_Mobile/logs/S6_chuan_TC-PROF-04_20261021_084703.log`
+
+**Môi trường:** Samsung Galaxy S21 Ultra (Android 15), Expo Go 54.0.8, EShop commit `85af3ba`
+
+**Ghi chú:** Ô Địa chỉ cũng trống ở `S6_TC-PROF-101_1.png` và `S6_TC-PROF-34_1.png` trong cùng đợt chạy. Chưa kiểm ô Số điện thoại có hiển thị giá trị đã lưu không (các ảnh chụp sau khi đã gõ số mới). Nếu bấm "Cập nhật" khi ô trống, địa chỉ đang lưu có thể bị ghi đè bằng chuỗi rỗng; chưa kiểm được vì BUG-FR04-02 chặn mọi lần lưu qua ứng dụng
+
+---
+
+### BUG-FR04-05: Thanh trên không làm nổi mục đang chọn khi ở màn Hồ sơ
+
+- **Issue:** #89 (ảnh trang issue: `features/D_FR-04_HoSo_Mobile/screenshots/S7_issue_89.png`)
+- **Tiêu đề:** `[23120061][FR-04][Mobile] Màn Hồ sơ: Thanh điều hướng không highlight mục "Chào, Test User" đang được chọn`
+- **Labels:** `bug`, `severity: low`, `platform: mobile`, `technique: EP`, `pool: D`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-04: Quản lý hồ sơ cá nhân
+
+**Nền tảng:** Mobile
+
+**Test case phát hiện lỗi:** TC-PROF-90 (điểm 5)
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập ứng dụng bằng `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Ở màn "Danh sách sản phẩm", quan sát thanh trên ("EShop Mobile", "Chào, Test User", "Giỏ (0)").
+2. Bấm "Chào, Test User" để mở màn "Hồ sơ của bạn".
+3. Quan sát lại thanh trên.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Ở màn Hồ sơ, mục "Chào, Test User" trên thanh điều hướng được làm nổi. README của EShop, FR-23:
+
+> - Thanh điều hướng (Navbar) phải **highlight** trang đang được chọn.
+
+**Kết quả thực tế:** Thanh trên giống hệt ở hai màn: "Chào, Test User" vẫn là chữ trắng, không gạch chân, không có nền riêng.
+
+**Ảnh chụp:** `features/D_FR-04_HoSo_Mobile/screenshots/S0_01_sau_dang_nhap.png`, `S0_02_ho_so.png`
+
+**Môi trường:** Samsung Galaxy S21 Ultra (Android 15), Expo Go 54.0.8, EShop commit `85af3ba`
+
+**Ghi chú:** Ứng dụng không có thanh tab; thanh trên được coi là thanh điều hướng theo FR-23 (quyết định của sinh viên ở `features/D_FR-04_HoSo_Mobile/01_io.md` mục 8 điểm 9). Ảnh chụp ở bước khảo sát S0 cùng ngày, cùng commit; điểm kiểm này của TC-PROF-90 được điền từ hai ảnh đó
+
+---
+
+### Khác giả định và quan sát: Quyết định của sinh viên
+
+Cột "Đề xuất" là của AI; cột "Quyết định" là của sinh viên.
+
+| Mã | Nguồn | Hành vi quan sát | Đề xuất | Lý do | Quyết định |
+|---|---|---|---|---|---|
+| KG01 | TC-PROF-72 (A16) | Body `PUT` chỉ có `name` làm `phone` và `shipping_address` thành `null` | Không thành bug | Đặc tả không nói về body thiếu trường; theo RFC 9110, `PUT` thay toàn bộ tài nguyên nên xóa trường không gửi là hành vi chuẩn; ví dụ ở API spec gửi đủ 3 trường | Theo đề xuất: Không thành bug |
+| KG02 | TC-PROF-73 (A06) | API lưu nguyên `0912-345678` | Không thành bug riêng; ghi trong Ghi chú của BUG-FR04-03 là hành vi liên quan | Số vẫn đủ 10 chữ số và bắt đầu bằng `0`; việc coi dấu `-` là không hợp lệ là giả định A06 | Theo đề xuất: Không thành bug riêng; ghi trong Ghi chú của BUG-FR04-03 |
+| KG03 | TC-PROF-90 điểm 4 (A01) | Không ô nào có dấu `*` | Không thành bug | FR-04 không nói Họ Tên bắt buộc; Họ Tên bắt buộc là giả định A01, và TC-PROF-30 Blocked nên chưa biết ứng dụng có coi Họ Tên là bắt buộc không | Theo đề xuất: Không thành bug |
+| QS01 | Mục 6: Thông báo "đúng 9-10 chữ số" | Thông báo nêu quy tắc khác đặc tả; số 9 chữ số vẫn bị từ chối | Gộp vào BUG-FR04-02 (đã ghi trong Kết quả thực tế và Ghi chú) | Cùng chỗ kiểm tra Số điện thoại sai của ứng dụng | Theo đề xuất: Gộp vào BUG-FR04-02 |
+| QS02 | Mục 6: Phản hồi API có trường `password` | `POST /api/login`, `GET /api/users/me` trả `password` (script đã che giá trị), `reset_token`, `login_attempts`, `locked_until` | Không báo trong FR-04; ghi cho S8 | Chưa thấy giá trị (không biết là văn bản rõ hay đã băm); FR-04 không yêu cầu về các trường này; nếu nhóm muốn báo thì thuộc SEC-01 hoặc FR-19 | Theo đề xuất: Không báo trong FR-04; ghi cho S8 |
+| QS03 | Mục 6: Ô Địa chỉ trống dù đã lưu | Màn Hồ sơ không hiển thị địa chỉ đang lưu (sinh viên xác nhận) | Thành bug riêng, Medium: BUG-FR04-04 | Người dùng không thấy địa chỉ hiện tại để cập nhật; có nguy cơ ghi đè bằng chuỗi rỗng | Theo đề xuất: Thành bug riêng, Medium: BUG-FR04-04 |
+| QS04 | Mục 6: "Lỗi cập nhật" với `1912345678` | Qua ứng dụng không lưu, qua API lưu được | Không thành bug riêng; ghi trong Ghi chú của BUG-FR04-02 | Kết quả của TC-PROF-32 đúng mong đợi (số không hợp lệ không được lưu); nguyên nhân thất bại không quan sát được | Theo đề xuất: Không thành bug riêng; ghi trong Ghi chú của BUG-FR04-02 |
+
+### Test case Blocked và bug gây chặn
+
+| Test case | Lý do Blocked | Bug gây chặn |
+|---|---|---|
+| TC-PROF-04 | Số điện thoại cơ sở `0912345678` bị ứng dụng từ chối, không kiểm được việc lưu và hiển thị Họ Tên có thẻ HTML | BUG-FR04-02 (#86) |
+| TC-PROF-30 | Thông báo là về Số điện thoại cơ sở, không biết ứng dụng có từ chối Họ Tên rỗng không | BUG-FR04-02 (#86) |
