@@ -18899,6 +18899,202 @@ Lấy được. Chữ ký của bạn nằm sẵn dưới dạng ảnh trong for
 Appendix B giờ đủ 19 dòng (B01 đến B19), không còn chỗ trống. Bảng tổng kết: 3 VALID (15.8%), 16 INCOMPLETE (84.2%), 0 INVALID. Giờ tôi lấy chữ ký từ form HW01.
 
 Cả 3 form đã có ảnh chữ ký. Tôi sửa thêm `docx_to_md.py`: Ô "Giảng viên" có nhiều dòng đang làm vỡ bảng trong bản `.md` (HW01 cũng bị lỗi này).
+
+Phiên D đã xong cả 9 bước, kiểm tra đều đạt. `report.md` đã đủ cả 4 feature, và 3 form đã có ảnh chữ ký. Log đã xuất (315 lượt, đúng 5 phiên), TRACKER đã cập nhật.
+
+## Phiên D: S8
+
+- `08_gap_analysis.md` giống hệt bản AI trong `ai_raw`, kiểm định dạng 0 lỗi. Tôi đếm lại các bảng thay đổi: 38 dòng (35 "Quyết định của SV", 2 Sai, 1 Thiếu), khớp với phiên D.
+- **Kết luận chính:**
+  - Cả 3 lỗi của AI đều do AI tự phát hiện.
+  - Những chỗ AI thiết kế chưa đúng chỉ lộ ra khi chạy test ở S6, ví dụ không có phương án dự phòng khi số điện thoại cơ sở bị từ chối.
+  - Bản AI gốc bắt được 4 trên 5 bug.
+- Phiên D tự ghi luôn lỗi hướng dẫn `adb` và lỗi bạn quên chạy `get` vào phần giới hạn. Như vậy là trung thực.
+
+## `report.md`: Đã đủ
+
+- Đã điền **mục 5.5** (gap analysis FR-04).
+- **Appendix B đánh số lại B01 đến B19**, thêm B16, B17 cho FR-04. Ở dòng B18 (phiên điều phối), tôi khai thêm 2 điểm của chính tôi:
+  - Một lần đưa danh sách commit mà không kiểm `git log` trước.
+  - Một lần đọc dòng `API_URL` trong mã nguồn app mobile để xác nhận cấu hình chạy (không dùng cho thiết kế).
+- **Bảng tổng kết:** 19 artifact, gồm VALID 3 (15.8%), INCOMPLETE 16 (84.2%), INVALID 0.
+- Không còn chỗ "(điền)" nào, không có dấu "—" hay "·".
+
+## Chữ ký
+
+Lấy được. Tôi lấy ảnh chữ ký trong form [AI-02] của HW01, chèn tự động vào ô "Chữ ký" của cả 3 form HW02, giữ đúng kích thước cũ.
+- Hai script điền form đều tự lấy ảnh này mỗi lần chạy, nên tạo lại form không mất chữ ký.
+- Ô "Giảng viên" có nhiều dòng từng làm vỡ bảng trong bản `.md` (HW01 cũng bị). Tôi đã sửa `docx_to_md.py`.
+
+## Còn 1 việc cần bạn quyết: Checklist [AI-05]
+
+Đánh dấu giống HW01 nhé? Tức là tick **tất cả, trừ 2 ô** "Không nhập dữ liệu cá nhân" và "Không paste nguyên si tài liệu có bản quyền". Bài này cũng đưa tên, MSSV và đặc tả EShop cho AI, nên để trống 2 ô đó là trung thực.
+
+Bạn đồng ý thì tôi tick bằng script, rồi **xuất PDF cho cả 3 form bằng Word** (máy có Word nên chạy tự động được) và xuất PDF cho mọi file MD.
+
+## Commit bây giờ (đã kiểm `git status`)
+
+```
+git add features/D_FR-04_HoSo_Mobile/08_gap_analysis.md features/D_FR-04_HoSo_Mobile/ai_raw/S8_gap_analysis.md
+git commit -m "[D-FR04][S8] Add AI gap analysis"
+
+git add report.md tools/fill_ai02.py tools/fill_ai03_05.py tools/docx_to_md.py prompt_log.md
+git commit -m "[report] Complete FR-04 section and audit appendix; add form tools"
+```
+
+Thư mục `forms/` để commit sau khi tick [AI-05] và xuất PDF.
+
+**Các bước cuối, theo thứ tự:**
+1. Tick [AI-05] và xuất PDF cho 3 form.
+2. Xuất PDF cho mọi file MD.
+3. Commit `forms/` và các file PDF.
+4. Xuất `git_log.txt`.
+5. Nén zip `23120061_HW02_AI_DomainTesting_100.zip`, kiểm dung lượng (Moodle giới hạn 20 MB mỗi file).
+````
+
+---
+
+### C316 | 09:52 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đồng ý tick giống HW01.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai03_05.py
+- Bash: Regenerate AI-05 with ticks and verify
+- PowerShell: Export the three form docx files to PDF via Word
+- PowerShell: Check exported PDF and leftover Word processes
+- PowerShell: Export AI-03 and AI-05 to PDF one at a time
+- Bash: Export PDF for all Markdown files
+- Bash: Check form PDF timestamps
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\md_to_pdf.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\md_to_pdf.py
+- PowerShell: Re-export the three forms to PDF from Word
+- Bash: List .gitkeep files and sibling counts
+- Bash: Remove leftover .gitkeep files and check status
+- Bash: Check folder sizes and gitignore
+- Bash: Break down folder size by file type
+- Bash: Check for 7-Zip or zip tools
+
+**Output AI (nguyên văn):**
+
+````text
+Ô tick giống HW01. Giờ tôi xuất PDF cho 3 form bằng Word.
+
+Word bị lỗi khi xuất file thứ hai. Tôi kiểm file PDF đầu tiên, rồi xuất từng file với một phiên Word riêng.
+
+Đã có PDF cho cả 3 form. Giờ tôi xuất PDF cho mọi file MD; khoảng 70 file, mất vài phút.
+
+Có một vấn đề: Script vừa xuất PDF cho cả các file `.md` trong `forms/`, nên có thể đã ghi đè bản PDF Word (có chữ ký) cùng tên. Tôi kiểm ngay.
+
+Thư mục bài hiện nặng khoảng **95 MB** (ảnh PNG 59 MB, PDF 32 MB). Ảnh PNG gần như không nén thêm được, nên file zip vẫn khoảng 85 đến 90 MB, **vượt xa giới hạn 20 MB mỗi file của Moodle**. Phần này cần bạn quyết, chi tiết ở cuối.
+
+## Đã xong
+
+**3 form ([AI-02], [AI-03], [AI-05]):**
+- Có bản `.docx`, `.md` và `.pdf`, đều có chữ ký lấy từ HW01.
+- [AI-05] tick giống HW01: Mọi ô, trừ "Không nhập dữ liệu cá nhân" và "Không paste nguyên si tài liệu có bản quyền".
+- PDF xuất từ Word.
+
+**Sự cố trong lúc làm, đã sửa:** Script xuất PDF của tôi có lúc ghi đè 3 PDF của form bằng bản xuất từ `.md`, là bản không có chữ ký. Tôi đã sửa script để bỏ qua thư mục `forms/`, rồi xuất lại 3 PDF từ Word; kích thước khớp với lần xuất đầu.
+
+**PDF cho mọi file MD:** 82 file, mỗi file `.md` có một `.pdf` cùng tên bên cạnh.
+
+**`.gitkeep`:** Đã xoá ở `ai_raw/` của C và D, nơi đã có file thật. Riêng file ở B đã bị xoá từ trước, chỉ còn chờ commit. Giờ không còn `.gitkeep` nào.
+
+## Commit (đã kiểm `git status`)
+
+```
+git add -A features/B_FR-07_GioHang/ai_raw/.gitkeep features/C_FR-17_QuanLyCoupon/ai_raw/.gitkeep features/D_FR-04_HoSo_Mobile/ai_raw/.gitkeep
+git commit -m "[setup] Remove placeholder .gitkeep from non-empty folders"
+
+git add forms tools/fill_ai03_05.py tools/md_to_pdf.py
+git commit -m "[forms] Fill AI-02, AI-03, AI-05 with signature and export PDF"
+
+git add "*.pdf"
+git commit -m "[report] Export PDF for all Markdown files"
+```
+
+## Cần bạn quyết: Nộp file zip 90 MB thế nào
+
+| Cách | Làm gì | Ưu, nhược |
+|---|---|---|
+| **(a) Chia zip thành 5 phần, mỗi phần 19 MB** (máy có 7-Zip) | Tạo `23120061_HW02_AI_DomainTesting_100.zip.001` đến `.005`, nộp cả 5 file | Không mất chất lượng, nằm trong giới hạn 20 file của Moodle. Nhưng người chấm cần 7-Zip hoặc WinRAR để giải nén |
+| **(b) Giảm dung lượng ảnh** (giảm số màu trong PNG, giữ nguyên tên file) | Ảnh còn khoảng 15 đến 20 MB | Ảnh hơi kém sắc nét, và vẫn có thể phải chia 2 phần vì PDF cũng nặng 32 MB |
+| **(c) Nộp zip không có ảnh, ảnh để trên GitHub** | Zip chỉ chứa phần chữ, PDF, form | Repo cá nhân đang để Private; đề yêu cầu ảnh nằm trong bài nộp |
+
+Tôi đề xuất **(a)**: Giữ nguyên bằng chứng, và Moodle cho tối đa 20 file. Bạn chọn xong thì tôi làm phần cuối theo thứ tự:
+1. Xuất prompt log lần cuối và PDF của nó.
+2. Bạn chạy commit cuối.
+3. Tôi xuất `git_log.txt`.
+4. Tôi nén zip (bỏ `.git`, `_NOTES.md`, file đề bài).
+5. Tôi kiểm lại danh sách file trong zip so với yêu cầu của đề.
+````
+
+---
+
+### C317 | 10:00 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+a. Bạn vẫn xài zip nhưng mà sẽ là dùng các tool split and compress để chia file đúng không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Đúng. Vẫn là **một file zip**, chỉ khác là được cắt thành nhiều phần. Cụ thể:
+
+**Cách làm:**
+1. 7-Zip nén toàn bộ bài vào một file zip chuẩn, mức nén cao nhất (lệnh `7z a -tzip -mx=9 -v19m ...`).
+2. Ngay khi nén, file đó được **cắt thành các phần 19 MB**: `23120061_HW02_AI_DomainTesting_100.zip.001`, `.002`, ... Dự kiến 5 phần.
+
+**Hai điều cần biết:**
+- **Nén hầu như không làm nhỏ đi được.** PNG và PDF vốn đã nén sẵn, nên tổng dung lượng vẫn khoảng 85 đến 90 MB. Kích thước mỗi phần nhỏ được là nhờ **cắt**, không phải nhờ nén.
+- **Người chấm cần ghép lại trước khi giải nén.** Các phần `.zip.001`, `.002`... ghép lại sẽ thành đúng file `23120061_HW02_AI_DomainTesting_100.zip`. Cách mở:
+  - Có 7-Zip hoặc WinRAR: Mở file `.001` là tự đọc cả các phần còn lại.
+  - Không có: Chạy `copy /b 23120061_HW02_AI_DomainTesting_100.zip.001 + ...002 + ...003 + ...004 + ...005 23120061_HW02_AI_DomainTesting_100.zip`, rồi mở bằng Windows như zip thường.
+
+  Tên từng phần có thêm đuôi `.001`, `.002`, nhưng file ghép lại vẫn đúng tên đề yêu cầu. Nếu muốn, tôi viết thêm một file `HUONG_DAN_GIAI_NEN.txt` ngắn để nộp kèm.
+
+**Thứ tự còn lại:**
+1. Bạn chạy 3 commit ở lượt trước.
+2. Tôi xuất prompt log lần cuối và PDF của nó; bạn commit.
+3. Tôi xuất `git_log.txt`.
+4. Tôi nén và cắt zip (bỏ `.git`, `_NOTES.md`, file đề bài), rồi thử ghép và giải nén lại để chắc file không lỗi.
+
+Bạn chạy xong 3 commit thì báo tôi làm bước 2.
+````
+
+---
+
+### C318 | 10:01 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã commit rồi.
+Có repo nào cần phải để public để giáo viên chấm không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check repo visibility and assignment repo requirements
+- Bash: Export final prompt log and find stale PDFs
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi kiểm nhanh trạng thái hai repo trên GitHub, rồi làm bước 2 (xuất prompt log lần cuối).
 ````
 
 
