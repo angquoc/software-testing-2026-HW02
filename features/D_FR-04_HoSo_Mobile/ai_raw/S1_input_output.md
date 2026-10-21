@@ -1,0 +1,178 @@
+# S1: Xác định biến Input và Output (FR-04 Quản lý hồ sơ cá nhân, Mobile)
+
+- Bước: S1 (Xác định biến Input và Output, theo Step 1 của slide S04)
+- Thời gian tạo: 2026-10-21 07:15 (UTC+07:00)
+- Căn cứ: `00_spec.md` (bản sau pha 3: Mục 2 trích đặc tả, mục 3 yêu cầu FR04-R01 đến FR04-R23, mục 4 và 7 câu hỏi mở, mục 5 bảng quan sát, mục 8 đối chiếu, mục 9 quyết định, mục 12 ghi chú cho bước sau)
+
+---
+
+## 1. Cách làm
+
+- Theo Step 1 của slide S04: Liệt kê mọi thứ ảnh hưởng tới kết quả (Input, gồm cả yếu tố không nhập trực tiếp) và mọi kết quả quan sát được (Output, gồm cả thông báo lỗi). Bước này chưa chia lớp.
+- Tên trên giao diện lấy từ bảng quan sát (`Onn`). Trường API lấy từ API spec; trường API spec không mô tả thì ghi "Không có trong API spec", không khẳng định API thật có nhận hay không.
+- Ràng buộc đặc tả không nêu: Trỏ về câu hỏi mở (`Qnn`) để S2 đặt giả định.
+- Lỗi chia theo nguyên nhân (`ERRn`); không đặt câu chữ thông báo vì đặc tả không nêu (Q17).
+- Theo yêu cầu của sinh viên, các điểm nhỏ ở mục 8 đã **áp tạm phương án AI đề xuất** trong bản này; sinh viên duyệt ở lượt review.
+
+## 2. Tiền điều kiện chung (đề xuất, mục 8 điểm 1 và 3)
+
+| Mã | Tiền điều kiện | Áp cho |
+|---|---|---|
+| PC1 | Ứng dụng EShop mở bằng Expo Go trên thiết bị; đã đăng nhập bằng `test@eshop.com`; đang ở màn hình Hồ sơ (bấm "Chào, Test User") | Nhóm giao diện |
+| PC2 | Có token của `test@eshop.com` lấy từ `POST /api/login` (API spec mục 1.2), gửi trong header `Authorization: Bearer <token>` | Nhóm API (trừ khi biến IN6 lấy giá trị khác) |
+| PC3 | Trước mỗi test case, hồ sơ được đưa về một giá trị đã biết (mặc định là giá trị ban đầu: Họ Tên `Test User`, Số điện thoại trống, Địa chỉ trống, theo Q23) và giá trị thử khác giá trị đang có, để phân biệt "đã đổi" với "không đổi" | Mọi test case |
+
+## 3. Biến Input
+
+### 3.1 Input nhập trực tiếp
+
+| Mã | Biến | Tên trên giao diện | Trường API tương ứng | Ràng buộc từ đặc tả | Yêu cầu |
+|---|---|---|---|---|---|
+| IN1 | Họ Tên | "Họ Tên" (O09), ô một dòng, bàn phím chữ (O10) | `name` | Cập nhật được (FR04-R01). Bắt buộc hay không, độ dài, tập ký tự, khoảng trắng: Đặc tả không nêu (Q01 đến Q04) | FR04-R01, FR04-R22, FR04-R23 |
+| IN2 | Số điện thoại | "Số điện thoại" (O13), ô một dòng, bàn phím điện thoại (O14) | `phone` | Cập nhật được (FR04-R02); bắt đầu bằng `0` (FR04-R04); từ 10 đến 11 chữ số (FR04-R05). Bắt buộc hay không, ký tự không phải chữ số, cách đếm, khoảng trắng, đầu số: Q05 đến Q09 | FR04-R02, FR04-R04, FR04-R05 |
+| IN3 | Địa chỉ giao hàng mặc định | "Địa chỉ giao hàng" (O15), ô nhiều dòng, bàn phím chữ có phím xuống dòng (O16) | `shipping_address` | Cập nhật được (FR04-R03). Bắt buộc hay không, độ dài, tập ký tự, xuống dòng, khoảng trắng: Q10, Q11 | FR04-R03, FR04-R22, FR04-R23 |
+| IN4 | Email | "Email (Không đổi)" (O11), ô nền xám; chạm vào không hiện bàn phím (O12) | `email`: Không có trong API spec (body mẫu của `PUT /api/users/me` không có) | Không thay đổi được qua giao diện (FR04-R06). Gửi qua API thì sao: Q13 | FR04-R06, FR04-R19 |
+| IN5 | Vai trò | Không có trên giao diện (O17) | `role`: Không có trong body mẫu của API spec; SEC-06 nhắc tới "trường `role`" | Người dùng không tự thay đổi được (FR04-R08, FR04-R21). Bỏ qua trường hay từ chối cả yêu cầu: Q14 | FR04-R08, FR04-R19, FR04-R21 |
+
+Ghi chú:
+
+- FR04-R22 (hiển thị an toàn) và FR04-R23 (Parameterized Query) không phải biến riêng. Chúng là các giá trị đặc biệt trong miền của IN1 và IN3 (chuỗi có thẻ HTML, chuỗi có dấu nháy đơn); S2 quyết định có lập lớp hay không (mục 8 điểm 10).
+- IN4 và IN5 chỉ có giá trị khác giá trị hiện có khi gửi qua API. Qua giao diện, IN4 là thuộc tính tĩnh của màn hình (mục 7).
+
+### 3.2 Input không nhập trực tiếp
+
+| Mã | Biến | Giá trị có thể có | Ảnh hưởng tới | Đề xuất |
+|---|---|---|---|---|
+| IN6 | Trạng thái xác thực của yêu cầu | Token hợp lệ; không có header `Authorization`; token sai hoặc hết hạn | FR04-R20 (SEC-02); phản hồi cụ thể: Q20; trên giao diện: Q25 | Biến Input của nhóm API. Với nhóm giao diện là tiền điều kiện PC1 (mục 8 điểm 1) |
+| IN7 | Hồ sơ hiện có trước khi cập nhật | Giá trị ban đầu (Q23) hoặc giá trị do test case trước để lại | Phân biệt "đã đổi" với "không đổi"; lớp "xóa trống" của Số điện thoại, Địa chỉ chỉ có ý nghĩa khi trường đang có giá trị | Chuyển thành tiền điều kiện PC3; test case nào cần giá trị khác (ví dụ Số điện thoại đang có giá trị) thì ghi riêng trong tiền điều kiện của test case đó (mục 8 điểm 3) |
+| IN8 | Các trường có trong body `PUT /api/users/me` | Đủ 3 trường `name`, `shipping_address`, `phone`; thiếu một hoặc hai trường | FR04-R18; trường không gửi giữ nguyên hay bị xóa: Q16 | Giữ làm biến của nhóm API (mục 8 điểm 4) |
+| IN9 | Mã người dùng khác gửi trong body (`id`, `user_id`) | Không gửi; gửi mã của tài khoản khác | FR04-R07; Q15. Trường này không có trong API spec | Giữ làm biến của nhóm API, đi cùng IN10 (mục 8 điểm 5) |
+| IN10 | Tài khoản sở hữu token | `test@eshop.com`; tài khoản thứ hai `admin@eshop.com` (SRS mục 1) | FR04-R07 (hồ sơ người khác không đổi), FR04-R17 (`GET /api/users/me` trả đúng chủ token) | Giữ; `admin@eshop.com` chỉ dùng để lấy token và đọc hồ sơ của chính nó, không sửa (mục 8 điểm 5) |
+
+Yếu tố môi trường (không phải biến, nhưng S2 đến S4 phải xét, theo `00_spec.md` mục 12):
+
+- Bàn phím điện thoại của ô Số điện thoại không có phím dấu cách, chữ, `-`, `.` (O14).
+- Bàn phím chữ "English (US)" (O10): Chữ tiếng Việt có dấu cần bàn phím khác hoặc dán.
+- Ô Địa chỉ bật viết hoa chữ đầu, có phím xuống dòng (O16).
+- Bàn phím che nút "Cập nhật" (O20).
+
+### 3.3 Sự kiện kích hoạt
+
+| Mã | Sự kiện | Ghi chú |
+|---|---|---|
+| EV1 | Bấm "Cập nhật" (O18) | Phải ẩn bàn phím trước vì bàn phím che nút (O20) |
+| EV2 | Gửi `PUT /api/users/me` | Nhóm API |
+| EV3 | Gửi `GET /api/users/me` | Vừa là cách kiểm chứng (mục 5), vừa là thao tác của FR04-R17 |
+| EV4 | Rời màn hình Hồ sơ rồi bấm "Chào, Test User" để mở lại | Cách kiểm chứng qua giao diện (mục 5). Cách rời màn hình (bấm "EShop Mobile", nút quay lại của Android) chưa quan sát, chốt ở S6 |
+
+Nút "Thoát" không phải sự kiện của FR-04 (chức năng chưa rõ, Q26); chỉ xét nhãn và màu trong nhóm checklist (mục 7).
+
+## 4. Biến Output
+
+### 4.1 Thành công
+
+| Mã | Output | Khi nào xảy ra | Dấu hiệu quan sát được | Yêu cầu |
+|---|---|---|---|---|
+| OUT1 | Cập nhật thành công qua giao diện | EV1 với dữ liệu hợp lệ | Ứng dụng báo thành công (câu chữ, hình thức: Q17); sau EV4, các ô hiển thị giá trị mới (hành vi ngay sau khi lưu: Q21) | FR04-R01, FR04-R02, FR04-R03 |
+| OUT2 | Cập nhật thành công qua API | EV2 với dữ liệu hợp lệ và token hợp lệ | Phản hồi thành công (mã HTTP, nội dung: Q20, API spec không nêu); EV3 trả giá trị mới | FR04-R18 |
+| OUT3 | Lấy hồ sơ qua API | EV3 với token hợp lệ | Phản hồi chứa hồ sơ của chính chủ token (email trùng tài khoản đã đăng nhập); cấu trúc phản hồi: Q20 | FR04-R17 |
+| OUT4 | Thuộc tính được bảo vệ giữ nguyên | Sau mọi yêu cầu có IN4 khác Email hiện tại, IN5 khác vai trò hiện tại, hoặc IN9 là mã người khác | `email`, `role` của chủ token không đổi; hồ sơ của tài khoản khác không đổi. Phản hồi của chính yêu cầu đó (chấp nhận và bỏ qua trường, hay từ chối) phụ thuộc giả định ở S2 (Q13, Q14, Q15) | FR04-R06, FR04-R07, FR04-R08, FR04-R19, FR04-R21 |
+
+### 4.2 Bị từ chối (theo nguyên nhân)
+
+| Mã | Nguyên nhân | Khi nào xảy ra | Dấu hiệu quan sát được | Yêu cầu |
+|---|---|---|---|---|
+| ERR1 | Họ Tên không hợp lệ | Chỉ có nếu S2 chốt ràng buộc cho Họ Tên (Q01 đến Q04); đặc tả không nêu ràng buộc nào | Không lưu; có thông báo lỗi (câu chữ: Q17) | FR04-R01 |
+| ERR2 | Số điện thoại không hợp lệ | Không bắt đầu bằng `0` (FR04-R04); số chữ số ngoài 10 đến 11 (FR04-R05); có ký tự không phải chữ số (nếu S2 chốt theo Q06) | Không lưu; có thông báo lỗi. Gộp chung các nguyên nhân ở phía Output vì đặc tả gọi chung "Số điện thoại hợp lệ" (mục 8 điểm 2); phía Input vẫn tách lớp ở S2 | FR04-R04, FR04-R05 |
+| ERR3 | Địa chỉ không hợp lệ | Chỉ có nếu S2 chốt ràng buộc cho Địa chỉ (Q10, Q11) | Không lưu; có thông báo lỗi | FR04-R03 |
+| ERR4 | Không xác thực được | IN6 là không có header hoặc token sai | API: Không trả hồ sơ, không cập nhật (mã HTTP: Q20). Giao diện: Q25 | FR04-R20 |
+| ERR5 | Có trường không được phép (`email`, `role`, mã người khác) | Chỉ có nếu S2 chọn "từ chối cả yêu cầu" cho Q13, Q14 hoặc Q15; nếu chọn "bỏ qua trường" thì kết quả là OUT2 kèm OUT4 | Phản hồi thất bại; hồ sơ không đổi | FR04-R19, FR04-R21 |
+| ERR6 | Body `PUT` thiếu trường | Chỉ có nếu S2 chọn "từ chối" cho Q16 | Phản hồi thất bại; hồ sơ không đổi | FR04-R18 |
+
+### 4.3 Thuộc tính của phản hồi khi bị từ chối qua giao diện (ERR1 đến ERR3)
+
+| # | Thuộc tính | Căn cứ |
+|---|---|---|
+| 1 | Thông báo lỗi nằm phía trên nút "Cập nhật" | FR04-R14 |
+| 2 | Thông báo bằng tiếng Việt | FR04-R10 |
+| 3 | Hồ sơ trên hệ thống giữ nguyên; trường hợp lệ khác cùng lần lưu có được lưu một phần không | Q19 |
+| 4 | Giá trị vừa nhập có giữ lại trong ô không | Q19 |
+| 5 | Nhiều trường sai cùng lúc thì báo tất cả hay lỗi đầu tiên | Q18 |
+
+## 5. Cách kiểm chứng tác động
+
+Thông báo thành công chỉ chứng minh hệ thống chấp nhận; chưa chứng minh dữ liệu được lưu đúng. Các cách dưới đây nằm trong phạm vi FR-04 (màn hình Hồ sơ và API `/api/users/me`).
+
+| Tác động cần kiểm chứng | Cách đề xuất (mục 8 điểm 6, 7) | Phụ thuộc, giới hạn |
+|---|---|---|
+| Giá trị mới đã được lưu (giao diện) | EV4: Mở lại màn hình Hồ sơ, ô hiển thị giá trị mới | Ứng dụng có thể hiển thị giá trị còn giữ trong bộ nhớ chứ chưa tải lại từ hệ thống; test case cần chắc chắn thì thêm EV3 |
+| Giá trị mới đã được lưu (API) | EV3 trả giá trị mới | Cấu trúc phản hồi chưa biết (Q20) |
+| Không lưu khi bị từ chối | EV3 hoặc EV4 thấy giá trị cũ (PC3) | |
+| Dạng được lưu (đã cắt khoảng trắng, giữ xuống dòng, ký tự đặc biệt) | EV3 xem chuỗi nguyên văn | Giao diện không cho thấy khoảng trắng ở cuối, nên không dùng EV4 cho các lớp này |
+| Email không đổi | EV3 trả Email cũ; hoặc EV4 thấy ô Email cũ | |
+| Vai trò không đổi | EV3, nếu phản hồi có trường `role` | Nếu phản hồi không có `role` thì ghi giới hạn quan sát; phương án khác là `GET /api/admin/users` bằng token admin, nhưng phụ thuộc FR-19 (mục 8 điểm 7) |
+| Hồ sơ người khác không đổi | EV3 bằng token của `admin@eshop.com` trước và sau | Cần lấy token admin bằng `POST /api/login` (FR-02, chỉ dùng để lấy token) |
+
+Không dùng lời chào "Chào, ..." trên thanh trên làm bằng chứng duy nhất: Đặc tả không nói lời chào lấy từ Họ Tên. Không dùng màn hình Thanh toán (FR-08) để kiểm Địa chỉ.
+
+## 6. Ma trận yêu cầu và biến
+
+| Yêu cầu | Biến Input | Output | Ghi chú |
+|---|---|---|---|
+| FR04-R01 | IN1 | OUT1, ERR1 | |
+| FR04-R02 | IN2 | OUT1 | |
+| FR04-R03 | IN3 | OUT1, ERR3 | |
+| FR04-R04 | IN2 | ERR2 | |
+| FR04-R05 | IN2 | ERR2 | Phân vùng có thứ tự, cho S4 |
+| FR04-R06 | IN4 | OUT4 | Phần giao diện kiểm trong checklist (mục 7) |
+| FR04-R07 | IN9, IN10 | OUT4 | |
+| FR04-R08 | IN5 | OUT4 | |
+| FR04-R09 đến FR04-R16 | Không có | Không có | Checklist (mục 7) |
+| FR04-R17 | IN6, IN10 | OUT3, ERR4 | |
+| FR04-R18 | IN8 | OUT2, ERR6 | |
+| FR04-R19 | IN4, IN5 | OUT4, ERR5 | |
+| FR04-R20 | IN6 | ERR4 | |
+| FR04-R21 | IN5 | OUT4, ERR5 | |
+| FR04-R22 | IN1, IN3 (giá trị đặc biệt) | OUT1, OUT2 | Hiển thị lại nguyên văn, không thực thi như mã |
+| FR04-R23 | IN1, IN3 (giá trị đặc biệt) | OUT1, OUT2 | Chỉ suy ra qua hành vi |
+
+## 7. Yêu cầu không mô hình hóa thành biến (nhóm checklist)
+
+Các yêu cầu là thuộc tính tĩnh của màn hình, không có miền giá trị để chia lớp. Đề xuất kiểm thành nhóm checklist riêng, ngoài Domain Testing (mục 8 điểm 8).
+
+| Yêu cầu | Nội dung kiểm | Quan sát ở S0 |
+|---|---|---|
+| FR04-R06 | Không sửa được ô Email qua giao diện: Chạm, nhấn giữ, thử dán | O11, O12 khớp ở mức quan sát |
+| FR04-R09 | Mở được màn hình Hồ sơ | O02 |
+| FR04-R10 | Mọi chữ trên màn hình Hồ sơ, kể cả thông báo thành công và lỗi, bằng tiếng Việt | O07; thông báo để S6 |
+| FR04-R11 | "Cập nhật" màu xanh dương | O18 |
+| FR04-R12 | "Thoát" màu đỏ; áp dụng nếu là nút nguy hiểm hoặc hủy bỏ (Q26) | O19 |
+| FR04-R13 | Trường bắt buộc có `*` | D03; phụ thuộc giả định A01, A05, A10 ở S2 |
+| FR04-R14 | Thông báo lỗi nằm phía trên nút "Cập nhật" | Chạy kèm một test case bị từ chối qua giao diện |
+| FR04-R15 | Thanh trên làm nổi mục đang chọn khi ở Hồ sơ | D02; áp dụng nếu chọn mục 8 điểm 9 (a) |
+| FR04-R16 | Nút đăng xuất có nhãn "Đăng xuất" | D01; áp dụng nếu "Thoát" là đăng xuất (Q26) |
+
+## 8. Điểm cần sinh viên quyết định
+
+Các điểm dưới đây không đổi cấu trúc cả bản nên đã áp tạm phương án đề xuất (cột cuối).
+
+| # | Vấn đề | Các lựa chọn | Đã áp tạm |
+|---|---|---|---|
+| 1 | Đăng nhập là tiền điều kiện hay biến | (a) Tiền điều kiện PC1 cho nhóm giao diện; IN6 chỉ là biến của nhóm API; (b) IN6 là biến cho cả giao diện (cần tạo token hết hạn trên ứng dụng, Q25) | (a) |
+| 2 | Lỗi Số điện thoại ở phía Output | (a) Gộp thành ERR2 vì đặc tả gọi chung; (b) tách 3 loại (không bắt đầu bằng `0`, sai số chữ số, ký tự khác) | (a) |
+| 3 | IN7 (hồ sơ hiện có) | (a) Chuyển thành tiền điều kiện PC3, test case cần giá trị khác ghi riêng; (b) giữ làm biến có lớp riêng | (a) |
+| 4 | IN8 (body thiếu trường) | (a) Giữ làm biến của nhóm API; (b) bỏ để tiết kiệm test case | (a) |
+| 5 | FR04-R07 (chỉ sửa hồ sơ của mình) | (a) Giữ IN9, IN10; dùng `admin@eshop.com` làm tài khoản thứ hai, chỉ đọc hồ sơ của nó; (b) bỏ, ghi FR04-R07 phủ một phần vì giao diện không có cách chọn hồ sơ khác | (a) |
+| 6 | Kiểm chứng tác động | (a) Giao diện dùng EV4, thêm EV3 khi cần thấy dạng lưu; API dùng EV3; (b) mọi test case dùng EV3; (c) chỉ dùng EV4 | (a) |
+| 7 | Kiểm vai trò không đổi | (a) EV3 nếu phản hồi có `role`, nếu không thì ghi giới hạn quan sát; (b) dùng thêm `GET /api/admin/users` (phụ thuộc FR-19) | (a) |
+| 8 | Nhóm checklist (mục 7) | (a) Giữ FR04-R06 (phần giao diện), FR04-R09 đến FR04-R16 thành nhóm checklist; (b) bỏ FR04-R15, FR04-R16 | (a) |
+| 9 | Q27: Thanh trên có phải thanh điều hướng theo FR-23 | (a) Có, áp FR04-R15 cho thanh trên; (b) không, FR04-R15 không áp dụng vì ứng dụng không có thanh điều hướng | (a) |
+| 10 | FR04-R22, FR04-R23 | (a) Là giá trị đặc biệt trong miền IN1, IN3; S2 lập tối đa một lớp cho mỗi loại (thẻ HTML, dấu nháy đơn); (b) không lập lớp, ghi phủ một phần | (a) |
+
+## 9. Ghi chú cho bước sau
+
+- **Giả định cần đặt ở S2:** Q01 đến Q11, Q13 đến Q16, Q18, Q19. Đáng chú ý: Q01, Q05, Q10 (bắt buộc hay không) quyết định ERR1, ERR3 có tồn tại và D03 có thành lỗi không; Q06 quyết định SĐT có ký tự khác chữ số thuộc ERR2 hay được chuẩn hóa; Q13, Q14, Q15, Q16 quyết định kết quả là OUT2 kèm OUT4 hay ERR5, ERR6.
+- **Phân vùng có thứ tự cho S4:** Số chữ số của IN2 (hợp lệ 10 đến 11; biên quanh 9, 10, 11, 12); độ dài IN1, IN3 nếu giả định có cận.
+- **Môi trường:** Lớp có ký tự không gõ được bằng bàn phím điện thoại (O14) thì kiểm qua API hoặc dán. Ràng buộc Số điện thoại có thể chỉ được kiểm ở ứng dụng; nên có ít nhất một test case API cho FR04-R04 và FR04-R05 để kiểm phía hệ thống.
+- **Lớp "xóa trống":** Số điện thoại, Địa chỉ ban đầu trống (Q23), nên test case xóa trống cần tiền điều kiện trường đang có giá trị.
+- **Ngân sách:** Cả bộ khoảng 25 đến 35 test case. S2 nên gộp lớp hợp lệ khi không có lý do tách; nhóm checklist (mục 7) tính riêng hoặc gộp thành ít test case.
