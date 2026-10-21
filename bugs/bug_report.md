@@ -11,7 +11,7 @@ Mỗi bug dưới đây là nội dung để dán vào issue GitHub theo templat
 | Feature | Pool | Nền tảng | Mục |
 |---|---|---|---|
 | FR-01 Đăng ký tài khoản | A | Web | [FR-01](#fr-01-đăng-ký-tài-khoản) |
-| FR-07 Giỏ hàng | B | Web | (bổ sung sau) |
+| FR-07 Giỏ hàng | B | Web | [FR-07](#fr-07-giỏ-hàng) |
 | FR-17 Quản lý mã giảm giá | C | Web Admin | [FR-17](#fr-17-quản-lý-mã-giảm-giá) |
 | FR-04 Quản lý hồ sơ cá nhân | D | Mobile | (bổ sung sau) |
 
@@ -555,6 +555,745 @@ Xét 3 quan sát ở mục 6 của `06_results.md`:
 |---|---|
 | BUG-FR01-01 | TC-REG-31, 33, 34, 35, 36, 37, 38, 39, 45, 78, 79, 81, 101, 104 |
 | BUG-FR01-02 | TC-REG-59, 60, 61, 62 |
+
+---
+
+## FR-07: Giỏ hàng
+
+- Nguồn: `features/B_FR-07_GioHang/06_results.md` (kết quả chạy ngày 21/10/2026, S6 rút gọn), bộ test case ở `features/B_FR-07_GioHang/05_final_tc.md`
+- Môi trường chung: Windows 11 Home Single Language 10.0.26200; Google Chrome 155.0.8059.85; EShop commit `85af3ba`; backend `http://localhost:3000`; web `http://localhost:5173`
+- Điều kiện tiên quyết chung: Đã reset dữ liệu EShop về dữ liệu mẫu. Giao diện: Đăng nhập Web bằng `test@eshop.com` / `Test1234!`, giỏ trống. API: Lấy token bằng `POST /api/login`
+- Body cơ sở khi gọi `POST /api/cart`: `{"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 1}` (`id` 1 là iPhone 15 Pro Max, giá 30,000,000 ₫)
+
+### Tổng hợp
+
+| Bug | Tiêu đề ngắn | Severity | Technique | Test case | Issue |
+|---|---|---|---|---|---|
+| BUG-FR07-01 | API thêm vào giỏ nhận số lượng không hợp lệ | High | EP, BVA | TC-CART-31, 32, 33, 34, 102 | |
+| BUG-FR07-02 | API giỏ hàng lưu đơn giá do client gửi | High | EP | TC-CART-51 | |
+| BUG-FR07-03 | API thêm vào giỏ nhận sản phẩm không tồn tại | High | EP | TC-CART-30 | |
+| BUG-FR07-04 | Thêm sản phẩm đã có trong giỏ tạo dòng mới thay vì tăng số lượng | Medium | EP | TC-CART-03, TC-CART-02, TC-CART-08 | |
+| BUG-FR07-05 | Cột Số lượng không có nút +/- | Medium | EP, BVA | TC-CART-04, 05, 06 (Blocked) | |
+| BUG-FR07-06 | Xóa sản phẩm không có dialog xác nhận | Medium | EP | TC-CART-07, 08, 09 | |
+| BUG-FR07-07 | Nút "Thêm vào giỏ hàng" không thêm khi giữ số lượng mặc định 1 | Medium | EP, BVA | TC-CART-01 | |
+| BUG-FR07-08 | Giỏ trên Web mất sau khi tải lại trang, không khớp giỏ của API | Medium | EP | TC-CART-50 | |
+| BUG-FR07-09 | Nhãn tổng tiền là "Tổng tạm tính" thay vì "Tổng cộng" | Low | EP | TC-CART-90 | |
+| BUG-FR07-10 | Cột "Giá" thay vì "Đơn giá" | Low | EP | TC-CART-90 | |
+| BUG-FR07-11 | Giỏ có hàng không có nút "Tiếp tục mua sắm" | Low | EP | TC-CART-11 | |
+| BUG-FR07-12 | Không có toast hay badge sau khi thêm vào giỏ | Low | EP | TC-CART-01, TC-CART-02 | |
+| BUG-FR07-13 | Link "Giỏ hàng" không có badge số lượng | Low | EP | TC-CART-02 | |
+| BUG-FR07-14 | Giỏ trống không có hình minh họa | Low | EP | TC-CART-91, TC-CART-10, TC-CART-09 | |
+| BUG-FR07-15 | Tiêu đề tab không phải tiếng Việt | Low | EP | TC-CART-92 | |
+| BUG-FR07-16 | Nút "Tiến hành thanh toán" màu xanh lá thay vì xanh dương | Low | EP | TC-CART-93 | |
+| BUG-FR07-17 | Navbar không highlight mục "Giỏ hàng" | Low | EP | TC-CART-95 | |
+| BUG-FR07-18 | Trang Giỏ hàng không có breadcrumb | Low | EP | TC-CART-95 | |
+
+Label chung cho mọi bug của FR-07: `bug` (template tự gắn), `platform: web`, `pool: B`. Label `severity` và `technique` theo bảng trên.
+
+BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên giả định hoặc quan sát; sinh viên đã quyết định đưa thành bug (mục "Khác giả định và quan sát" cuối mục FR-07). Với FR-07, sinh viên không chụp ảnh trang issue.
+
+---
+
+### BUG-FR07-01: API thêm vào giỏ nhận số lượng không hợp lệ
+
+- **Tiêu đề:** `[23120061][FR-07][Web] API thêm vào giỏ hàng: Nhận số lượng 0, âm, thập phân, không phải số hoặc thiếu số lượng`
+- **Labels:** `bug`, `severity: high`, `platform: web`, `technique: EP`, `technique: BVA`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-31 (`quantity` 0), TC-CART-32 (1.5), TC-CART-33 (`"abc"`), TC-CART-34 (thiếu `quantity`), TC-CART-102 (-1)
+
+**Mức độ:** High
+
+**Điều kiện tiên quyết:** Đã reset dữ liệu EShop về dữ liệu mẫu; backend chạy ở `http://localhost:3000`; có token của `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Gửi `POST http://localhost:3000/api/cart`, header `Authorization: Bearer <token>`, `Content-Type: application/json`, body cơ sở với `"quantity": 0`.
+2. Lặp lại bước 1 với `"quantity": 1.5`, `"quantity": "abc"`, `"quantity": -1`, và với body bỏ hẳn trường `quantity`.
+3. Gọi `GET http://localhost:3000/api/cart` (cùng token).
+
+**Dữ liệu test:** `quantity` = `0`, `1.5`, `"abc"`, `-1`, không có trường `quantity`
+
+**Kết quả mong đợi (theo đặc tả):** Từ chối, không thêm vào giỏ khi số lượng không phải số nguyên dương. README của EShop, FR-06 (ô Số lượng dùng để thêm vào giỏ):
+
+> - Có ô nhập **Số lượng** (chỉ nhận số nguyên dương, tối thiểu là 1).
+
+**Kết quả thực tế:** Cả 5 request nhận HTTP 200 `{"message": "Added to cart"}`. `GET /api/cart` có các dòng `id` 1 với `quantity` là `0`, `1.5`, `"abc"`, `-1` và một dòng không có trường `quantity`.
+
+**Ảnh chụp:** Chưa có (ảnh cần chụp: `S6_TC-CART-31_log.png`, `S6_TC-CART-50_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log` (5 request), `features/B_FR-07_GioHang/logs/S6_api_20261021_075653.log` (phản hồi `GET /api/cart` liệt kê các dòng đã lưu)
+
+**Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
+
+**Ghi chú:** API spec mục 4.2 không nêu ràng buộc riêng cho `quantity`; ràng buộc lấy theo FR-06 vì đây là số lượng được thêm vào giỏ (giả định A25 ở `features/B_FR-07_GioHang/02_ec.md`). Request thiếu token bị từ chối đúng (HTTP 401, TC-CART-35). Các bug BUG-FR07-01, 02, 03 cho thấy API thêm vào giỏ không kiểm tra dữ liệu đầu vào
+
+---
+
+### BUG-FR07-02: API giỏ hàng lưu đơn giá do client gửi
+
+- **Tiêu đề:** `[23120061][FR-07][Web] API thêm vào giỏ hàng: Lưu đơn giá do client gửi thay vì giá của sản phẩm`
+- **Labels:** `bug`, `severity: high`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-51
+
+**Mức độ:** High
+
+**Điều kiện tiên quyết:** Đã reset dữ liệu EShop về dữ liệu mẫu; backend chạy ở `http://localhost:3000`; có token của `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Gửi `POST http://localhost:3000/api/cart`, header `Authorization: Bearer <token>`, body cơ sở với `"price": 1`.
+2. Gọi `GET http://localhost:3000/api/cart`.
+
+**Dữ liệu test:** `id` 1 (iPhone 15 Pro Max, giá 30,000,000 ₫), `price` = `1`
+
+**Kết quả mong đợi (theo đặc tả):** Giỏ dùng giá của sản phẩm trong hệ thống (30,000,000 ₫), không dùng giá client gửi; hoặc request bị từ chối. Suy ra từ nguyên tắc ở README của EShop, FR-08:
+
+> - Backend phải tự tính lại tổng tiền; không chấp nhận giá trị `total_amount` do client gửi lên.
+
+**Kết quả thực tế:** HTTP 200 `{"message": "Added to cart"}`; `GET /api/cart` có dòng `id` 1, `name` "iPhone 15 Pro Max", `price` 1, `quantity` 1.
+
+**Ảnh chụp:** Chưa có (ảnh cần chụp: `S6_TC-CART-51_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_080006.log`
+
+**Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
+
+**Ghi chú:** FR-07 và API spec không nói rõ giỏ dùng giá nào; mong đợi dựa trên giả định A24 (`features/B_FR-07_GioHang/02_ec.md`). `name` do client gửi cũng được lưu nguyên văn (TC-CART-52, 53). Chưa kiểm việc thanh toán (FR-08) có dùng giá này không
+
+---
+
+### BUG-FR07-03: API thêm vào giỏ nhận sản phẩm không tồn tại
+
+- **Tiêu đề:** `[23120061][FR-07][Web] API thêm vào giỏ hàng: Nhận id sản phẩm không tồn tại`
+- **Labels:** `bug`, `severity: high`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-30
+
+**Mức độ:** High
+
+**Điều kiện tiên quyết:** Đã reset dữ liệu EShop về dữ liệu mẫu; backend chạy ở `http://localhost:3000`; có token của `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Gửi `GET http://localhost:3000/api/products/9999`.
+2. Gửi `POST http://localhost:3000/api/cart`, header `Authorization: Bearer <token>`, body cơ sở với `"id": 9999`.
+3. Gọi `GET http://localhost:3000/api/cart`.
+
+**Dữ liệu test:** `id` = `9999`
+
+**Kết quả mong đợi (theo đặc tả):** Từ chối, không thêm vào giỏ vì sản phẩm không tồn tại. API spec mục 4.2 mô tả API này là thêm một sản phẩm vào giỏ:
+
+> ### 4.2 Thêm vào giỏ hàng
+> - **Endpoint:** `POST /api/cart`
+
+**Kết quả thực tế:** Bước 1: HTTP 200, body `{}` (không có sản phẩm 9999). Bước 2: HTTP 200 `{"message": "Added to cart"}`. Bước 3: Giỏ có dòng `id` 9999 với `name` "iPhone 15 Pro Max", `price` 30000000 do client gửi.
+
+**Ảnh chụp:** Chưa có (ảnh cần chụp: `S6_TC-CART-30_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log`
+
+**Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
+
+**Ghi chú:** Đặc tả không nêu trực tiếp; mong đợi dựa trên giả định A24 (`features/B_FR-07_GioHang/02_ec.md`). Related: BUG-FR07-01, BUG-FR07-02 (số issue điền sau khi tạo)
+
+---
+
+### BUG-FR07-04: Thêm sản phẩm đã có trong giỏ tạo dòng mới thay vì tăng số lượng
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Giỏ hàng: Thêm sản phẩm đã có trong giỏ tạo dòng mới thay vì tăng số lượng`
+- **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-03 (trang chi tiết), TC-CART-02, TC-CART-08 (trang chủ)
+
+**Mức độ:** Medium
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ trống
+
+**Các bước tái hiện:**
+1. Ở trang chủ, bấm "Thêm vào giỏ" của Samsung Galaxy S24 Ultra 2 lần; mở trang Giỏ hàng.
+2. Mở trang chi tiết iPhone 15 Pro Max, nhập "Số lượng:" = 3, bấm "Thêm vào giỏ hàng" (bấm lại nếu nút chưa đổi thành "Đã thêm").
+3. Ở trang chi tiết iPhone 15 Pro Max, nhập "Số lượng:" = 2, bấm "Thêm vào giỏ hàng"; mở trang Giỏ hàng.
+
+**Dữ liệu test:** Samsung Galaxy S24 Ultra × 1 hai lần; iPhone 15 Pro Max × 3 rồi × 2
+
+**Kết quả mong đợi (theo đặc tả):** Mỗi sản phẩm một dòng; thêm lại thì số lượng tăng (Samsung Số lượng 2; iPhone Số lượng 5). README của EShop, FR-07:
+
+> - Thêm cùng một sản phẩm vào giỏ sẽ tăng số lượng, không tạo dòng mới.
+
+**Kết quả thực tế:** Bước 1: 2 dòng "Samsung Galaxy S24 Ultra" riêng, mỗi dòng Số lượng 1. Bước 3: 2 dòng "iPhone 15 Pro Max" riêng, Số lượng 2 và 3.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png` (2 dòng Samsung), `S6_TC-CART-03_3.png` (2 dòng iPhone)
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Qua API cũng vậy: Mỗi lần `POST /api/cart` cùng `id` 1 tạo một dòng mới (`features/B_FR-07_GioHang/logs/S6_api_20261021_075653.log`). Tổng tiền vẫn bằng tổng các dòng
+
+---
+
+### BUG-FR07-05: Cột Số lượng không có nút +/-
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Cột Số lượng không có nút +/- để chỉnh số lượng`
+- **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `technique: BVA`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-04, TC-CART-05, TC-CART-06 (Blocked vì không có nút)
+
+**Mức độ:** Medium
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ có ít nhất 1 sản phẩm
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+2. Quan sát cột "Số lượng" ở mỗi dòng.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Cột Số lượng có nút + và - để chỉnh. README của EShop, FR-07:
+
+> - Hiển thị danh sách sản phẩm với các cột: **Sản phẩm**, **Đơn giá**, **Số lượng** (có nút +/- để chỉnh), **Thành tiền**, **Thao tác**.
+
+**Kết quả thực tế:** Cột "Số lượng" chỉ hiện con số (ví dụ "1", "250"), không có nút + hay -, không có ô nhập. Không có cách chỉnh số lượng trên trang Giỏ hàng.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S0_03_gio_hang_co_hang.png`, `S6_TC-CART-03_3.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Muốn đổi số lượng phải xóa dòng rồi thêm lại. API spec cũng không mô tả API đổi số lượng
+
+---
+
+### BUG-FR07-06: Xóa sản phẩm không có dialog xác nhận
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Bấm Xóa xóa sản phẩm ngay, không có dialog xác nhận`
+- **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-07, TC-CART-08, TC-CART-09
+
+**Mức độ:** Medium
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ có 2 dòng Samsung Galaxy S24 Ultra
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+2. Bấm "Xóa" ở một dòng.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Hiện dialog xác nhận; sản phẩm chỉ bị xóa sau khi xác nhận. README của EShop, FR-07 và FR-24:
+
+> - Nút **Xóa sản phẩm** phải có dialog xác nhận trước khi thực hiện.
+>
+> - Khi xóa item khỏi giỏ phải có dialog xác nhận.
+
+**Kết quả thực tế:** Không có dialog; dòng bị xóa ngay, "Tổng tạm tính:" giảm từ 56,000,000 ₫ xuống 28,000,000 ₫. Xóa dòng cuối cùng cũng không có dialog.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png` (trước khi xóa), `S6_TC-CART-08.png` (sau khi bấm "Xóa")
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Không có bước hủy nên không lấy lại được sản phẩm đã bấm nhầm
+
+---
+
+### BUG-FR07-07: Nút "Thêm vào giỏ hàng" không thêm khi giữ số lượng mặc định 1
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang chi tiết sản phẩm: Nút Thêm vào giỏ hàng không thêm khi giữ số lượng mặc định 1`
+- **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `technique: BVA`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-01
+
+**Mức độ:** Medium
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ trống
+
+**Các bước tái hiện:**
+1. Mở trang chi tiết iPhone 15 Pro Max (`localhost:5173/product/1`).
+2. Giữ nguyên "Số lượng:" = 1, bấm "Thêm vào giỏ hàng".
+3. Mở trang Giỏ hàng.
+
+**Dữ liệu test:** "Số lượng:" = 1 (giá trị mặc định)
+
+**Kết quả mong đợi (theo đặc tả):** Sản phẩm được thêm vào giỏ với số lượng 1 (1 là số lượng hợp lệ nhỏ nhất) và có phản hồi trực quan. README của EShop, FR-06:
+
+> - Có ô nhập **Số lượng** (chỉ nhận số nguyên dương, tối thiểu là 1).
+> - Nút **Thêm vào giỏ hàng** — sau khi bấm hiển thị phản hồi trực quan (toast notification hoặc badge cập nhật).
+
+**Kết quả thực tế:** Không có gì thay đổi: Nút vẫn là "Thêm vào giỏ hàng", giỏ vẫn trống. Chỉ khi đổi số lượng rồi bấm thì nút mới thành "Đã thêm" và sản phẩm vào giỏ; khi đó cũng phải bấm 2 lần (lần đầu không có phản hồi), giỏ chỉ thêm một lần.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-01_1.png` (sau khi bấm, nút không đổi), `S0_05_gio_hang_trong.png` (giỏ trống; trang giống ảnh này nên không chụp lại), `S6_TC-CART-03_1.png` (nút "Đã thêm" sau khi đổi số lượng)
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Lỗi nằm ở nút của trang chi tiết (FR-06), là đường vào chính của giỏ hàng; trong nhóm không ai làm FR-06 nên báo ở FR-07. Đi vòng được bằng cách đổi số lượng hoặc thêm từ trang chủ
+
+---
+
+### BUG-FR07-08: Giỏ trên Web mất sau khi tải lại trang, không khớp giỏ của API
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Giỏ hàng: Sản phẩm trong giỏ mất sau khi tải lại trang, giỏ trên Web không khớp GET /api/cart`
+- **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-50
+
+**Mức độ:** Medium
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`; có token của `test@eshop.com` để gọi API
+
+**Các bước tái hiện:**
+1. Trên Web, thêm vài sản phẩm vào giỏ (ví dụ Bàn phím cơ Keychron Q1 × 250 từ trang chi tiết); mở trang Giỏ hàng, thấy các dòng.
+2. Gọi `GET http://localhost:3000/api/cart` (token của `test@eshop.com`).
+3. Gửi `POST http://localhost:3000/api/cart` với body cơ sở; gọi lại `GET /api/cart`.
+4. Trên Web, bấm F5 ở trang Giỏ hàng.
+
+**Dữ liệu test:** Body cơ sở
+
+**Kết quả mong đợi (theo đặc tả):** Trang Giỏ hàng và `GET /api/cart` là cùng một giỏ của người dùng; sản phẩm đã thêm vẫn còn khi tải lại trang. API spec mục 4.1 và README của EShop, FR-08:
+
+> ### 4.1 Lấy giỏ hàng
+> - **Endpoint:** `GET /api/cart`
+>
+> - **Tổng tiền thanh toán** được tính tự động từ giỏ hàng và không cho phép người dùng chỉnh sửa trực tiếp.
+
+**Kết quả thực tế:** Bước 1: Trang có 3 dòng (07:38). Bước 2: `GET /api/cart` trả giỏ trống (07:44). Bước 3: `GET /api/cart` có dòng vừa thêm. Bước 4: Trang Giỏ hàng trống, không có 3 dòng đã thêm trên Web, cũng không có các dòng của API.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-03_3.png` (giỏ trên Web có hàng), `S0_05_gio_hang_trong.png` (trang trống sau F5; trang giống ảnh này nên không chụp lại); chưa có (ảnh cần chụp: `S6_TC-CART-50_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log`, `features/B_FR-07_GioHang/logs/S6_api_20261021_075653.log`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`; API gọi bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
+
+**Ghi chú:** Đặc tả không nói rõ giỏ phải được giữ khi tải lại trang (câu hỏi mở Q14 ở `features/B_FR-07_GioHang/00_spec.md`); mong đợi dựa trên việc API spec có API "Lấy giỏ hàng" theo người dùng. Hệ quả: Người dùng mất giỏ khi tải lại trang; chưa kiểm thanh toán (FR-08) dùng giỏ nào
+
+---
+
+### BUG-FR07-09: Nhãn tổng tiền là "Tổng tạm tính" thay vì "Tổng cộng"
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Nhãn tổng tiền là "Tổng tạm tính" thay vì "Tổng cộng"`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-90
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ có ít nhất 1 sản phẩm
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+2. Quan sát nhãn bên trái giá trị tổng tiền.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Nhãn là "Tổng cộng". README của EShop, FR-07:
+
+> - Tổng tiền hiển thị nhãn chính xác: **"Tổng cộng"** (không phải "Tổng tạm tính").
+
+**Kết quả thực tế:** Nhãn là "Tổng tạm tính:", đúng chữ mà đặc tả ghi là không được dùng.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png`, `S0_03_gio_hang_co_hang.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Không có
+
+---
+
+### BUG-FR07-10: Cột "Giá" thay vì "Đơn giá"
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Cột đơn giá có nhãn "Giá" thay vì "Đơn giá"`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-90
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ có ít nhất 1 sản phẩm
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+2. Quan sát tên các cột của bảng.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Các cột "Sản phẩm", "Đơn giá", "Số lượng", "Thành tiền", "Thao tác". README của EShop, FR-07:
+
+> - Hiển thị danh sách sản phẩm với các cột: **Sản phẩm**, **Đơn giá**, **Số lượng** (có nút +/- để chỉnh), **Thành tiền**, **Thao tác**.
+
+**Kết quả thực tế:** Các cột là "Sản phẩm", "Giá", "Số lượng", "Thành tiền", "Thao tác".
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png`, `S0_03_gio_hang_co_hang.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Phần nút +/- của cùng câu đặc tả báo riêng ở BUG-FR07-05
+
+---
+
+### BUG-FR07-11: Giỏ có hàng không có nút "Tiếp tục mua sắm"
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Khi giỏ có hàng, nút quay về trang chủ có nhãn "← Mua tiếp" thay vì "Tiếp tục mua sắm"`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-11
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ có ít nhất 1 sản phẩm
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+2. Quan sát các nút dưới bảng.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Có nút "Tiếp tục mua sắm" để quay về trang chủ. README của EShop, FR-07:
+
+> - Có nút **Tiếp tục mua sắm** để quay về trang chủ.
+
+**Kết quả thực tế:** Chỉ có nút "← Mua tiếp" (bấm vào thì về trang chủ). Nhãn "Tiếp tục mua sắm" chỉ có ở trạng thái giỏ trống.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png` (giỏ có hàng), `S0_05_gio_hang_trong.png` (giỏ trống)
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Chức năng quay về trang chủ hoạt động (TC-CART-11 Pass về điều hướng); chỉ sai nhãn
+
+---
+
+### BUG-FR07-12: Không có toast hay badge sau khi thêm vào giỏ
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Thêm vào giỏ hàng: Không có toast hay badge cập nhật sau khi bấm Thêm vào giỏ`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-01, TC-CART-02
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Ở trang chủ, bấm "Thêm vào giỏ" của Samsung Galaxy S24 Ultra; quan sát trang.
+2. Ở trang chi tiết iPhone 15 Pro Max, nhập "Số lượng:" = 3, bấm "Thêm vào giỏ hàng"; quan sát trang.
+
+**Dữ liệu test:** Samsung Galaxy S24 Ultra (trang chủ); iPhone 15 Pro Max, số lượng 3 (trang chi tiết)
+
+**Kết quả mong đợi (theo đặc tả):** Có phản hồi trực quan: Toast hoặc badge cập nhật. README của EShop, FR-24:
+
+> - Sau khi bấm "Thêm vào giỏ", phải có phản hồi trực quan (toast/badge).
+
+**Kết quả thực tế:** Trang chủ: Không có gì thay đổi (sản phẩm vẫn vào giỏ). Trang chi tiết: Chỉ nhãn nút đổi thành "Đã thêm". Không có toast, không có badge ở cả hai trang.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-03_1.png` (trang chi tiết, chỉ đổi nhãn nút), `S6_TC-CART-02.png` (giỏ đã có Samsung nhưng navbar không có badge). Trang chủ sau khi bấm không thay đổi gì nên sinh viên không chụp
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Nhãn nút "Đã thêm" không tính là phản hồi theo đặc tả vì FR-06 nêu rõ dạng "toast notification hoặc badge cập nhật" (quyết định của sinh viên ở S6). Badge báo riêng ở BUG-FR07-13
+
+---
+
+### BUG-FR07-13: Link "Giỏ hàng" không có badge số lượng
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Navbar: Link Giỏ hàng không có badge số lượng sản phẩm trong giỏ`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-02
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ có ít nhất 1 sản phẩm
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng (hoặc bất kỳ trang nào).
+2. Quan sát link "Giỏ hàng" trên navbar.
+
+**Dữ liệu test:** Giỏ có 2 dòng Samsung Galaxy S24 Ultra
+
+**Kết quả mong đợi (theo đặc tả):** Link "Giỏ hàng" có badge số lượng sản phẩm trong giỏ. README của EShop, FR-23:
+
+> - Link "Giỏ hàng" phải hiển thị **badge số lượng** sản phẩm trong giỏ.
+
+**Kết quả thực tế:** Link chỉ có chữ "Giỏ hàng", không có badge, dù giỏ có 2 dòng.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png`, `S0_03_gio_hang_co_hang.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Không có
+
+---
+
+### BUG-FR07-14: Giỏ trống không có hình minh họa
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Giỏ trống không có hình minh họa`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-91, TC-CART-10, TC-CART-09
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ trống
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Có hình minh họa và thông báo rõ ràng. README của EShop, FR-07 và FR-24:
+
+> - Giỏ hàng trống phải có hình minh họa và thông báo rõ ràng.
+>
+> - Trang trống (Empty State) phải có icon/hình minh họa và message thân thiện.
+
+**Kết quả thực tế:** Chỉ có dòng chữ "Giỏ hàng của bạn đang trống" và liên kết "Tiếp tục mua sắm"; không có hình hay biểu tượng.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S0_05_gio_hang_trong.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Phần thông báo đạt yêu cầu
+
+---
+
+### BUG-FR07-15: Tiêu đề tab không phải tiếng Việt
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Tiêu đề tab là "frontend-web", không phải tiếng Việt`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-92
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+2. Quan sát tiêu đề tab của trình duyệt.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Toàn bộ giao diện dùng tiếng Việt, trừ thuật ngữ kỹ thuật chuẩn. README của EShop, FR-21:
+
+> - **Nhất quán ngôn ngữ**: Toàn bộ giao diện dùng tiếng Việt (trừ thuật ngữ kỹ thuật chuẩn).
+
+**Kết quả thực tế:** Tiêu đề tab là "frontend-web" (cả khi giỏ có hàng và khi trống). Chữ trên trang là tiếng Việt, trừ tên riêng "EShop", "SUT".
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png`, `S0_05_gio_hang_trong.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Related: #54 (FR-01, BUG-FR01-13), #57 (FR-17, BUG-FR17-10)
+
+---
+
+### BUG-FR07-16: Nút "Tiến hành thanh toán" màu xanh lá thay vì xanh dương
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Nút "Tiến hành thanh toán" màu xanh lá thay vì xanh dương`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-93
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`, giỏ có ít nhất 1 sản phẩm
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng.
+2. Quan sát màu nút "Tiến hành thanh toán".
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Nút hành động tích cực (Mua hàng) màu xanh dương. README của EShop, FR-21:
+
+> - **Nhất quán màu sắc**: Các nút hành động tích cực (Submit, Mua hàng) dùng màu xanh dương. Các nút nguy hiểm/hủy bỏ dùng màu đỏ.
+
+**Kết quả thực tế:** Nút "Tiến hành thanh toán" nền xanh lá, chữ trắng.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Nút "Xóa" chữ đỏ, đạt yêu cầu tương ứng. Coi "Tiến hành thanh toán" là nút tích cực theo giả định A22 (`features/B_FR-07_GioHang/02_ec.md`). Related: #52 (FR-01, BUG-FR01-11), #58 (FR-17, BUG-FR17-11)
+
+---
+
+### BUG-FR07-17: Navbar không highlight mục "Giỏ hàng"
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Navbar: Không highlight mục Giỏ hàng khi đang ở trang Giỏ hàng`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-95
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Ở trang chủ, quan sát link "Giỏ hàng" trên navbar.
+2. Bấm link "Giỏ hàng", quan sát lại link đó.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Mục "Giỏ hàng" được highlight khi đang ở trang Giỏ hàng. README của EShop, FR-23:
+
+> - Thanh điều hướng (Navbar) phải **highlight** trang đang được chọn.
+
+**Kết quả thực tế:** Link "Giỏ hàng" chữ trắng, giống hệt ở trang chủ; không đổi màu, không gạch chân, không in đậm.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-10.png` (trang chủ), `S6_TC-CART-02.png` (trang Giỏ hàng)
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Không có
+
+---
+
+### BUG-FR07-18: Trang Giỏ hàng không có breadcrumb
+
+- **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Không có breadcrumb`
+- **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
+
+**MSSV người báo:** 23120061
+
+**Feature (mã FR):** FR-07: Giỏ hàng
+
+**Nền tảng:** Web
+
+**Test case phát hiện lỗi:** TC-CART-95
+
+**Mức độ:** Low
+
+**Điều kiện tiên quyết:** Đăng nhập Web bằng `test@eshop.com`
+
+**Các bước tái hiện:**
+1. Mở trang Giỏ hàng (khi có hàng và khi trống).
+2. Quan sát phần đầu trang, dưới navbar.
+
+**Dữ liệu test:** Không cần nhập
+
+**Kết quả mong đợi (theo đặc tả):** Có breadcrumb. README của EShop, FR-23:
+
+> - Breadcrumb bắt buộc có ở các trang con (Giỏ hàng, Thanh toán, Chi tiết sản phẩm).
+
+**Kết quả thực tế:** Không có breadcrumb; dưới navbar là tiêu đề "Giỏ Hàng" (giỏ có hàng) hoặc dòng thông báo giỏ trống.
+
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-02.png`, `S0_05_gio_hang_trong.png`
+
+**Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`
+
+**Ghi chú:** Trang chi tiết sản phẩm cũng không có breadcrumb (`S6_TC-CART-01_1.png`); phần đó thuộc FR-06, không báo ở đây
+
+---
+
+### Khác giả định và quan sát: Quyết định của sinh viên
+
+Cột "Đề xuất" là của AI; cột "Quyết định" là của sinh viên.
+
+| Mã | Nguồn | Hành vi quan sát | Đề xuất | Lý do | Quyết định |
+|---|---|---|---|---|---|
+| KG01 | TC-CART-51 (A24) | API lưu `price` 1 do client gửi | Thành bug riêng, High: BUG-FR07-02 | Đặc tả không nói giỏ dùng giá nào; theo nguyên tắc FR-08 (backend không tin số tiền client gửi), giá do client đặt là dữ liệu sai mà người dùng thường không tránh được (lưu đồ mục 4.3, câu 2) | Theo đề xuất: BUG-FR07-02, High |
+| KG02 | TC-CART-30 (A24) | API nhận `id` 9999 không tồn tại | Thành bug riêng, High: BUG-FR07-03 | Hệ thống chấp nhận dữ liệu sai (lưu đồ câu 2); khác nguyên nhân với số lượng | Theo đề xuất: BUG-FR07-03, High |
+| KG03 | TC-CART-34 (A25) | API nhận body thiếu `quantity`, lưu dòng không có số lượng | Gộp vào BUG-FR07-01 | Cùng trường `quantity`, cùng hệ quả (dòng có số lượng không hợp lệ) | Theo đề xuất: Gộp vào BUG-FR07-01 |
+| KG04 | TC-CART-11 (Q28) | Giỏ có hàng chỉ có nút "← Mua tiếp"; TC-CART-11 Pass vì phần điều hướng đúng | Thành bug riêng, Low: BUG-FR07-11; giữ trạng thái Pass của TC-CART-11 | Q28 đã chốt xét FR07-R12 ở cả hai trạng thái; checklist TC-CART-91 chỉ xét giỏ trống | Theo đề xuất: BUG-FR07-11, Low; TC-CART-11 giữ Pass |
+| QS01 | `06_results.md` mục 4.F, ghi nhận 8 | Giỏ trên Web mất sau F5 và không khớp `GET /api/cart` | Thành bug, Medium: BUG-FR07-08 | Theo lưu đồ, giỏ mất có thể xem là "mất dữ liệu" (Critical), nhưng đặc tả không nói về lưu giỏ (Q14) và có cách đi vòng (không tải lại trang) nên đề xuất Medium | Theo đề xuất: BUG-FR07-08, Medium |
+| QS02 | Mục 4.F, ghi nhận 2 | Nút ở trang chi tiết phải bấm 2 lần mới thêm | Gộp vào BUG-FR07-07 | Cùng nút, cùng hệ quả (bấm mà không thêm) | Theo đề xuất: Gộp vào BUG-FR07-07 |
+| QS03 | Mục 4.F, ghi nhận 7 | Qua API, mỗi lần `POST` cùng `id` tạo dòng mới | Gộp vào BUG-FR07-04 (Ghi chú) | Cùng yêu cầu FR07-R08, R09 | Theo đề xuất: Gộp vào BUG-FR07-04 |
+
+### Test case Blocked và bug gây chặn
+
+| Bug gây chặn | Test case bị chặn |
+|---|---|
+| BUG-FR07-05 | TC-CART-04, 05, 06 |
+| BUG-FR07-08 | TC-CART-52 (không xem được tên trên trang Giỏ hàng vì trang không hiển thị giỏ của API) |
 
 ---
 
