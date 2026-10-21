@@ -569,33 +569,34 @@ Xét 3 quan sát ở mục 6 của `06_results.md`:
 
 | Bug | Tiêu đề ngắn | Severity | Technique | Test case | Issue |
 |---|---|---|---|---|---|
-| BUG-FR07-01 | API thêm vào giỏ nhận số lượng không hợp lệ | High | EP, BVA | TC-CART-31, 32, 33, 34, 102 | |
-| BUG-FR07-02 | API giỏ hàng lưu đơn giá do client gửi | High | EP | TC-CART-51 | |
-| BUG-FR07-03 | API thêm vào giỏ nhận sản phẩm không tồn tại | High | EP | TC-CART-30 | |
-| BUG-FR07-04 | Thêm sản phẩm đã có trong giỏ tạo dòng mới thay vì tăng số lượng | Medium | EP | TC-CART-03, TC-CART-02, TC-CART-08 | |
-| BUG-FR07-05 | Cột Số lượng không có nút +/- | Medium | EP, BVA | TC-CART-04, 05, 06 (Blocked) | |
-| BUG-FR07-06 | Xóa sản phẩm không có dialog xác nhận | Medium | EP | TC-CART-07, 08, 09 | |
-| BUG-FR07-07 | Nút "Thêm vào giỏ hàng" không thêm khi giữ số lượng mặc định 1 | Medium | EP, BVA | TC-CART-01 | |
-| BUG-FR07-08 | Giỏ trên Web mất sau khi tải lại trang, không khớp giỏ của API | Medium | EP | TC-CART-50 | |
-| BUG-FR07-09 | Nhãn tổng tiền là "Tổng tạm tính" thay vì "Tổng cộng" | Low | EP | TC-CART-90 | |
-| BUG-FR07-10 | Cột "Giá" thay vì "Đơn giá" | Low | EP | TC-CART-90 | |
-| BUG-FR07-11 | Giỏ có hàng không có nút "Tiếp tục mua sắm" | Low | EP | TC-CART-11 | |
-| BUG-FR07-12 | Không có toast hay badge sau khi thêm vào giỏ | Low | EP | TC-CART-01, TC-CART-02 | |
-| BUG-FR07-13 | Link "Giỏ hàng" không có badge số lượng | Low | EP | TC-CART-02 | |
-| BUG-FR07-14 | Giỏ trống không có hình minh họa | Low | EP | TC-CART-91, TC-CART-10, TC-CART-09 | |
-| BUG-FR07-15 | Tiêu đề tab không phải tiếng Việt | Low | EP | TC-CART-92 | |
-| BUG-FR07-16 | Nút "Tiến hành thanh toán" màu xanh lá thay vì xanh dương | Low | EP | TC-CART-93 | |
-| BUG-FR07-17 | Navbar không highlight mục "Giỏ hàng" | Low | EP | TC-CART-95 | |
-| BUG-FR07-18 | Trang Giỏ hàng không có breadcrumb | Low | EP | TC-CART-95 | |
+| BUG-FR07-01 | API thêm vào giỏ nhận số lượng không hợp lệ | High | EP, BVA | TC-CART-31, 32, 33, 34, 102 | #67 |
+| BUG-FR07-02 | API giỏ hàng lưu đơn giá do client gửi | High | EP | TC-CART-51 | #68 |
+| BUG-FR07-03 | API thêm vào giỏ nhận sản phẩm không tồn tại | High | EP | TC-CART-30 | #69 |
+| BUG-FR07-04 | Thêm sản phẩm đã có trong giỏ tạo dòng mới thay vì tăng số lượng | Medium | EP | TC-CART-03, TC-CART-02, TC-CART-08 | #70 |
+| BUG-FR07-05 | Cột Số lượng không có nút +/- | Medium | EP, BVA | TC-CART-04, 05, 06 (Blocked) | #71 |
+| BUG-FR07-06 | Xóa sản phẩm không có dialog xác nhận | Medium | EP | TC-CART-07, 08, 09 | #72 |
+| BUG-FR07-07 | Nút "Thêm vào giỏ hàng" không thêm khi giữ số lượng mặc định 1 | Medium | EP, BVA | TC-CART-01 | #73 |
+| BUG-FR07-08 | Giỏ trên Web mất sau khi tải lại trang, không khớp giỏ của API | Medium | EP | TC-CART-50 | #74 |
+| BUG-FR07-09 | Nhãn tổng tiền là "Tổng tạm tính" thay vì "Tổng cộng" | Low | EP | TC-CART-90 | #75 |
+| BUG-FR07-10 | Cột "Giá" thay vì "Đơn giá" | Low | EP | TC-CART-90 | #76 |
+| BUG-FR07-11 | Giỏ có hàng không có nút "Tiếp tục mua sắm" | Low | EP | TC-CART-11 | #77 |
+| BUG-FR07-12 | Không có toast hay badge sau khi thêm vào giỏ | Low | EP | TC-CART-01, TC-CART-02 | #78 |
+| BUG-FR07-13 | Link "Giỏ hàng" không có badge số lượng | Low | EP | TC-CART-02 | #79 |
+| BUG-FR07-14 | Giỏ trống không có hình minh họa | Low | EP | TC-CART-91, TC-CART-10, TC-CART-09 | #80 |
+| BUG-FR07-15 | Tiêu đề tab không phải tiếng Việt | Low | EP | TC-CART-92 | #81 |
+| BUG-FR07-16 | Nút "Tiến hành thanh toán" màu xanh lá thay vì xanh dương | Low | EP | TC-CART-93 | #82 |
+| BUG-FR07-17 | Navbar không highlight mục "Giỏ hàng" | Low | EP | TC-CART-95 | #83 |
+| BUG-FR07-18 | Trang Giỏ hàng không có breadcrumb | Low | EP | TC-CART-95 | #84 |
 
 Label chung cho mọi bug của FR-07: `bug` (template tự gắn), `platform: web`, `pool: B`. Label `severity` và `technique` theo bảng trên.
 
-BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên giả định hoặc quan sát; sinh viên đã quyết định đưa thành bug (mục "Khác giả định và quan sát" cuối mục FR-07). Với FR-07, sinh viên không chụp ảnh trang issue.
+BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên giả định hoặc quan sát; sinh viên đã quyết định đưa thành bug (mục "Khác giả định và quan sát" cuối mục FR-07).
 
 ---
 
 ### BUG-FR07-01: API thêm vào giỏ nhận số lượng không hợp lệ
 
+- **Issue:** #67 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_67.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] API thêm vào giỏ hàng: Nhận số lượng 0, âm, thập phân, không phải số hoặc thiếu số lượng`
 - **Labels:** `bug`, `severity: high`, `platform: web`, `technique: EP`, `technique: BVA`, `pool: B`
 
@@ -624,7 +625,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 **Kết quả thực tế:** Cả 5 request nhận HTTP 200 `{"message": "Added to cart"}`. `GET /api/cart` có các dòng `id` 1 với `quantity` là `0`, `1.5`, `"abc"`, `-1` và một dòng không có trường `quantity`.
 
-**Ảnh chụp:** Chưa có (ảnh cần chụp: `S6_TC-CART-31_log.png`, `S6_TC-CART-50_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log` (5 request), `features/B_FR-07_GioHang/logs/S6_api_20261021_075653.log` (phản hồi `GET /api/cart` liệt kê các dòng đã lưu)
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-31_log.png` (request `quantity` 0), `S6_TC-CART-50_log_1.png`, `S6_TC-CART-50_log_2.png` (phản hồi `GET /api/cart` với các dòng đã lưu) (ảnh chụp đoạn log); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log` (5 request), `features/B_FR-07_GioHang/logs/S6_api_20261021_075653.log` (phản hồi `GET /api/cart` liệt kê các dòng đã lưu)
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
 
@@ -634,6 +635,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-02: API giỏ hàng lưu đơn giá do client gửi
 
+- **Issue:** #68 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_68.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] API thêm vào giỏ hàng: Lưu đơn giá do client gửi thay vì giá của sản phẩm`
 - **Labels:** `bug`, `severity: high`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -661,7 +663,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 **Kết quả thực tế:** HTTP 200 `{"message": "Added to cart"}`; `GET /api/cart` có dòng `id` 1, `name` "iPhone 15 Pro Max", `price` 1, `quantity` 1.
 
-**Ảnh chụp:** Chưa có (ảnh cần chụp: `S6_TC-CART-51_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_080006.log`
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-51_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_080006.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
 
@@ -671,6 +673,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-03: API thêm vào giỏ nhận sản phẩm không tồn tại
 
+- **Issue:** #69 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_69.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] API thêm vào giỏ hàng: Nhận id sản phẩm không tồn tại`
 - **Labels:** `bug`, `severity: high`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -700,16 +703,17 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 **Kết quả thực tế:** Bước 1: HTTP 200, body `{}` (không có sản phẩm 9999). Bước 2: HTTP 200 `{"message": "Added to cart"}`. Bước 3: Giỏ có dòng `id` 9999 với `name` "iPhone 15 Pro Max", `price` 30000000 do client gửi.
 
-**Ảnh chụp:** Chưa có (ảnh cần chụp: `S6_TC-CART-30_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log`
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-30_log.png` (ảnh chụp đoạn log); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log`
 
 **Môi trường:** Windows 11, EShop commit `85af3ba`, gọi API bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
 
-**Ghi chú:** Đặc tả không nêu trực tiếp; mong đợi dựa trên giả định A24 (`features/B_FR-07_GioHang/02_ec.md`). Related: BUG-FR07-01, BUG-FR07-02 (số issue điền sau khi tạo)
+**Ghi chú:** Đặc tả không nêu trực tiếp; mong đợi dựa trên giả định A24 (`features/B_FR-07_GioHang/02_ec.md`). Related: #67 (BUG-FR07-01), #68 (BUG-FR07-02)
 
 ---
 
 ### BUG-FR07-04: Thêm sản phẩm đã có trong giỏ tạo dòng mới thay vì tăng số lượng
 
+- **Issue:** #70 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_70.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Giỏ hàng: Thêm sản phẩm đã có trong giỏ tạo dòng mới thay vì tăng số lượng`
 - **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -748,6 +752,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-05: Cột Số lượng không có nút +/-
 
+- **Issue:** #71 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_71.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Cột Số lượng không có nút +/- để chỉnh số lượng`
 - **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `technique: BVA`, `pool: B`
 
@@ -785,6 +790,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-06: Xóa sản phẩm không có dialog xác nhận
 
+- **Issue:** #72 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_72.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Bấm Xóa xóa sản phẩm ngay, không có dialog xác nhận`
 - **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -824,6 +830,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-07: Nút "Thêm vào giỏ hàng" không thêm khi giữ số lượng mặc định 1
 
+- **Issue:** #73 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_73.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang chi tiết sản phẩm: Nút Thêm vào giỏ hàng không thêm khi giữ số lượng mặc định 1`
 - **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `technique: BVA`, `pool: B`
 
@@ -863,6 +870,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-08: Giỏ trên Web mất sau khi tải lại trang, không khớp giỏ của API
 
+- **Issue:** #74 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_74.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Giỏ hàng: Sản phẩm trong giỏ mất sau khi tải lại trang, giỏ trên Web không khớp GET /api/cart`
 - **Labels:** `bug`, `severity: medium`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -895,7 +903,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 **Kết quả thực tế:** Bước 1: Trang có 3 dòng (07:38). Bước 2: `GET /api/cart` trả giỏ trống (07:44). Bước 3: `GET /api/cart` có dòng vừa thêm. Bước 4: Trang Giỏ hàng trống, không có 3 dòng đã thêm trên Web, cũng không có các dòng của API.
 
-**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-03_3.png` (giỏ trên Web có hàng), `S0_05_gio_hang_trong.png` (trang trống sau F5; trang giống ảnh này nên không chụp lại); chưa có (ảnh cần chụp: `S6_TC-CART-50_log.png`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log`, `features/B_FR-07_GioHang/logs/S6_api_20261021_075653.log`
+**Ảnh chụp:** `features/B_FR-07_GioHang/screenshots/S6_TC-CART-03_3.png` (giỏ trên Web có hàng), `S0_05_gio_hang_trong.png` (trang trống sau F5; trang giống ảnh này nên không chụp lại), `S6_TC-CART-50_log_1.png`, `S6_TC-CART-50_log_2.png` (đoạn log `GET /api/cart`); log đầy đủ: `features/B_FR-07_GioHang/logs/S6_api_20261021_074419.log`, `features/B_FR-07_GioHang/logs/S6_api_20261021_075653.log`
 
 **Môi trường:** Windows 11, Google Chrome 155.0.8059.85, EShop commit `85af3ba`; API gọi bằng script Python (`features/B_FR-07_GioHang/scripts/run_api_tests.py`)
 
@@ -905,6 +913,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-09: Nhãn tổng tiền là "Tổng tạm tính" thay vì "Tổng cộng"
 
+- **Issue:** #75 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_75.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Nhãn tổng tiền là "Tổng tạm tính" thay vì "Tổng cộng"`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -942,6 +951,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-10: Cột "Giá" thay vì "Đơn giá"
 
+- **Issue:** #76 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_76.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Cột đơn giá có nhãn "Giá" thay vì "Đơn giá"`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -979,6 +989,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-11: Giỏ có hàng không có nút "Tiếp tục mua sắm"
 
+- **Issue:** #77 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_77.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Khi giỏ có hàng, nút quay về trang chủ có nhãn "← Mua tiếp" thay vì "Tiếp tục mua sắm"`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -1016,6 +1027,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-12: Không có toast hay badge sau khi thêm vào giỏ
 
+- **Issue:** #78 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_78.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Thêm vào giỏ hàng: Không có toast hay badge cập nhật sau khi bấm Thêm vào giỏ`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -1053,6 +1065,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-13: Link "Giỏ hàng" không có badge số lượng
 
+- **Issue:** #79 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_79.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Navbar: Link Giỏ hàng không có badge số lượng sản phẩm trong giỏ`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -1090,6 +1103,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-14: Giỏ trống không có hình minh họa
 
+- **Issue:** #80 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_80.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Giỏ trống không có hình minh họa`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -1128,6 +1142,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-15: Tiêu đề tab không phải tiếng Việt
 
+- **Issue:** #81 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_81.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Tiêu đề tab là "frontend-web", không phải tiếng Việt`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -1165,6 +1180,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-16: Nút "Tiến hành thanh toán" màu xanh lá thay vì xanh dương
 
+- **Issue:** #82 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_82.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Nút "Tiến hành thanh toán" màu xanh lá thay vì xanh dương`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -1202,6 +1218,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-17: Navbar không highlight mục "Giỏ hàng"
 
+- **Issue:** #83 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_83.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Navbar: Không highlight mục Giỏ hàng khi đang ở trang Giỏ hàng`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
@@ -1239,6 +1256,7 @@ BUG-FR07-02, 03, 08, 11 và phần TC-CART-34 của BUG-FR07-01 dựa trên gi�
 
 ### BUG-FR07-18: Trang Giỏ hàng không có breadcrumb
 
+- **Issue:** #84 (ảnh trang issue: `features/B_FR-07_GioHang/screenshots/S7_issue_84.png`)
 - **Tiêu đề:** `[23120061][FR-07][Web] Trang Giỏ hàng: Không có breadcrumb`
 - **Labels:** `bug`, `severity: low`, `platform: web`, `technique: EP`, `pool: B`
 
