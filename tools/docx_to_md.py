@@ -11,7 +11,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FORMS = os.path.join(os.path.dirname(HERE), "forms")
 
 def cell_text(cell):
-    t = " <br> ".join(p.text.strip() for p in cell.paragraphs if p.text.strip())
+    # Ngắt dòng trong ô (w:br) cũng đổi thành <br> để không làm vỡ bảng Markdown
+    t = " <br> ".join(p.text.strip().replace("\n", " <br> ") for p in cell.paragraphs if p.text.strip())
     if cell._element.findall('.//' + qn('w:drawing')):
         t = (t + " " if t else "") + "*(Ảnh chữ ký: Xem bản PDF)*"
     return t.replace("|", "\\|")

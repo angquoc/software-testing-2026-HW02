@@ -227,7 +227,11 @@ Thư mục: [`features/D_FR-04_HoSo_Mobile/`](features/D_FR-04_HoSo_Mobile/). Th
 
 ### 5.5 AI gap analysis
 
-_(Chờ S8.)_
+Chi tiết: [`08_gap_analysis.md`](features/D_FR-04_HoSo_Mobile/08_gap_analysis.md).
+
+- 38 dòng thay đổi so với bản AI từ S0 đến S5: 35 Quyết định của SV, 2 Sai, 1 Thiếu; cả 3 lỗi đều do AI tự phát hiện khi viết bản review hoặc khi gộp S5.
+- Chỗ AI bỏ sót xuất hiện ở S6, không ở bảng thay đổi: Không có phương án dự phòng khi giá trị cơ sở (số điện thoại) bị app từ chối, nên 2 test case Blocked; giả định A16 bỏ qua ngữ nghĩa của `PUT`; hướng dẫn chạy dùng lệnh `adb` không có trong PATH; khảo sát S0 với hồ sơ mẫu trống nên không thấy được lỗi hiển thị địa chỉ đã lưu.
+- Bản AI gốc bắt được 4 trên 5 bug. BUG-FR04-04 (không hiển thị địa chỉ đã lưu) đến từ việc đọc ảnh khi điền S6, không có test case nào thiết kế cho nó.
 
 ---
 
@@ -316,21 +320,20 @@ Xem [`prompt_log.md`](prompt_log.md) (và `prompt_log.pdf`). Log xuất tự đ�
 | B12: FR-17, S7 bug report | Phiên `1648c211`, 21/10/2026 | 9 bug, 6 dòng Khác giả định chờ quyết định | **INCOMPLETE** | Gộp hai lỗi khác giao diện vào một bug; đề xuất gộp hành vi dựa trên giả định vào bug Critical | Sinh viên **tách BUG-04**, **KG01, KG02 thành bug**, KG03 chỉ ghi chú; **tự tạo 12 issue** |
 | B13: FR-17, S8 gap analysis | Phiên `1648c211`, 21/10/2026 | `ai_raw/S8_gap_analysis.md` | **VALID** | Số liệu đúng (phiên điều phối đếm lại: 72 dòng); cách xếp nguyên nhân có căn cứ | Giữ nguyên |
 | B14: FR-07, S0 đến S5 (bản AI, qua skill) | Phiên `709e0d24`, 21/10/2026 | `ai_raw/S0_khao_sat.md` đến `ai_raw/S5_final_test_cases.md` (32 lớp, 38 test case) | **INCOMPLETE** | Thiếu output "phản hồi trực quan sau khi bấm Thêm vào giỏ" (FR-24), do phiên điều phối phát hiện; AI điền bảng quan sát S0 từ ảnh thay cho sinh viên (đã tự ghi chú việc này); AI tự sửa 3 lỗi trước khi giao (ví dụ mốc "không tạo được đúng 1 tỷ" ở S4); một lần tự suy rộng quyền đọc file S5 của FR-01, FR-17 để lấy định dạng | Thêm **FR07-R33 và OUT15**; các phương án nhỏ sinh viên chấp nhận theo đề xuất để kịp giờ |
-| B14b: FR-07, S6 đến S8 (script API, điền kết quả, bug report, gap analysis) | Phiên `709e0d24`, 21/10/2026 | `scripts/run_api_tests.py`, `06_results.md`, mục FR-07 của `bugs/bug_report.md` (18 bug), `08_gap_analysis.md` | **VALID** | Script không xóa giỏ, không reset, che token; phiên không tự reset dữ liệu mà chờ phiên điều phối (đúng WORKFLOW); bug gom theo yêu cầu, số liệu S8 đúng (phiên điều phối đếm lại: 25 dòng) | Sinh viên chọn giữ riêng 18 bug, **tự tạo 18 issue**; điền "Không chạy" và giờ reset theo yêu cầu |
-| B15: FR-04 | _(điền)_ | | | | |
-| B16: Phiên điều phối: Soạn tin nhắn, soát phiên, đếm lại số liệu | Phiên `305c705a`, 17/10/2026 đến 21/10/2026 | Tin nhắn cho các phiên thiết kế, bảng tình trạng, đề xuất phương án | **INCOMPLETE** | Có lần ghi nhầm người phát hiện; có lần ghi đè file Excel thật mà chưa kiểm; có lần phân loại sai một quan sát | Sinh viên phát hiện và yêu cầu sửa; từ đó **gắn sẵn người phát hiện vào tin nhắn**, **kiểm thời gian sửa trước khi ghi đè** |
-| B17: `tools/md_to_pdf.py`, khung `report.md`, README | Phiên điều phối, 21/10/2026 | Script xuất PDF cho mọi file MD; khung báo cáo, Test Summary, bản nháp AI Critique, Mandatory Disclosure, Appendix B | **INCOMPLETE** | Khung và số liệu dùng được (số liệu đếm lại từ file của từng feature); bản nháp AI Critique chưa có ý về việc AI dựa vào trí nhớ thay vì kiểm tra lại; phần Kết luận và điểm tự chấm để trống cho sinh viên | Sinh viên **bổ sung AI Critique** (AI áp dụng máy móc, AI dựa vào trí nhớ thay vì kiểm tra), **tự viết Kết luận**, **điền tự chấm**, thay mục lục |
+| B15: FR-07, S6 đến S8 (script API, điền kết quả, bug report, gap analysis) | Phiên `709e0d24`, 21/10/2026 | `scripts/run_api_tests.py`, `06_results.md`, mục FR-07 của `bugs/bug_report.md` (18 bug), `08_gap_analysis.md` | **VALID** | Script không xóa giỏ, không reset, che token; phiên không tự reset dữ liệu mà chờ phiên điều phối (đúng WORKFLOW); bug gom theo yêu cầu, số liệu S8 đúng (phiên điều phối đếm lại: 25 dòng) | Sinh viên chọn giữ riêng 18 bug, **tự tạo 18 issue**; điền "Không chạy" và giờ reset theo yêu cầu |
+| B16: FR-04, S0 đến S5 (bản AI, qua skill, có quay video) | Phiên `633ed316`, 21/10/2026 | `ai_raw/S0_khao_sat.md` đến `ai_raw/S5_final_test_cases.md` (38 lớp, 34 test case) | **INCOMPLETE** | 3 lỗi, đều do AI tự phát hiện: Tham chiếu sai cột ở S2, giờ tạo ghi ước lượng ở S3, ma trận truy vết S3 thiếu TC-PROF-71; giả định A16 bỏ qua ngữ nghĩa của `PUT` (lộ ra ở S7); không có phương án dự phòng khi giá trị cơ sở bị từ chối. AI hỏi xin phép trước khi đọc file của FR-01 | Sửa ở bản review từng bước; các phương án nhỏ sinh viên chấp nhận theo đề xuất để kịp giờ |
+| B17: FR-04, S6 đến S8 (script API, hướng dẫn chạy trên điện thoại, điền kết quả, bug report, gap analysis) | Phiên `633ed316`, 21/10/2026 | `scripts/run_api_tests.py` (lệnh `chuan`, `get`, `run`, `last`), `06_results.md`, mục FR-04 của `bugs/bug_report.md` (5 bug), `08_gap_analysis.md` | **INCOMPLETE** | Script đúng, che token và mật khẩu; nhưng hướng dẫn S6 dùng lệnh `adb` không có trong PATH của PowerShell, hàm `shot` lưu ảnh JPG với đuôi `.png`, và bảo sinh viên tự khởi động lại backend; S7 ghép issue theo tiêu đề trong ảnh, S8 số liệu đúng (phiên điều phối đếm lại: 38 dòng) | Phiên điều phối **sửa hướng dẫn S6** (đường dẫn `adb` đầy đủ, kéo ảnh và đặt tên giúp, tự reset); sinh viên **tự tạo 5 issue** |
+| B18: Phiên điều phối: Soạn tin nhắn, soát phiên, đếm lại số liệu | Phiên `305c705a`, 17/10/2026 đến 21/10/2026 | Tin nhắn cho các phiên thiết kế, bảng tình trạng, đề xuất phương án | **INCOMPLETE** | Có lần ghi nhầm người phát hiện; có lần đưa danh sách commit không kiểm `git log` trước; một lần grep `API_URL` trong mã nguồn app mobile để xác nhận cấu hình chạy (không dùng cho thiết kế); có lần ghi đè file Excel thật mà chưa kiểm; có lần phân loại sai một quan sát | Sinh viên phát hiện và yêu cầu sửa; từ đó **gắn sẵn người phát hiện vào tin nhắn**, **kiểm thời gian sửa trước khi ghi đè** |
+| B19: `tools/md_to_pdf.py`, `tools/fill_ai02.py`, `tools/fill_ai03_05.py`, khung `report.md`, README | Phiên điều phối, 21/10/2026 | Script xuất PDF cho mọi file MD; khung báo cáo, Test Summary, bản nháp AI Critique, Mandatory Disclosure, Appendix B | **INCOMPLETE** | Khung và số liệu dùng được (số liệu đếm lại từ file của từng feature); bản nháp AI Critique chưa có ý về việc AI dựa vào trí nhớ thay vì kiểm tra lại; phần Kết luận và điểm tự chấm để trống cho sinh viên | Sinh viên **bổ sung AI Critique** (AI áp dụng máy móc, AI dựa vào trí nhớ thay vì kiểm tra), **tự viết Kết luận**, **điền tự chấm**, thay mục lục |
 
 ### Tổng kết độ chính xác AI
 
 | Chỉ số | Số lượng | Tỉ lệ |
 |---|---|---|
-| Tổng artifact AI sinh đã audit | 17 | 100% |
-| VALID (đúng, dùng nguyên) | 3 | 17.6% |
+| Tổng artifact AI sinh đã audit | 19 | 100% |
+| VALID (đúng, dùng nguyên) | 3 | 15.8% |
 | INVALID (sai, loại bỏ) | 0 | 0.0% |
-| INCOMPLETE (chấp nhận sau khi sửa) | 14 | 82.4% |
-
-_(Chưa gồm FR-04; cập nhật khi xong dòng B15.)_
+| INCOMPLETE (chấp nhận sau khi sửa) | 16 | 84.2% |
 
 ### Kết luận: Khi nào nên, không nên dùng AI?
 

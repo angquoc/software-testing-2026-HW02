@@ -18648,6 +18648,257 @@ Phiên D: Đã xong, xuất log, kiểm tra và báo tôi.
 
 ````text
 Đã thay AI Critique (giờ 297 từ). Giờ tôi kiểm phần D: Kết quả S6, mục FR-04 trong bug report, và xem S8 đã có chưa.
+
+Đã thay AI Critique bằng bản 297 từ. Phiên D đã xong S6 và S7, kiểm tra đạt, nhưng **S8 (gap analysis) của D chưa làm**. Log đã xuất (311 lượt, đúng 5 phiên).
+
+## Phiên D: S6 và S7
+
+**S6:** 34 test case, gồm Pass 10, Fail 7, Khác giả định 2, Blocked 2, Not run 13. Kiểm định dạng 0 lỗi.
+
+**S7, 5 bug (#85 đến #89):**
+
+| Bug | Issue | Mức độ |
+|---|---|---|
+| Người dùng tự đổi `role` thành `admin` qua API | #85 | Critical |
+| App từ chối số điện thoại hợp lệ 10, 11 chữ số | #86 | High |
+| API lưu số điện thoại không hợp lệ | #87 | Medium |
+| Màn Hồ sơ không hiển thị địa chỉ đã lưu | #88 | Medium |
+| Thanh trên không làm nổi mục đang chọn | #89 | Low |
+
+- Phiên D mở từng ảnh trang issue để ghép đúng số issue với bug, không ghép theo thứ tự.
+- QS02 (API trả trường `password`) không báo trong FR-04, chỉ ghi lại để nhắc ở S8. Hợp lý, vì chưa biết giá trị đó là mật khẩu thật hay đã băm.
+
+## Đã điền vào `report.md` và README
+
+- **Mục 5 (FR-04) của `report.md`:** Đủ S0 đến S7. Chỉ còn mục 5.5 (gap analysis) chờ S8.
+- **Test Summary**, gồm dòng D và **dòng tổng**: 4 feature, **283 test case thiết kế, 143 đã chạy, 51 Pass, 59 Fail, 140 chưa chạy, 48 bug (#42 đến #89)**.
+
+**Dán vào phiên D:**
+
+```text
+Sang S8 cho FR-04. Viết 08_gap_analysis.md (bản AI lưu ai_raw/S8_gap_analysis.md), cấu trúc như S8 của FR-17 (được đọc C_FR-17_QuanLyCoupon/08_gap_analysis.md để lấy cấu trúc): Thống kê bảng "Thay đổi so với bản AI" S0 đến S5 theo Loại và người phát hiện; test case AI bỏ sót và nguyên nhân (input, giới hạn công cụ, độ phức tạp); bug nào bản AI gốc bắt được; giới hạn kết quả (S6 rút gọn, Not run, lỗi chạy của sinh viên: thiếu get ở TC-PROF-01, 04, 33); nhắc QS02. Thêm 1 dòng về lỗi hướng dẫn S6: Lệnh adb không có trong PATH của PowerShell, phiên điều phối sửa bằng đường dẫn đầy đủ. Gọn, 3 đến 5 bài học. Không cần đưa lệnh commit.
+```
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+Commit hết phần đã xong, phần S8 của D commit sau:
+
+```
+git add features/D_FR-04_HoSo_Mobile/06_results.md features/D_FR-04_HoSo_Mobile/logs features/D_FR-04_HoSo_Mobile/screenshots
+git commit -m "[D-FR04][S6] Execute reduced test set and record results"
+
+git add bugs/bug_report.md
+git commit -m "[D-FR04][S7] Report FR-04 bugs and link GitHub issues"
+
+git add report.md README.md prompt_log.md
+git commit -m "[report] Add FR-04 summary, totals, self-assessment and revised critique"
+```
+
+Nếu bạn chưa chạy các commit B ở lượt trước (`[B-FR07][S7]`, `[B-FR07][S8]`), hãy chạy chúng **trước** ba commit trên.
+
+**Trong lúc phiên D viết S8,** tôi chuẩn bị các form: [AI-02] (chép Appendix B sang mẫu Word), [AI-03] và [AI-05] (tạo sẵn để bạn ký và đánh dấu). Có cần chờ bạn đồng ý trước không, hay tôi làm luôn?
+````
+
+---
+
+### C312 | 09:43 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S8 cho FR-04. Viết 08_gap_analysis.md (bản AI lưu ai_raw/S8_gap_analysis.md), cấu trúc như S8 của FR-17 (được đọc C_FR-17_QuanLyCoupon/08_gap_analysis.md để lấy cấu trúc): Thống kê bảng "Thay đổi so với bản AI" S0 đến S5 theo Loại và người phát hiện; test case AI bỏ sót và nguyên nhân (input, giới hạn công cụ, độ phức tạp); bug nào bản AI gốc bắt được; giới hạn kết quả (S6 rút gọn, Not run, lỗi chạy của sinh viên: thiếu get ở TC-PROF-01, 04, 33); nhắc QS02. Thêm 1 dòng về lỗi hướng dẫn S6: Lệnh adb không có trong PATH của PowerShell, phiên điều phối sửa bằng đường dẫn đầy đủ. Gọn, 3 đến 5 bài học. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Outline FR-17 gap analysis structure
+- Read: D:\Dang\Test\Homeworks\HW02\features\C_FR-17_QuanLyCoupon\08_gap_analysis.md
+- Bash: Count change-table rows per step and list non-decision rows
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S8_gap_analysis.md
+- Bash: Fix a reference, copy to 08_gap_analysis.md, check format
+
+**Output AI (nguyên văn):**
+
+````text
+Đã đọc xong cấu trúc S8 của FR-17. Trước khi viết, tôi đếm bảng "Thay đổi so với bản AI" của 6 file từ S0 đến S5 bằng script, không đếm tay.
+
+Tôi đã viết xong S8: [ai_raw/S8_gap_analysis.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S8_gap_analysis.md), và [08_gap_analysis.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/08_gap_analysis.md) giống hệt (kiểm bằng `cmp`). Cấu trúc theo S8 của FR-17; tôi chỉ đọc file đó để lấy cấu trúc. Script báo 0 lỗi format.
+
+**1. Thống kê bảng "Thay đổi so với bản AI" S0 đến S5** (đếm bằng script): 38 dòng, gồm 35 "Quyết định của SV", 2 Sai, 1 Thiếu.
+- Cả 3 dòng Sai, Thiếu đều do AI tự phát hiện: cột "Hệ quả" không có ở S2, giờ tạo ghi ước lượng ở S3, và TC-PROF-71 thiếu trong ma trận truy vết S3.
+- Bạn đã chấp nhận mọi đề xuất, nên bảng thay đổi không cho thấy chỗ thiết kế chưa đúng. Các chỗ đó chỉ lộ ra ở S6.
+- Nguồn gốc bộ test case cuối: Cả 34 test case là "AI".
+
+**2. Test case AI bỏ sót hoặc thiết kế sai, theo nguyên nhân:**
+
+| Nguyên nhân | Nội dung |
+|---|---|
+| Giới hạn công cụ AI | Không có phương án dự phòng khi giá trị cơ sở bị từ chối, nên TC-PROF-04 và 30 bị Blocked |
+| Giới hạn công cụ AI | Giả định A16 bỏ qua ngữ nghĩa của `PUT` (RFC 9110); chính AI tự mâu thuẫn với nó ở S7 |
+| Giới hạn công cụ AI | **Lỗi hướng dẫn S6:** Lệnh `adb` không có trong PATH của PowerShell; phiên điều phối sửa bằng đường dẫn đầy đủ |
+| Chất lượng input | Hồ sơ mẫu trống, nên S0 không thể thấy màn Hồ sơ có hiển thị giá trị đã lưu không (dẫn tới BUG-FR04-04) |
+| Độ phức tạp feature | TC-PROF-77 chưa đo được mức ảnh hưởng thật, vì quyền admin thuộc FR-12 |
+
+**3. Bug mà bản AI gốc bắt được:** 4 trên 5 (BUG-FR04-01, 02, 03, 05). BUG-FR04-04 đến từ việc đọc ảnh khi điền S6, không có test case nào thiết kế cho nó. Hai test case API "kiểm phía hệ thống" (TC-PROF-74, 75) là thứ tìm ra BUG-FR04-03.
+
+**4. Giới hạn của kết quả:**
+- 13 test case Not run.
+- TC-PROF-06 và TC-PROF-90 điểm (6), (7) Not run, nên Q26 (nút "Thoát") vẫn mở.
+- Hai test case Blocked.
+- Thiếu lần `get` ở TC-PROF-01, 04 và 33; tôi dùng bằng chứng gián tiếp từ log `chuan` của test case kế tiếp.
+- Log `chuan` lúc 08:53:21 mang sai nhãn; ở TC-PROF-101 bạn gõ khác kế hoạch một chữ số.
+- Các điểm (1) đến (5) của TC-PROF-90 lấy từ ảnh S0, không chụp lại ở S6.
+- QS02 (API trả trường `password`) chưa được đánh giá.
+
+**5. Năm bài học:**
+1. Kiểm giá trị cơ sở trước và có phương án dự phòng.
+2. Đường API tách được lỗi của app và lỗi của hệ thống.
+3. Khảo sát S0 với dữ liệu trống che mất một nhóm lỗi.
+4. Giả định về API phải xét ngữ nghĩa của giao thức.
+5. Hướng dẫn chạy cần kiểm môi trường trước và gộp bớt thao tác thủ công.
+````
+
+---
+
+### C313 | 09:43 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Nếu bạn chưa chạy các commit B ở lượt trước ([B-FR07][S7], [B-FR07][S8]), hãy chạy chúng trước ba commit trên. -> Sao bạn lại nói vậy mà không kiểm tra trước khi đưa list cho tôi?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check commit history and pending changes
+
+**Output AI (nguyên văn):**
+
+````text
+Bạn nói đúng. Lẽ ra tôi phải chạy `git log` để kiểm trước khi đưa câu đó. Giờ tôi đã kiểm: **Hai commit B đã có** (`d51ae59` cho S7, `6769d8d` cho S8), cả commit `[report]` của FR-07 cũng đã có (`0c77c85`). Câu nhắc đó là thừa, bạn bỏ qua.
+
+Kiểm thêm `git status` thì danh sách commit ở lượt trước cũng **chưa đúng**: Thư mục ảnh của D đang có cả ảnh log làm bằng chứng cho bug (S7) và ảnh trang issue (S7), không chỉ ảnh chạy test (S6). Nếu `add` cả thư mục vào commit S6 thì lẫn bước. Danh sách đúng:
+
+```
+git add features/D_FR-04_HoSo_Mobile/06_results.md features/D_FR-04_HoSo_Mobile/logs features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-0*.png features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-1*.png features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-3*.png
+git commit -m "[D-FR04][S6] Execute reduced test set and record results"
+
+git add bugs/bug_report.md features/D_FR-04_HoSo_Mobile/screenshots/S6_TC-PROF-7*_log.png features/D_FR-04_HoSo_Mobile/screenshots/S7_issue_*.png
+git commit -m "[D-FR04][S7] Report FR-04 bugs and link GitHub issues"
+
+git add report.md README.md prompt_log.md
+git commit -m "[report] Add FR-04 summary, totals, self-assessment and revised critique"
+```
+
+- Commit S6 gồm 11 ảnh chạy test (TC-PROF-01, 04, 101, 30, 32, 33, 34).
+- Commit S7 gồm 4 ảnh log (71, 74, 75, 77) và 5 ảnh trang issue (#85 đến #89).
+
+Chạy xong ba commit, `git status` chỉ còn trống.
+
+Từ giờ, trước khi đưa danh sách commit, tôi luôn chạy `git log` và `git status` để chỉ đưa những gì thật sự chưa commit.
+````
+
+---
+
+### C314 | 09:44 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bạn chuẩn bị form: [AI-02] (chép Appendix B sang mẫu Word), [AI-03] và [AI-05]  đi. Những gì có thể tái sử dụng ở HW01 thì cứ tái sử dụng.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Compare form tools and read fill_ai02 script
+- Bash: Read HW01 filled AI-03 and AI-05 forms
+- Bash: Read rest of HW01 AI-03 and how forms were signed
+- Bash: Inspect AI-03, AI-05, AI-02 template structure
+- Bash: Find AI level for HW02
+- Bash: Find C codes of key prompts in prompt log
+- Bash: Extract verbatim text of three key prompts
+- Bash: Adapt fill_ai02.py for HW02
+- Read: D:\Dang\Test\Homeworks\HW02\tools\fill_ai02.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai02.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai02.py
+- Write: D:\Dang\Test\Homeworks\HW02\tools\fill_ai03_05.py
+- Bash: Run form scripts and preview AI-03 output
+- Bash: Check dashes, export log, update tracker, peek D
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi xem lại cách HW01 đã điền các form và các script đang có trong `HW02/tools/`.
+
+Có đủ dữ liệu. Tôi sửa `tools/fill_ai02.py` cho HW02 và viết thêm script điền [AI-03], [AI-05], cả hai đều dựng lại từ mẫu gốc mỗi lần chạy, như HW01.
+
+Giờ đến script cho [AI-03] và [AI-05].
+
+Đã chuẩn bị xong 3 form, nhưng **bạn chưa nên ký**: [AI-02] sẽ được tạo lại sau khi xong D, và lần tạo lại đó xoá mọi thứ đã ký hay điền tay trong file. Phiên D đang viết S8.
+
+## Đã chuẩn bị (thư mục `forms/`, mỗi form có bản `.docx` và bản `.md`)
+
+| Form | Nội dung đã điền | Cách tạo |
+|---|---|---|
+| **[AI-02] Audit Report** | Thông tin sinh viên (HW02-AI, 12/10 đến 21/10/2026, giảng viên); bảng audit chép từ Appendix B của `report.md`; bảng tổng kết; Kết luận bạn viết; **Mandatory Disclosure nguyên văn** (HW01 phải dán tay mục này, giờ script tự dán) | Sửa lại `tools/fill_ai02.py` của HW01 cho HW02 |
+| **[AI-03] Disclosure** | Thông tin bài tập; 6 câu khai báo: Công cụ (Claude Code, 5 phiên), giai đoạn dùng AI, **3 prompt quan trọng có mã `C`** (C255 gọi skill cho FR-04, C121 gọi skill cho FR-17, C160 bạn hỏi lại khi review S5), phần AI đóng góp và không đóng góp, cách xác minh, trích dẫn IEEE; khối chữ ký (ô chữ ký để trống) | Script mới `tools/fill_ai03_05.py` |
+| **[AI-05] Privacy Checklist** | Chỉ khối chữ ký. **Các ô checklist để bạn tự tick**, như HW01 | Cùng script |
+
+Cả hai script đều dựng lại từ mẫu gốc mỗi lần chạy. Bản `.md` được tạo bằng `tools/docx_to_md.py` của HW01.
+
+**Cần bạn xác nhận:** "Cấp độ AI (1–5)" trong [AI-03] tôi để **"Cấp 4 – AI hỗ trợ sản xuất"** giống HW01, vì đề HW02 chỉ ghi Bloom-AI G9.2, G9.3, không ghi cấp 1 đến 5. Nếu khác thì báo tôi sửa.
+
+## Việc của bạn, làm sau cùng (sau khi tôi chạy lại [AI-02] lần cuối)
+
+1. Mở 3 file `.docx` trong Word, chèn chữ ký vào ô "Chữ ký".
+2. Tick các ô `[ ]` trong [AI-05]. HW01 bạn để trống 2 ô "Không nhập dữ liệu cá nhân" và "Không paste nguyên si tài liệu có bản quyền". Bài này cũng đưa tên, MSSV và đặc tả EShop cho AI, nên cách đánh dấu tương tự là trung thực.
+3. Xuất PDF: Trong Word chọn **File, Save As, PDF**, lưu cùng tên vào `forms/`.
+
+## Sau khi phiên D xong S8
+
+Tôi sẽ làm một lượt:
+1. Điền mục 5.5 (gap analysis FR-04) và các dòng FR-04 trong Appendix B.
+2. Đánh số lại Appendix B thành B01 đến B19 và cập nhật bảng tổng kết.
+3. Chạy lại `fill_ai02.py` và `docx_to_md.py`.
+4. Chạy `md_to_pdf.py` cho mọi file MD, xuất `git_log.txt`.
+
+Sau đó bạn ký form, chạy commit cuối, rồi nén zip.
+````
+
+---
+
+### C315 | 09:49 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên D xong rồi đó, xuất log, kiểm tra và báo tôi.
+Về phần chữ ký, bạn không lấy từ HW01 qua được hả?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read D S8 output and recount change tables
+- Bash: Fill D gap summary, renumber audit rows, recount
+- Bash: Locate signature images in HW01 forms
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai03_05.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai03_05.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai03_05.py
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\fill_ai02.py
+- Bash: Regenerate forms with signature and verify
+- Bash: Locate cell_text join line
+- Edit: D:\Dang\Test\Homeworks\HW02\tools\docx_to_md.py
+- Bash: Regenerate md forms and check Word COM availability
+- Bash: Export log, update tracker, check git state
+
+**Output AI (nguyên văn):**
+
+````text
+Lấy được. Chữ ký của bạn nằm sẵn dưới dạng ảnh trong form [AI-02] của HW01. Tôi soát phiên D trước, rồi làm phần chữ ký.
+
+Appendix B giờ đủ 19 dòng (B01 đến B19), không còn chỗ trống. Bảng tổng kết: 3 VALID (15.8%), 16 INCOMPLETE (84.2%), 0 INVALID. Giờ tôi lấy chữ ký từ form HW01.
+
+Cả 3 form đã có ảnh chữ ký. Tôi sửa thêm `docx_to_md.py`: Ô "Giảng viên" có nhiều dòng đang làm vỡ bảng trong bản `.md` (HW01 cũng bị lỗi này).
 ````
 
 
