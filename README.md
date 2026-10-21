@@ -36,8 +36,8 @@ Số feature: 4. "Đã chạy" gồm cả test case Blocked, Khác giả định
 | A: FR-01 | 96 | 46 | 9 | 19 | 50 | 13 (#42 đến #54) |
 | B: FR-07 | 38 | 30 | 6 | 20 | 8 | 18 (#67 đến #84) |
 | C: FR-17 | 115 | 46 | 26 | 13 | 69 | 12 (#55 đến #66) |
-| D: FR-04 (Mobile) | | | | | | |
-| **Tổng** | | | | | | |
+| D: FR-04 (Mobile) | 34 | 21 | 10 | 7 | 13 | 5 (#85 đến #89) |
+| **Tổng** | **283** | **143** | **51** | **59** | **140** | **48** (#42 đến #89) |
 
 ## Video demo
 
@@ -49,9 +49,9 @@ Số feature: 4. "Đã chạy" gồm cả test case Blocked, Khác giả định
 
 | No. | Criteria | Grade | Self-Assessed Grade |
 |---|---|---|---|
-| 1 | Feature A: FR-01 (Domain + Boundary) | 25 | |
-| 2 | Feature B: FR-07 (Domain + Boundary) | 25 | |
-| 3 | Feature C: FR-17 (Domain + Boundary) | 25 | |
-| 4 | Feature D: FR-04 Mobile (Domain + Boundary) | 15 | |
-| 5 | Agent Skills | 10 | |
-| | **Total** | **100** | |
+| 1 | Feature A: FR-01 (Domain + Boundary) | 25 | 25 |
+| 2 | Feature B: FR-07 (Domain + Boundary) | 25 | 25 |
+| 3 | Feature C: FR-17 (Domain + Boundary) | 25 | 25 |
+| 4 | Feature D: FR-04 Mobile (Domain + Boundary) | 15 | 15 |
+| 5 | Agent Skills | 10 | 10 |
+| | **Total** | **100** | 100 |

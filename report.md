@@ -16,18 +16,40 @@
 
 ## Mục lục
 
-1. [Cách làm](#1-cách-làm)
-2. [Feature A: FR-01 Đăng ký tài khoản (Web)](#2-feature-a-fr-01-đăng-ký-tài-khoản-web)
-3. [Feature B: FR-07 Giỏ hàng (Web)](#3-feature-b-fr-07-giỏ-hàng-web)
-4. [Feature C: FR-17 Quản lý mã giảm giá (Web Admin)](#4-feature-c-fr-17-quản-lý-mã-giảm-giá-web-admin)
-5. [Feature D: FR-04 Hồ sơ cá nhân (Mobile)](#5-feature-d-fr-04-hồ-sơ-cá-nhân-mobile)
-6. [Agent Skill](#6-agent-skill)
-7. [Test Summary](#7-test-summary)
-8. [AI Critique](#ai-critique)
-9. [Mandatory Disclosure](#mandatory-disclosure)
-10. [Self-Assessment](#self-assessment)
-11. [Appendix A: Prompt log](#appendix-a-prompt-log)
-12. [Appendix B: AI Audit Report](#appendix-b-ai-audit-report)
+- [HW02-AI: Domain Testing trên EShop](#hw02-ai-domain-testing-trên-eshop)
+  - [Mục lục](#mục-lục)
+  - [1. Cách làm](#1-cách-làm)
+    - [1.1 Quy trình cho mỗi feature](#11-quy-trình-cho-mỗi-feature)
+    - [1.2 Nguyên tắc](#12-nguyên-tắc)
+    - [1.3 Hai cách tạo test case](#13-hai-cách-tạo-test-case)
+  - [2. Feature A: FR-01 Đăng ký tài khoản (Web)](#2-feature-a-fr-01-đăng-ký-tài-khoản-web)
+    - [2.1 Domain Testing từng bước](#21-domain-testing-từng-bước)
+    - [2.2 Boundary Value Analysis](#22-boundary-value-analysis)
+    - [2.3 Bộ test case cuối và kết quả](#23-bộ-test-case-cuối-và-kết-quả)
+    - [2.4 Bug](#24-bug)
+    - [2.5 AI gap analysis](#25-ai-gap-analysis)
+  - [3. Feature B: FR-07 Giỏ hàng (Web)](#3-feature-b-fr-07-giỏ-hàng-web)
+    - [3.1 Domain Testing từng bước](#31-domain-testing-từng-bước)
+    - [3.2 Boundary Value Analysis](#32-boundary-value-analysis)
+    - [3.3 Bộ test case cuối và kết quả](#33-bộ-test-case-cuối-và-kết-quả)
+    - [3.4 Bug](#34-bug)
+    - [3.5 AI gap analysis](#35-ai-gap-analysis)
+  - [4. Feature C: FR-17 Quản lý mã giảm giá (Web Admin)](#4-feature-c-fr-17-quản-lý-mã-giảm-giá-web-admin)
+    - [4.1 Domain Testing từng bước](#41-domain-testing-từng-bước)
+    - [4.2 Boundary Value Analysis](#42-boundary-value-analysis)
+    - [4.3 Bộ test case cuối và kết quả](#43-bộ-test-case-cuối-và-kết-quả)
+    - [4.4 Bug](#44-bug)
+    - [4.5 AI gap analysis](#45-ai-gap-analysis)
+  - [5. Feature D: FR-04 Hồ sơ cá nhân (Mobile)](#5-feature-d-fr-04-hồ-sơ-cá-nhân-mobile)
+  - [6. Agent Skill](#6-agent-skill)
+  - [7. Test Summary](#7-test-summary)
+  - [AI Critique](#ai-critique)
+  - [Mandatory Disclosure](#mandatory-disclosure)
+  - [Self-Assessment](#self-assessment)
+  - [Appendix A: Prompt log](#appendix-a-prompt-log)
+  - [Appendix B: AI Audit Report](#appendix-b-ai-audit-report)
+    - [Tổng kết độ chính xác AI](#tổng-kết-độ-chính-xác-ai)
+    - [Kết luận: Khi nào nên, không nên dùng AI?](#kết-luận-khi-nào-nên-không-nên-dùng-ai)
 
 ---
 
@@ -178,9 +200,34 @@ Chi tiết: [`08_gap_analysis.md`](features/C_FR-17_QuanLyCoupon/08_gap_analysis
 
 ## 5. Feature D: FR-04 Hồ sơ cá nhân (Mobile)
 
-Thư mục: `features/D_FR-04_HoSo_Mobile/`
+Thư mục: [`features/D_FR-04_HoSo_Mobile/`](features/D_FR-04_HoSo_Mobile/). Thiết kế bằng Agent Skill `domain-testing-design`, có quay video (mục 6). App chạy bằng Expo Go trên Samsung Galaxy S21 Ultra (Android 15), kết nối backend qua `adb reverse`.
 
-> _(Đang thực hiện. Điền khi xong.)_
+### 5.1 Domain Testing từng bước
+
+| Bước | Kết quả | File |
+|---|---|---|
+| S0 Đặc tả | Trích FR-04, các yêu cầu chung (FR-20 đến FR-23), API `GET/PUT /api/users/me`, SEC; 23 yêu cầu, 27 câu hỏi mở; khảo sát màn Hồ sơ qua 5 ảnh điện thoại (bàn phím hiện ra khi chạm từng ô); 3 khác biệt (nút "Thoát" thay vì "Đăng xuất", không làm nổi mục đang chọn, không có `*`) | [`00_spec.md`](features/D_FR-04_HoSo_Mobile/00_spec.md) |
+| S1 Input, Output | 5 biến nhập trực tiếp (Họ Tên, Số điện thoại, Địa chỉ, Email, `role`), 5 biến gián tiếp (token, hồ sơ hiện có, body thiếu trường, mã người khác, chủ token); OUT1 đến OUT4, ERR1 đến ERR6 | [`01_io.md`](features/D_FR-04_HoSo_Mobile/01_io.md) |
+| S2 Lớp tương đương | 38 lớp (19 hợp lệ, 12 không hợp lệ, 7 Output); giả định A01 đến A19 (Họ Tên bắt buộc, Số điện thoại không bắt buộc, "10–11 chữ số" tính cả số 0 đầu, gửi `email`, `role` thì bỏ qua hay từ chối đều được nhưng dữ liệu phải giữ nguyên) | [`02_ec.md`](features/D_FR-04_HoSo_Mobile/02_ec.md) |
+| S3 Coverage, Minimum Set | 29 test case phủ đủ 38 lớp; mỗi test case không hợp lệ chỉ vi phạm 1 lớp và đổi kèm một trường hợp lệ để phát hiện lưu một phần; trạng thái chuẩn đặt bằng API trước mỗi test case | [`03_tc.md`](features/D_FR-04_HoSo_Mobile/03_tc.md) |
+
+### 5.2 Boundary Value Analysis
+
+2 phân vùng có thứ tự: Số chữ số của Số điện thoại (cận dưới 10, cận trên 11) và độ dài Họ Tên sau khi cắt khoảng trắng (cận dưới 1, không có cận trên). 5 test case mới (số `0`, 11 chữ số qua giao diện và qua API, `A`, `␣B␣`); các điểm LB-1, LB, UB+1 và "dài nhất ô cho nhập" dùng lại 7 test case của S3; không có điểm "giữa" vì giữa 10 và 11 không có số nguyên nào. Chi tiết: [`04_bva.md`](features/D_FR-04_HoSo_Mobile/04_bva.md).
+
+### 5.3 Bộ test case cuối và kết quả
+
+- [`05_final_tc.md`](features/D_FR-04_HoSo_Mobile/05_final_tc.md): **34 test case**, cả 34 có nguồn gốc AI.
+- [`06_results.md`](features/D_FR-04_HoSo_Mobile/06_results.md): Chạy ngày 21/10/2026 trên điện thoại, bản rút gọn. Pass 10, Fail 7, Khác giả định 2, Blocked 2, Not run 13. API chạy bằng [`scripts/run_api_tests.py`](features/D_FR-04_HoSo_Mobile/scripts/run_api_tests.py).
+- Phát hiện chính: Người dùng thường tự đổi `role` thành `admin` qua API cập nhật hồ sơ; app từ chối cả số điện thoại hợp lệ 10, 11 chữ số (thông báo "9-10 chữ số", khác đặc tả) trong khi API lại lưu số không hợp lệ; màn Hồ sơ không hiển thị địa chỉ đã lưu.
+
+### 5.4 Bug
+
+5 bug, issue **#85 đến #89** (1 Critical, 1 High, 2 Medium, 1 Low). Chi tiết: [`bugs/bug_report.md`](bugs/bug_report.md), mục FR-04.
+
+### 5.5 AI gap analysis
+
+_(Chờ S8.)_
 
 ---
 
@@ -211,23 +258,22 @@ Bảng đầy đủ ở [`README.md`](README.md).
 | A: FR-01 | 96 | 46 | 9 | 19 | 50 | 13 |
 | B: FR-07 | 38 | 30 | 6 | 20 | 8 | 18 |
 | C: FR-17 | 115 | 46 | 26 | 13 | 69 | 12 |
-| D: FR-04 (Mobile) | | | | | | |
+| D: FR-04 (Mobile) | 34 | 21 | 10 | 7 | 13 | 5 |
+| **Tổng** | **283** | **143** | **51** | **59** | **140** | **48** |
 
-"Đã chạy" gồm cả test case Blocked (A: 18, B: 4), Khác giả định (C: 6) và Không áp dụng (C: 1).
+"Đã chạy" gồm cả test case Blocked (A: 18, B: 4, D: 2), Khác giả định (C: 6, D: 2) và Không áp dụng (C: 1).
 
 ---
 
 ## AI Critique
 
-> _(Bản nháp do Claude soạn từ ghi chú trong quá trình làm; sinh viên đọc, sửa và viết lại theo ý mình trước khi nộp.)_
-
-AI làm tốt phần áp dụng máy móc các guideline của slide S04, nhưng sai ở những chỗ cần biết về hệ thống thật hoặc cần tự hỏi lại giả định của chính mình. Ở FR-01, bản AI áp đủ 9 điểm BVA cho cả phân vùng không có cận trên, và chọn đại diện vi phạm hai điều kiện cùng lúc. Ở FR-17, AI gán quyền admin của `GET /api/coupons` cho FR-12 trong khi FR-12 không nói vậy; lỗi truy vết này đi qua bốn bước review mà không ai thấy, cho tới khi tôi hỏi lại ở S5. AI cũng không nghĩ tới việc trang tự sửa giá trị trước khi gửi (ô mã tự viết hoa), nên các lớp chữ thường và khoảng trắng qua giao diện thực chất chỉ kiểm được trang web, không kiểm được server. Hai bug của FR-17 (lỗi 500 khi request không phải JSON, số lớn bị làm tròn) chỉ lộ ra nhờ câu hỏi của tôi và của phiên điều phối. AI còn quy sai nguyên nhân cho người dùng: Khi công cụ báo file bị sửa từ bên ngoài, AI nói tôi sửa tay, trong khi chính nó vừa sửa bằng lệnh khác. AI bỏ sót vì nó chỉ thấy đặc tả và ảnh, không thấy hành vi thật, và vì nó có xu hướng khẳng định thay vì ghi "đây là giả định". Nguyên tắc tôi rút ra: Giữ nguyên bản AI và ghi mọi thay đổi kèm người phát hiện thì mới đo được AI sai ở đâu; con người phải là người quyết định ở mỗi bước, và mọi kết quả Pass cần được đọc cùng giới hạn của nó, vì một test case Pass không chứng minh luật được cài đúng.
+AI làm tốt phần áp dụng các guideline của slide S04, nhưng sai ở những chỗ cần biết về hệ thống thật hoặc cần tự hỏi lại giả định của chính mình, và còn áp dụng khá máy móc (như cố tạo biên dù dư thừa). Ở FR-01, bản AI áp đủ 9 điểm BVA cho cả phân vùng không có cận trên, và chọn đại diện vi phạm hai điều kiện cùng lúc. Ở FR-17, AI gán quyền admin của `GET /api/coupons` cho FR-12 dù FR-12 không nói vậy; lỗi truy vết này đi qua bốn bước review, tới khi tôi hỏi lại ở S5 mới lộ ra. AI cũng không nghĩ tới việc trang tự sửa giá trị trước khi gửi (ô mã tự viết hoa), nên các lớp chữ thường qua giao diện thực chất chỉ kiểm được trang web. Hai bug của FR-17 chỉ lộ ra nhờ câu hỏi của tôi và của phiên điều phối. AI còn hay dựa vào trí nhớ thay vì kiểm tra trước khi kết luận: Tôi đã chụp ảnh đưa vào thư mục nhưng AI vẫn bảo tôi thiếu ảnh; khi công cụ báo file bị sửa từ bên ngoài, AI nói tôi sửa tay, trong khi chính nó vừa sửa. AI bỏ sót vì nó chỉ thấy đặc tả và ảnh, không thấy hành vi thật, và vì nó có xu hướng khẳng định thay vì ghi "đây là giả định". Nguyên tắc tôi rút ra: Giữ nguyên bản AI và ghi mọi thay đổi kèm người phát hiện thì mới đo được AI sai ở đâu; con người phải quyết định ở mỗi bước, và kết quả Pass cần được đọc cùng giới hạn của nó, vì Pass không chứng minh luật được cài đúng.
 
 ---
 
 ## Mandatory Disclosure
 
-"Tôi dùng AI (Claude Code, Anthropic, claude-opus-5-5) cho các việc sau: Trích đặc tả, đề xuất biến Input và Output, lớp tương đương, test case Domain Testing và BVA cho 4 feature (bản gốc của AI lưu nguyên văn trong `ai_raw/` của từng feature); viết script chạy test API; điền bảng kết quả S6 theo ảnh và log do tôi chạy và chụp; viết nháp bug report, nội dung issue và trang link tạo issue; viết nháp AI gap analysis; viết Agent Skill `domain-testing-design`; viết `WORKFLOW.md`, các script trong `tools/`, khung báo cáo, README, bản nháp AI Critique và Appendix B. Một phiên Claude Code làm điều phối: Đọc các phiên khác, soát thao tác bị cấm, soạn tin nhắn để tôi gửi cho các phiên thiết kế, xuất prompt log. Tôi review và quyết định ở mọi bước (các bảng "Thay đổi so với bản AI" ghi đủ chỗ tôi sửa và người phát hiện); tôi tự chụp ảnh khảo sát và kết quả chạy test, tự chạy script, tự tạo 25 issue trên GitHub, tự commit; các quyết định chọn phương án là của tôi, một số có tham khảo đề xuất của AI. AI Audit Report chi tiết ở Appendix B."
+"Tôi dùng AI (Claude Code, Anthropic, claude-opus-5-5) cho các việc sau: Trích đặc tả, đề xuất biến Input và Output, lớp tương đương, test case Domain Testing và BVA cho 4 feature (bản gốc của AI lưu nguyên văn trong `ai_raw/` của từng feature); viết script chạy test API; điền bảng kết quả S6 theo ảnh và log do tôi chạy và chụp; viết nháp bug report, nội dung issue và trang link tạo issue; viết nháp AI gap analysis; viết Agent Skill `domain-testing-design`; viết `WORKFLOW.md`, các script trong `tools/`, khung báo cáo, README, bản nháp AI Critique và Appendix B. Một phiên Claude Code làm điều phối: Đọc các phiên khác, soát thao tác bị cấm, soạn tin nhắn để tôi gửi cho các phiên thiết kế, xuất prompt log. Tôi review và quyết định ở mọi bước (các bảng "Thay đổi so với bản AI" ghi đủ chỗ tôi sửa và người phát hiện); tôi tự chụp ảnh khảo sát và kết quả chạy test, tự chạy script, tự tạo toàn bộ issue trên GitHub, tự commit; các quyết định chọn phương án là của tôi, một số có tham khảo đề xuất của AI. AI Audit Report chi tiết ở Appendix B."
 
 ---
 
@@ -235,18 +281,18 @@ AI làm tốt phần áp dụng máy móc các guideline của slide S04, nhưng
 
 | No. | Criteria | Grade | Self-Assessed Grade |
 |---|---|---|---|
-| 1 | Feature A: FR-01 (Domain + Boundary) | 25 | |
-| 2 | Feature B: FR-07 (Domain + Boundary) | 25 | |
-| 3 | Feature C: FR-17 (Domain + Boundary) | 25 | |
-| 4 | Feature D: FR-04 Mobile (Domain + Boundary) | 15 | |
-| 5 | Agent Skills | 10 | |
-| | **Total** | **100** | |
+| 1 | Feature A: FR-01 (Domain + Boundary) | 25 | 25 |
+| 2 | Feature B: FR-07 (Domain + Boundary) | 25 | 25 |
+| 3 | Feature C: FR-17 (Domain + Boundary) | 25 | 25 |
+| 4 | Feature D: FR-04 Mobile (Domain + Boundary) | 15 | 15 |
+| 5 | Agent Skills | 10 | 10 |
+| | **Total** | **100** | 100 |
 
 ---
 
 ## Appendix A: Prompt log
 
-Xem [`prompt_log.md`](prompt_log.md) (và `prompt_log.pdf`). Log xuất tự động từ transcript Claude Code bằng [`tools/export_prompt_log.py`](tools/export_prompt_log.py), chỉ gồm các phiên của HW02 (danh sách trắng): Phiên điều phối `305c705a`, phiên thiết kế FR-01 `38378bef`, phiên skill FR-17 `1648c211`, phiên skill FR-07 `709e0d24`, phiên skill FR-04 _(điền)_. Mỗi lượt có mã `Cnn`, thời gian, công cụ, prompt và output nguyên văn.
+Xem [`prompt_log.md`](prompt_log.md) (và `prompt_log.pdf`). Log xuất tự động từ transcript Claude Code bằng [`tools/export_prompt_log.py`](tools/export_prompt_log.py), chỉ gồm các phiên của HW02 (danh sách trắng): Phiên điều phối `305c705a`, phiên thiết kế FR-01 `38378bef`, phiên skill FR-17 `1648c211`, phiên skill FR-07 `709e0d24`, phiên skill FR-04 `633ed316`. Mỗi lượt có mã `Cnn`, thời gian, công cụ, prompt và output nguyên văn.
 
 ---
 
@@ -269,20 +315,23 @@ Xem [`prompt_log.md`](prompt_log.md) (và `prompt_log.pdf`). Log xuất tự đ�
 | B11: FR-17, S6 script API, điền kết quả | Phiên `1648c211`, 21/10/2026 | `scripts/run_api_tests.py`; `06_results.md` điền từ 21 ảnh và 3 log | **INCOMPLETE** | Script chạy đúng, che token trong log, không xóa dữ liệu mẫu. Bảng điền đúng nhưng để trống ô ở mục 1 và cột kết quả của dòng Not run, ghi giờ nhật ký không cụ thể | Phiên điều phối **điền ô trống, ghi giờ cụ thể** theo yêu cầu của sinh viên |
 | B12: FR-17, S7 bug report | Phiên `1648c211`, 21/10/2026 | 9 bug, 6 dòng Khác giả định chờ quyết định | **INCOMPLETE** | Gộp hai lỗi khác giao diện vào một bug; đề xuất gộp hành vi dựa trên giả định vào bug Critical | Sinh viên **tách BUG-04**, **KG01, KG02 thành bug**, KG03 chỉ ghi chú; **tự tạo 12 issue** |
 | B13: FR-17, S8 gap analysis | Phiên `1648c211`, 21/10/2026 | `ai_raw/S8_gap_analysis.md` | **VALID** | Số liệu đúng (phiên điều phối đếm lại: 72 dòng); cách xếp nguyên nhân có căn cứ | Giữ nguyên |
-| B14: FR-07, S0 đến S4 (bản AI, qua skill) | Phiên `709e0d24`, 21/10/2026 | `ai_raw/S0_khao_sat.md`, `ai_raw/S1_input_output.md`, _(điền)_ | **INCOMPLETE** | Thiếu output "phản hồi trực quan sau khi bấm Thêm vào giỏ" (FR-24), do phiên điều phối phát hiện; AI điền bảng quan sát S0 từ ảnh thay cho sinh viên (đã tự ghi chú việc này) _(bổ sung)_ | _(điền)_ |
+| B14: FR-07, S0 đến S5 (bản AI, qua skill) | Phiên `709e0d24`, 21/10/2026 | `ai_raw/S0_khao_sat.md` đến `ai_raw/S5_final_test_cases.md` (32 lớp, 38 test case) | **INCOMPLETE** | Thiếu output "phản hồi trực quan sau khi bấm Thêm vào giỏ" (FR-24), do phiên điều phối phát hiện; AI điền bảng quan sát S0 từ ảnh thay cho sinh viên (đã tự ghi chú việc này); AI tự sửa 3 lỗi trước khi giao (ví dụ mốc "không tạo được đúng 1 tỷ" ở S4); một lần tự suy rộng quyền đọc file S5 của FR-01, FR-17 để lấy định dạng | Thêm **FR07-R33 và OUT15**; các phương án nhỏ sinh viên chấp nhận theo đề xuất để kịp giờ |
+| B14b: FR-07, S6 đến S8 (script API, điền kết quả, bug report, gap analysis) | Phiên `709e0d24`, 21/10/2026 | `scripts/run_api_tests.py`, `06_results.md`, mục FR-07 của `bugs/bug_report.md` (18 bug), `08_gap_analysis.md` | **VALID** | Script không xóa giỏ, không reset, che token; phiên không tự reset dữ liệu mà chờ phiên điều phối (đúng WORKFLOW); bug gom theo yêu cầu, số liệu S8 đúng (phiên điều phối đếm lại: 25 dòng) | Sinh viên chọn giữ riêng 18 bug, **tự tạo 18 issue**; điền "Không chạy" và giờ reset theo yêu cầu |
 | B15: FR-04 | _(điền)_ | | | | |
 | B16: Phiên điều phối: Soạn tin nhắn, soát phiên, đếm lại số liệu | Phiên `305c705a`, 17/10/2026 đến 21/10/2026 | Tin nhắn cho các phiên thiết kế, bảng tình trạng, đề xuất phương án | **INCOMPLETE** | Có lần ghi nhầm người phát hiện; có lần ghi đè file Excel thật mà chưa kiểm; có lần phân loại sai một quan sát | Sinh viên phát hiện và yêu cầu sửa; từ đó **gắn sẵn người phát hiện vào tin nhắn**, **kiểm thời gian sửa trước khi ghi đè** |
-| B17: `tools/md_to_pdf.py`, khung `report.md`, README | Phiên điều phối, 21/10/2026 | Script xuất PDF cho mọi file MD; khung báo cáo, Test Summary, bản nháp AI Critique, Appendix B | _(điền sau khi SV review)_ | | |
+| B17: `tools/md_to_pdf.py`, khung `report.md`, README | Phiên điều phối, 21/10/2026 | Script xuất PDF cho mọi file MD; khung báo cáo, Test Summary, bản nháp AI Critique, Mandatory Disclosure, Appendix B | **INCOMPLETE** | Khung và số liệu dùng được (số liệu đếm lại từ file của từng feature); bản nháp AI Critique chưa có ý về việc AI dựa vào trí nhớ thay vì kiểm tra lại; phần Kết luận và điểm tự chấm để trống cho sinh viên | Sinh viên **bổ sung AI Critique** (AI áp dụng máy móc, AI dựa vào trí nhớ thay vì kiểm tra), **tự viết Kết luận**, **điền tự chấm**, thay mục lục |
 
 ### Tổng kết độ chính xác AI
 
 | Chỉ số | Số lượng | Tỉ lệ |
 |---|---|---|
-| Tổng artifact AI sinh đã audit | _(điền)_ | |
-| VALID | | |
-| INVALID | | |
-| INCOMPLETE | | |
+| Tổng artifact AI sinh đã audit | 17 | 100% |
+| VALID (đúng, dùng nguyên) | 3 | 17.6% |
+| INVALID (sai, loại bỏ) | 0 | 0.0% |
+| INCOMPLETE (chấp nhận sau khi sửa) | 14 | 82.4% |
+
+_(Chưa gồm FR-04; cập nhật khi xong dòng B15.)_
 
 ### Kết luận: Khi nào nên, không nên dùng AI?
 
-_(Sinh viên viết.)_
+AI mạnh trong việc lên kế hoạch, điều phối, đồng thời vì nắm rõ ngữ cảnh nên các đề xuất cũng phù hợp. Tuy nhiên AI cũng không thể bao phủ hết các test case, cũng chưa nghĩ tới trường hợp ngoại lệ khác vì không thể thao tác trực tiếp và cũng không nắm rõ quy trình hành vi người dùng.

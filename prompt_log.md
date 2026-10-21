@@ -18273,11 +18273,69 @@ Sang S8 cho FR-07. Viết 08_gap_analysis.md (bản AI lưu ai_raw/S8_gap_analys
 
 - Bash: Read group E log essentials
 - Bash: Read group G log essentials
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\fill_s6_b.py
+- Edit: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\fill_s6_b.py
+- Bash: Apply group E/G results and recount statuses
+- Bash: Recount statuses per test case
+- Bash: Recount statuses per test case
+- Bash: Outline bug_report.md
+- Bash: Read header, FR-17 section structure
+- Read: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\make_issue_links_fr07.py
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s7\fr04_section.md
+- Bash: Check section, append FR-04 to bug_report.md, update TOC
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s7\make_issue_links_fr04.py
+- Bash: Generate FR-04 issue-links HTML page
 
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Đã thêm mục FR-04 vào `bugs/bug_report.md` và cập nhật dòng FR-04 trong mục lục. Giờ tôi viết script tạo trang link, dựa trên script của FR-07.
+
+Tôi đã điền xong `06_results.md`, thêm mục FR-04 vào `bugs/bug_report.md` và tạo trang link issue. Chưa có issue nào được tạo.
+
+**S6:** [06_results.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/06_results.md)
+
+- **Kết quả nhóm E và G:**
+
+| Test case | Kết quả | Trạng thái |
+|---|---|---|
+| TC-PROF-77 | Gửi `role: admin` thì vai trò bị đổi thật | **Fail** |
+| TC-PROF-74 | Backend lưu `1912345678` | **Fail** |
+| TC-PROF-75 | Backend lưu `091234567` (9 chữ số) | **Fail** |
+| TC-PROF-71 | Backend lưu `␣0912345678␣` nguyên khoảng trắng (`␣` là một dấu cách) | **Fail** |
+| TC-PROF-72 | Body thiếu trường làm xóa `phone` và `shipping_address` | Khác giả định |
+| TC-PROF-73 | Backend lưu `0912-345678` nguyên văn | Khác giả định |
+| TC-PROF-76, 78, 79, 80, 102 | Đúng mong đợi | Pass |
+
+- **Đã áp thông tin bạn gửi:** Giờ reset 08:11 và 09:07, TC-PROF-91 Pass (ghi chú là hộp thoại của hệ thống), QS03 đã được bạn xác nhận, TC-PROF-90 điểm (6), (7) và TC-PROF-06 ghi Not run.
+- **Sửa QS01, thêm QS04:** Giả thuyết trước của tôi ở QS01 ("backend đòi số bắt đầu bằng `0`") là sai, vì backend không kiểm Số điện thoại chút nào. Tôi đã sửa QS01. Tôi thêm QS04: Qua app, số `1912345678` nhận "Lỗi cập nhật", trong khi cùng số đó qua API thì lưu được. Nguyên nhân không quan sát được.
+- **Tổng hợp chốt** (đếm lại bằng script, khớp bảng): 10 Pass, 7 Fail, 2 Khác giả định, 2 Blocked, 13 Not run. Đã chạy 21 trên 34 test case.
+
+**S7:** Thêm mục FR-04 vào [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md) theo cấu trúc FR-17, và cập nhật dòng FR-04 trong mục lục.
+
+| Bug | Nội dung | Severity |
+|---|---|---|
+| BUG-FR04-01 | Người dùng tự đổi `role` thành `admin` qua API (TC-PROF-77) | Critical |
+| BUG-FR04-02 | App từ chối số hợp lệ 10 và 11 chữ số (TC-PROF-01, 101). Gộp QS01, QS04 vào ghi chú; đây là bug chặn TC-PROF-04 và 30 | High |
+| BUG-FR04-03 | API lưu số không hợp lệ (TC-PROF-74, 75, 71) | Medium |
+| BUG-FR04-04 | Màn Hồ sơ không hiển thị Địa chỉ đã lưu (từ QS03) | Medium |
+| BUG-FR04-05 | Thanh trên không làm nổi mục đang chọn (TC-PROF-90 điểm 5) | Low |
+
+Label chung: `platform: mobile`, `pool: D`. Bug 02 và 03 gắn cả `technique: EP` và `technique: BVA`.
+
+**Bảng "Khác giả định và quan sát"** (KG01 đến KG03, QS01 đến QS04) có đề xuất của AI. Cột Quyết định để "(chờ sinh viên)". Các đề xuất "không thành bug":
+- KG01: Body thiếu trường xóa dữ liệu. Theo RFC 9110, `PUT` thay toàn bộ tài nguyên nên đây là hành vi chuẩn.
+- KG02: `0912-345678` vẫn đủ 10 chữ số và bắt đầu bằng `0`. Coi dấu `-` là không hợp lệ chỉ là giả định A06.
+- KG03: Không có `*`. FR-04 không nói Họ Tên bắt buộc, và TC-PROF-30 bị Blocked nên chưa biết app có coi Họ Tên là bắt buộc không.
+- QS02: API trả trường `password`, nhưng giá trị đã bị script che nên chưa biết là văn bản rõ hay đã băm. FR-04 không yêu cầu gì về trường này.
+
+Bạn chốt bảng này, nhất là QS03, vì BUG-FR04-04 phụ thuộc vào nó.
+
+**Trang link issue:** C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s7\issue_links_fr04.html
+- Script tạo trang: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s7\make_issue_links_fr04.py, viết theo script FR-07. Mỗi link dài 2.817 đến 5.582 ký tự.
+- **Trước khi tạo BUG-FR04-01 và 03, cần chụp 4 ảnh log:** `S6_TC-PROF-77_log.png`, `S6_TC-PROF-74_log.png`, `S6_TC-PROF-75_log.png`, `S6_TC-PROF-71_log.png`. Bảng cuối trang ghi rõ mở file log nào, tìm chuỗi gì, chụp từ dòng nào tới dòng nào.
+
+Khi có số issue, gửi tôi để điền vào bảng tổng hợp. Khi đó tôi cũng có thể điền dòng FR-04 trong Test Summary của `README.md` (34 test case thiết kế, đã chạy 21: 10 Pass, 7 Fail, 13 Not run, cộng số bug).
 ````
 
 ---
@@ -18301,6 +18359,295 @@ Phiên D đang làm.
 
 ````text
 Số liệu khớp (25 dòng: 23 "Quyết định của SV", 2 "Thiếu"). B đã xong cả 9 bước, nên tôi điền luôn phần B vào `report.md` và README.
+
+Phiên B đã xong cả 9 bước cho FR-07, kiểm tra đều đạt. Tôi đã điền phần B vào `report.md` và README. Log đã xuất (305 lượt, đúng 5 phiên), TRACKER đã cập nhật.
+
+## Phiên B: S8
+
+- `08_gap_analysis.md` giống hệt bản AI trong `ai_raw`; kiểm định dạng 0 lỗi, không có dấu "—" hay "·".
+- **Số liệu đúng.** Tôi đếm lại các bảng thay đổi: 25 dòng, gồm 23 "Quyết định của SV" và 2 "Thiếu" (phản hồi trực quan sau khi thêm vào giỏ, do phiên điều phối phát hiện). Khớp với số phiên B ghi.
+- **Kết luận chính:**
+  - Bộ test case AI thiết kế bắt được 15 trên 18 bug.
+  - Chỗ AI bỏ sót theo nguyên nhân: Giới hạn công cụ 3, độ phức tạp 2, input 1.
+  - Phiên B tự ghi một giới hạn trung thực: Vì bạn chấp nhận gần như toàn bộ đề xuất để kịp giờ, FR-07 có ít dữ liệu để đánh giá AI hơn FR-01 và FR-17.
+- Không có thao tác bị cấm.
+
+## Đã điền vào `report.md` và README
+
+- **Mục 3 của `report.md` (FR-07):** Các bước Domain Testing, BVA (gồm mốc 1 tỷ), kết quả, 18 bug (#67 đến #84), gap analysis.
+- **Test Summary:** Thêm dòng B, gồm 38 test case thiết kế, 30 đã chạy, 6 Pass, 20 Fail, 8 chưa chạy, 18 bug.
+- Chỉ còn phần D.
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+```
+git add bugs/bug_report.md features/B_FR-07_GioHang/screenshots
+git commit -m "[B-FR07][S7] Link GitHub issues for FR-07 bugs"
+
+git add features/B_FR-07_GioHang/08_gap_analysis.md features/B_FR-07_GioHang/ai_raw/S8_gap_analysis.md
+git commit -m "[B-FR07][S8] Add AI gap analysis"
+
+git add report.md README.md prompt_log.md
+git commit -m "[report] Add FR-07 summary to report and test summary"
+```
+
+Đừng `add` các file của D. Phiên D đang điền S6 và viết S7.
+
+**Còn lại:** D gồm S6, S7 (tạo issue) và S8; sau đó là phần chung: Bạn đọc `report.md`, điền tự chấm, form [AI-02], [AI-03], [AI-05], xuất PDF, `git_log.txt`, nén zip. Trong lúc chờ phiên D, bạn có thể bắt đầu đọc **AI Critique** và **Mandatory Disclosure** trong `report.md`.
+````
+
+---
+
+### C306 | 09:12 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B đã xong, bạn đã cập nhật nó vào các file tương ứng như report chưa?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find remaining placeholders in report
+- Bash: Update B audit rows, issue count, D session id
+
+**Output AI (nguyên văn):**
+
+````text
+Đã cập nhật mục 3 (FR-07) và Test Summary trong `report.md`, cùng dòng B trong README. Nhưng tôi soát lại thì `report.md` còn **3 chỗ liên quan B chưa cập nhật**. Tôi sửa ngay.
+
+Đã sửa xong 3 chỗ:
+
+1. **Appendix B, dòng B14 (FR-07, S0 đến S5):** Trước còn ghi "(điền)", nay đã có đủ các lỗi của AI:
+   - Thiếu output phản hồi trực quan, do phiên điều phối phát hiện.
+   - AI điền bảng quan sát S0 thay bạn.
+   - AI tự sửa 3 lỗi trước khi giao.
+   - AI tự suy rộng quyền đọc file S5 của A và C.
+2. **Thêm dòng B14b (FR-07, S6 đến S8):** Script API, phần điền kết quả, 18 bug, gap analysis; verdict **VALID**. Script an toàn; phiên B không tự reset mà chờ phiên điều phối; số liệu S8 tôi đã đếm lại, khớp.
+3. **Mandatory Disclosure:** Câu "tự tạo 25 issue" đã lỗi thời, nay đổi thành "tự tạo toàn bộ issue". Appendix A cũng điền luôn mã phiên của D (`633ed316`).
+
+**Những chỗ trong `report.md` còn để trống, có chủ ý:**
+
+| Chỗ | Chờ gì |
+|---|---|
+| Mục 5 (FR-04) và Appendix B, dòng B15 | Phiên D xong S8 |
+| Appendix B, dòng B17 (khung báo cáo do tôi viết) | Bạn review rồi chấm verdict |
+| Bảng "Tổng kết độ chính xác AI" | Đếm sau khi đủ các dòng |
+| Self-Assessment và câu "Kết luận: Khi nào nên, không nên dùng AI?" | Bạn tự viết |
+
+Khi D xong, tôi sẽ đánh số lại các dòng của Appendix B cho liền mạch (B14b sẽ thành B15, v.v.).
+
+**Commit** (gộp vào commit `[report]` ở lượt trước nếu bạn chưa chạy):
+
+```
+git add report.md prompt_log.md
+git commit -m "[report] Update FR-07 audit rows and disclosure"
+```
+````
+
+---
+
+### C307 | 09:28 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+23120061][FR-04][Mobile] Màn Hồ sơ: Ô Địa chỉ giao hàng trống dù hồ sơ đang có địa chỉ
+Lưu ý: Lấy từ quan sát QS03, chờ sinh viên duyệt ở bảng "Khác giả định và quan sát" trước khi tạo
+
+-> Câu lưu ý là sao? Có bảng nào tôi chưa duyệt hả?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Có. Bảng đó nằm ở cuối mục FR-04 trong [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md), tên là "Khác giả định và quan sát: Quyết định của sinh viên". Cột "Quyết định" của cả 7 dòng tôi đang để "(chờ sinh viên)".
+
+Trước đó bạn mới xác nhận một **sự kiện** của QS03: Ô Địa chỉ trống dù server đang lưu địa chỉ. Bạn chưa chốt việc **có báo nó thành bug hay không**. Theo cấu trúc FR-17, việc biến một quan sát thành bug là quyết định của bạn. Vì vậy tôi gắn lưu ý cho BUG-FR04-04, để bạn không tạo issue trước khi chốt.
+
+Các dòng cần bạn chốt, kèm đề xuất của tôi:
+
+| Mã | Nội dung | Đề xuất |
+|---|---|---|
+| KG01 | Body thiếu trường làm xóa `phone`, `shipping_address` (TC-PROF-72) | Không thành bug |
+| KG02 | API lưu `0912-345678` (TC-PROF-73) | Không thành bug riêng; ghi chú trong BUG-FR04-03 |
+| KG03 | Không ô nào có `*` (TC-PROF-90 điểm 4) | Không thành bug |
+| QS01 | Thông báo "đúng 9-10 chữ số" | Gộp vào BUG-FR04-02 |
+| QS02 | API trả trường `password` | Không báo trong FR-04 |
+| QS03 | Ô Địa chỉ trống dù đã lưu | **Thành bug Medium (BUG-FR04-04)** |
+| QS04 | "Lỗi cập nhật" với `1912345678` | Không thành bug riêng; ghi chú trong BUG-FR04-02 |
+
+Bạn chỉ cần trả lời một trong hai:
+- "Theo đề xuất cả 7": Tôi điền cột Quyết định, bỏ lưu ý ở trang link, rồi chạy lại script.
+- Hoặc nêu dòng nào khác đề xuất. Ví dụ, nếu không muốn báo QS03 thành bug thì tôi bỏ BUG-FR04-04 khỏi danh sách.
+````
+
+---
+
+### C308 | 09:30 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Theo đề xuất cả 7. Script là script test hay gì vậy?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Fill decisions, drop pending note, regenerate HTML
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi đã điền cột Quyết định cho cả 7 dòng theo đề xuất, ghi dạng "Theo đề xuất: ..." như FR-17. Câu lưu ý ở BUG-FR04-04 đã bỏ và trang link đã được tạo lại.
+
+**Script đó không phải script test.** Ở S7 có hai script, làm hai việc khác nhau:
+
+| Script | Làm gì | Có đụng tới EShop không |
+|---|---|---|
+| `features/D_FR-04_HoSo_Mobile/scripts/run_api_tests.py` | Script **test** của S6: Gọi API EShop để chạy các test case API, ghi log | Có (bạn đã chạy xong ở S6) |
+| `make_issue_links_fr04.py` (trong scratchpad của tôi) | **Chỉ tạo trang HTML**: Đọc mục FR-04 trong `bug_report.md`, sinh mỗi bug một link mở form "Bug report" trên GitHub với nội dung điền sẵn | Không. Không gọi API, không tạo issue, không gửi gì lên GitHub |
+
+Script thứ hai tôi viết dựa trên script FR-07 bạn chỉ, và tôi đã tự chạy nó để tạo trang. Bạn không cần chạy lại.
+
+Việc của bạn bây giờ:
+1. Chụp 4 ảnh log: `S6_TC-PROF-77_log.png`, `S6_TC-PROF-74_log.png`, `S6_TC-PROF-75_log.png`, `S6_TC-PROF-71_log.png`. Cách chụp ghi ở bảng cuối trang.
+2. Mở trang C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\633ed316-8f40-40ae-a0ec-5fcf7f17ce8d\scratchpad\s7\issue_links_fr04.html bằng trình duyệt.
+3. Với từng bug, từ trên xuống: Bấm link, kéo thả ảnh vào ô "Ảnh chụp", kiểm tra lại nội dung và label, rồi bấm Submit.
+4. Gửi tôi số issue của 5 bug để tôi điền vào bảng tổng hợp.
+````
+
+---
+
+### C309 | 09:36 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đã bổ sung ảnh các issue rồi đó, đổi tên ảnh cho đúng format, điền số issue đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: List newly added screenshots
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\github.com_angquoc_software-testing-2026-HW02-group_issues_85.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\github.com_angquoc_software-testing-2026-HW02-group_issues_86.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\github.com_angquoc_software-testing-2026-HW02-group_issues_87.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\github.com_angquoc_software-testing-2026-HW02-group_issues_88.png
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\screenshots\github.com_angquoc_software-testing-2026-HW02-group_issues_89.png
+- Bash: Rename issue screenshots and fill issue numbers
+- Bash: Add issue number to blocked-test table
+- Bash: Fix second blocked row issue number
+
+**Output AI (nguyên văn):**
+
+````text
+Có 5 ảnh trang issue, từ #85 đến #89. Tôi mở từng ảnh để biết issue nào ứng với bug nào, không đoán theo thứ tự.
+
+Tôi đã đổi tên 5 ảnh và điền số issue vào `bugs/bug_report.md`. Trước khi điền, tôi mở từng ảnh để khớp tiêu đề issue với bug, không ghép theo thứ tự số:
+
+| Bug | Issue | Ảnh |
+|---|---|---|
+| BUG-FR04-01 Tự đổi `role` thành `admin` | #85 | `S7_issue_85.png` |
+| BUG-FR04-02 App từ chối số hợp lệ 10, 11 chữ số | #86 | `S7_issue_86.png` |
+| BUG-FR04-03 API lưu số không hợp lệ | #87 | `S7_issue_87.png` |
+| BUG-FR04-04 Ô Địa chỉ trống dù đã lưu | #88 | `S7_issue_88.png` |
+| BUG-FR04-05 Thanh trên không highlight | #89 | `S7_issue_89.png` |
+
+- **Đổi tên:** Ảnh đặt theo quy ước `S7_issue_<số>.png` như FR-17, trong `features/D_FR-04_HoSo_Mobile/screenshots/`.
+- **Đã cập nhật trong [bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md):**
+  - Cột Issue của bảng tổng hợp.
+  - Dòng "Issue" của từng bug, kèm đường dẫn ảnh trang issue.
+  - Bảng "Test case Blocked": Ghi BUG-FR04-02 (#86) là bug chặn TC-PROF-04 và TC-PROF-30.
+- **Label:** Trên cả 5 ảnh, label khớp với báo cáo. Ví dụ #86 và #87 có đủ `technique: EP` và `technique: BVA`.
+
+Phần mô tả của các issue vẫn ghi mã bug (ví dụ BUG-FR04-02) chứ chưa có số `#86`. Nếu muốn các issue liên kết với nhau trên GitHub, bạn sửa mô tả trên GitHub và thay mã bằng số issue.
+
+Dòng FR-04 trong Test Summary của `README.md` vẫn trống. Nếu muốn, tôi điền: 34 test case thiết kế, đã chạy 21 (10 Pass, 7 Fail), 13 Not run, 5 bug (#85 đến #89).
+````
+
+---
+
+### C310 | 09:37 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi đợi xong D rồi tôi sẽ commit luôn. Tôi đã xem qua report và điền vào, cũng như sửa những chỗ cần sửa. Bạn kiểm tra xem có chỗ nào ngoài D chưa fill và bảng tổng kết (chắc bạn sẽ thống kê đi, nhiều quá tôi không thống kê nổi)
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Find remaining placeholders in user-edited report
+- Bash: Read critique, disclosure, self-assessment, audit verdicts
+- Bash: Count critique words, view user's edits, check README
+- Bash: Show word-level user edits in report
+- Bash: Split critique into sentences with word counts
+- Bash: Fill audit summary, B17 verdict, README scores
+- Bash: Count words of proposed trimmed critique
+- Bash: Check dashes, export log, update tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Đã điền bảng tổng kết, verdict B17 và điểm tự chấm trong README. Giờ tôi soạn bản AI Critique rút gọn để bạn chọn, và đếm từ để chắc dưới 300.
+
+Ngoài phần D, `report.md` không còn chỗ trống nào. Tôi đã điền xong các phần còn thiếu và thống kê bảng tổng kết. Còn **một vấn đề cần bạn quyết: AI Critique đang dài 347 từ, vượt giới hạn 300** của đề.
+
+## Đã điền
+
+| Chỗ | Nội dung |
+|---|---|
+| Bảng "Tổng kết độ chính xác AI" | **17 artifact**: VALID 3 (17.6%), INVALID 0, INCOMPLETE 14 (82.4%). Có ghi chú "chưa gồm FR-04", sẽ cập nhật khi xong D |
+| Verdict B17 (khung báo cáo, bản nháp do tôi viết) | **INCOMPLETE**: Bạn đã bổ sung AI Critique, tự viết Kết luận, điền tự chấm và thay mục lục |
+| README, phần tự chấm | Trước để trống, khác với `report.md`. Nay điền giống `report.md`: 25, 25, 25, 15, 10, **tổng 100**. Tên file zip sẽ là `23120061_HW02_AI_DomainTesting_100.zip` |
+
+Phần bạn viết (Kết luận, ý mới trong AI Critique, mục lục) tôi không sửa gì.
+
+## AI Critique: 347 từ, vượt 300
+
+Câu bạn thêm ("AI dựa vào trí nhớ thay vì kiểm tra...") là ý hay, nhưng đang nằm **sau** câu "Nguyên tắc tôi rút ra", nên đoạn văn kết thúc lửng. Tôi đề xuất bản rút gọn **297 từ**, giữ đủ ý của bạn. Các thay đổi:
+- Chuyển ý "dựa vào trí nhớ" lên trước, gộp chung với ví dụ "AI nói tôi sửa tay", vì cùng một lỗi: Kết luận mà không kiểm tra.
+- Bỏ vài cụm thừa, ví dụ "và khoảng trắng", "không kiểm được server", phần liệt kê tên hai bug của FR-17.
+
+> AI làm tốt phần áp dụng các guideline của slide S04, nhưng sai ở những chỗ cần biết về hệ thống thật hoặc cần tự hỏi lại giả định của chính mình, và còn áp dụng khá máy móc (như cố tạo biên dù dư thừa). Ở FR-01, bản AI áp đủ 9 điểm BVA cho cả phân vùng không có cận trên, và chọn đại diện vi phạm hai điều kiện cùng lúc. Ở FR-17, AI gán quyền admin của `GET /api/coupons` cho FR-12 dù FR-12 không nói vậy; lỗi truy vết này đi qua bốn bước review, tới khi tôi hỏi lại ở S5 mới lộ ra. AI cũng không nghĩ tới việc trang tự sửa giá trị trước khi gửi (ô mã tự viết hoa), nên các lớp chữ thường qua giao diện thực chất chỉ kiểm được trang web. Hai bug của FR-17 chỉ lộ ra nhờ câu hỏi của tôi và của phiên điều phối. AI còn hay dựa vào trí nhớ thay vì kiểm tra trước khi kết luận: Tôi đã chụp ảnh đưa vào thư mục nhưng AI vẫn bảo tôi thiếu ảnh; khi công cụ báo file bị sửa từ bên ngoài, AI nói tôi sửa tay, trong khi chính nó vừa sửa. AI bỏ sót vì nó chỉ thấy đặc tả và ảnh, không thấy hành vi thật, và vì nó có xu hướng khẳng định thay vì ghi "đây là giả định". Nguyên tắc tôi rút ra: Giữ nguyên bản AI và ghi mọi thay đổi kèm người phát hiện thì mới đo được AI sai ở đâu; con người phải quyết định ở mỗi bước, và kết quả Pass cần được đọc cùng giới hạn của nó, vì Pass không chứng minh luật được cài đúng.
+
+Bạn muốn tôi thay bằng bản này, hay bạn tự cắt theo ý mình?
+
+**Còn lại sau D:**
+- Mục 5 (FR-04) và dòng B15 trong `report.md`.
+- Cập nhật bảng tổng kết, đánh số lại B14b.
+- Dòng D trong Test Summary.
+- Form [AI-02], [AI-03], [AI-05], xuất PDF, `git_log.txt`, nén zip.
+````
+
+---
+
+### C311 | 09:40 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Thay đi.
+Phiên D: Đã xong, xuất log, kiểm tra và báo tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Replace critique and read session D S7 output
+- Bash: Check D results summary and bug section
+- Bash: Check QS02 decision and report D section
+- Bash: Fill D section and totals in report and README
+- Bash: Export log and update tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Đã thay AI Critique (giờ 297 từ). Giờ tôi kiểm phần D: Kết quả S6, mục FR-04 trong bug report, và xem S8 đã có chưa.
 ````
 
 
