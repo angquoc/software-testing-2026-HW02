@@ -5,7 +5,7 @@ PDF nằm cạnh file MD, cùng tên. Ảnh trong MD dùng đường dẫn tươ
 
 Chạy:  python tools/md_to_pdf.py                 (mọi file MD nộp bài)
        python tools/md_to_pdf.py report.md README.md   (chỉ các file chỉ định)
-Bỏ qua: _NOTES.md (không nộp), thư mục .git.
+Bỏ qua: _NOTES.md (không nộp), thư mục .git, thư mục forms/ (PDF của form xuất từ Word).
 """
 import glob
 import html
@@ -68,8 +68,11 @@ def convert(md_path, exe):
 def targets(args):
     if args:
         return [os.path.join(HW, a) for a in args]
+    # forms/*.md là bản chữ của file Word; PDF của form xuất từ Word (có ảnh chữ ký), không xuất từ .md
+    forms = os.path.join(HW, "forms") + os.sep
     files = [f for f in glob.glob(os.path.join(HW, "**", "*.md"), recursive=True)
-             if os.path.basename(f) not in SKIP and os.sep + ".git" + os.sep not in f]
+             if os.path.basename(f) not in SKIP and os.sep + ".git" + os.sep not in f
+             and not f.startswith(forms)]
     return sorted(files)
 
 

@@ -2,7 +2,7 @@
 
 Chạy:  python tools/fill_ai03_05.py
 - [AI-03]: Bảng thông tin, 6 câu khai báo, khối chữ ký (ảnh chữ ký lấy từ form [AI-02] đã ký của HW01).
-- [AI-05]: Chỉ điền khối chữ ký; các ô [ ] của checklist sinh viên tự đánh dấu.
+- [AI-05]: Khối chữ ký và checklist (đánh dấu giống HW01 theo quyết định của sinh viên).
 Luôn dựng lại từ mẫu gốc nên chạy nhiều lần không bị trùng; chạy TRƯỚC khi ký và tick tay.
 """
 import io
@@ -145,6 +145,14 @@ def ai03():
 def ai05():
     d = docx.Document(os.path.join(TPL, "[AI-05] - FIT@HCMUS - AI Privacy Checklist_Vn.docx"))
     fill_sign(d.tables[0])
+    # Checklist: Sinh viên chọn đánh dấu giống HW01 (21/10/2026): Tick mọi ô, trừ 2 ô dưới đây
+    # (đã đưa tên, MSSV và đặc tả EShop cho AI, nên để trống là trung thực)
+    keep_empty = ("Không nhập dữ liệu cá nhân", "Không paste nguyên si tài liệu có bản quyền")
+    for p in d.paragraphs:
+        t = p.text.strip()
+        if t.startswith("[ ]") and not any(k in t for k in keep_empty):
+            run = next(r for r in p.runs if "[ ]" in r.text)
+            run.text = run.text.replace("[ ]", "[x]", 1)
     out = os.path.join(FORMS, "[AI-05] - FIT@HCMUS - AI Privacy Checklist_Vn.docx")
     d.save(out)
     print("Đã ghi", os.path.basename(out))
