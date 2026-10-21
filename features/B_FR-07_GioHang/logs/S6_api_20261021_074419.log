@@ -1,0 +1,157 @@
+S6, FR-07: Nhóm test case API
+Thời gian bắt đầu: 2026-10-21 07:44:19
+Base URL: http://localhost:3000
+Chế độ: gửi thật
+Test case: TC-CART-30, TC-CART-31, TC-CART-32, TC-CART-33, TC-CART-34, TC-CART-35, TC-CART-102, TC-CART-36
+Script không reset dữ liệu, không xóa giỏ.
+
+Đăng nhập test: POST /api/login với test@eshop.com
+  Lấy được token test (HTTP 200)
+Đăng nhập admin: POST /api/login với admin@eshop.com
+  Lấy được token admin (HTTP 200)
+
+==============================================================================
+TC-CART-30: Thêm sản phẩm không tồn tại (id 9999)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Kiểm trước: GET /api/products/9999 không trả về sản phẩm
+  Request: GET http://localhost:3000/api/products/9999
+  Header: (không có header)
+  Body: (không có body)
+  Response: HTTP 200
+    {}
+  Gợi ý: Có vẻ không có sản phẩm 9999
+  Giỏ trước (test, GET HTTP 200): giỏ trống (0 dòng)
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 9999, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 1}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi không 2xx (ERR3)
+  Giỏ sau (test, GET HTTP 200): 1 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1]
+  Gợi ý: Giỏ THAY ĐỔI so với trước request
+
+==============================================================================
+TC-CART-31: Số lượng 0
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước (test, GET HTTP 200): 1 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1]
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 0}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi không 2xx (ERR2)
+  Giỏ sau (test, GET HTTP 200): 2 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0]
+  Gợi ý: Giỏ THAY ĐỔI so với trước request
+
+==============================================================================
+TC-CART-32: Số lượng thập phân 1.5
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước (test, GET HTTP 200): 2 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0]
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 1.5}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi không 2xx (ERR2)
+  Giỏ sau (test, GET HTTP 200): 3 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5]
+  Gợi ý: Giỏ THAY ĐỔI so với trước request
+
+==============================================================================
+TC-CART-33: Số lượng không phải số "abc"
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước (test, GET HTTP 200): 3 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5]
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": "abc"}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi không 2xx (ERR2)
+  Giỏ sau (test, GET HTTP 200): 4 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc]
+  Gợi ý: Giỏ THAY ĐỔI so với trước request
+
+==============================================================================
+TC-CART-34: Thiếu trường quantity
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước (test, GET HTTP 200): 4 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc]
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi không 2xx (ERR3)
+  Giỏ sau (test, GET HTTP 200): 5 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None]
+  Gợi ý: Giỏ THAY ĐỔI so với trước request
+
+==============================================================================
+TC-CART-35: Thiếu header Authorization
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước (test, GET HTTP 200): 5 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None]
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 1}
+  Response: HTTP 401
+    {
+      "error": "Unauthorized"
+    }
+  Gợi ý: HTTP 401 (4xx): khớp mong đợi không 2xx (ERR1)
+  Giỏ sau (test, GET HTTP 200): 5 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None]
+  Gợi ý: Giỏ không đổi
+
+==============================================================================
+TC-CART-102: Số lượng âm -1 (BVA)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước (test, GET HTTP 200): 5 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None]
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": -1}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý: HTTP 200 (2xx): KHÔNG khớp mong đợi không 2xx (ERR2)
+  Giỏ sau (test, GET HTTP 200): 6 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1]
+  Gợi ý: Giỏ THAY ĐỔI so với trước request
+
+==============================================================================
+TC-CART-36: Xem giỏ với token sai
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Bước 1: POST /api/cart body cơ sở với token hợp lệ
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 1}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý bước 1: HTTP 200 (2xx): khớp mong đợi 2xx
+  Bước 2: GET /api/cart với token test bị sửa ký tự cuối
+  Request: GET http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test, ký tự cuối bị sửa>"}
+  Body: (không có body)
+  Response: HTTP 403
+    {
+      "error": "Forbidden"
+    }
+  Gợi ý bước 2: HTTP 403 (4xx): khớp mong đợi không 2xx (ERR1); dữ liệu giỏ trong phản hồi: giỏ trống (0 dòng)
+
+==============================================================================
+Kết thúc: 2026-10-21 07:44:19
+Log: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\logs\S6_api_20261021_074419.log

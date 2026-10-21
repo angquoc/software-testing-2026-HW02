@@ -1,0 +1,86 @@
+S6, FR-07: Nhóm test case API
+Thời gian bắt đầu: 2026-10-21 07:56:53
+Base URL: http://localhost:3000
+Chế độ: gửi thật
+Test case: TC-CART-50
+Script không reset dữ liệu, không xóa giỏ.
+
+Đăng nhập test: POST /api/login với test@eshop.com
+  Lấy được token test (HTTP 200)
+Đăng nhập admin: POST /api/login với admin@eshop.com
+  Lấy được token admin (HTTP 200)
+
+==============================================================================
+TC-CART-50: Thêm và xem giỏ qua API
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước test case (test, GET HTTP 200): 7 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1]
+  CẢNH BÁO: Giỏ chưa trống, khác tiền điều kiện. Xóa hết giỏ qua giao diện rồi chạy lại, hoặc ghi chú vào 06_results.md
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 1}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý POST: HTTP 200 (2xx): khớp mong đợi 2xx
+  GET /api/cart:
+  Request: GET http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>"}
+  Body: (không có body)
+  Response: HTTP 200
+    [
+      {
+        "id": 9999,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "quantity": 1
+      },
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "quantity": 0
+      },
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "quantity": 1.5
+      },
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "quantity": "abc"
+      },
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000
+      },
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "quantity": -1
+      },
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "quantity": 1
+      },
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "quantity": 1
+      }
+    ]
+  Gợi ý: Số lượng của id 1 = 0 (mong đợi 1); 8 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1]
+  Làm tay: Mở trang Giỏ hàng, chụp S6_TC-CART-50.png (mong đợi như TC-CART-01)
+
+==============================================================================
+Kết thúc: 2026-10-21 07:56:53
+Log: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\logs\S6_api_20261021_075653.log

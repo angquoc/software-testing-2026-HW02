@@ -1,0 +1,74 @@
+S6, FR-07: Nhóm test case API
+Thời gian bắt đầu: 2026-10-21 08:00:06
+Base URL: http://localhost:3000
+Chế độ: gửi thật
+Test case: TC-CART-51, TC-CART-54, TC-CART-52
+Script không reset dữ liệu, không xóa giỏ.
+
+Đăng nhập test: POST /api/login với test@eshop.com
+  Lấy được token test (HTTP 200)
+Đăng nhập admin: POST /api/login với admin@eshop.com
+  Lấy được token admin (HTTP 200)
+
+==============================================================================
+TC-CART-51: price khác giá CSDL (price = 1)
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước test case (test, GET HTTP 200): 8 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1]
+  CẢNH BÁO: Giỏ chưa trống, khác tiền điều kiện. Xóa hết giỏ qua giao diện rồi chạy lại, hoặc ghi chú vào 06_results.md
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 1, "quantity": 1}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý POST: HTTP 200 (2xx): khớp mong đợi 2xx (bị từ chối cũng chấp nhận được theo A24)
+  Giỏ sau (test, GET HTTP 200): 9 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=1, quantity=1]
+  Gợi ý: CÓ dòng giá 1
+  Làm tay: Mở trang Giỏ hàng, xem Đơn giá, Thành tiền (mong đợi 30,000,000 ₫ nếu có dòng)
+
+==============================================================================
+TC-CART-54: Người dùng khác không thấy giỏ của test
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước test case (test, GET HTTP 200): 9 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=1, quantity=1]
+  CẢNH BÁO: Giỏ chưa trống, khác tiền điều kiện. Xóa hết giỏ qua giao diện rồi chạy lại, hoặc ghi chú vào 06_results.md
+  Bước 1: POST /api/cart body cơ sở với token test@eshop.com
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "iPhone 15 Pro Max", "price": 30000000, "quantity": 1}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý bước 1: HTTP 200 (2xx): khớp mong đợi 2xx
+  Giỏ của test sau bước 1 (test, GET HTTP 200): 10 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=1, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1]
+  Bước 2: GET /api/cart với token admin@eshop.com
+  Request: GET http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token admin>"}
+  Body: (không có body)
+  Response: HTTP 200
+    []
+  Gợi ý: Giỏ của admin: giỏ trống (0 dòng); không có dòng id 1
+
+==============================================================================
+TC-CART-52: name có thẻ HTML
+Mong đợi: Xem 05_final_tc.md và 06_results.md
+------------------------------------------------------------------------------
+  Giỏ trước test case (test, GET HTTP 200): 10 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=1, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1]
+  CẢNH BÁO: Giỏ chưa trống, khác tiền điều kiện. Xóa hết giỏ qua giao diện rồi chạy lại, hoặc ghi chú vào 06_results.md
+  Request: POST http://localhost:3000/api/cart
+  Header: {"Authorization": "Bearer <token test>", "Content-Type": "application/json; charset=utf-8"}
+  Body: {"id": 1, "name": "<b>X</b>", "price": 30000000, "quantity": 1}
+  Response: HTTP 200
+    {
+      "message": "Added to cart"
+    }
+  Gợi ý POST: HTTP 200 (2xx): khớp mong đợi 2xx
+  Giỏ sau (test, GET HTTP 200): 11 dòng: [id=9999, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=0], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1.5], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=abc], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=None], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=-1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='iPhone 15 Pro Max', price=1, quantity=1], [id=1, name='iPhone 15 Pro Max', price=30000000, quantity=1], [id=1, name='<b>X</b>', price=30000000, quantity=1]
+  Làm tay: Mở trang Giỏ hàng, chụp S6_TC-CART-52.png. Mong đợi: Tên là chuỗi <b>X</b> nguyên văn hoặc tên trong CSDL; không có chữ X in đậm
+
+==============================================================================
+Kết thúc: 2026-10-21 08:00:06
+Log: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\logs\S6_api_20261021_080006.log
