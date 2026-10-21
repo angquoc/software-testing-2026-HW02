@@ -16175,11 +16175,44 @@ Tôi đã chụp hết và nêu các kết quả cho bạn, nếu bạn co
 - Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-03_2.png
 - Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-105_1.png
 - Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-105_2.png
+- Bash: Locate rows to update
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\fill06.py
+- Bash: Fill results and count statuses
+- Bash: Count statuses in results table
 
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Mình đã xem đủ 8 ảnh S6 mới. Giờ điền kết quả vào bảng theo ảnh và theo mô tả của bạn.
+
+Mình đã điền 24/38 dòng của [06_results.md](Homeworks/HW02/features/B_FR-07_GioHang/06_results.md). Còn trống: 13 dòng API và TC-CART-03 (chờ bạn, xem câu hỏi 1 bên dưới).
+
+**Vì sao mong đợi "tổng 58,000,000, badge 2" ở TC-CART-02:** Con số này dựa trên tiền điều kiện "giỏ đã có iPhone × 1", tức kết quả của TC-CART-01 (30,000,000 + 28,000,000). TC-CART-01 Fail nên giỏ không có iPhone, và mong đợi 58,000,000 không còn áp dụng. Mình đã ghi rõ trong cột Ghi chú. Con số 56,000,000 bạn thấy là đúng phép cộng (2 × 28,000,000). Lỗi thật nằm ở chỗ khác: Không có phản hồi nào khi bấm, không có badge, và bấm 2 lần thì ra 2 dòng Samsung riêng.
+
+**Kết quả qua giao diện:**
+
+| Trạng thái | Test case |
+|---|---|
+| Pass (2) | TC-CART-11 (bấm "← Mua tiếp" về trang chủ), TC-CART-105 (1,000,000,000 ₫, định dạng đúng) |
+| Fail (11) | Checklist 90 đến 93 và 95; TC-CART-10 (thiếu hình minh họa), 01 (số lượng mặc định 1 không thêm được), 02 (không phản hồi, không badge, thêm trùng tách dòng), 07, 08, 09 (xóa không có dialog) |
+| Blocked (3) | TC-CART-04 đến 06 (không có nút +/-) |
+| Not run (8) | TC-CART-94, 96, 97, 12, 100, 101, 103, 104 |
+
+Với những ảnh bạn không chụp lại, cột Ảnh ghi ảnh dùng lại kèm chữ "SV không chụp lại": `S0_05` cho TC-CART-01 và 09, `S6_TC-CART-10` cho TC-CART-11, `S6_TC-CART-02` cho lần thêm lại ở TC-CART-08.
+
+**Mục 4.F mới, "Ghi nhận thêm khi chạy":** 5 hiện tượng để làm bug report ở S7:
+1. Giữ số lượng mặc định 1 thì không thêm được vào giỏ.
+2. Nút ở trang chi tiết phải bấm 2 lần mới chuyển thành "Đã thêm", và giỏ chỉ thêm một lần.
+3. Thêm lại sản phẩm đã có từ trang chủ tạo dòng mới thay vì tăng số lượng.
+4. Không có toast, không có badge.
+5. Bấm Xóa là xóa ngay, không có dialog.
+
+Hiện tượng 3 nằm đúng ở đường mà bản thiết kế đã chủ động không kiểm (thêm trùng chỉ kiểm qua trang chi tiết), nên mình ghi lại cho phần gap analysis ở S8.
+
+**Cần bạn trả lời 3 điểm:**
+1. **TC-CART-03 chưa kiểm được việc thêm trùng qua trang chi tiết:** Lúc bạn thêm iPhone × 3 thì giỏ chưa có iPhone, nên đó là thêm mới (kết quả đúng: 90,000,000, tổng 146,000,000). Đề xuất của mình: Nếu giỏ còn dòng iPhone thì mở trang chi tiết iPhone, đổi số lượng thành 2, bấm thêm, rồi chụp `S6_TC-CART-03_3.png`. Mất khoảng 1 phút và đây là chỗ dễ có bug. Nếu không làm thì mình ghi Not run.
+2. **Nút đổi thành "Đã thêm" có tính là phản hồi trực quan không:** Mình đang chấm FR07-R33 là Fail, vì đặc tả ghi rõ dạng phản hồi là "toast notification hoặc badge cập nhật", còn đổi nhãn nút không thuộc hai dạng đó. Bạn đồng ý hay muốn tính là đạt?
+3. **Nhóm API chưa chạy:** Bạn chạy `python scripts/run_api_tests.py` rồi lần lượt `--only 50`, `51`, `54`, `52`; cuối cùng chạy `--only 53` và reset dữ liệu ngay sau đó. Xong thì báo mình, mình đọc log trong `logs/` và điền nốt 13 dòng cùng bảng tổng hợp.
 ````
 
 ---
@@ -16197,6 +16230,785 @@ Phiên D: Xong rồi, xuất log, kiểm tra và báo cho tôi.
 
 - Bash: Read session D S2 output and run checks
 - Bash: Export log and update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên D đạt cả S1 lẫn bản AI của S2, không có thao tác bị cấm. Log đã xuất (269 lượt, đúng 5 phiên).
+
+## Phiên D
+
+**S1 đã chốt (`01_io.md`):** Giữ nguyên nội dung bản AI; bảng thay đổi có 10 dòng "Quyết định của SV". Kiểm tra 0 lỗi.
+
+**Bản AI của S2:** 38 lớp, gồm 19 hợp lệ, 12 không hợp lệ và 7 lớp Output. Kiểm tra 0 lỗi. Dự kiến cả bộ khoảng 27 đến 30 test case.
+
+**Các giả định chính. Tôi đồng ý cả, vì đều có căn cứ:**
+
+| Giả định | Nội dung | Ghi chú |
+|---|---|---|
+| A01 | Họ Tên bắt buộc | Rỗng thì là lỗi |
+| A05 | Số điện thoại **không** bắt buộc | Hợp lý: Hồ sơ ban đầu có số điện thoại trống. Nếu bắt buộc thì không lưu được Họ Tên khi chưa nhập số |
+| A07 | "10–11 chữ số" tính cả số 0 đầu | Theo ví dụ `0912345678` trong API spec |
+| A13 đến A16 | Gửi `email`, `role`, mã người khác qua API: Hệ thống bỏ qua trường đó hay từ chối cả yêu cầu đều chấp nhận | Chỉ bắt buộc dữ liệu được bảo vệ không đổi. Cách này tránh tự đặt kết quả mong đợi mà đặc tả không nói |
+| A19 | Không được lưu một phần | Mỗi test case không hợp lệ sửa kèm một trường hợp lệ, để phát hiện trường hợp hệ thống lưu một nửa |
+
+**Dán vào phiên D:**
+
+```text
+Chấp nhận toàn bộ giả định và các điểm đã áp ở S2. Viết 02_ec.md, rồi làm luôn S3 (gọn, mỗi test case không hợp lệ chỉ vi phạm 1 lớp). Không cần đưa lệnh commit.
+```
+
+## Commit (đứng ở `D:\Dang\Test\Homeworks\HW02`)
+
+Hai commit D ở lượt trước bạn chưa chạy, nên tôi gộp lại theo thứ tự:
+
+```
+git add features/D_FR-04_HoSo_Mobile/00_spec.md
+git commit -m "[D-FR04][S0] Review spec against UI exploration"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S1_input_output.md
+git commit -m "[D-FR04][S1] Identify input/output variables (AI draft)"
+
+git add features/D_FR-04_HoSo_Mobile/01_io.md
+git commit -m "[D-FR04][S1] Review input/output variables"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S2_equivalence_classes.md prompt_log.md
+git commit -m "[D-FR04][S2] Add equivalence classes (AI draft)"
+```
+
+Đừng `add` các file của B (`06_results.md`, ảnh `S6_TC-CART-*`). Phiên B đang điền dở.
+
+## Phiên B
+
+Tôi thấy đã có 8 ảnh S6, nhưng còn thiếu vài ảnh so với danh sách 10 test case: 07, 09, 11, 100, và ảnh thứ hai của 01, 02, 08. Nếu bạn cố ý bỏ những test case này vì thời gian thì cứ để phiên B ghi Not run. Chạy script API xong thì báo tôi reset DB sau TC-CART-53.
+````
+
+---
+
+### C270 | 07:36 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Chấp nhận toàn bộ giả định và các điểm đã áp ở S2. Viết 02_ec.md, rồi làm luôn S3 (gọn, mỗi test case không hợp lệ chỉ vi phạm 1 lớp). Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read S3 guide and coverage-check logic
+- Bash: Locate S2 sections and proposal wording
+- Bash: Build S2 review head and body
+- Bash: Assemble 02_ec.md and run checks
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S3_test_cases.md
+- Bash: Run format and coverage checks on S3
+
+**Output AI (nguyên văn):**
+
+````text
+`02_ec.md` đã xong (0 lỗi; 38 lớp, khớp bản AI). Giờ tôi viết bản AI của S3.
+
+Tôi đã viết xong `02_ec.md` và bản AI của S3. Giờ dừng chờ bạn review S3.
+
+**S2, bản review:** [02_ec.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/02_ec.md)
+- Đã chốt 17 giả định và 6 điểm ở mục 7. Bảng lớp giữ nguyên 38 lớp.
+- Bảng thay đổi có 6 dòng loại "Quyết định của SV" và 1 dòng loại **Sai** do tôi tự phát hiện khi viết bản review. Mục 1 của bản AI nói lớp sẽ đổi Loại "theo cột Hệ quả", nhưng bảng giả định không có cột đó; cột đúng là "Lớp bị ảnh hưởng". Tôi đã sửa ở bản review; `ai_raw/` giữ nguyên.
+- Kiểm tra mâu thuẫn nêu rõ một hệ quả: Theo A01 (a), ô Họ Tên phải có `*`. Vì vậy mục checklist FR04-R13 dự kiến sẽ khác đặc tả (D03 ở S0).
+
+**S3, bản AI:** [ai_raw/S3_test_cases.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S3_test_cases.md)
+- **29 test case:**
+
+| Nhóm | Số lượng | Mã |
+|---|---|---|
+| Giao diện, hợp lệ | 10 | TC-PROF-01 đến 10 |
+| Giao diện, không hợp lệ | 6 | TC-PROF-30 đến 35 |
+| API | 11 | TC-PROF-70 đến 80 |
+| Checklist | 2 | TC-PROF-90, 91 |
+
+- **Không hợp lệ:** Mỗi test case chỉ vi phạm đúng 1 lớp, không có ngoại lệ. Trường còn lại được đổi sang giá trị hợp lệ để phát hiện trường hợp hệ thống lưu một phần (A19).
+- **Trình bày:** Quy trình chung (QT-GD, QT-API) viết một lần; mỗi nhóm là một bảng dữ liệu. File có thêm bảng phủ lớp, ma trận truy vết, thứ tự chạy và giới hạn quan sát.
+- **Kiểm tra:** Script báo 38 lớp đều có test case, 0 lỗi format, không mã test case nào trùng.
+- **Yêu cầu chỉ phủ một phần:**
+  - R07: Chỉ thử trường `id`.
+  - R20: Không thiết kế token hết hạn.
+  - R22: Chỉ xem được cách hiển thị trên Mobile.
+  - R23: Chỉ suy ra qua hành vi.
+
+**Điểm đã áp tạm phương án (a)** (mục 10 trong file, cần bạn duyệt):
+1. **Trạng thái chuẩn `S_CHUAN`:** Họ Tên `Test User`, Số điện thoại `0900000000`, Địa chỉ `1 Nguyen Hue, Quận 1`. Đặt bằng API trước mỗi test case, để test case xóa trống và test case body thiếu trường đều thấy được thay đổi. Đây là cách cụ thể hóa PC3; nó không dùng giá trị ban đầu (Số điện thoại và Địa chỉ trống).
+2. **Họ Tên có số test case ở cuối:** Ví dụ `Nguyen Van An 32`, để biết giá trị nào do test case nào ghi.
+3. **Kiểm Số điện thoại phía hệ thống:** Hai test case API, TC-PROF-74 (không bắt đầu bằng `0`) và TC-PROF-75 (ít hơn 10 chữ số).
+4. **Checklist:** Gộp vào 2 test case ngay ở S3.
+5. **Nút "Thoát":** Bấm ở bước cuối của TC-PROF-90 để trả lời Q26.
+6. **Trình bày:** Markdown ở S3, S4; xuất Word và Excel ở S5.
+7. **TC-PROF-76 và 77 (gửi `email`, `role`):** Chạy cuối cùng và reset dữ liệu ngay sau đó, vì nếu hệ thống có lỗi thì tài khoản test sẽ bị đổi Email hoặc vai trò.
+
+**Cho S4:** Còn khoảng 6 test case trong mục tiêu 35. Các biên dự kiến thêm:
+- Số điện thoại: 11 chữ số (UB), số chỉ có `0` (1 chữ số), và có thể thêm 11 chữ số qua API.
+- Họ Tên: `A` và `␣A␣` (ký hiệu `␣` là một dấu cách).
+````
+
+---
+
+### C271 | 07:39 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+1. Mỗi lần thêm là 1 dòng mới, tôi đã bổ sung ảnh S6_TC-CART-03_3.png
+2. Đồng ý.
+3. Tôi sẽ chạy.
+4. Còn cần tôi chụp ảnh nào cho trường hợp nào không?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Read: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\screenshots\S6_TC-CART-03_3.png
+- Bash: Update TC-CART-03 result and notes
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã cập nhật [06_results.md](Homeworks/HW02/features/B_FR-07_GioHang/06_results.md) theo 3 điểm:
+
+1. **TC-CART-03 Fail:** Ảnh `S6_TC-CART-03_3.png` cho thấy thêm iPhone số lượng 2 khi giỏ đã có iPhone × 3 thì tạo dòng mới; giỏ có 2 dòng iPhone (2 và 3) thay vì 1 dòng số lượng 5. Như vậy thêm trùng bị tách dòng ở **cả trang chủ lẫn trang chi tiết**; mục 4.F đã sửa theo. Tổng 1,150,000,000 vẫn đúng phép cộng.
+2. **Nhãn "Đã thêm":** Đã ghi quyết định của bạn ở mục 4.F. TC-CART-01, 02 giữ Fail ở FR07-R33.
+3. **API:** Chờ log.
+
+**Còn cần chụp gì:**
+
+Bắt buộc, khi chạy API:
+
+| Lệnh | Ảnh | Vì sao |
+|---|---|---|
+| `--only 50` | `S6_TC-CART-50.png` (trang Giỏ hàng sau khi chạy) | Kết quả mong đợi gồm "trang Giỏ hàng hiển thị như TC-CART-01" |
+| `--only 52` | `S6_TC-CART-52.png` (trang Giỏ hàng) | Kiểm tên `<b>X</b>` có bị hiểu thành thẻ HTML hay không, chỉ thấy được trên giao diện |
+| `--only 51` | `S6_TC-CART-51.png` (trang Giỏ hàng), nên chụp | API spec không mô tả cấu trúc phản hồi của `GET /api/cart`, nên log có thể không cho thấy rõ Đơn giá. Ảnh trang Giỏ hàng là bằng chứng chắc nhất cho việc giá 1 ₫ có lọt vào giỏ hay không |
+
+Không bắt buộc: `S6_TC-CART-01_2.png`. Giữ số lượng 1, bấm "Thêm vào giỏ hàng", rồi mở Giỏ hàng và chụp giỏ vẫn trống. Hiện TC-CART-01 đang dùng lại `S0_05` chụp lúc 02:30, trước lần chạy này. Đủ để chấm Fail, nhưng khi viết bug report ở S7 thì một ảnh chụp ngay sau thao tác sẽ thuyết phục hơn.
+
+Các trường hợp khác không cần chụp thêm.
+
+**Lưu ý khi chạy API:**
+- Giỏ hiện còn 3 dòng (Keychron, 2 dòng iPhone). Nhóm không hợp lệ (lệnh mặc định) chạy được ngay, vì script so số dòng giỏ trước và sau mỗi request.
+- Trước **mỗi** lệnh `--only 50`, `51`, `54`, `52`, `53` phải xóa hết giỏ qua giao diện. Bấm Xóa là xóa ngay, không có dialog, nên làm nhanh.
+- Chạy `--only 53` cuối cùng, xong reset dữ liệu ngay và ghi thời điểm reset vào mục 1.
+````
+
+---
+
+### C272 | 07:40 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Đưa tôi lần lượt chạy script đi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đưa từng bước một; bạn chạy xong bước nào thì báo, mình đọc log rồi đưa bước tiếp. Các lệnh dưới chạy trong PowerShell hoặc terminal của VS Code.
+
+**Toàn bộ thứ tự:**
+
+| Bước | Lệnh | Trước khi chạy |
+|---|---|---|
+| 1 | Nhóm không hợp lệ (mặc định) | Không cần xóa giỏ |
+| 2 | `--only 50` | Xóa hết giỏ |
+| 3 | `--only 51` | Xóa hết giỏ |
+| 4 | `--only 54` | Xóa hết giỏ |
+| 5 | `--only 52` | Xóa hết giỏ |
+| 6 | `--only 53` (cuối cùng) | Xóa hết giỏ; xong thì reset dữ liệu ngay |
+
+---
+
+**Bước 1: Nhóm API không hợp lệ** (TC-CART-30 đến 35, 102, 36)
+
+```
+cd D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang
+python scripts\run_api_tests.py
+```
+
+- Backend `http://localhost:3000` phải đang chạy. Nếu không chạy, script dừng ngay ở bước đăng nhập và báo lỗi, chưa gửi request nào của test case.
+- Giỏ hiện còn 3 dòng thì cứ để nguyên. Script tự ghi số dòng giỏ trước và sau mỗi request để so sánh.
+- Bước này không cần chụp ảnh; bằng chứng là file log `logs\S6_api_<thời gian>.log`.
+
+Chạy xong, bạn gửi mình **dòng cuối cùng** script in ra (dạng `Log: ...\logs\S6_api_....log`), mình sẽ đọc file log đó. Nếu script báo lỗi thì dán nguyên phần lỗi.
+````
+
+---
+
+### C273 | 07:41 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Vì mấy ảnh đó có rồi nên tôi mới không chụp. Tôi và phiên B đang trao đổi và chuẩn bị chạy script.
+Phiên D: Xong rồi, kiểm tra và báo lại cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session D S3 output and run checks
+- Bash: Show context of flagged matches in session D
+- Bash: Export log and update notes
+
+**Output AI (nguyên văn):**
+
+````text
+Kiểm tra của D đều 0 lỗi. Có 2 lệnh bị đánh dấu nghi vấn; tôi xem chúng chạm vào đâu.
+
+Hai lệnh đó chỉ là báo nhầm: Bộ lọc khớp chữ `_notes` trong tên file tạm `s2_notes.md` của chính phiên D, không phải `_NOTES.md`.
+
+Phiên D đạt S2 và bản AI của S3, không có thao tác bị cấm. Log đã xuất (273 lượt, đúng 5 phiên). Bạn đã đúng khi bỏ các ảnh trùng ở B.
+
+## Phiên D
+
+**S2 đã chốt (`02_ec.md`):**
+- Vẫn 38 lớp, chốt 17 giả định.
+- Bảng thay đổi có 6 dòng "Quyết định của SV" và **1 dòng Sai do AI tự phát hiện**: Bản AI nói đổi Loại "theo cột Hệ quả", nhưng bảng không có cột đó. Đây là một điểm tốt cho gap analysis của D.
+- Kiểm tra 0 lỗi. Hai lệnh bị đánh dấu nghi vấn chỉ là báo nhầm: Bộ lọc khớp chữ `_notes` trong tên file tạm `s2_notes.md` của phiên D, không phải `_NOTES.md`.
+
+**Bản AI của S3:** 29 test case phủ đủ 38 lớp, kiểm tra 0 lỗi.
+- 10 test case giao diện hợp lệ, 6 test case giao diện không hợp lệ (mỗi test case vi phạm đúng 1 lớp), 11 test case API, 2 test case checklist.
+- **Đặt dữ liệu về trạng thái chuẩn bằng API trước mỗi test case** (Họ Tên `Test User`, Số điện thoại `0900000000`, một địa chỉ mẫu). Nhờ vậy test case xóa trống một ô vẫn thấy được thay đổi.
+
+**7 điểm phiên D đã áp:** Tôi đồng ý 6 điểm. Riêng **điểm 6 (xuất Word và Excel ở S5) thì bỏ**, như đã làm với B.
+- Điểm 7 hợp lý: TC-PROF-76 và 77 thử đổi `email` và `role` qua API, nên chạy cuối cùng rồi reset dữ liệu ngay. Nếu hệ thống có lỗi, tài khoản test sẽ bị đổi email hoặc vai trò.
+
+**Dán vào phiên D:**
+
+```text
+Chấp nhận điểm 1 đến 5 và 7 ở S3. Điểm 6 bỏ: Không xuất Word, Excel (thiếu thời gian). Viết 03_tc.md, rồi làm luôn S4 theo các biên bạn đã liệt kê. Không cần đưa lệnh commit.
+```
+
+**Commit** (đứng ở `D:\Dang\Test\Homeworks\HW02`):
+
+```
+git add features/D_FR-04_HoSo_Mobile/02_ec.md
+git commit -m "[D-FR04][S2] Review equivalence classes"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S3_test_cases.md prompt_log.md
+git commit -m "[D-FR04][S3] Select test cases (AI draft)"
+```
+
+## Phiên B
+
+Chạy script xong, kể cả `--only 53`, thì báo tôi để reset DB. Lần reset này cũng giúp D có dữ liệu sạch khi tới S6.
+````
+
+---
+
+### C274 | 07:43 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Chấp nhận điểm 1 đến 5 và 7 ở S3. Điểm 6 bỏ: Không xuất Word, Excel (thiếu thời gian). Viết 03_tc.md, rồi làm luôn S4 theo các biên bạn đã liệt kê. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read S4 guide and locate S3 sections
+- Bash: Build S3 review head and body
+- Bash: Assemble 03_tc.md and run checks
+- PowerShell: Get current time for S4 header
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S4_bva.md
+- Bash: Run format and coverage checks on S4
+- Bash: Remove duplicate TC tables and recheck S4
+- Read: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S4_bva.md
+
+**Output AI (nguyên văn):**
+
+````text
+`03_tc.md` đã xong (0 lỗi; 38/38 lớp có test case). Giờ tôi viết S4.
+
+Tôi đã viết xong `03_tc.md` và bản AI của S4. Giờ dừng chờ bạn review S4.
+
+**S3, bản review:** [03_tc.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/03_tc.md)
+- Giữ nguyên 29 test case; 38/38 lớp đều có test case.
+- Đã chốt điểm 1 đến 5 và 7. Điểm 6 ghi là bạn bỏ cả hai phương án: Chỉ trình bày bằng Markdown, không xuất Word, Excel.
+- Bảng thay đổi có 7 dòng loại "Quyết định của SV" và 1 dòng loại **Sai** do tôi tự phát hiện. Bản AI của S3 ghi giờ tạo 07:45, nhưng đó là giờ tôi ước lượng; giờ máy lúc tôi kiểm tra mới là 07:43. Tôi đã ghi chú việc này ở đầu `03_tc.md`. Từ S4, giờ ghi trong file đều lấy từ máy.
+
+**S4, bản AI:** [ai_raw/S4_bva.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S4_bva.md)
+- **Phân vùng có thứ tự:**
+  - P1: Số chữ số của Số điện thoại, LB = 10, UB = 11.
+  - P2: Độ dài Họ Tên sau khi cắt khoảng trắng, LB = 1, không có cận trên.
+  - Địa chỉ không có cận nên không làm BVA.
+- **5 test case mới, đúng các biên đã liệt kê:**
+
+| Mã | Biên | Giá trị | Kênh | Kết quả mong đợi |
+|---|---|---|---|---|
+| TC-PROF-100 | P1, nhỏ nhất chỉ vi phạm số chữ số | `0` | Giao diện | ERR2 |
+| TC-PROF-101 | P1, UB | `09123456789` (11 chữ số) | Giao diện | OUT1 |
+| TC-PROF-102 | P1, UB | `09123456789` (11 chữ số) | API | OUT2 |
+| TC-PROF-103 | P2, LB | `A` | Giao diện | Lưu là `A` |
+| TC-PROF-104 | P2, LB có khoảng trắng hai bên | `␣B␣` (`␣` là một dấu cách) | Giao diện | Lưu là `B` |
+
+- **Dùng lại test case đã có:** Các điểm LB-1, LB, UB+1 và "nhỏ nhất giao diện cho nhập" đã có sẵn ở S3: TC-PROF-01, 06, 30, 31, 33, 34, 75.
+- **Không áp dụng:** Điểm "giữa" của P1 (giữa 10 và 11 không có số nguyên nào) và toàn bộ phía cận trên của P2.
+- **Tổng cả bộ: 34 test case**, nằm trong mục tiêu 25 đến 35.
+- **Kiểm tra:** Script báo 0 lỗi format, 0 lỗi phủ lớp, không mã test case nào trùng. Bản đầu của file có định nghĩa trùng; tôi đã sửa trước khi giao.
+
+**Điểm đã áp tạm phương án (a)** (mục 6 trong file, cần bạn duyệt):
+1. **12 chữ số qua API (UB+1):** Không thêm, giữ tổng 34. Nếu chọn (b) thì thêm 1 test case, tổng thành 35.
+2. **Số điện thoại dài nhất ô cho nhập:** Dùng TC-PROF-34 làm điểm thăm dò, ghi lại số chữ số ô thực sự nhận.
+3. **Họ Tên 2 ký tự (LB+1):** Không thêm.
+4. **Họ Tên chuỗi dài để thăm dò:** Không thêm.
+5. **Kết quả khác giả định:** Ví dụ `␣B␣` được lưu nguyên văn. Trường hợp này ghi là "khác giả định" và xét ở S5 hoặc S7, chưa coi là không đạt.
+````
+
+---
+
+### C275 | 07:44 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Log: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\logs\S6_api_20261021_074419.log
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read API test log
+- Bash: Fill API invalid results into 06_results.md
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã đọc log và điền 8 dòng của bước 1 vào `06_results.md`: **2 Pass, 6 Fail**.
+
+| TC | Kết quả thực tế | Trạng thái |
+|---|---|---|
+| 30 | `id` 9999 không tồn tại vẫn HTTP 200 "Added to cart", giỏ thêm dòng `id` 9999 | Fail |
+| 31 | `quantity` 0: HTTP 200, thêm dòng số lượng 0 | Fail |
+| 32 | `quantity` 1.5: HTTP 200, thêm dòng số lượng 1.5 | Fail |
+| 33 | `quantity` "abc": HTTP 200, thêm dòng số lượng "abc" | Fail |
+| 34 | Thiếu `quantity`: HTTP 200, thêm dòng không có số lượng | Fail |
+| 102 | `quantity` -1: HTTP 200, thêm dòng số lượng -1 | Fail |
+| 35 | Thiếu token: HTTP 401, giỏ không đổi | Pass |
+| 36 | Token sai: HTTP 403, không trả dữ liệu giỏ | Pass |
+
+Mục 4.F có thêm 2 ghi nhận:
+- **Ghi nhận 6:** API nhận mọi dữ liệu không hợp lệ.
+- **Ghi nhận 7:** Qua API, gửi lại cùng `id` 1 cũng tạo dòng mới thay vì cộng số lượng.
+
+**Một chỗ bất thường trước khi sang bước 2:** Ngay trước TC-CART-30 (07:44), `GET /api/cart` trả về **giỏ trống**. Nhưng ảnh `S6_TC-CART-03_3` lúc 07:38 cho thấy giỏ trên giao diện có 3 dòng (Keychron, 2 dòng iPhone). Có hai khả năng:
+- **(a)** Bạn đã xóa hết giỏ trên giao diện trước khi chạy bước 1.
+- **(b)** Giỏ trên trang Web không phải giỏ trên server. Khi đó các bước sau đổi cách làm: Bấm "Xóa" trên giao diện sẽ không làm trống giỏ của API, và giỏ thêm qua API có thể không hiện trên trang Giỏ hàng.
+
+Mình chưa đưa bước 2 vì cách làm phụ thuộc vào câu trả lời. Bạn cho mình biết 2 điều:
+1. Trước khi chạy bước 1, bạn có xóa giỏ trên giao diện không?
+2. Mở trang Giỏ hàng bây giờ, bấm F5 và chụp `S6_API_buoc1.png`. Server lúc này đang có 7 dòng (`id` 9999 và các dòng `id` 1 có số lượng 0, 1.5, "abc", rỗng, -1, 1). Trang hiện 7 dòng đó hay vẫn là 3 dòng cũ (hoặc trống)?
+
+Nếu trang hiện 7 dòng, ảnh này là bằng chứng mạnh cho bug report (số lượng âm và chữ hiện lên giao diện). Đồng thời giỏ Web chính là giỏ server, các bước sau giữ cách làm cũ.
+````
+
+---
+
+### C276 | 07:45 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Bạn không cập nhật các trạng thái vào _NOTES à?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read tracker section of notes
+- Bash: Update tracker grid, requirements and final tasks
+- Bash: Fix recorder note and status legend
+
+**Output AI (nguyên văn):**
+
+````text
+Tôi có ghi thêm vào phần GHI CHÚ, nhưng chưa cập nhật **bảng TRACKER** cho B và D. Tôi xem bảng rồi cập nhật ngay.
+
+Bạn nói đúng. Tôi vẫn ghi đều vào phần GHI CHÚ, nhưng đã bỏ sót **bảng TRACKER** cho B và D từ sáng. Giờ đã cập nhật xong:
+
+**Bảng từng feature (2.1):**
+- **B:** S0 đến S5 xong (38 test case, cả 38 đều có nguồn gốc AI). S6 đang làm: Khung và script đã có, bạn đã chụp giao diện, đang chạy script API.
+- **D:** S0, S1, S2 xong (38 lớp, có 1 dòng Sai do AI tự phát hiện). S3 đang chờ review bản AI (29 test case).
+- **C:** S8 đánh dấu xong. S7 ghi thêm quyết định không chụp lại 4 ảnh log vì đã có file log.
+
+**Yêu cầu của đề (mục 1):** Cả 14 dòng trước đều để "chưa làm", nay ghi đúng tiến độ thật. Ví dụ: Domain Testing và BVA xong ở A và C; Agent Skill xong, video đang quay trên D; AI Critique và Appendix B đã có nháp; [AI-05] chưa làm.
+
+**Phần chung (2.2) và file nộp (mục 4):**
+- G1 (Agent Skill) xong.
+- G2 (video) đang quay, G3 và G4 có nháp, G6 đã có Test Summary của A và C, G8 có script sẵn.
+- **G7 (xuất Word và Excel) và dòng "File Excel / Word test case" ở mục 4 ghi ❌ bỏ**, kèm quyết định của bạn lúc 21/10. Chú thích ký hiệu đầu file có thêm ❌.
+
+Từ giờ, mỗi lần soát xong một bước tôi cập nhật cả ô trong bảng TRACKER, không chỉ thêm dòng vào phần ghi chú.
+````
+
+---
+
+### C277 | 07:48 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Tôi không hề xóa gì, tôi chỉ chạy script thôi.
+Và đúng là F5 thì giỏ trống, có cần phải làm lại bước này để đảm bảo kết quả đúng khong?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Check for new screenshot of empty cart
+- Bash: Record cart sync finding and adjust API run notes
+
+**Output AI (nguyên văn):**
+
+````text
+**Không cần chạy lại bước 1.** Kết quả của bước 1 vẫn đúng: Script so giỏ của chính API trước và sau mỗi request, nên trang Web hiển thị gì không ảnh hưởng tới các kết luận Pass, Fail ở trên.
+
+Điều bạn vừa thấy là một phát hiện mới, mình đã ghi thành **ghi nhận 8** ở mục 4.F của `06_results.md`:
+- **Giỏ trên Web và giỏ của API tách nhau:** Lúc 07:38 trang có 3 dòng, nhưng 07:44 API thấy giỏ trống. API thêm 7 dòng xong, F5 trang vẫn trống.
+- **Giỏ trên Web không được giữ sau F5,** dù bạn không xóa gì.
+- **Hệ quả:** Bước kiểm chứng "F5 rồi gọi `GET /api/cart`" ở các test case giao diện không dùng được. Đặc tả không nói rõ giỏ phải được giữ (Q14), nên đây là ứng viên để xét ở S7, chưa kết luận là bug.
+
+Hai thay đổi cho các bước còn lại (đã ghi ở mục 4.D):
+- **Không cần xóa giỏ trước mỗi lệnh nữa:** Bấm xóa trên Web không làm trống giỏ của API. Script sẽ in cảnh báo "Giỏ chưa trống", cứ bỏ qua. Mình chấm theo dòng mới xuất hiện giữa "Giỏ trước" và "Giỏ sau" trong log.
+- **Chỉ cần 1 ảnh trang Giỏ hàng** (ở bước 2) để chứng minh dữ liệu thêm qua API không hiện trên Web. Bỏ ảnh của bước 3 và bước 4 vì trang sẽ không hiện gì.
+
+---
+
+**Trước bước 2, chụp bổ sung ngay bây giờ:** Trang Giỏ hàng sau F5 (đang trống), đặt tên `S6_API_buoc1.png`. Đây là bằng chứng cho ghi nhận 8, vì lúc này server đang có 7 dòng.
+
+**Bước 2: TC-CART-50**
+
+```
+python scripts\run_api_tests.py --only 50
+```
+
+Chạy xong thì mở trang Giỏ hàng, bấm F5, chụp `S6_TC-CART-50.png`. Sau đó gửi mình dòng `Log: ...` cuối cùng.
+````
+
+---
+
+### C278 | 07:51 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Ảnh chụp giỏ hàng trống vốn đã có, phải chụp alij à?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Replace planned screenshot reference with TC-50 image
+
+**Output AI (nguyên văn):**
+
+````text
+Không cần chụp `S6_API_buoc1.png`, mình bỏ ảnh đó. Ảnh giỏ trống cũ (`S0_05`) chụp lúc server cũng đang trống, nên không chứng minh được giỏ Web lệch với giỏ server. Bằng chứng cần có là trang trống **trong lúc** API đang có dữ liệu.
+
+Ảnh `S6_TC-CART-50.png` ở bước 2 chứng minh được đúng điều đó: Sau lệnh `--only 50`, server có 8 dòng trong khi trang (dự kiến) vẫn trống. Mình đã đổi bằng chứng của ghi nhận 8 trong `06_results.md` sang ảnh này. Vì vậy ảnh của bước 2 vẫn cần chụp.
+
+**Bước 2: TC-CART-50**
+
+```
+python scripts\run_api_tests.py --only 50
+```
+
+Chạy xong, mở trang Giỏ hàng, bấm F5, chụp `S6_TC-CART-50.png`. Sau đó gửi mình dòng `Log: ...` cuối cùng.
+````
+
+---
+
+### C279 | 07:51 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên D xong rồi, kiểm tra xouaast log và báo tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session D S4 output and run checks
+- Bash: Check B logs and export prompt log
+- Bash: Update tracker for D S3, S4 and B S6
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên D đạt S3 và bản AI của S4. Log đã xuất (279 lượt, đúng 5 phiên), TRACKER đã cập nhật.
+
+## Phiên D
+
+**S3 đã chốt (`03_tc.md`):**
+- Giữ nguyên 29 test case, phủ đủ 38 lớp.
+- Điểm 6 (xuất Word, Excel) ghi là bạn bỏ.
+- Bảng thay đổi có 7 dòng "Quyết định của SV" và 1 dòng **Sai do AI tự nhận**: Giờ tạo nó ghi 07:45 là giờ ước lượng, trong khi giờ máy lúc đó mới 07:43. Từ S4, nó lấy giờ từ máy.
+
+**Bản AI của S4:** Thêm 5 test case, **tổng 34**. Kiểm tra phủ lớp và định dạng 0 lỗi, không có dấu "—" hay "·".
+- Hai phân vùng có thứ tự:
+  - Số chữ số của Số điện thoại: Cận dưới 10, cận trên 11.
+  - Độ dài Họ Tên: Cận dưới 1, không có cận trên.
+- Bỏ điểm "giữa" vì giữa 10 và 11 không có số nguyên nào. Dùng lại 7 test case của S3 làm các điểm biên đã có. Cách làm đúng với các bài học từ FR-01.
+
+**5 điểm phiên D đã áp, tôi đồng ý cả 5.** Không thêm điểm 12 chữ số qua API, để giữ tổng 34. Kết quả nào khác giả định thì ghi "Khác giả định", không coi là Fail.
+
+**Dán vào phiên D:**
+
+```text
+Chấp nhận cả 5 điểm ở S4. Viết 04_bva.md, rồi làm luôn S5: Gộp 03_tc.md và 04_bva.md thành 05_final_tc.md (bản AI lưu ai_raw/S5_final_test_cases.md), có cột Nguồn gốc và Phát hiện như FR-01; tôi không bổ sung test case. Không xuất Word, Excel. Không cần đưa lệnh commit.
+```
+
+**Commit** (đứng ở `D:\Dang\Test\Homeworks\HW02`). Hai commit D ở lượt trước bạn chưa chạy, nên gộp lại theo thứ tự:
+
+```
+git add features/D_FR-04_HoSo_Mobile/02_ec.md
+git commit -m "[D-FR04][S2] Review equivalence classes"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S3_test_cases.md
+git commit -m "[D-FR04][S3] Select test cases (AI draft)"
+
+git add features/D_FR-04_HoSo_Mobile/03_tc.md
+git commit -m "[D-FR04][S3] Review test cases"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S4_bva.md prompt_log.md
+git commit -m "[D-FR04][S4] Add boundary value analysis (AI draft)"
+```
+
+## Phiên B
+
+Script đã chạy nhóm API không hợp lệ lúc 07:44 (có log). Còn `--only 51`, `--only 54`, rồi `--only 53` sau cùng. Chạy xong 53 thì báo tôi reset DB trước khi D sang S6.
+
+Bây giờ là 07:51. B có thể xong S6 khoảng 8:10, rồi còn S7 và S8.
+````
+
+---
+
+### C280 | 07:56 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Chấp nhận cả 5 điểm ở S4. Viết 04_bva.md, rồi làm luôn S5: Gộp 03_tc.md và 04_bva.md thành 05_final_tc.md (bản AI lưu ai_raw/S5_final_test_cases.md), có cột Nguồn gốc và Phát hiện như FR-01; tôi không bổ sung test case. Không xuất Word, Excel. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Locate S4 sections and get time
+- Bash: Assemble 04_bva.md and run all checks
+- AskUserQuestion
+- Bash: List FR-01 folder file names
+- Bash: Find structure and the two columns in FR-01 S5 file
+- Read: D:\Dang\Test\Homeworks\HW02\features\A_FR-01_DangKy\05_final_tc.md
+- Bash: Read FR-01 S5 section formats only
+- PowerShell: Get current time for S5 header
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S5_final_test_cases.md
+- Bash: Patch 03_tc traceability and check S5 draft
+- Bash: Fix traceability note in S5 draft and list structure
+- Bash: Create 05_final_tc.md and run checks
+- Bash: Add change table to 05_final_tc and recheck
+
+**Output AI (nguyên văn):**
+
+````text
+Viết `04_bva.md` trước.
+
+Tôi đã viết xong `04_bva.md` và S5 (cả bản AI lẫn `05_final_tc.md`). Bộ test case cuối của FR-04 có **34 test case**, đều mang Nguồn gốc "AI".
+
+**S4, bản review:** [04_bva.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/04_bva.md)
+- Đã chốt cả 5 điểm.
+- Phần kiểm tra mâu thuẫn có ghi một giới hạn: Phía hệ thống không được kiểm ở 12 chữ số. Nếu ứng dụng chặn chữ số thứ 12, cận trên ở phía hệ thống coi như chưa được kiểm.
+
+**S5:** [ai_raw/S5_final_test_cases.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S5_final_test_cases.md) và [05_final_tc.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/05_final_tc.md)
+- **Cột Nguồn gốc và Phát hiện:** Tôi chỉ mở `A_FR-01_DangKy/05_final_tc.md` (đúng file bạn cho phép). Tôi đọc mục 1.1 để lấy quy ước cột và xem bố cục các mục; không dùng nội dung test case nào của FR-01. Điều này có ghi ở đầu file.
+- **Nhóm test case:**
+
+| Nhóm | Mã | Số lượng |
+|---|---|---|
+| TS-01 Hợp lệ qua giao diện | TC-PROF-01 đến 10 | 10 |
+| TS-02 Không hợp lệ qua giao diện | TC-PROF-30 đến 35 | 6 |
+| TS-03 Biên qua giao diện | TC-PROF-100, 101, 103, 104 | 4 |
+| TS-04 API | TC-PROF-70 đến 80, TC-PROF-102 | 12 |
+| TS-05 Checklist | TC-PROF-90, 91 | 2 |
+
+- Mỗi test case có thêm tiêu đề dạng "Kiểm tra ... khi ...".
+- **Nguồn gốc:** Cả 34 test case là "AI", cột Phát hiện ghi "AI". Lý do: Ở mọi bước bạn đều chọn phương án AI đề xuất và không thêm, sửa test case nào.
+- **Ma trận truy vết:** Có thêm một mục nối D01 đến D03 với các điểm kiểm của TC-PROF-90, kèm ghi chú cho S6.
+- **Kiểm tra:** Script báo 0 lỗi format và 0 lỗi bảng thay đổi. 38 lớp đều được nhắc tới, 34 mã test case không trùng.
+
+**Một lỗi của S3 tôi tìm ra khi gộp:** Ma trận truy vết ở S3 thiếu TC-PROF-71 cho FR04-R02 và FR04-R05. Tôi đã sửa `03_tc.md`: Thêm dòng "Cập nhật lần 1" ở đầu file và một dòng loại **Thiếu** trong bảng thay đổi, ghi "AI bổ sung khi gộp bộ test case ở S5". Như vậy bảng thay đổi của cả feature có 3 lỗi của AI, đều do AI tự phát hiện:
+- Tham chiếu sai cột ở S2.
+- Giờ tạo ghi ước lượng ở S3.
+- Thiếu TC-PROF-71 trong ma trận truy vết S3.
+
+Còn lại đều là loại "Quyết định của SV".
+
+Theo yêu cầu của bạn, tôi không đưa lệnh commit. Bước tiếp theo là S6, chạy test trên điện thoại. Ghi chú cho S6 nằm ở mục 14 của `05_final_tc.md`.
+````
+
+---
+
+### C281 | 07:57 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Giỏ hàng vẫn trống trơn khi chạy script và reload.
+Log: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\logs\S6_api_20261021_075653.log
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read TC-CART-50 log
+- Bash: Fill TC-CART-50 result
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã điền **TC-CART-50: Fail** vào `06_results.md`.
+
+- **Phần API đạt:** `POST` trả HTTP 200, giỏ của API tăng từ 7 lên 8 dòng, dòng mới có `id` 1, số lượng 1.
+- **Fail vì:** Trang Giỏ hàng sau F5 vẫn trống, nên không hiển thị được như TC-CART-01 như kết quả mong đợi. Điều này cũng xác nhận ghi nhận 8 (giỏ Web và giỏ API tách nhau).
+- **Lưu ý về log:** Dòng "Gợi ý: Số lượng của id 1 = 0" là do script lấy nhầm dòng `id` 1 đầu tiên trong giỏ (dòng số lượng 0 từ TC-CART-31). Mình đã đối chiếu body phản hồi đầy đủ và ghi chú trong bảng để khỏi hiểu sai.
+
+**Cần bạn làm thêm:** Mình chưa thấy `S6_TC-CART-50.png` trong `screenshots`. Bạn lưu ảnh trang Giỏ hàng trống vừa chụp với tên đó. Đây là bằng chứng duy nhất cho ghi nhận 8.
+
+---
+
+**Bước 3: Gộp TC-CART-51, 54, 52 vào một lệnh** cho nhanh, vì cả ba không cần ảnh mới (trang Web không hiện dữ liệu của API):
+
+```
+python scripts\run_api_tests.py --only 51,54,52
+```
+
+Script sẽ in "Làm tay: Mở trang Giỏ hàng..." ở TC-CART-51 và 52; bỏ qua lời nhắc đó. Mình chấm TC-CART-51 và 52 theo những gì API lưu và trả về trong log.
+
+Chạy xong gửi mình dòng `Log: ...`. Bước cuối sẽ là TC-CART-53 (chuỗi SQL), rồi reset dữ liệu ngay sau đó.
+````
+
+---
+
+### C282 | 07:59 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Giỏ hàng trống có ảnh rồi mà?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Ảnh giỏ trống cũ không thay được ảnh này, vì hai ảnh chứng minh hai điều khác nhau:
+
+- **`S0_05` (đồng hồ 2:30):** Lúc đó giỏ của API cũng đang trống. Trang trống là đúng, không cho thấy điều gì bất thường.
+- **Ảnh cần chụp:** Đồng hồ trên thanh taskbar phải sau 07:56:53, tức sau thời điểm log ghi giỏ API có 8 dòng. Đặt ảnh cạnh log mới thấy được "API có 8 dòng mà trang trống". Đây là bằng chứng duy nhất cho ghi nhận 8 (giỏ Web và giỏ API tách nhau).
+
+Chụp chỉ mất khoảng 10 giây: Mở trang Giỏ hàng, bấm F5, chụp, lưu tên `S6_TC-CART-50.png`.
+
+Nếu bạn quyết định bỏ, mình sẽ ghi "SV quan sát, không có ảnh" ở TC-CART-50 và ghi nhận 8. Khi đó ghi nhận 8 chỉ dựa vào lời mô tả, nên khó đưa thành bug report có bằng chứng ở S7.
+
+Chụp xong (hoặc bỏ) thì chạy tiếp **bước 3**:
+
+```
+python scripts\run_api_tests.py --only 51,54,52
+```
+
+Rồi gửi mình dòng `Log: ...`.
+````
+
+---
+
+### C283 | 08:00 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Không phải, bạn phải ghi là vì ảnh giống như ảnh xx nào đó nên sinh viên không chụp lại.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Record reused screenshot for TC-50 and finding 8
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã sửa theo cách ghi bạn muốn. Ở TC-CART-50 và ghi nhận 8 trong `06_results.md`, cột ảnh giờ ghi: "`S0_05_gio_hang_trong.png` (trang Giỏ hàng trống giống ảnh này nên SV không chụp lại)". Ghi nhận 8 cũng dẫn thêm log `S6_api_20261021_075653.log`.
+
+**Bước 3:**
+
+```
+python scripts\run_api_tests.py --only 51,54,52
+```
+
+Bước này không cần chụp ảnh. Chạy xong gửi mình dòng `Log: ...`.
+````
+
+---
+
+### C284 | 08:01 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Log: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\logs\S6_api_20261021_080006.log
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read log for TC-51, 54, 52
+- Bash: Extract last added rows for TC-51 and TC-52
+- Bash: Show last row in cart after each request
+- Bash: Fill TC-51, 54, 52 results
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã điền 3 dòng của bước 3 vào `06_results.md`:
+
+| TC | Kết quả | Trạng thái |
+|---|---|---|
+| 51 | Giỏ API lưu dòng `price` = 1 (giá do client gửi), không dùng giá 30,000,000 trong CSDL | Fail |
+| 54 | Giỏ của `admin@eshop.com` trống, không thấy dòng `test@eshop.com` vừa thêm | Pass |
+| 52 | API lưu nguyên văn tên `<b>X</b>`, nhưng trang Giỏ hàng không hiển thị giỏ API nên không xem được tên có bị hiểu thành thẻ HTML không | Blocked |
+
+---
+
+**Bước 4 (cuối): TC-CART-53, chuỗi SQL**
+
+```
+python scripts\run_api_tests.py --only 53
+```
+
+Không cần chụp ảnh. Log của bước này có tên riêng, dạng `logs\S6_tc53_<thời gian>.log`.
+
+Chạy xong thì:
+1. **Reset dữ liệu EShop ngay.** Bước này cũng làm sạch giỏ API đang có 11 dòng rác từ các bước trước.
+2. Gửi mình dòng `Log: ...` và **thời điểm reset**, để mình điền vào mục 1 và chốt bảng tổng hợp của S6.
+````
+
+---
+
+### C285 | 08:02 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Vẫn đang chạy script.
+Phiên D: Xong rồi, xuất log, kiểm tra và báo tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session D S5 output and run checks
+- Bash: Export log, check B logs, update tracker for D
 
 **Output AI (nguyên văn):**
 
