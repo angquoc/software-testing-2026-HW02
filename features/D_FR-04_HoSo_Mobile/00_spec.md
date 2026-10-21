@@ -1,11 +1,13 @@
 # S0: Trích đặc tả và khảo sát giao diện (FR-04 Quản lý hồ sơ cá nhân, Mobile)
 
 - Bước: S0 (Trích đặc tả, khảo sát giao diện; chuẩn bị cho Step 1 của slide S04)
-- Thời gian tạo: 2026-10-21 06:50 (UTC+07:00)
-- Căn cứ: `Homeworks/eshop-sut/README.md` (SRS, mục 1, FR-02, FR-04, FR-20 đến FR-24, mục 9), `Homeworks/eshop-sut/api_specification.md` (mục 2), `Homeworks/HW02/WORKFLOW.md`, `Homeworks/HW02/README.md`, đề bài `2026.HW02.Domain Testing_En.md` (mục 4, 5)
+- Bản này: Bản S0 sau pha 3 (AI điền bảng quan sát từ ảnh, đối chiếu đặc tả, cập nhật câu hỏi mở). Bản gốc của AI: `ai_raw/S0_khao_sat.md`
+- Thời gian tạo bản AI: 2026-10-21 06:50 (UTC+07:00)
+- Cập nhật theo ảnh và quyết định của sinh viên: 2026-10-21 07:10 (UTC+07:00). Mục 1 đến 4 giữ nguyên bản AI; mục 5 trở đi viết ở pha 3; thay đổi so với bản AI liệt kê ở mục cuối
+- Căn cứ: Như bản AI (`Homeworks/eshop-sut/README.md`, `Homeworks/eshop-sut/api_specification.md`, `Homeworks/HW02/WORKFLOW.md`, `Homeworks/HW02/README.md`, đề bài), cộng 5 ảnh trong `screenshots/` (`S0_01`, `S0_02`, `S0_04`, `S0_06`, `S0_07`) và thông tin sinh viên cung cấp khi gửi ảnh
 - Nền tảng: Mobile. Ứng dụng EShop chạy bằng Expo Go trên Android, thiết bị Samsung Galaxy S21 Ultra
-- Tài khoản khảo sát: `test@eshop.com` (mật khẩu theo SRS mục 1). Không dùng chức năng đăng ký
-- Cách điền bảng quan sát (theo yêu cầu của sinh viên, khác WORKFLOW mục 3.1 bước 2): Sinh viên chỉ chụp ảnh theo danh sách ở mục 6; AI điền bảng quan sát từ ảnh ở pha 3, mỗi ô ghi nguồn "AI từ ảnh". Ô nào ảnh không cho thấy thì AI để trống và yêu cầu chụp thêm, không suy đoán
+- Tài khoản khảo sát: `test@eshop.com` (mật khẩu theo SRS mục 1). Không dùng chức năng đăng ký; không bấm "Cập nhật", không bấm "Thoát"
+- Cách điền bảng quan sát (theo yêu cầu của sinh viên, khác WORKFLOW mục 3.1 bước 2): Sinh viên chỉ chụp ảnh; AI điền bảng từ ảnh, cột "Nguồn" ghi "AI từ ảnh". Thông tin sinh viên nói thêm (không có trong ảnh) ghi nguồn "Sinh viên cung cấp". Ô ảnh không cho thấy để trống và liệt kê ở mục 6
 
 ---
 
@@ -191,66 +193,162 @@ Liên quan (SRS FR-02, cách lấy token để gọi API):
 | Q24 | Ngoài Họ Tên, Email, Số điện thoại, Địa chỉ, màn hình Hồ sơ có hiển thị hay cho sửa thông tin khác không (vai trò, mật khẩu, ảnh đại diện)? | FR04-R08, FR04-R19 | Quan sát S0 |
 | Q25 | Phiên đăng nhập hết hạn hoặc token không hợp lệ khi đang ở màn hình Hồ sơ: Ứng dụng hiển thị gì khi lưu? | FR04-R20 | Chạy thử S6 |
 
-## 5. Bảng quan sát
+## 5. Bảng quan sát (đã điền)
 
-Cột "Giá trị quan sát" và "Nguồn" để trống; AI điền ở pha 3 từ ảnh sinh viên chụp và ghi nguồn "AI từ ảnh". Cột "Ảnh" ghi tên file theo danh sách ở mục 6.
+Mỗi ô ghi đúng những gì thấy trong ảnh. Chữ trong dấu nháy là nguyên văn trên giao diện.
 
 | Mã | Nhóm | Mục quan sát | Giá trị quan sát | Nguồn | Ảnh |
 |---|---|---|---|---|---|
-| O01 | Đường vào | Màn hình đầu tiên sau khi đăng nhập: Tiêu đề, thanh điều hướng (vị trí, các mục, nhãn nguyên văn, biểu tượng) | | | |
-| O02 | Đường vào | Cách mở màn hình Hồ sơ (mục trên thanh điều hướng, nút, menu); mục đang chọn có được làm nổi không (màu, đậm) khi ở màn hình Hồ sơ | | | |
-| O03 | Đường vào | Tiêu đề màn hình Hồ sơ (thanh tiêu đề phía trên) và các tiêu đề khác nhìn thấy | | | |
-| O04 | Chế độ xem | Màn hình Hồ sơ khi vừa mở là chế độ xem hay đã là form sửa | | | |
-| O05 | Chế độ xem | Các thông tin hiển thị: Nhãn nguyên văn và giá trị đang hiển thị (Họ Tên, Email, Số điện thoại, Địa chỉ, và thông tin khác nếu có) | | | |
-| O06 | Chế độ xem | Các nút và liên kết: Nhãn nguyên văn, màu nền, màu chữ, vị trí (ví dụ nút sửa, nút đăng xuất, lịch sử đơn hàng, nếu có) | | | |
-| O07 | Chế độ xem | Chữ không phải tiếng Việt nhìn thấy trên màn hình Hồ sơ | | | |
-| O08 | Form sửa | Cách vào form sửa (bấm nút nào, hay đã ở sẵn); tiêu đề form; dòng hướng dẫn hiển thị sẵn | | | |
-| O09 | Ô Họ Tên | Nhãn nguyên văn; dấu `*`; placeholder; giá trị đang có; loại ô (một dòng, nhiều dòng); biểu tượng trong ô | | | |
-| O10 | Ô Họ Tên | Loại bàn phím khi chạm vào ô (chữ, số, email); bàn phím có tự viết hoa chữ đầu, có thanh gợi ý từ không | | | |
-| O11 | Email | Email có hiển thị không; dạng hiển thị (ô nhập, ô mờ hoặc xám, chữ thường); nhãn nguyên văn; giá trị | | | |
-| O12 | Email | Chạm vào vùng Email: Bàn phím có hiện không, con trỏ có xuất hiện không (không gõ) | | | |
-| O13 | Ô Số điện thoại | Nhãn nguyên văn; dấu `*`; placeholder; giá trị đang có; loại ô; biểu tượng trong ô; chữ gợi ý định dạng hiển thị sẵn | | | |
-| O14 | Ô Số điện thoại | Loại bàn phím khi chạm vào ô (chữ, số, bàn phím điện thoại); bàn phím có phím dấu cách, `+`, `-`, `.` không | | | |
-| O15 | Ô Địa chỉ | Nhãn nguyên văn; dấu `*`; placeholder; giá trị đang có; loại ô (một dòng, nhiều dòng); biểu tượng trong ô | | | |
-| O16 | Ô Địa chỉ | Loại bàn phím khi chạm vào ô; có phím xuống dòng hay phím xong (Done) | | | |
-| O17 | Form sửa | Ô hoặc thông tin khác trong form (vai trò, mật khẩu, ảnh đại diện...); có hay không | | | |
-| O18 | Form sửa | Nút lưu: Nhãn nguyên văn, màu nền, màu chữ, vị trí (không bấm) | | | |
-| O19 | Form sửa | Nút hủy, quay lại hoặc bỏ thay đổi: Có hay không; nhãn nguyên văn, màu nền, màu chữ, vị trí | | | |
-| O20 | Form sửa | Khi bàn phím mở, nút lưu có bị che không (chỉ ghi nhận, không bấm) | | | |
+| O01 | Đường vào | Màn hình đầu tiên sau khi đăng nhập: Tiêu đề, thanh điều hướng | Thanh trên cùng nền xanh dương, chữ trắng: Bên trái "EShop Mobile"; bên phải "Chào, Test User" và "Giỏ (0)". Không có thanh tab ở dưới; cuối màn hình là dải nền tối "© 2026 EShop SUT. Dành cho mục đích kiểm thử.". Nội dung: Tiêu đề "Danh sách sản phẩm", ô "Tìm kiếm...", nút "Tìm", các thẻ sản phẩm, dòng "Hiển thị 5 sản phẩm" | AI từ ảnh | `S0_01_sau_dang_nhap.png` |
+| O02 | Đường vào | Cách mở màn hình Hồ sơ; mục đang chọn có được làm nổi không | Cách mở: Bấm "Chào, Test User" trên thanh trên. Làm nổi: "Chào, Test User" ở `S0_02` trông giống hệt ở `S0_01` (cùng chữ trắng, không gạch chân, không có nền riêng); không thấy dấu hiệu làm nổi | Sinh viên cung cấp (cách mở); AI từ ảnh (làm nổi) | `S0_01_sau_dang_nhap.png`, `S0_02_ho_so.png` |
+| O03 | Đường vào | Tiêu đề màn hình Hồ sơ và các tiêu đề khác | Không có thanh tiêu đề riêng của màn hình; thanh trên vẫn là "EShop Mobile". Khung thứ nhất có tiêu đề "Hồ sơ của bạn"; khung thứ hai phía dưới có tiêu đề "Lịch sử đơn hàng" | AI từ ảnh | `S0_02_ho_so.png` |
+| O04 | Chế độ xem | Vừa mở là chế độ xem hay form sửa | Form sửa: Các ô nhập hiện sẵn, không có chế độ xem riêng | AI từ ảnh | `S0_02_ho_so.png` |
+| O05 | Chế độ xem | Thông tin hiển thị (nhãn, giá trị) | Từ trên xuống: "Email (Không đổi)" `test@eshop.com`; "Họ Tên" `Test User`; "Số điện thoại" trống (chỉ có placeholder, xem O13); "Địa chỉ giao hàng" trống. Khung "Lịch sử đơn hàng": "Bạn chưa có đơn hàng nào.". Không có số tiền nào trên màn hình | AI từ ảnh | `S0_02_ho_so.png` |
+| O06 | Chế độ xem | Các nút và liên kết | "Cập nhật": Nền xanh dương, chữ trắng đậm, rộng hết khung, ngay dưới ô Địa chỉ. "Thoát": Nền đỏ, chữ trắng đậm, rộng hết khung, ngay dưới "Cập nhật". Thanh trên có "Chào, Test User", "Giỏ (0)" dạng chữ trắng, không có nền nút. Trong khung Hồ sơ không có liên kết nào khác | AI từ ảnh | `S0_02_ho_so.png` |
+| O07 | Chế độ xem | Chữ không phải tiếng Việt | "EShop Mobile", "EShop SUT" (tên sản phẩm); "Email" (thuật ngữ); `Test User` là dữ liệu của tài khoản, không phải chữ giao diện. Các nhãn, nút, tiêu đề còn lại bằng tiếng Việt | AI từ ảnh | `S0_02_ho_so.png` |
+| O08 | Form sửa | Cách vào form; tiêu đề; dòng hướng dẫn | Không phải bấm nút nào, form có sẵn khi mở màn hình; tiêu đề "Hồ sơ của bạn"; không có dòng hướng dẫn | AI từ ảnh | `S0_02_ho_so.png` |
+| O09 | Ô Họ Tên | Nhãn, `*`, placeholder, giá trị, loại ô, biểu tượng | Nhãn "Họ Tên"; không có `*`; placeholder không thấy được vì ô đang có giá trị; giá trị `Test User`; ô một dòng (cao bằng ô Email, ô Số điện thoại); không có biểu tượng | AI từ ảnh | `S0_02_ho_so.png` |
+| O10 | Ô Họ Tên | Loại bàn phím; tự viết hoa; thanh gợi ý từ | Bàn phím chữ QWERTY có hàng số `1` đến `0` ở trên; phím cách ghi "English (US)"; phím góc phải dưới "H.tất". Chữ trên phím đang là chữ thường, nhưng con trỏ nằm giữa chữ có sẵn nên ảnh này không cho biết có tự viết hoa chữ đầu không. Phía trên bàn phím là thanh công cụ (emoji, bộ nhớ tạm, dịch, cài đặt, thêm), không thấy thanh gợi ý từ | AI từ ảnh | `S0_04_ban_phim_ho_ten.png` |
+| O11 | Email | Có hiển thị không; dạng hiển thị; nhãn; giá trị | Có hiển thị. Nhãn "Email (Không đổi)"; ô nền xám nhạt, chữ xám `test@eshop.com`, khác các ô còn lại (nền trắng, chữ đen) | AI từ ảnh | `S0_02_ho_so.png` |
+| O12 | Email | Chạm vào vùng Email: Bàn phím có hiện không | Không hiện bàn phím; màn hình giữ nguyên như `S0_02` (không chụp ảnh riêng) | Sinh viên cung cấp | `S0_02_ho_so.png` (màn hình giống) |
+| O13 | Ô Số điện thoại | Nhãn, `*`, placeholder, giá trị, loại ô, biểu tượng, chữ gợi ý | Nhãn "Số điện thoại"; không có `*`; placeholder "VD: 0912345678" (chữ xám; ở `S0_06` con trỏ đứng trước chữ "VD", nên ô chưa có giá trị); giá trị trống; ô một dòng; không có biểu tượng; không có chữ gợi ý nào khác | AI từ ảnh | `S0_02_ho_so.png`, `S0_06_ban_phim_sdt.png` |
+| O14 | Ô Số điện thoại | Loại bàn phím; có phím dấu cách, `+`, `-`, `.` không | Bàn phím số kiểu điện thoại: Phím `1` đến `9` và `0` (kèm chữ ABC, DEF...), `*`, `#`, `,`, `+` (chữ nhỏ trên phím `0`), phím "*+#", phím xóa, phím "H.tất". Trên trang bàn phím này không thấy phím dấu cách, phím chữ, `-`, `.` | AI từ ảnh | `S0_06_ban_phim_sdt.png` |
+| O15 | Ô Địa chỉ | Nhãn, `*`, placeholder, giá trị, loại ô, biểu tượng | Nhãn "Địa chỉ giao hàng" (đặc tả viết "Địa chỉ giao hàng mặc định"); không có `*`; không có placeholder; giá trị trống; ô nhiều dòng (cao khoảng gấp đôi ô Họ Tên); không có biểu tượng | AI từ ảnh | `S0_02_ho_so.png` |
+| O16 | Ô Địa chỉ | Loại bàn phím; phím xuống dòng hay phím xong | Bàn phím chữ QWERTY như O10; chữ trên phím in hoa, phím Shift sáng xanh (ô trống, bàn phím đang viết hoa chữ đầu); phím góc phải dưới là phím xuống dòng (mũi tên ↵), không phải "H.tất" | AI từ ảnh | `S0_07_ban_phim_dia_chi.png` |
+| O17 | Form sửa | Ô hoặc thông tin khác (vai trò, mật khẩu, ảnh đại diện) | Không có | AI từ ảnh | `S0_02_ho_so.png` |
+| O18 | Form sửa | Nút lưu | "Cập nhật": Nền xanh dương, chữ trắng đậm, rộng hết khung, dưới ô Địa chỉ (không bấm) | AI từ ảnh | `S0_02_ho_so.png` |
+| O19 | Form sửa | Nút hủy, quay lại, bỏ thay đổi | Không có nút hủy, quay lại hay bỏ thay đổi. Chỉ có "Thoát" (nền đỏ, chữ trắng đậm, dưới "Cập nhật"); chưa biết chức năng vì sinh viên không bấm (Q26) | AI từ ảnh; Sinh viên cung cấp (không bấm) | `S0_02_ho_so.png` |
+| O20 | Form sửa | Khi bàn phím mở, nút lưu có bị che không | Ở cả 3 ảnh có bàn phím, bàn phím che phần dưới form: Ô Địa chỉ bị cắt, không thấy "Cập nhật" và "Thoát". Ảnh không cho biết có cuộn được để thấy nút không | AI từ ảnh | `S0_04_ban_phim_ho_ten.png`, `S0_06_ban_phim_sdt.png`, `S0_07_ban_phim_dia_chi.png` |
 
-## 6. Ảnh cần chụp
+## 6. Đối chiếu danh sách ảnh
 
-Quy ước: `screenshots/S0_NN_<nội dung>.png`, chụp cả màn hình điện thoại (có thanh trạng thái; có thể che biểu tượng thông báo cá nhân). Chỉ quan sát: Không gõ vào ô nào, không bấm nút lưu. Màn hình dài thì cuộn và chụp thêm, thêm hậu tố `_cuon` (ví dụ `S0_02_ho_so_cuon.png`).
-
-| Ảnh | Nội dung phải thấy | Dùng cho |
+| Ảnh trong danh sách | Trạng thái | Ghi chú |
 |---|---|---|
-| `S0_01_sau_dang_nhap.png` | Màn hình ngay sau khi đăng nhập bằng `test@eshop.com`, thấy toàn bộ thanh điều hướng | O01 |
-| `S0_02_ho_so.png` | Màn hình Hồ sơ vừa mở: Thanh tiêu đề, toàn bộ nội dung, thanh điều hướng với mục đang chọn | O02 đến O07 |
-| `S0_03_form_sua.png` | Form sửa hồ sơ, chưa chạm vào ô nào, thấy đủ các ô và nút lưu, nút hủy (nếu có). Nếu màn hình Hồ sơ đã là form sửa thì không cần ảnh này, chỉ báo lại | O08, O09, O11, O13, O15, O17 đến O19 |
-| `S0_04_ban_phim_ho_ten.png` | Đã chạm vào ô Họ Tên, bàn phím đang mở, chưa gõ | O10, O20 |
-| `S0_05_cham_email.png` | Đã chạm vào vùng Email, chụp dù bàn phím có hiện hay không | O12 |
-| `S0_06_ban_phim_sdt.png` | Đã chạm vào ô Số điện thoại, bàn phím đang mở, chưa gõ | O14 |
-| `S0_07_ban_phim_dia_chi.png` | Đã chạm vào ô Địa chỉ, bàn phím đang mở, chưa gõ | O16 |
+| `S0_01_sau_dang_nhap.png` | Có | Thấy đủ thanh trên và nội dung đầu trang |
+| `S0_02_ho_so.png` | Có | Thấy toàn bộ màn hình Hồ sơ tới dải cuối trang; không cần ảnh `_cuon` |
+| `S0_03_form_sua.png` | Không cần | Màn Hồ sơ đã là form sửa (O04), đúng điều kiện bỏ ảnh ở bản AI |
+| `S0_04_ban_phim_ho_ten.png` | Có | |
+| `S0_05_cham_email.png` | Không chụp | Sinh viên cho biết chạm vào không hiện bàn phím, màn hình giống `S0_02` (O12) |
+| `S0_06_ban_phim_sdt.png` | Có | |
+| `S0_07_ban_phim_dia_chi.png` | Có | |
+| `S0_08_hoi_bo_thay_doi.png` | Không áp dụng | Không có nút hủy; sinh viên không bấm "Thoát" |
 
-Sau khi chụp xong: Thoát form bằng nút hủy hoặc quay lại (không bấm lưu). Nếu ứng dụng hỏi có bỏ thay đổi không thì chụp thêm `S0_08_hoi_bo_thay_doi.png` (dùng cho Q22) rồi chọn bỏ.
+Không có ô nào trong bảng quan sát còn trống. Không cần chụp thêm cho S0.
 
-## 7. Điểm cần sinh viên quyết định
+## 7. Câu hỏi mở sau quan sát
 
-Theo yêu cầu của sinh viên, các điểm nhỏ dưới đây đã **áp tạm phương án AI đề xuất** trong bản này; sinh viên duyệt ở lượt review.
+### 7.1 Trạng thái các câu hỏi Q01 đến Q25
 
-| # | Vấn đề | Các lựa chọn | Đã áp tạm |
+| Mã | Trạng thái | Kết quả quan sát hoặc ghi chú |
+|---|---|---|
+| Q01 | Vẫn mở | Ô Họ Tên không có `*` (O09). Đặc tả không nói Họ Tên bắt buộc; thành giả định ở S2 |
+| Q02 | Vẫn mở | |
+| Q03 | Vẫn mở | Bàn phím ghi "English (US)" (O10): Chữ tiếng Việt có dấu có thể phải đổi bàn phím hoặc dán khi chạy S6 |
+| Q04 | Vẫn mở | |
+| Q05 | Vẫn mở | Ô không có `*` (O13); hồ sơ ban đầu có Số điện thoại trống (Q23). Quan sát này chưa nói hệ thống có chấp nhận lưu khi trống hay không |
+| Q06 | Vẫn mở | Bàn phím điện thoại không có phím dấu cách, `-`, `.` (O14): Các ký tự này không gõ trực tiếp được qua ứng dụng; nếu S2 có lớp cho chúng thì kiểm qua API hoặc dán |
+| Q07 | Vẫn mở | Placeholder "VD: 0912345678" có 10 chữ số tính cả số `0` đầu; đây là ví dụ, không phải quy tắc, nên chưa trả lời được Q07 |
+| Q08 | Vẫn mở | Bàn phím điện thoại không có phím dấu cách (O14) |
+| Q09 | Vẫn mở | |
+| Q10 | Trả lời một phần | Không có `*`; ô nhiều dòng, bàn phím có phím xuống dòng (O15, O16). Độ dài tối đa, ký tự cho phép, có chấp nhận xuống dòng hay không: Vẫn mở |
+| Q11 | Vẫn mở | |
+| Q12 | Đã trả lời | Email hiển thị trong ô nền xám, nhãn "Email (Không đổi)" (O11); chạm vào không hiện bàn phím (O12) |
+| Q13 | Vẫn mở | |
+| Q14 | Vẫn mở | Giao diện không có ô vai trò (O17) |
+| Q15 | Vẫn mở | Giao diện không có cách chọn hồ sơ người khác |
+| Q16 | Vẫn mở | |
+| Q17 | Chưa áp dụng được | Chạy thử S6 |
+| Q18 | Chưa áp dụng được | Chạy thử S6 |
+| Q19 | Chưa áp dụng được | Chạy thử S6 |
+| Q20 | Vẫn mở | Không có trong đặc tả; ghi nhận ở S6 |
+| Q21 | Chưa áp dụng được | Chạy thử S6 |
+| Q22 | Trả lời một phần | Không có nút hủy hay bỏ thay đổi (O19). Rời màn hình khi chưa lưu thì sao: Chạy thử S6 |
+| Q23 | Đã trả lời | Họ Tên `Test User`; Số điện thoại trống; Địa chỉ giao hàng trống (O05). Vế "Số điện thoại ban đầu có hợp lệ không" không áp dụng vì đang trống |
+| Q24 | Đã trả lời | Không có thông tin nào khác trong khung Hồ sơ (O17); cùng màn hình có khung "Lịch sử đơn hàng" (thuộc FR-11, ngoài phạm vi) |
+| Q25 | Chưa áp dụng được | Chạy thử S6 |
+
+### 7.2 Câu hỏi mới
+
+| Mã | Câu hỏi | Liên quan | Có thể làm rõ bằng |
 |---|---|---|---|
-| 1 | Phạm vi trích đặc tả | (a) FR-04 làm trọng tâm, yêu cầu giao diện chung làm nhóm phụ, API, bảo mật làm nhóm tham khảo; (b) chỉ FR-04 và API | (a) |
-| 2 | FR-23 (làm nổi mục trên thanh điều hướng, nhãn "Đăng xuất") viết cho Web | (a) Giữ làm nhóm phụ (FR04-R15, FR04-R16), chỉ kiểm nếu thành phần đó có trên màn hình Hồ sơ; (b) bỏ khỏi phạm vi | (a) |
-| 3 | Kênh API: Ứng dụng Mobile dùng chung backend với Web | (a) Giữ nhóm API (Postman hoặc cURL) để kiểm những gì giao diện không gửi được (`role`, `email`, không có token); (b) chỉ kiểm qua ứng dụng | (a) |
-| 4 | FR-04 trên Web | (a) Ngoài phạm vi feature D, không khảo sát; (b) khảo sát thêm để so sánh | (a) |
+| Q26 | Nút "Thoát" làm gì: Đăng xuất, rời màn hình Hồ sơ, hay bỏ thay đổi chưa lưu? | FR04-R12, FR04-R16, Q22 | Chạy thử S6 |
+| Q27 | Ứng dụng không có thanh tab; thanh trên ("EShop Mobile", "Chào, Test User", "Giỏ (0)") có được coi là thanh điều hướng theo FR-23 để áp FR04-R15 không? | FR04-R15 | Không có trong đặc tả (sinh viên chốt) |
 
-## 8. Ghi chú cho bước sau
+## 8. Đối chiếu giao diện với đặc tả
 
-- **Pha 3 S0:** Kiểm tra đủ 7 ảnh (và ảnh `_cuon`, `S0_08` nếu có) trước khi điền bảng. Mục nào ảnh không cho thấy thì yêu cầu chụp thêm, không điền bằng suy đoán. Điền Q23, Q24, Q12 và phần quan sát của Q01, Q05, Q10, Q22 từ ảnh.
-- **Kiểm chứng tác động (S1):** Trong phạm vi FR-04, dấu hiệu lưu thành công là giá trị mới hiển thị lại trên màn hình Hồ sơ sau khi mở lại màn hình, hoặc `GET /api/users/me` trả giá trị mới. Không dùng màn hình Thanh toán (FR-08) để kiểm Địa chỉ giao hàng mặc định, vì thuộc feature khác.
-- **Input gián tiếp (S1):** Trạng thái đăng nhập (token có, không, sai), giá trị hồ sơ hiện có (Q23), người dùng nào đang đăng nhập (FR04-R07).
-- **Môi trường (S2 đến S4):** Bàn phím của ô Số điện thoại (O14) quyết định ký tự nào gõ được qua ứng dụng; ký tự không gõ được thì xét kiểm qua API hoặc dán. Bàn phím tự viết hoa, gợi ý từ (O10) có thể làm giá trị gửi đi khác giá trị định gõ; ghi tên thiết bị, phiên bản Android, phiên bản Expo Go ở S6.
-- **Câu hỏi sẽ thành giả định ở S2:** Q01 đến Q11, Q13 đến Q16, Q18, Q19.
-- **Quy mô:** Sinh viên đặt mục tiêu cả bộ khoảng 25 đến 35 test case (S3 và S4 cộng lại). S2 cần giữ số lớp ở mức phủ được trong ngân sách này; S3 cân nhắc gộp lớp hợp lệ và dùng chung test case cho biên ở S4.
-- **Dữ liệu:** Mỗi lần chạy ở S6 làm thay đổi hồ sơ của `test@eshop.com`; cần ghi giá trị ban đầu (Q23) để khôi phục hoặc reset dữ liệu mẫu.
+### 8.1 Yêu cầu khớp ở mức quan sát
+
+Khớp ở mức nhìn thấy được trong ảnh; vẫn chạy lại ở S6.
+
+| Yêu cầu | Quan sát |
+|---|---|
+| FR04-R06 | Email hiển thị trong ô nền xám, nhãn "(Không đổi)", chạm không hiện bàn phím (O11, O12). Thử sửa thật (giữ, dán) để S6 |
+| FR04-R09 | Mở được màn hình Hồ sơ từ "Chào, Test User" (O02) |
+| FR04-R10 | Mọi nhãn, nút, tiêu đề nhìn thấy bằng tiếng Việt, trừ tên sản phẩm và thuật ngữ "Email" (O07). Thông báo thành công, lỗi để S6 |
+| FR04-R11 | "Cập nhật" nền xanh dương (O18) |
+| FR04-R12 | "Thoát" nền đỏ (O19). Khớp nếu "Thoát" là nút nguy hiểm hoặc hủy bỏ (Q26) |
+
+### 8.2 Khác biệt (chờ xác nhận ở S6, chưa kết luận bug)
+
+| Mã | Yêu cầu | Đặc tả nói | Quan sát thấy | Căn cứ |
+|---|---|---|---|---|
+| D01 | FR04-R16 (FR-23) | Nút đăng xuất phải có nhãn "Đăng xuất" (không phải "Thoát") | Màn hình Hồ sơ có nút đỏ "Thoát". Nếu S6 xác nhận "Thoát" là đăng xuất (Q26) thì nhãn khác đặc tả | O06, O19, `S0_02_ho_so.png` |
+| D02 | FR04-R15 (FR-23) | Thanh điều hướng phải làm nổi trang đang được chọn | Ở màn hình Hồ sơ, "Chào, Test User" không khác gì ở màn hình đầu. Chỉ là khác biệt nếu sinh viên chốt thanh trên là thanh điều hướng (Q27) | O02, `S0_01_sau_dang_nhap.png`, `S0_02_ho_so.png` |
+| D03 | FR04-R13 (FR-22) | Mọi trường bắt buộc có `*` bên cạnh nhãn | Không ô nào có `*`. Chỉ là khác biệt nếu S2 chốt trường nào đó là bắt buộc (Q01, Q05, Q10) | O09, O13, O15, `S0_02_ho_so.png` |
+
+### 8.3 Ngoài phạm vi
+
+| Mã | Quan sát | Ghi chú |
+|---|---|---|
+| N01 | Ở mọi ảnh, giờ và biểu tượng của thanh trạng thái Android nằm đè lên thanh trên của ứng dụng (chồng lên chữ "EShop Mobile") | Không thuộc yêu cầu nào của FR-04; không thiết kế test case |
+| N02 | Khung "Lịch sử đơn hàng" ("Bạn chưa có đơn hàng nào.") nằm cùng màn hình Hồ sơ | Thuộc FR-11 |
+
+## 9. Quyết định của sinh viên
+
+| # | Vấn đề | Quyết định |
+|---|---|---|
+| 1 | Phạm vi trích đặc tả (mục 7 bản AI, điểm 1) | (a) FR-04 làm trọng tâm, yêu cầu giao diện chung làm nhóm phụ, API, bảo mật làm nhóm tham khảo |
+| 2 | FR-23 viết cho Web (điểm 2) | (a) Giữ FR04-R15, FR04-R16 làm nhóm phụ, chỉ kiểm nếu thành phần đó có trên màn hình Hồ sơ |
+| 3 | Kênh API (điểm 3) | (a) Giữ nhóm API để kiểm `role`, `email`, trường hợp không có token |
+| 4 | FR-04 trên Web (điểm 4) | (a) Ngoài phạm vi |
+| 5 | Ảnh `S0_03` | Không chụp, vì màn Hồ sơ đã là form sửa |
+| 6 | Ảnh `S0_05` | Không chụp; sinh viên cho biết chạm vào Email không hiện bàn phím, màn hình giống `S0_02` |
+| 7 | Ảnh `S0_08` | Không chụp; không có nút hủy; không bấm "Thoát" |
+| 8 | Cách điền bảng quan sát | AI điền từ ảnh, đánh dấu "AI từ ảnh" (sinh viên yêu cầu từ đầu S0) |
+
+Q26 (chạy thử S6) và Q27 (sinh viên chốt) chưa có quyết định. Q27 được xử lý khi chốt nhóm checklist ở S1 (`ai_raw/S1_input_output.md`, mục "Điểm cần sinh viên quyết định").
+
+## 10. Trả lời câu hỏi khi review
+
+Sinh viên không đặt câu hỏi ở lượt này.
+
+## 11. Kiểm tra mâu thuẫn
+
+| Quyết định hoặc quan sát | Kết quả kiểm tra |
+|---|---|
+| Quyết định 2 với O06, O19, O02 | Nút "Thoát" có trên màn hình Hồ sơ nên FR04-R16 áp dụng nếu "Thoát" là đăng xuất (Q26). Thanh trên có mặt nên FR04-R15 áp dụng tùy Q27. Không vướng |
+| Quyết định 3 với O14 | Thống nhất: Ký tự không gõ được bằng bàn phím điện thoại (dấu cách, `-`, `.`, chữ) có đường API để kiểm |
+| Quyết định 6 với FR04-R06 | Không vướng: O12 đã có giá trị từ thông tin sinh viên; việc thử sửa thật Email qua giao diện để S6 |
+| Yêu cầu "không bấm Lưu" | Ảnh không có trạng thái sau khi lưu; mọi giá trị ở O05 là dữ liệu ban đầu |
+
+## 12. Ghi chú cho bước sau
+
+- **Tên trên giao diện cho S1:** "Họ Tên", "Số điện thoại", "Địa chỉ giao hàng", "Email (Không đổi)", nút "Cập nhật", nút "Thoát". Giao diện có đủ 3 trường đặc tả cho sửa; `role` có trong đặc tả nhưng không có trên giao diện (chỉ kiểm qua API).
+- **Dấu hiệu thành công trong phạm vi FR-04:** Mở lại màn hình Hồ sơ (qua "Chào, Test User") thấy giá trị mới trong ô, hoặc `GET /api/users/me` trả giá trị mới. Không dùng màn Thanh toán, không dựa vào lời chào "Chào, ..." như bằng chứng duy nhất (S1 xét có dùng được không).
+- **Giá trị ban đầu:** Họ Tên `Test User`, Số điện thoại trống, Địa chỉ trống. Dùng để khôi phục sau mỗi đợt chạy và để S2 xét lớp "giá trị trống".
+- **Môi trường:** Bàn phím điện thoại cho Số điện thoại (O14); bàn phím chữ "English (US)", tự viết hoa chữ đầu ở ô Địa chỉ (O16); bàn phím che nút "Cập nhật" (O20), nên S6 phải ẩn bàn phím trước khi bấm. Ghi phiên bản Android, Expo Go ở S6.
+- **Câu hỏi thành giả định ở S2:** Q01 đến Q11, Q13 đến Q16, Q18, Q19.
+- **Quy mô:** Mục tiêu cả bộ khoảng 25 đến 35 test case.
+
+## 13. Thay đổi so với bản AI (`ai_raw/S0_khao_sat.md`)
+
+Phạm vi: Chỉ ghi chỗ sinh viên thay đổi hoặc chốt so với bản AI. Việc điền bảng quan sát (mục 5) là đầu vào theo quy trình; các mục 6 đến 8 do AI viết ở pha 3, không phải phần sinh viên sửa.
+
+| Vị trí | Thay đổi | Loại | Lý do hoặc căn cứ |
+|---|---|---|---|
+| Mục 7 bản AI, điểm 1 | Chốt (a): Phạm vi gồm FR-04, nhóm phụ, API, bảo mật tham khảo | Quyết định của SV | Sinh viên chấp nhận phương án đã áp tạm |
+| Mục 7 bản AI, điểm 2 | Chốt (a): Giữ FR04-R15, FR04-R16, chỉ kiểm khi có trên màn hình Hồ sơ | Quyết định của SV | Sinh viên chấp nhận phương án đã áp tạm |
+| Mục 7 bản AI, điểm 3 | Chốt (a): Giữ nhóm API | Quyết định của SV | Sinh viên chấp nhận phương án đã áp tạm |
+| Mục 7 bản AI, điểm 4 | Chốt (a): FR-04 trên Web ngoài phạm vi | Quyết định của SV | Sinh viên chấp nhận phương án đã áp tạm |
+| Mục 6 bản AI, `S0_05_cham_email.png` | Không chụp; O12 lấy từ lời sinh viên ("không hiện bàn phím, giống `S0_02`") | Quyết định của SV | Bản AI yêu cầu ảnh này không kèm điều kiện; sinh viên đánh giá màn hình không đổi khi chạm nên không cần ảnh |
+| Mục 6 bản AI, `S0_08_hoi_bo_thay_doi.png` | Không chụp; không bấm "Thoát" | Quyết định của SV | Không có nút hủy; sinh viên chọn không bấm nút "Thoát" vì chưa rõ chức năng |
