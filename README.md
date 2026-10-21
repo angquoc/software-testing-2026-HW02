@@ -43,7 +43,7 @@ Số feature: 4. "Đã chạy" gồm cả test case Blocked, Khác giả định
 
 | Nội dung | Link |
 |---|---|
-| Agent Skill: Chạy trọn một feature | |
+| Agent Skill `domain-testing-design`: Chạy trọn feature D (FR-04 Hồ sơ, Mobile) từ S0 đến S5 | https://youtu.be/c8caqIW1d7M |
 
 ## Self-Assessment
 

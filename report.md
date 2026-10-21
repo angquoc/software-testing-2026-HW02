@@ -192,7 +192,7 @@ Skill **`domain-testing-design`** ([`skills/domain-testing-design/`](skills/doma
 - Skill được đúc kết từ cách làm FR-01, sau đó dùng cho FR-17, FR-07 và FR-04.
 - Đến S5, bộ test case cuối có thể trình bày bằng skill `test-case-writing` của giảng viên.
 
-**Video demo** (chạy trọn một feature bằng skill): _(link YouTube, điền sau)_
+**Video demo** (chạy trọn feature D, FR-04 Hồ sơ trên Mobile, từ S0 đến S5 bằng skill): https://youtu.be/c8caqIW1d7M
 
 ---
 

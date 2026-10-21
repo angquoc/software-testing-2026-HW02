@@ -17013,7 +17013,374 @@ Phiên D: Xong rồi, xuất log, kiểm tra và báo tôi.
 **Output AI (nguyên văn):**
 
 ````text
-(Không có phản hồi: Phiên bị dừng hoặc chưa hoàn tất)
+Phiên D đã xong S4 và S5, đều đạt. Phần quay video có thể dừng ở đây. Log đã xuất (285 lượt, đúng 5 phiên), TRACKER đã cập nhật.
+
+## Phiên D
+
+**Kết quả kiểm:**
+- `04_bva.md` (5 dòng "Quyết định của SV") và `05_final_tc.md` (34 test case, phủ đủ 38 lớp) đều 0 lỗi, không có dấu "—" hay "·".
+- **Phiên D làm đúng quy tắc:** Trước khi mở file S5 của FR-01, nó hỏi xin phép bạn, và chỉ đọc phần quy ước cột.
+- **AI tự phát hiện thêm một lỗi của chính nó khi gộp:** Ma trận truy vết ở S3 thiếu TC-PROF-71. Nó đã sửa `03_tc.md`, ghi "Cập nhật lần 1" và thêm một dòng "Thiếu".
+- **Kết quả đáng chú ý cho gap analysis của D:** Cả feature chỉ có 3 lỗi của AI, và cả 3 đều do AI tự phát hiện. Không có lỗi nào do bạn hay phiên điều phối tìm ra.
+
+**Video:** Skill bao trọn từ S0 tới S5, nên **bạn có thể dừng quay và lưu video ngay bây giờ**. S6 chạy test trên điện thoại không cần quay. Lúc rảnh thì tải lên YouTube ở chế độ Unlisted, gửi tôi link để điền vào README và `report.md`.
+
+**Commit** (đứng ở `D:\Dang\Test\Homeworks\HW02`). Bạn còn nợ mấy commit D trước đó, nên đây là đủ theo thứ tự:
+
+```
+git add features/D_FR-04_HoSo_Mobile/02_ec.md
+git commit -m "[D-FR04][S2] Review equivalence classes"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S3_test_cases.md
+git commit -m "[D-FR04][S3] Select test cases (AI draft)"
+
+git add features/D_FR-04_HoSo_Mobile/03_tc.md
+git commit -m "[D-FR04][S3] Review test cases"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S4_bva.md
+git commit -m "[D-FR04][S4] Add boundary value analysis (AI draft)"
+
+git add features/D_FR-04_HoSo_Mobile/04_bva.md
+git commit -m "[D-FR04][S4] Review boundary value analysis"
+
+git add features/D_FR-04_HoSo_Mobile/ai_raw/S5_final_test_cases.md features/D_FR-04_HoSo_Mobile/05_final_tc.md prompt_log.md
+git commit -m "[D-FR04][S5] Merge final test case set"
+```
+
+**Dán vào phiên D để sang S6:**
+
+```text
+Sang S6, làm gọn như B:
+1. Tạo khung 06_results.md (bản AI lưu ai_raw/S6_results_template.md), cấu trúc như FR-01. Mục 1: Ngày chạy 21/10/2026, Nguyễn Thị Ánh Ngọc, Samsung Galaxy S21 Ultra (Android 15), Expo Go 54.0.8, backend http://localhost:3000 qua adb reverse; thời điểm reset tôi sẽ báo.
+2. Viết scripts/run_api_tests.py cho các test case API và việc đặt trạng thái chuẩn S_CHUAN (Python thư viện chuẩn, --dry-run, --only, ghi log vào logs/, che token). Không tự chạy. TC-PROF-76, 77 để lệnh riêng, chạy cuối.
+3. Liệt kê khoảng 8 test case giao diện tối thiểu chạy trên điện thoại, mỗi test case ghi: Làm gì, chụp màn hình nào, tên ảnh S6_TC-PROF-<số>.png. Checklist nào điền được từ ảnh S0 thì điền sẵn.
+Không cần đưa lệnh commit.
+```
+
+## Phiên B: Cần reset DB
+
+Log cho thấy B đã chạy đủ, kể cả **TC-CART-53 (chuỗi SQL) lúc 08:02**. Theo kế hoạch, cần reset DB ngay sau đó, và D cũng cần dữ liệu sạch trước S6.
+
+**Bạn xác nhận B không còn bước nào cần làm trên giao diện** thì tôi reset ngay, rồi báo giờ reset để ghi vào mục 1 của B và D.
+````
+
+---
+
+### C286 | 08:03 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+Log: D:\Dang\Test\Homeworks\HW02\features\B_FR-07_GioHang\logs\S6_tc53_20261021_080248.log
+
+Bạn reset luôn đi, như vậy bạn nắm thời gian reset và điền luôn.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read TC-53 log
+- Bash: Fill TC-53 and compute summary table
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã điền **TC-CART-53: Pass** và bảng tổng hợp S6 trong `06_results.md`. Log cho thấy `POST` trả HTTP 200, không có lỗi hệ thống. Giỏ API thêm đúng 1 dòng mới, tên `X' OR '1'='1` được lưu nguyên văn, các dòng cũ giữ nguyên.
+
+| Nhóm | Số TC | Pass | Fail | Blocked | Not run |
+|---|---|---|---|---|---|
+| A. Checklist | 8 | 0 | 5 | 0 | 3 |
+| B. Giao diện | 12 | 1 | 7 | 3 | 1 |
+| C. Giá trị biên | 5 | 1 | 0 | 0 | 4 |
+| D. API | 12 | 3 | 8 | 1 | 0 |
+| E. Bảo mật | 1 | 1 | 0 | 0 | 0 |
+| **Tổng** | **38** | **6** | **20** | **4** | **8** |
+
+**Mình chưa reset dữ liệu.** Muốn reset phải đụng tới server và thư mục `backend/` của EShop. Theo WORKFLOW, phiên thiết kế không được đọc mã nguồn EShop, và việc chạy server thuộc phiên điều phối. Mình không biết cách reset nếu không đọc các thứ đó, và không muốn đoán rồi làm hỏng server đang chạy.
+
+Bạn reset bằng phiên điều phối như lần 06:37, rồi báo mình thời điểm reset; mình điền vào dòng "Reset dữ liệu sau TC-CART-53" ở mục 1. Hiện dòng đó còn trống, các phần khác của S6 đã xong.
+````
+
+---
+
+### C287 | 08:10 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `633ed316`
+
+**Prompt (nguyên văn):**
+
+````text
+Sang S6, làm gọn như B:
+1. Tạo khung 06_results.md (bản AI lưu ai_raw/S6_results_template.md), cấu trúc như FR-01. Mục 1: Ngày chạy 21/10/2026, Nguyễn Thị Ánh Ngọc, Samsung Galaxy S21 Ultra (Android 15), Expo Go 54.0.8, backend http://localhost:3000 qua adb reverse; thời điểm reset tôi sẽ báo.
+2. Viết scripts/run_api_tests.py cho các test case API và việc đặt trạng thái chuẩn S_CHUAN (Python thư viện chuẩn, --dry-run, --only, ghi log vào logs/, che token). Không tự chạy. TC-PROF-76, 77 để lệnh riêng, chạy cuối.
+3. Liệt kê khoảng 8 test case giao diện tối thiểu chạy trên điện thoại, mỗi test case ghi: Làm gì, chụp màn hình nào, tên ảnh S6_TC-PROF-<số>.png. Checklist nào điền được từ ảnh S0 thì điền sẵn.
+Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- AskUserQuestion
+- Bash: Outline FR-01 results file structure
+- Bash: Read FR-01 results header, conventions, and table headers
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\scripts\run_api_tests.py
+- Bash: Syntax-check the script without running it
+- PowerShell: Get current time for S6 header
+- Write: D:\Dang\Test\Homeworks\HW02\features\D_FR-04_HoSo_Mobile\ai_raw\S6_results_template.md
+- Bash: Create 06_results.md with prefilled checklist and check
+
+**Output AI (nguyên văn):**
+
+````text
+Yêu cầu muốn khung `06_results.md` có cấu trúc như FR-01. Nhưng lần trước bạn chỉ cho phép đọc file S5 của FR-01, nên tôi hỏi lại trước khi mở file khác.
+
+Script đã qua kiểm tra cú pháp (chỉ biên dịch, không chạy). Giờ tôi viết khung kết quả.
+
+Giờ tạo `06_results.md` từ khung, điền sẵn các điểm của TC-PROF-90 mà ảnh S0 cho thấy được.
+
+Tôi đã chuẩn bị xong S6: khung kết quả, script API và danh sách 8 test case giao diện cần chạy trên điện thoại. Chưa có gì được chạy với server.
+
+**1. Khung kết quả:** [ai_raw/S6_results_template.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/ai_raw/S6_results_template.md) là khung trống. [06_results.md](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/06_results.md) là bản để điền.
+- Cấu trúc theo FR-01. Tôi chỉ mở `A_FR-01_DangKy/06_results.md` để lấy các mục và cột, không dùng kết quả nào của FR-01. Tôi không mở file nào của feature B; "gọn như B" tôi hiểu theo 3 việc bạn liệt kê.
+- Mục 1 đã ghi: Ngày chạy 21/10/2026, người chạy, Galaxy S21 Ultra (Android 15), Expo Go 54.0.8, backend qua `adb reverse`. Thời điểm reset để trống chờ bạn báo.
+- Mục 4 chia 7 nhóm theo thứ tự chạy (A đến G), đủ 34 test case.
+- Trạng thái có thêm "Khác giả định" và "Không áp dụng" ngoài Pass, Fail, Blocked, Not run.
+- **Checklist đã điền sẵn từ ảnh S0** (TC-PROF-90). Trạng thái là AI đề xuất, bạn xác nhận lại trên app:
+
+| Điểm | Kết quả từ ảnh S0 | Trạng thái đề xuất |
+|---|---|---|
+| (1) Mở màn Hồ sơ | Bấm "Chào, Test User" mở "Hồ sơ của bạn" | Pass |
+| (2) Ngôn ngữ | Chữ tĩnh đều tiếng Việt, trừ tên sản phẩm và "Email" | Pass |
+| (3) Màu nút "Cập nhật" | Xanh dương | Pass |
+| (4) Dấu `*` | Không ô nào có `*` | Fail (D03) |
+| (5) Làm nổi mục đang chọn | "Chào, Test User" ở màn Hồ sơ trông y như ở màn sản phẩm | Fail (D02) |
+| (6) Không sửa được Email | Chạm vào không hiện bàn phím | Chưa kết luận; còn phải thử nhấn giữ và dán |
+
+Điểm (4) có thể đổi thành "Khác giả định" nếu TC-PROF-30 cho thấy app chấp nhận Họ Tên rỗng.
+
+**2. Script:** [scripts/run_api_tests.py](Homeworks/HW02/features/D_FR-04_HoSo_Mobile/scripts/run_api_tests.py). Tôi chỉ kiểm cú pháp bằng `py_compile`, chưa chạy script, kể cả `--dry-run`.
+
+| Lệnh | Việc làm |
+|---|---|
+| `chuan` | Đặt `S_CHUAN` rồi kiểm lại bằng GET; dùng trước mỗi test case giao diện |
+| `get` | Đọc hồ sơ (EV3); dùng sau mỗi test case giao diện |
+| `run` | TC-PROF-70 rồi 71 đến 75, 78, 79, 80, 102; đặt `S_CHUAN` trước từng test case |
+| `last` | Lệnh riêng cho TC-PROF-77 rồi 76, chạy cuối cùng |
+
+- Tùy chọn: `--only`, `--dry-run`, `--tag TC-PROF-xx` (gắn mã test case vào tên log), `--base`.
+- Log ghi vào `logs/S6_<lệnh>_<giờ>.log`. Token bị che trong cả header và body; mật khẩu khi đăng nhập cũng bị che.
+- Mỗi test case có dòng "Gợi ý" so sánh kết quả với mong đợi. Dòng này chỉ để tham khảo, trạng thái cuối vẫn do bạn quyết.
+- Tôi chạy 77 trước 76 vì một lý do: Nếu hệ thống đổi được Email ở TC-PROF-76, tài khoản `test@eshop.com` sẽ không đăng nhập được nữa và TC-PROF-77 không chạy được.
+
+**3. 8 test case giao diện chạy trên điện thoại** (chi tiết ở mục 7 của `06_results.md`):
+
+| # | Test case | Làm gì | Ảnh |
+|---|---|---|---|
+| 1 | TC-PROF-01 (kèm 91) | Nhập 3 giá trị cơ sở, bấm "Cập nhật" | `S6_TC-PROF-01_1.png` (thông báo), `_2.png` (sau khi mở lại) |
+| 2 | TC-PROF-04 | Họ Tên `<b>An 04</b>` | `S6_TC-PROF-04.png` (ô Họ Tên và lời chào) |
+| 3 | TC-PROF-30 | Xóa trống Họ Tên | `S6_TC-PROF-30.png` |
+| 4 | TC-PROF-32 (kèm 91) | Số `1912345678` | `S6_TC-PROF-32.png` (thấy vị trí lỗi so với nút) |
+| 5 | TC-PROF-33 | Số `091234567` | `S6_TC-PROF-33.png` |
+| 6 | TC-PROF-101 | Số `09123456789` | `_1` (ô trước khi bấm), `_2` (thông báo) |
+| 7 | TC-PROF-34 | Gõ `091234567890` | `_1` (đếm số chữ số ô nhận), `_2` (thông báo) |
+| 8 | TC-PROF-90 (6), (7) | Nhấn giữ hoặc dán vào ô Email; cuối cùng bấm "Thoát" | `S6_TC-PROF-90_6.png`, `S6_TC-PROF-90_7.png` |
+
+Với mỗi test case trong bảng: Chạy `chuan --tag TC-PROF-xx` trước, mở lại màn Hồ sơ, làm theo bảng, rồi chạy `get --tag TC-PROF-xx`. Các test case giao diện còn lại sẽ ghi Not run.
+
+**Thứ tự cả đợt:**
+1. Reset dữ liệu mẫu.
+2. `run --dry-run` để xem trước các yêu cầu, không gửi gì.
+3. `run --only TC-PROF-70`.
+4. Các test case giao diện thứ tự 1 đến 7.
+5. `run --only` với các test case còn lại của nhóm E.
+6. TC-PROF-90 (bước 8).
+7. `last`, rồi reset dữ liệu ngay sau đó.
+
+Khi xong, bạn gửi giờ reset, ảnh và log; tôi sẽ điền kết quả.
+````
+
+---
+
+### C288 | 08:11 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B: Kiểm tra, xuất log, reset DB và báo cho tôi.
+Phiên D: Đang chạy.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session B latest turn
+- TaskStop
+- Bash: Restart backend to reseed DB
+- Bash: Confirm reseed and verify B S6 results
+- Bash: Count B statuses using table headers
+- Bash: Export log and update tracker for B S6
+
+**Output AI (nguyên văn):**
+
+````text
+Phiên B làm đúng: Nó không tự đụng vào server mà để phiên điều phối reset. Tôi reset DB ngay.
+
+Đã reset DB lúc **08:11**: backend khởi động lại và tạo lại dữ liệu mẫu. S6 của B đạt, chỉ còn vài ô cần điền. Log đã xuất (288 lượt, đúng 5 phiên), TRACKER đã cập nhật.
+
+## Phiên B: S6
+
+**Kết quả kiểm:**
+- 38 dòng đều đã có trạng thái: **Pass 6, Fail 20, Blocked 4, Not run 8**. Tôi đếm lại, khớp với bảng tổng hợp của phiên B.
+- File trong `ai_raw` còn nguyên. Kiểm định dạng 0 lỗi, không có dấu "—" hay "·".
+- 9 ảnh giao diện, 4 log API (gồm log riêng của TC-CART-53). Log không lộ token.
+- Phiên B làm đúng quy tắc khi **không tự reset** mà chờ phiên điều phối. Tôi đã ghi điểm này để đưa vào Audit.
+
+**Còn thiếu 2 chỗ nhỏ:**
+1. Dòng "Reset dữ liệu sau TC-CART-53" ở mục 1 đang trống. Ghi **08:11 21/10/2026**.
+2. 8 dòng Not run để trống cột "Kết quả thực tế": TC-CART-12, 94, 96, 97, 100, 101, 103, 104. FR-01 ghi "Không chạy" ở cột này, nên ghi giống cho thống nhất.
+
+**Dán vào phiên B** (sửa xong S6 rồi sang luôn S7):
+
+```text
+1. S6: Ghi "Reset dữ liệu sau TC-CART-53" là 08:11 21/10/2026 (phiên điều phối reset bằng cách khởi động lại backend). Cột Kết quả thực tế của 8 dòng Not run ghi "Không chạy" như FR-01. Không đổi trạng thái nào.
+2. Sang S7: Thêm mục FR-07 vào bugs/bug_report.md (file dùng chung; mục FR-01, FR-17 giữ nguyên), theo đúng cấu trúc mục FR-17. Gom các dòng Fail theo yêu cầu bị vi phạm, mỗi bug một mục, có test case làm bằng chứng; nội dung theo template issue và quy ước mục 4 README repo nhóm (D:/Dang/Test/Homeworks/HW02_group/.github/ISSUE_TEMPLATE/bug_report.yml, D:/Dang/Test/Homeworks/HW02_group/README.md); severity theo lưu đồ mục 4.3; platform: web; pool: B. Bug nào bằng chứng chỉ là log thì ghi tên ảnh log cần chụp. Các dòng Blocked do giao diện thiếu chức năng (nút +/-) xét gộp thành bug nếu hợp lý.
+3. Tạo trang HTML có link tạo issue điền sẵn như phiên FR-17 đã làm; tham khảo C:/Users/Lenovo/AppData/Local/Temp/claude/d--Dang-Test/1648c211-f587-4579-ac76-636b3e3e2598/scratchpad/s7/make_issue_links_fr17.py. Không tự tạo issue. Câu hỏi hỏi tôi ở đây. Không cần đưa lệnh commit.
+```
+
+**Commit** (đứng ở `D:\Dang\Test\Homeworks\HW02`). Chạy sau khi phiên B sửa xong mục 1, đừng đợi tới S7:
+
+```
+git add features/B_FR-07_GioHang/06_results.md features/B_FR-07_GioHang/logs features/B_FR-07_GioHang/screenshots prompt_log.md
+git commit -m "[B-FR07][S6] Execute reduced test set and record results"
+```
+
+## Phiên D
+
+Dữ liệu vừa được tạo lại, nên D có dữ liệu sạch cho S6. Ô reset ở mục 1 của D ghi **08:11 21/10/2026**. Nếu phiên D hỏi thì bạn báo giờ này.
+````
+
+---
+
+### C289 | 08:12 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `709e0d24`
+
+**Prompt (nguyên văn):**
+
+````text
+1. S6: Ghi "Reset dữ liệu sau TC-CART-53" là 08:11 21/10/2026 (phiên điều phối reset bằng cách khởi động lại backend). Cột Kết quả thực tế của 8 dòng Not run ghi "Không chạy" như FR-01. Không đổi trạng thái nào.
+2. Sang S7: Thêm mục FR-07 vào bugs/bug_report.md (file dùng chung; mục FR-01, FR-17 giữ nguyên), theo đúng cấu trúc mục FR-17. Gom các dòng Fail theo yêu cầu bị vi phạm, mỗi bug một mục, có test case làm bằng chứng; nội dung theo template issue và quy ước mục 4 README repo nhóm (D:/Dang/Test/Homeworks/HW02_group/.github/ISSUE_TEMPLATE/bug_report.yml, D:/Dang/Test/Homeworks/HW02_group/README.md); severity theo lưu đồ mục 4.3; platform: web; pool: B. Bug nào bằng chứng chỉ là log thì ghi tên ảnh log cần chụp. Các dòng Blocked do giao diện thiếu chức năng (nút +/-) xét gộp thành bug nếu hợp lý.
+3. Tạo trang HTML có link tạo issue điền sẵn như phiên FR-17 đã làm; tham khảo C:/Users/Lenovo/AppData/Local/Temp/claude/d--Dang-Test/1648c211-f587-4579-ac76-636b3e3e2598/scratchpad/s7/make_issue_links_fr17.py. Không tự tạo issue. Câu hỏi hỏi tôi ở đây. Không cần đưa lệnh commit.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Finish S6 edits and outline bug report file
+- Bash: Read bug report header and FR-17 section start
+- Bash: Read FR-17 bug report tail sections
+- Bash: Read issue template and group README section 4
+- Bash: Read FR-17 issue link generator script
+- Bash: Check log screenshot convention and blocked section
+- Bash: Get FR-01 issue numbers and FR-17 language bug format
+- Write: C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\fr07_section.md
+- Bash: Insert FR-07 section into shared bug report
+- Bash: Confirm only FR-07 content added
+- Bash: Adapt FR-17 link script to FR-07 and run it
+- Bash: Fix variable name and generate HTML
+- Bash: Check image columns for two bugs in HTML
+- Bash: Add per-image log capture table and regenerate HTML
+- Bash: Escape braces and regenerate HTML
+
+**Output AI (nguyên văn):**
+
+````text
+Mình đã đọc mẫu mục FR-17, template issue, mục 4 README nhóm và script tạo link của FR-17. Giờ viết mục FR-07 vào `bugs/bug_report.md`.
+
+Mục FR-07 đã vào `bugs/bug_report.md`; so với bản trước, phần FR-01 và FR-17 giữ nguyên, chỉ thêm mục mới và sửa một dòng Mục lục. Giờ tạo trang link issue.
+
+Xong cả 3 việc. Mình không tạo issue nào.
+
+**1. S6 ([06_results.md](Homeworks/HW02/features/B_FR-07_GioHang/06_results.md)):** Đã ghi "Reset dữ liệu sau TC-CART-53" là 08:11 21/10/2026, do phiên điều phối khởi động lại backend. Đã ghi "Không chạy" ở cột Kết quả thực tế của 8 dòng Not run. Không đổi trạng thái nào.
+
+**2. S7 ([bugs/bug_report.md](Homeworks/HW02/bugs/bug_report.md)):** Đã thêm mục FR-07 vào giữa FR-01 và FR-17, cấu trúc theo mục FR-17. So với bản trước, phần FR-01 và FR-17 giữ nguyên; chỉ dòng FR-07 ở Mục lục được đổi thành link. Có **18 bug: 3 High, 5 Medium, 10 Low**, mỗi bug ứng với một yêu cầu bị vi phạm:
+
+| Severity | Bug |
+|---|---|
+| High | 01 API nhận số lượng không hợp lệ (0, âm, thập phân, chữ, thiếu); 02 API lưu đơn giá do client gửi; 03 API nhận sản phẩm không tồn tại |
+| Medium | 04 Thêm sản phẩm đã có tạo dòng mới (cả trang chủ, trang chi tiết, API); 05 Không có nút +/- (gộp 3 dòng Blocked TC-04 đến 06); 06 Xóa không có dialog; 07 Nút "Thêm vào giỏ hàng" không thêm khi giữ số lượng 1, phải bấm 2 lần; 08 Giỏ Web mất sau F5, không khớp giỏ API |
+| Low | 09 Nhãn "Tổng tạm tính"; 10 Cột "Giá"; 11 Nút "← Mua tiếp"; 12 Không có toast; 13 Không có badge; 14 Giỏ trống không có hình minh họa; 15 Tiêu đề tab "frontend-web"; 16 Nút thanh toán màu xanh lá; 17 Navbar không highlight; 18 Không có breadcrumb |
+
+Bug 15 và 16 đã ghi Related tới các issue cùng loại của FR-01 và FR-17 (#54, #57; #52, #58).
+
+**3. Trang HTML chứa link tạo issue điền sẵn:** `C:\Users\Lenovo\AppData\Local\Temp\claude\d--Dang-Test\709e0d24-6893-4a96-8d81-6ef43586ae51\scratchpad\s7\FR07_issue_links.html`. Script tạo trang nằm cùng thư mục: `make_issue_links_fr07.py`, sửa từ script của FR-17.
+- Cuối trang có bảng **"Ảnh log cần chụp"** cho 4 ảnh còn thiếu: `S6_TC-CART-30_log`, `31_log`, `50_log`, `51_log`. Bảng ghi cho từng ảnh: Mở file log nào, tìm chuỗi gì, chụp đoạn nào.
+- Ảnh `50_log` nằm ở log khác với ba ảnh còn lại.
+- Ảnh chụp giao diện thì đều đã có.
+
+**Cần bạn quyết định** (bảng "Khác giả định và quan sát" cuối mục FR-07; mình đã áp đề xuất vào danh sách bug ở trên, bạn chỉ cần xác nhận hoặc đổi):
+
+| Mã | Đề xuất | Lý do |
+|---|---|---|
+| KG01 | TC-51 (API lưu giá client gửi) thành bug riêng, High | Đặc tả không nói giỏ dùng giá nào; dựa vào giả định A24 và nguyên tắc ở FR-08 (backend không tin số tiền client gửi) |
+| KG02 | TC-30 (API nhận sản phẩm không tồn tại) thành bug riêng, High | Hệ thống nhận dữ liệu sai, theo lưu đồ là câu 2 |
+| KG03 | TC-34 (thiếu `quantity`) gộp vào BUG-01 | Cùng trường số lượng, cùng hậu quả |
+| KG04 | Nhãn "← Mua tiếp" thành bug Low; TC-11 vẫn giữ Pass | Q28 đã chốt xét nút "Tiếp tục mua sắm" ở cả giỏ có hàng; TC-11 Pass là vì phần điều hướng về trang chủ đúng |
+| QS01 | Giỏ Web mất sau F5 thành bug, **Medium** | Theo lưu đồ có thể tính là "mất dữ liệu" (Critical), nhưng đặc tả không nói giỏ phải được giữ (Q14) và có cách đi vòng (không tải lại trang) |
+
+**Thêm hai câu hỏi:**
+1. **18 issue khá nhiều để tạo tay.** Bạn có muốn gộp 2 cặp Low cùng nhóm yêu cầu không: Toast với badge (12 + 13), highlight navbar với breadcrumb (17 + 18)? Đề xuất của mình là **giữ riêng**, vì FR-01 và FR-17 đều tách mỗi yêu cầu một bug.
+2. **BUG-07 nằm ở nút của trang chi tiết, thuộc FR-06.** Trong nhóm có ai làm FR-06 không? Nếu có, bạn tìm xem họ đã báo chưa trước khi tạo issue; nếu đã có thì đổi thành Related. Mình đã ghi lời nhắc này trong ô Ghi chú của bug.
+````
+
+---
+
+### C290 | 08:12 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Phiên B và D đang chạy. Trong lúc đó, về video có cần phải up lên youtube hay gì không hay chỉ cần đưa vào folder là được, nếu đưa thì đưa vào đâu?
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- (không)
+
+**Output AI (nguyên văn):**
+
+````text
+Cần đưa lên YouTube. Đề ghi ở mục 7: *"Submit the skills together with demonstration videos (**YouTube links**)"*, và README phải có link video trong Test Summary. Vì vậy chỉ đưa file vào thư mục là không đủ.
+
+**Không nên đưa file video vào repo hay file zip:**
+- Moodle giới hạn mỗi file tối đa 20 MB và cả bài tối đa 20 file. Video quay màn hình gần như chắc chắn vượt 20 MB.
+- File video lớn cũng làm repo git nặng. Bạn cứ giữ bản gốc trên máy làm dự phòng.
+
+**Cách làm nhanh, khoảng 5 phút, chủ yếu là chờ tải lên:**
+1. Vào YouTube Studio, chọn **Create**, rồi **Upload videos**, chọn file video.
+2. Ở bước **Visibility**, chọn **Unlisted**. Chỉ người có link mới xem được, giảng viên vẫn mở được bằng link.
+3. Đặt tiêu đề, ví dụ: `23120061 HW02 Agent Skill domain-testing-design FR-04`.
+4. Mô tả, ví dụ: "Demo skill domain-testing-design chạy trọn FR-04 (Mobile) từ S0 đến S5." Phần **"Made for kids"** chọn **No**.
+5. Bạn có thể bấm Publish ngay khi đang tải lên, không cần đợi YouTube xử lý xong. Link có ngay.
+
+Có link thì gửi tôi. Tôi điền vào README (mục Video demo) và `report.md` (mục 6, Agent Skill). Tải lên chạy nền, nên bạn làm song song được với lúc B và D đang chạy.
+````
+
+---
+
+### C291 | 08:18 21/10/2026 | Tool: Claude Code (claude-opus-5-5) | Session `305c705a`
+
+**Prompt (nguyên văn):**
+
+````text
+Link youtube: https://youtu.be/c8caqIW1d7M
+Phiên B và D đều đã xong. Xuất log, kiểm tra và báo lại cho tôi.
+````
+
+**Thao tác AI đã thực hiện (đọc/ghi file, chạy lệnh):**
+
+- Bash: Read session B S7 output
+- Bash: Read session D S6 setup output
+- Bash: Fill video link and verify B, D files
+- Bash: Locate dashes and check admin PUT usage
+- Bash: Export log, check git, update tracker
+
+**Output AI (nguyên văn):**
+
+````text
+Cả hai phiên đều ổn. Tôi điền link video vào README và `report.md`, kiểm file của B và D, rồi xuất log.
 ````
 
 
